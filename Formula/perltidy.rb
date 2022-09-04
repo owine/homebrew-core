@@ -1,8 +1,8 @@
 class Perltidy < Formula
   desc "Indents and reformats Perl scripts to make them easier to read"
   homepage "https://perltidy.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/perltidy/20211029/Perl-Tidy-20211029.tar.gz"
-  sha256 "ec03b1e36a57d094569a30082688f722253401c7cc934ac64d2e3eb4de880eda"
+  url "https://downloads.sourceforge.net/project/perltidy/20220613/Perl-Tidy-20220613.tar.gz"
+  sha256 "50496a6952904ef28f495919fc0a67801a63c87779c61308ce1ca5b32467c5d4"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Perltidy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "76001def7996868b78e0f26a6f67565d38a41f1d8608d68007854ffa021075f2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a558352491ac875616d9cbc078ff121f11959a6380d4fd6e5da8b510d2e3213c"
-    sha256 cellar: :any_skip_relocation, monterey:       "3668f063a2ede54b1ba5f338b7fc28692b59ff1b0274e7c9620c7257b2ad5c8f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "adb8b3a0b935922bb430c23b3d57f0e0502cf55cbdcca1faf0b7c583ae6ae8ce"
-    sha256 cellar: :any_skip_relocation, catalina:       "0ce92bd06855674d04a9f895d265be5a01c9fd09ecfa8a39567a23ef21dcca43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8cd1d340feaaade089dc7346a28bf04ee05761eef80d45df4aa2900bbeba51f1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8a6f839401d29d45c877fa479e5fe205ff83797663b7463f480343bbb2ce4e75"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "036599d0496cea185b2afb15ce9e4b720cc9f4ff93fa534f91e7b2d431091b7b"
+    sha256 cellar: :any_skip_relocation, monterey:       "3e3aa5b804fe15bb415812628756db253b0d0ecf7f8978923d2cf84efe877240"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a130ee5632843b72c6217dfaa71c758d0b9b8fb63f794df638e87aa32dd8070c"
+    sha256 cellar: :any_skip_relocation, catalina:       "a54e50b3b596db82c4654202936fd376c0db415172adfedba42b1b2f28d5eb2a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "05cc61fdad984047b80e0b9519e4e7a7afa694879fa8958b350827c8a01b9901"
   end
 
   uses_from_macos "perl"

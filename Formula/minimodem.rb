@@ -4,6 +4,7 @@ class Minimodem < Formula
   url "http://www.whence.com/minimodem/minimodem-0.24.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/m/minimodem/minimodem_0.24.orig.tar.gz"
   sha256 "f8cca4db8e3f284d67f843054d6bb4d88a3db5e77b26192410e41e9a06f4378e"
+  license "GPL-3.0-or-later"
 
   livecheck do
     url :homepage
@@ -20,7 +21,6 @@ class Minimodem < Formula
     sha256 cellar: :any,                 high_sierra:    "091170cbfa058de152f2f1af5f2436963297c01e323e80fdfcd5bcf6d8c9cabd"
     sha256 cellar: :any,                 sierra:         "224fc001ea92a1df8133680c6eb9b6d659912d5e8ce84e8c12509a671538d8ae"
     sha256 cellar: :any,                 el_capitan:     "1539133df2fe9f85e8dcdf56e2a62d5ae116861e6dbc3b02e45680fbf8a467a9"
-    sha256 cellar: :any,                 yosemite:       "ac39bf2ca304ce0f513a037193aca0850cf3cafddf17cd40a2ac047e5f051db7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "e160d02015fdfd48ef348ef8f73bb6040e2a66ff9047cf1bc7f720ad94c173a7"
   end
 

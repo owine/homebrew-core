@@ -1,26 +1,27 @@
 class Freerdp < Formula
   desc "X11 implementation of the Remote Desktop Protocol (RDP)"
   homepage "https://www.freerdp.com/"
-  url "https://github.com/FreeRDP/FreeRDP/archive/2.4.0.tar.gz"
-  sha256 "80eb7e09e2a106345d07f0985608c480341854b19b6f8fc653cb7043a9531e52"
+  url "https://github.com/FreeRDP/FreeRDP/archive/2.8.0.tar.gz"
+  sha256 "86f1ce8ef71aff73881a48b40d31dda2fc2a94bdbe37e1c1af8447a0e4fa5cc8"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_big_sur: "13930739489389e5ecad0f8afa3d05bf41698a01b880c561f0ad05e099a9a8f3"
-    sha256 big_sur:       "0350c39447e947f7d860d12d4658eb6481f1afa83316a84249cba336e1b79776"
-    sha256 catalina:      "02424460eacaf34e564f922c26e096c74a145fde68067cfd2f3426c811dc0b11"
-    sha256 mojave:        "8c029ee46cd1ea1662c5969858aadb78f2311f4cfe4397d5119ac94aa039a650"
-    sha256 x86_64_linux:  "a5c914c81394cb1c941d78ebfb2813ba94494af167d5bcb3d4e71cb3bfec10a1"
+    sha256 arm64_monterey: "c2c39da782f4df06eca40f1ef6cf8b398bcd623d0b9f071d6d5c3ac2ab7047d8"
+    sha256 arm64_big_sur:  "5e065d087692150df9dbc8675ca19f165c03114766ea48fe77c5ce043e25d052"
+    sha256 monterey:       "96ce94fde80de2a05572fbc9434c79945d977b494c8ea64f87fa12881628f340"
+    sha256 big_sur:        "b408af2edaf7862ae59c9f47fbc03b3ec08a681bc8b7134dabe4b78da063995a"
+    sha256 catalina:       "3f07f042a33e76153df32a8b57bb727843d3c8ff3ff90cb6715fc7ca65c78eb4"
+    sha256 x86_64_linux:   "471e90a3aca9bb342a617d59cf1f933a7bb96335a912dce471aa2863246d87ef"
   end
 
   head do
-    url "https://github.com/FreeRDP/FreeRDP.git"
+    url "https://github.com/FreeRDP/FreeRDP.git", branch: "master"
     depends_on xcode: :build
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libusb"
   depends_on "libx11"
   depends_on "libxcursor"
@@ -44,19 +45,17 @@ class Freerdp < Formula
   end
 
   def install
-    system "cmake", ".", *std_cmake_args,
-                         "-DWITH_X11=ON",
-                         "-DBUILD_SHARED_LIBS=ON",
-                         "-DWITH_JPEG=ON",
-                         "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DWITH_X11=ON",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DWITH_JPEG=ON",
+                    "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    on_linux do
-      # failed to open display
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     success = `#{bin}/xfreerdp --version` # not using system as expected non-zero exit code
     details = $CHILD_STATUS

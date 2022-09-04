@@ -1,20 +1,20 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-6.0.1/apache-arrow-6.0.1.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-6.0.1/apache-arrow-6.0.1.tar.gz"
-  sha256 "3786b3d2df954d078b3e68f98d2e5aecbaa3fa2accf075d7a3a13c187b9c5294"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-9.0.0/apache-arrow-9.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-9.0.0/apache-arrow-9.0.0.tar.gz"
+  sha256 "a9a033f0a3490289998f458680d19579cf07911717ba65afde6cb80070f7a9b5"
   license "Apache-2.0"
-  revision 4
+  revision 1
   head "https://github.com/apache/arrow.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d9ab25957149237308840f27485cc537dba7fd5410af077859dad8f0818a0251"
-    sha256 cellar: :any,                 arm64_big_sur:  "1a8121013971685d36f998a801984782a779b58e630773b89cf12130a7bfca14"
-    sha256 cellar: :any,                 monterey:       "46f35038849533309ccf1c66302f504082ac90d6cf78463f623d2d8c5e8466a4"
-    sha256 cellar: :any,                 big_sur:        "315f0de7456659208b61e4a2b5a2ba6c4536e332fabe6592129325b745e4b97b"
-    sha256 cellar: :any,                 catalina:       "5ab4c2618283afed2cf95557431250d571ecb031099f52404c6d9876e80106f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cd2ee89560b65fcde5e8fd0d2cb4c6028b3dfca943972aaac1247d42710daa5"
+    sha256 cellar: :any,                 arm64_monterey: "675bdb42b4308c62dd1056d91001ac65f067e113af1d28710690e3e83ec627b1"
+    sha256 cellar: :any,                 arm64_big_sur:  "b945b8f87968cd0de97bcf0cc580e44d811d154f4233433d9222bbe0bfb161c2"
+    sha256 cellar: :any,                 monterey:       "dc5e96f97bb3b302a2093681d97d15a9fb6a72634dc14de65b14843767508d62"
+    sha256 cellar: :any,                 big_sur:        "d585365986b70606cbd7ecb73645b3e1e657bad8b7f0a7a8e0397f82e1ba2125"
+    sha256 cellar: :any,                 catalina:       "e8c85a7367051336338f220c9c1a9f07f391b88c3cc8ec7ce6dd46692c860d09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3e9c1cf39650817b1ccb51c2af9de7c57f6ad4bebccb85d8e6afb9a7e08eedff"
   end
 
   depends_on "boost" => :build
@@ -28,7 +28,7 @@ class ApacheArrow < Formula
   depends_on "numpy"
   depends_on "openssl@1.1"
   depends_on "protobuf"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "rapidjson"
   depends_on "re2"
   depends_on "snappy"
@@ -43,13 +43,20 @@ class ApacheArrow < Formula
   fails_with gcc: "5"
 
   def install
+    python = "python3.10"
+
     # https://github.com/Homebrew/homebrew-core/issues/76537
     ENV.runtime_cpu_detection if Hardware::CPU.intel?
+
+    # https://github.com/Homebrew/homebrew-core/issues/94724
+    # https://issues.apache.org/jira/browse/ARROW-15664
+    ENV["HOMEBREW_OPTIMIZATION_LEVEL"] = "O2"
 
     # link against system libc++ instead of llvm provided libc++
     ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
     args = %W[
       -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=TRUE
+      -DCMAKE_INSTALL_RPATH=#{rpath}
       -DARROW_FLIGHT=ON
       -DARROW_GANDIVA=ON
       -DARROW_JEMALLOC=ON
@@ -67,16 +74,14 @@ class ApacheArrow < Formula
       -DARROW_WITH_BROTLI=ON
       -DARROW_WITH_UTF8PROC=ON
       -DARROW_INSTALL_NAME_RPATH=OFF
-      -DPython3_EXECUTABLE=#{Formula["python@3.9"].bin/"python3"}
+      -DPython3_EXECUTABLE=#{which(python)}
     ]
 
     args << "-DARROW_MIMALLOC=ON" unless Hardware::CPU.arm?
 
-    mkdir "build" do
-      system "cmake", "../cpp", *std_cmake_args, *args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", "cpp", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

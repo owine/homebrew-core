@@ -1,22 +1,22 @@
 class CodeServer < Formula
   desc "Access VS Code through the browser"
-  homepage "https://github.com/cdr/code-server"
-  url "https://registry.npmjs.org/code-server/-/code-server-4.0.2.tgz"
-  sha256 "d22901d8566ab754af19fe9927c56d882a0f6182b0153000d75f03fc2d079e7c"
+  homepage "https://github.com/coder/code-server"
+  url "https://registry.npmjs.org/code-server/-/code-server-4.6.0.tgz"
+  sha256 "010ba1b4349730f412c72255f842c56f292d6944c2220e10d7f5b5bf34491f82"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "4e9c96957c8af6d4a6b96e800c1590f90112a58ab3abdb97dfc84c10354bfb98"
-    sha256 cellar: :any, arm64_big_sur:  "94f657a8e93216fa36fe06a1a29a98e089c15c40a25a16b79ac58f6ed6f2940c"
-    sha256 cellar: :any, monterey:       "3b8089f0154639d0398b5b6865729a6bbed6491534af23ec2831ca6e9fe53b3a"
-    sha256 cellar: :any, big_sur:        "f161223669bdf4dcb24d2b89b9e87645c0b32adc6747d81fe4d61b9636092729"
-    sha256 cellar: :any, catalina:       "387ad90bcb83c2e8ab2a969c319c9eecf9d993a77165ec300c0f439d4a967656"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4bd021747c2bfdfdf8fd47e40b51668da739d44089ffddfe5c767dfeca7f3aa8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "73526abf599150d45fd87bf6de3f724cbed2fdb756b08e86d2549aa4f808fb99"
+    sha256 cellar: :any_skip_relocation, monterey:       "ab37b348f550baa6148320f109c7e6afd9ff4d313e5fe937b07117a1ef1766e4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "187924ead946962fea70215097067afc863d7a93a7e48b369b4baec5d91e893f"
+    sha256 cellar: :any_skip_relocation, catalina:       "2ae453d7adf5d82f1f5069c333eaa03d1e08a04bea5382d2679a77b43151d697"
   end
 
   depends_on "bash" => :build
   depends_on "python@3.10" => :build
   depends_on "yarn" => :build
-  depends_on "node@14"
+  depends_on "node@16"
 
   on_linux do
     depends_on "pkg-config" => :build
@@ -26,11 +26,11 @@ class CodeServer < Formula
   end
 
   def install
-    node = Formula["node@14"]
+    node = Formula["node@16"]
     system "yarn", "--production", "--frozen-lockfile"
     # @parcel/watcher bundles all binaries for other platforms & architectures
     # This deletes the non-matching architecture otherwise brew audit will complain.
-    prebuilds = buildpath/"vendor/modules/code-oss-dev/node_modules/@parcel/watcher/prebuilds"
+    prebuilds = buildpath/"lib/vscode/node_modules/@parcel/watcher/prebuilds"
     (prebuilds/"darwin-x64").rmtree if Hardware::CPU.arm?
     (prebuilds/"darwin-arm64").rmtree if Hardware::CPU.intel?
     libexec.install Dir["*"]
@@ -49,7 +49,7 @@ class CodeServer < Formula
     keep_alive true
     error_log_path var/"log/code-server.log"
     log_path var/"log/code-server.log"
-    working_dir ENV["HOME"]
+    working_dir Dir.home
   end
 
   test do

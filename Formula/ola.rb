@@ -4,15 +4,16 @@ class Ola < Formula
   url "https://github.com/OpenLightingProject/ola/releases/download/0.10.8/ola-0.10.8.tar.gz"
   sha256 "102aa3114562a2a71dbf7f77d2a0fb9fc47acc35d6248a70b6e831365ca71b13"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
-  revision 4
+  revision 6
   head "https://github.com/OpenLightingProject/ola.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "14de812197e5d732c3c57b9d1e1ccd3a4321cfa2403c33ca01ab68eb21e862f9"
-    sha256 arm64_big_sur:  "e00c8546cb662cd64eaad5da196997c42e3b41dd58fbb281bac8784c3f1de3d1"
-    sha256 monterey:       "9cbd30289e08d047669888a4b9a88e2016765454e855cd64463e6b278bc8308c"
-    sha256 big_sur:        "37929b41d388d312df5fc8d99a67e86bb9c60148dad82d89a5432c3181a1c52e"
-    sha256 catalina:       "7f83e608a0bd905f19f3b23853e8069dab0c1b96f8b88a64e7945d3e0438ba6d"
+    sha256 arm64_monterey: "da5cec4bdcc4e8fe6c322aaa77dbf9a24cf180fa3b72f57731a9ea7e1c5400fa"
+    sha256 arm64_big_sur:  "02dda582adcdc9a76e093c98c40988892a280b875fd63ec00288cdaf5328ff7a"
+    sha256 monterey:       "faea2e6dc970007ac903bc7bf10a847d1ffb55924e6040bd5e18da591411ac71"
+    sha256 big_sur:        "873616e87caad74f8479ce3aa6dfb9d1dff865f616a097a6fd7992770f98e5b7"
+    sha256 catalina:       "bdd790d4f5fed6db1c3e3ec65aac6f542737909e65e1cd6e90e9b33e56db51fe"
+    sha256 x86_64_linux:   "f222379485424174bb5e2cb0341e395fa8d7fada09efb9f2b0fc33b090ae8b6b"
   end
 
   depends_on "autoconf" => :build
@@ -24,7 +25,10 @@ class Ola < Formula
   depends_on "libusb"
   depends_on "numpy"
   depends_on "protobuf"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
+
+  uses_from_macos "bison" => :build
+  uses_from_macos "flex" => :build
 
   # remove in version 0.10.9
   patch do
@@ -33,6 +37,9 @@ class Ola < Formula
   end
 
   def install
+    # https://github.com/protocolbuffers/protobuf/issues/9947
+    ENV.append_to_cflags "-DNDEBUG"
+
     args = %W[
       --disable-fatal-warnings
       --disable-dependency-tracking
@@ -53,6 +60,6 @@ class Ola < Formula
 
   test do
     system bin/"ola_plugin_state", "-h"
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "from ola.ClientWrapper import ClientWrapper"
+    system Formula["python@3.10"].opt_bin/"python3", "-c", "from ola.ClientWrapper import ClientWrapper"
   end
 end

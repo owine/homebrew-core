@@ -1,20 +1,22 @@
 class GrafanaAgent < Formula
   desc "Exporter for Prometheus Metrics, Loki Logs, and Tempo Traces"
   homepage "https://grafana.com/docs/agent/"
-  url "https://github.com/grafana/agent/archive/refs/tags/v0.22.0.tar.gz"
-  sha256 "d941335c83308e38afbec46f2d93082ac51cdfa6b975c0faaf2998aa938c3160"
+  url "https://github.com/grafana/agent/archive/refs/tags/v0.27.0.tar.gz"
+  sha256 "5c51550406f0df79511f30892a8f95406d83cb492639db00748d825caafcfd45"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1328346e0fa6fc9e61a1689b901d958efb2238cd588b42e0775720baec688d3e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "01ecadf293ac8a1093ee8657e3b153427172ad7bd9e2e2a416020cec0397f3fc"
-    sha256 cellar: :any_skip_relocation, monterey:       "2d1a899d9cee5b94357f3ccf7bf83f1d500905f6ef59131e45d0e73005f77968"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9f3bd70221617a753a95ce7e6dbc8bcc9efd039422358f87bd990655aa91536e"
-    sha256 cellar: :any_skip_relocation, catalina:       "75c93d14b32addf817139f07386ca88e4093a8975b2da33f4ad4914c6696b75b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3cc0d6b9316d4217c3e0d37242e28b2919570294640535285c5e21e6f743e235"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1dbbb18d4d49803f3511f8366c65778c721871f395cf0f8bbf58e9bb941a0aee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "830fe1e85ee85363844674c77f9a0374d3a7cfed310dbd3987efa038e936e66e"
+    sha256 cellar: :any_skip_relocation, monterey:       "3566c6c0b9e5f81560638aa38f853c179bf44a3b8f4f243bdfd55c20d13886bd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a6f9f4c08ec49d60682d625247bdb2b0361800e62ee440ca84d2d1417cd1fdd2"
+    sha256 cellar: :any_skip_relocation, catalina:       "9c5d869dfd54ebb713c3aedaa7d27c3e59d314e180a99a3be1148586b43d6030"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "497dabc803b5a73df45433498c88f45ec52fec283e88c659f10ef1abb9c990a1"
   end
 
-  depends_on "go" => :build
+  # Required latest https://pkg.go.dev/go4.org/unsafe/assume-no-moving-gc
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
   on_linux do
     depends_on "systemd" => :build
@@ -22,13 +24,16 @@ class GrafanaAgent < Formula
 
   def install
     ldflags = %W[
+      -s -w
       -X github.com/grafana/agent/pkg/build.Branch=HEAD
       -X github.com/grafana/agent/pkg/build.Version=v#{version}
       -X github.com/grafana/agent/pkg/build.BuildUser=#{tap.user}
       -X github.com/grafana/agent/pkg/build.BuildDate=#{time.rfc3339}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags.join(" ")), "./cmd/agent"
-    system "go", "build", *std_go_args(ldflags: ldflags.join(" ")), "-o", bin/"grafana-agentctl", "./cmd/agentctl"
+    args = std_go_args(ldflags: ldflags.join(" ")) + %w[-tags=noebpf]
+
+    system "go", "build", *args, "./cmd/agent"
+    system "go", "build", *args, "-o", bin/"grafana-agentctl", "./cmd/agentctl"
   end
 
   def post_install
@@ -60,15 +65,14 @@ class GrafanaAgent < Formula
     (testpath/"grafana-agent.yaml").write <<~EOS
       server:
         log_level: info
-        http_listen_port: #{port}
-        grpc_listen_port: #{free_port}
     EOS
 
     system "#{bin}/grafana-agentctl", "config-check", "#{testpath}/grafana-agent.yaml"
 
     fork do
       exec bin/"grafana-agent", "-config.file=#{testpath}/grafana-agent.yaml",
-        "-prometheus.wal-directory=#{testpath}/wal"
+        "-metrics.wal-directory=#{testpath}/wal", "-server.http.address=127.0.0.1:#{port}",
+        "-server.grpc.address=127.0.0.1:#{free_port}"
     end
     sleep 10
 

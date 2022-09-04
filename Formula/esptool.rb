@@ -3,18 +3,17 @@ class Esptool < Formula
 
   desc "ESP8266 and ESP32 serial bootloader utility"
   homepage "https://github.com/espressif/esptool"
-  url "https://files.pythonhosted.org/packages/60/a4/33907f5b735f9179061bd6b6cae7123d4a2d0cdf46c879fa55e66edef24f/esptool-3.2.tar.gz"
-  sha256 "9638ff11c68e621e08e7c3335d4fd9d70b2ddcf7caae778073cd8cc27be1216f"
+  url "https://files.pythonhosted.org/packages/68/a7/40f80078ad06f064ff8fb52d7f2d37f0bcb3f4005fe4fbc6619a47a4990a/esptool-4.2.1.tar.gz"
+  sha256 "b967faed94dd43f547953fde362d3ba5b63dddca0a0ff7982750054702cbc238"
   license "GPL-2.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "74011061e4a4653c2f249402f7b6c2eb8e00fcda4b4e8355bea1c20487096ce0"
-    sha256 cellar: :any,                 arm64_big_sur:  "7ff5d0f1168c00e6793634b93fefaddfee5ecd8a473b829a854f9c5f203f42b6"
-    sha256 cellar: :any,                 monterey:       "f558be94d16775ef52d65784dfa9522e37b19fc6414d3de892c5c9e80eaf937c"
-    sha256 cellar: :any,                 big_sur:        "18bd6da1c6043223de47829a32cba269279aa725b4b901c75e393db69af946d1"
-    sha256 cellar: :any,                 catalina:       "75820854327d3f002f2c3e75bba6f56e85d2d57e0f83ec088c564290bf6089c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3b6a1c7d875fbbb1f225b45f886f6230f5bbc639f71be8832f989f6f82e18cf"
+    sha256 cellar: :any,                 arm64_monterey: "f58c10509f5cea34bb2104adb1da50469fbcf667015ff497bd27b8cde4a3676a"
+    sha256 cellar: :any,                 arm64_big_sur:  "c56c622e3eec3914fdf9a621ea2b32102fda7e4660623d19504b7160b17599dd"
+    sha256 cellar: :any,                 monterey:       "979f599061e511bf718c42ee623d606369d1608dd5c760bdb246bc25ac5d0719"
+    sha256 cellar: :any,                 big_sur:        "89934ece6913b2d143309961c3f384cf48ae715308d0c4ba011de7e4313b9def"
+    sha256 cellar: :any,                 catalina:       "e4ad9f966b9095e4719bd28cabe1fc8d014d78b99fda25f0d56ceddc89a6785b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c17800a8b2a9d6240a7385c7492eff581769582d3066b36d2eb77125a88e1410"
   end
 
   depends_on "rust" => :build
@@ -27,18 +26,18 @@ class Esptool < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/00/9e/92de7e1217ccc3d5f352ba21e52398372525765b2e0c4530e6eb2ba9282a/cffi-1.15.0.tar.gz"
-    sha256 "920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954"
+    url "https://files.pythonhosted.org/packages/2b/a8/050ab4f0c3d4c1b8aaa805f70e26e84d0e27004907c5b8ecc1d31815f92a/cffi-1.15.1.tar.gz"
+    sha256 "d400bfb9a37b1351253cb402671cea7e89bdecc294e8016a707f6d1d8ac934f9"
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/f9/4b/1cf8e281f7ae4046a59e5e39dd7471d46db9f61bb564fddbff9084c4334f/cryptography-36.0.1.tar.gz"
-    sha256 "53e5c1dc3d7a953de055d77bef2ff607ceef7a2aac0353b5d630ab67f7423638"
+    url "https://files.pythonhosted.org/packages/89/d9/5fcd312d5cce0b4d7ee8b551a0ea99e4ea9db0fdbf6dd455a19042e3370b/cryptography-37.0.4.tar.gz"
+    sha256 "63f9c17c0e2474ccbebc9302ce2f07b55b3b3fcb211ded18a42d5764f5c10a82"
   end
 
   resource "ecdsa" do
-    url "https://files.pythonhosted.org/packages/bf/3d/3d909532ad541651390bf1321e097404cbd39d1d89c2046f42a460220fb3/ecdsa-0.17.0.tar.gz"
-    sha256 "b9f500bb439e4153d0330610f5d26baaf18d17b8ced1bc54410d189385ea68aa"
+    url "https://files.pythonhosted.org/packages/ff/7b/ba6547a76c468a0d22de93e89ae60d9561ec911f59532907e72b0d8bc0f1/ecdsa-0.18.0.tar.gz"
+    sha256 "190348041559e21b22a1d65cee485282ca11a6f81d503fddb84d5017e9ed1e49"
   end
 
   resource "pycparser" do
@@ -71,7 +70,7 @@ class Esptool < Formula
       6QIAICyAEEAAgBBAMAAAAFDDAAAAgP4/zC4AQMwkAEAh/P8SwfAJMQH8/8AAACH5/wH6/8AAAAb//wAABvj/AACA/j8QAAAASGVsbG8gd29ybGQhCgAAAAAAAAAAAAAD
     EOS
 
-    result = shell_output("#{bin}/esptool.py image_info #{testpath}/helloworld-esp8266.bin")
+    result = shell_output("#{bin}/esptool.py --chip esp8266 image_info #{testpath}/helloworld-esp8266.bin")
     assert_match "4010802c", result
   end
 end

@@ -1,13 +1,13 @@
 class Liquidprompt < Formula
   desc "Adaptive prompt for bash and zsh shells"
   homepage "https://github.com/nojhan/liquidprompt"
-  url "https://github.com/nojhan/liquidprompt/archive/v2.0.3.tar.gz"
-  sha256 "3b734c8d920ca94a24aa2ea5ff65218856b3a0c580bf45c2ec4b45918a18875b"
+  url "https://github.com/nojhan/liquidprompt/archive/v2.1.2.tar.gz"
+  sha256 "f752f46595519befd1ad83eaa3605cfc05babd485250a0b46916d8eacabf4f26"
   license "AGPL-3.0-or-later"
   head "https://github.com/nojhan/liquidprompt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "3d340371ccc05ab79605f67c144681c8d36513d67573874d99236ba154cfbec3"
+    sha256 cellar: :any_skip_relocation, all: "407ac67632d4c74525162eedfbc1033ca4ea69ca70a8ce225531d09c35d195eb"
   end
 
   def install
@@ -30,7 +30,7 @@ class Liquidprompt < Formula
 
   test do
     liquidprompt = "#{HOMEBREW_PREFIX}/share/liquidprompt"
-    output = shell_output("/bin/sh -c '. #{liquidprompt} --no-activate; lp_theme --list'")
+    output = shell_output("/bin/bash -c '. #{liquidprompt} --no-activate; lp_theme --list'")
     assert_match "default\n", output
   end
 end

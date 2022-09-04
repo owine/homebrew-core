@@ -1,28 +1,39 @@
 class Spdlog < Formula
   desc "Super fast C++ logging library"
   homepage "https://github.com/gabime/spdlog"
-  url "https://github.com/gabime/spdlog/archive/v1.9.2.tar.gz"
-  sha256 "6fff9215f5cb81760be4cc16d033526d1080427d236e86d70bb02994f85e3d38"
+  url "https://github.com/gabime/spdlog/archive/v1.10.0.tar.gz"
+  sha256 "697f91700237dbae2326b90469be32b876b2b44888302afbc7aceb68bcfe8224"
   license "MIT"
+  revision 1
   head "https://github.com/gabime/spdlog.git", branch: "v1.x"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3322b0afb1b04d54503384ad22c23b0d7f93ef7f949bb1c0623a112df7adbe6d"
-    sha256 cellar: :any,                 arm64_big_sur:  "4ffc35695b060c0536b2da195a3e17019e345c4ae1a04bcef695a78eac18f945"
-    sha256 cellar: :any,                 monterey:       "31453c1aa5554e71df3aed23dab4b466f02fae0d5d97d4a0fd8f60405ebca35d"
-    sha256 cellar: :any,                 big_sur:        "a69e4c91e48164a21c96f572fb9c0a2168720bb3ab17f0ae68d91417b0b65d94"
-    sha256 cellar: :any,                 catalina:       "64def8f9d455b8cb5bd4ba01419a20a1fa9a15377c0732d2c5a6133be404f586"
-    sha256 cellar: :any,                 mojave:         "0db125fdda8f582b16d7505fd20a8776947e5bedb185a1cf42081717fbb9a6fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3bd455a6f7631522c4de6147e8dfcb7ffbd0845bdfa9effb05918304f5d68f4d"
+    sha256 cellar: :any,                 arm64_monterey: "fe0ed113f060d66db62d0125ffef8911ecbc8e93fd30bfb18640fd6b46325fe2"
+    sha256 cellar: :any,                 arm64_big_sur:  "6bbf09c0127d340a689be6e1f5ea2ca35fff2b17010a6bdb5808ce3d08e68f26"
+    sha256 cellar: :any,                 monterey:       "38225aaf1bfe551a3c60ea6fef5d13af141d17bf932db223a027f2ad4abcbfce"
+    sha256 cellar: :any,                 big_sur:        "9db7990165f2c4058e226fce3708399eea2ae28014ec99ef14f2eb62a4fa7e19"
+    sha256 cellar: :any,                 catalina:       "da74ac7fe12c3fd2c48a5d947415696732e6a183058a2f24815c12d21da96e89"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13fa847f070d9ce43c8249cbcba901702b76d48ff40e9a0887601bfc4442ba26"
   end
 
   depends_on "cmake" => :build
   depends_on "fmt"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  # error: specialization of 'template<class T, ...> struct fmt::v8::formatter' in different namespace
+  fails_with gcc: "5"
+
   def install
     ENV.cxx11
 
-    inreplace "include/spdlog/tweakme.h", "// #define SPDLOG_FMT_EXTERNAL", "#define SPDLOG_FMT_EXTERNAL"
+    inreplace "include/spdlog/tweakme.h", "// #define SPDLOG_FMT_EXTERNAL", <<~EOS
+      #ifndef SPDLOG_FMT_EXTERNAL
+      #define SPDLOG_FMT_EXTERNAL
+      #endif
+    EOS
 
     mkdir "spdlog-build" do
       args = std_cmake_args + %W[

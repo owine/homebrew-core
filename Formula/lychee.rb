@@ -1,18 +1,18 @@
 class Lychee < Formula
   desc "Fast, async, resource-friendly link checker"
   homepage "https://github.com/lycheeverse/lychee"
-  url "https://github.com/lycheeverse/lychee/archive/v0.8.2.tar.gz"
-  sha256 "55b83a5d7145afc4358b29db49d8e107494b64bf4f8938da865ffed978d29cda"
+  url "https://github.com/lycheeverse/lychee/archive/v0.10.1.tar.gz"
+  sha256 "1ebc71f8741d644cdc1fd3f5c2f78f0991bc56e038c1132cbe8c9eee144c8f03"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/lycheeverse/lychee.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4f8e4bdda220ced4452fc8ae21011fc0647a9cb0322ed29f99c56c50a7d6b6b2"
-    sha256 cellar: :any,                 arm64_big_sur:  "2c476a60bf7e938fd6b4472379d3f5d7f97b0d56fa0d19fcc3a6ab009c0e900c"
-    sha256 cellar: :any,                 monterey:       "e6480cfc0804c392afae1f10eb50c800f2cc123a937640624c960bdc25475444"
-    sha256 cellar: :any,                 big_sur:        "52f76f1420ee645c2e2d6dce534bd2490a218b2baf6e63a3315b27f065463cc0"
-    sha256 cellar: :any,                 catalina:       "7fba25449c3511421633007208668d11f0ae95889daa29c9cb10b86f33903585"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "21a1f246be72c48c702545900a47d47b6f09c0e88db98fce82d26a5416da8b20"
+    sha256 cellar: :any,                 arm64_monterey: "045354266f0c2bb6e9e65ef5bdcd1778519780525c4282ef91c94d8da630f8d8"
+    sha256 cellar: :any,                 arm64_big_sur:  "5b645d03eaae816722c517f5759a11985317534fd7a84406df74292fe2c02e41"
+    sha256 cellar: :any,                 monterey:       "1303c5d53850fd895face8f9e9aed9a71f6445b2350a79bb8600063e04b914f5"
+    sha256 cellar: :any,                 big_sur:        "e35c6eeaa4318fbca22c85a3d9239c57f7db3dc00f070c35832f07ce23c1d007"
+    sha256 cellar: :any,                 catalina:       "e8a8ba21356135c05f6e2c095f86864f14bb7c0dce1046e6f19d2d683c24683f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c0ca5b6fd5fa6461a11c12e1beace23bb1d8de8efdaf9f2af73d294156a6e38"
   end
 
   depends_on "rust" => :build
@@ -31,6 +31,6 @@ class Lychee < Formula
   test do
     (testpath/"test.md").write "[This](https://example.com) is an example.\n"
     output = shell_output(bin/"lychee #{testpath}/test.md")
-    assert_match "🔍 1 Total ✅ 1 OK 🚫 0 Errors", output
+    assert_match "🔍 1 Total ✅ 0 OK 🚫 0 Errors 💤 1 Excluded", output
   end
 end

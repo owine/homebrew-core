@@ -1,13 +1,13 @@
 class Ipv6toolkit < Formula
   desc "Security assessment and troubleshooting tool for IPv6"
   homepage "https://www.si6networks.com/research/tools/ipv6toolkit/"
-  url "http://pages.cs.wisc.edu/~plonka/ipv6toolkit/ipv6toolkit-v2.0.tar.gz"
+  url "https://pages.cs.wisc.edu/~plonka/ipv6toolkit/ipv6toolkit-v2.0.tar.gz"
   sha256 "16f13d3e7d17940ff53f028ef0090e4aa3a193a224c97728b07ea6e26a19e987"
   license "GPL-3.0-or-later"
   head "https://github.com/fgont/ipv6toolkit.git", branch: "master"
 
   livecheck do
-    url "http://pages.cs.wisc.edu/~plonka/ipv6toolkit/"
+    url "https://pages.cs.wisc.edu/~plonka/ipv6toolkit/"
     regex(/href=.*?ipv6toolkit[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
@@ -19,7 +19,10 @@ class Ipv6toolkit < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "7ccda456d8eb276a1a462bc06e63167984e5c1a45f58ba453063c5a22b5b31bd"
     sha256 cellar: :any_skip_relocation, catalina:       "6ab4963d7d80f42fb444fabe02122f0290842cffd620a38e15060ed1c1b120ef"
     sha256 cellar: :any_skip_relocation, mojave:         "b589fdd1d51db357ecda7452f10ac8daa48266dc4bb52bd6f3b18864e8e8bcbb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a659a7839c2b43480e498f9fa62a0655ebf3bf3a4c785b1fac682c56d35e788a"
   end
+
+  uses_from_macos "libpcap"
 
   def install
     system "make"

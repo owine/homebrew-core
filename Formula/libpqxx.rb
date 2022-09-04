@@ -1,21 +1,21 @@
 class Libpqxx < Formula
   desc "C++ connector for PostgreSQL"
   homepage "http://pqxx.org/development/libpqxx/"
-  url "https://github.com/jtv/libpqxx/archive/7.7.0.tar.gz"
-  sha256 "2d99de960aa3016915bc69326b369fcee04425e57fbe9dad48dd3fa6203879fb"
+  url "https://github.com/jtv/libpqxx/archive/7.7.4.tar.gz"
+  sha256 "65b0a06fffd565a19edacedada1dcfa0c1ecd782cead0ee067b19e2464875c36"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9586e74720f37c23c23130bc5bdc355104df5f0ee9ab29e97e190fbc5b94b1b9"
-    sha256 cellar: :any,                 arm64_big_sur:  "fc0a0e304f24767bb3d3dcbf21ff29639ffbe2a3da55e084abeded630126ab26"
-    sha256 cellar: :any,                 monterey:       "6d87da98c10ed6ef49a6c348f031f14e5b7f87edd8d18d2a78b2e8dd0eaf3392"
-    sha256 cellar: :any,                 big_sur:        "d62d562ecd151257207ceffe194b283d2103367ec75f04c79dced3c2244cc951"
-    sha256 cellar: :any,                 catalina:       "d01e417823be1eb0c2350f4cd04c918f5924ef9004c9e537a3cf0f3dae3b19f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcc4c93a8d57bfd9b5b692c8a4e758f8650c037904c2c99753b38c284b599496"
+    sha256 cellar: :any,                 arm64_monterey: "41bb514c52d981ac96179d259a75cb67c0279030c8291db2ac7ec9fe1b55e706"
+    sha256 cellar: :any,                 arm64_big_sur:  "2bc989c08cab03b73e5f71092e8a1dcc8bcd8d206b3fc50ed54399b642a31607"
+    sha256 cellar: :any,                 monterey:       "0a21cb1e4cf425ba12d2a75ef844f7840a18d402537bca95610dbb800d56a808"
+    sha256 cellar: :any,                 big_sur:        "de2ba50a393064fb97f664b939933d2ae74e3ce825375578896f812d7bb944e0"
+    sha256 cellar: :any,                 catalina:       "61b12a60dacb5258d72f0219bf49023de032531ae56f25996ff88f3361cd2b3c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1091f0b1369f8ac44f91a245c86830027667b576c35dded87394229cbe30c96e"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "xmlto" => :build
   depends_on "libpq"
   depends_on macos: :catalina # requires std::filesystem
@@ -27,7 +27,8 @@ class Libpqxx < Formula
   fails_with gcc: "5"
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+    ENV.append "CXXFLAGS", "-std=c++17"
+    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin"
     ENV["PG_CONFIG"] = Formula["libpq"].opt_bin/"pg_config"
 
     system "./configure", "--prefix=#{prefix}", "--enable-shared"

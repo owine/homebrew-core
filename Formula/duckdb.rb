@@ -2,30 +2,29 @@ class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
   url "https://github.com/duckdb/duckdb.git",
-      tag:      "v0.3.1",
-      revision: "88aa81c6b1b851c538145e6431ea766a6e0ef435"
+      tag:      "v0.4.0",
+      revision: "da9ee490df829a96bfbcfcd737f95f8dbc707d0a"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "c07a6abae9638a85c29ae922971822e38f701d534b45891d6f30b9245d0a596e"
-    sha256 cellar: :any,                 arm64_big_sur:  "661c449ddd0a85274cc67ee13e3f879bfcabe230eeda89eecf7efe872b2a7a61"
-    sha256 cellar: :any,                 monterey:       "7aa321e06da4a0da135725d1ae7abf488355e8da4fbc5aacd644e25947329acf"
-    sha256 cellar: :any,                 big_sur:        "eeb0655de2512da9dc757c0b1db4dfe8d9a01318a57edb78b1a1dbf3ee7d7d23"
-    sha256 cellar: :any,                 catalina:       "e1b1b561d7b1e90b19d97ec92540d62569534b710ef78910513703ec4feb8261"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b995635848717ace446342a51e8c2d6d25140ad282ac9fd5a5f56abce68011e8"
+    sha256 cellar: :any,                 arm64_monterey: "16708c45329391634949ff594dd5537645b96b6097210ef3496ffe3434dc91c5"
+    sha256 cellar: :any,                 arm64_big_sur:  "3e9b36be75e00ece879fab0e595f57bf749a5eab481271c76a8b99a5b7dc433d"
+    sha256 cellar: :any,                 monterey:       "f0b9d2a1c37e430c86db458d68f83ab2bf25f54479258efdb1df3bd9b5e5959e"
+    sha256 cellar: :any,                 big_sur:        "601e5fbbb20b48a99b2ef769ba5b353617f804d6ffdc5e9e1717f00542dae787"
+    sha256 cellar: :any,                 catalina:       "7d19e4337901af7f5d7ed0009dbe3db97a7ae58633a8703e66665594337d017b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0834b58ed799b2fe7da2bfb8250099d4cb627c4a2ec58ca455fb6847b733f3f"
   end
 
   depends_on "cmake" => :build
   depends_on "python@3.10" => :build
-  depends_on "utf8proc"
 
   def install
     ENV.deparallelize if OS.linux? # amalgamation builds take GBs of RAM
     mkdir "build/amalgamation"
     system Formula["python@3.10"].opt_bin/"python3", "scripts/amalgamation.py", "--extended"
-    cd "build/amalgamation" do
-      system "cmake", "../..", *std_cmake_args, "-DAMALGAMATION_BUILD=ON"
+    system Formula["python@3.10"].opt_bin/"python3", "scripts/parquet_amalgamation.py"
+    cd "src/amalgamation" do
+      system "cmake", "../..", *std_cmake_args
       system "make"
       system "make", "install"
       bin.install "duckdb"
@@ -44,11 +43,11 @@ class Duckdb < Formula
     EOS
 
     expected_output = <<~EOS
-      ┌───────────┐
-      │ avg(temp) │
-      ├───────────┤
-      │ 45.0      │
-      └───────────┘
+      ┌─────────────┐
+      │ avg("temp") │
+      ├─────────────┤
+      │ 45.0        │
+      └─────────────┘
     EOS
 
     assert_equal expected_output, shell_output("#{bin}/duckdb_cli < #{path}")

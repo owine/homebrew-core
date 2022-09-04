@@ -1,8 +1,8 @@
 class Txr < Formula
-  desc "Original, new programming language for convenient data munging"
+  desc "Lisp-like programming language for convenient data munging"
   homepage "https://www.nongnu.org/txr/"
-  url "http://www.kylheku.com/cgit/txr/snapshot/txr-273.tar.bz2"
-  sha256 "974a3ad0d92d22c2a7ef6d243bcc73c9240130056b7d8861599f0be4af10ad48"
+  url "http://www.kylheku.com/cgit/txr/snapshot/txr-280.tar.bz2"
+  sha256 "d62a967ab51e84b14f33add98c9618eb1a3da07a0d2bb9defdae8cdfee0be2ca"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,17 +11,18 @@ class Txr < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "bdd667913a470691f16f3c852a87637a48f107e81e20b88e493d12d3b73bccd6"
-    sha256 cellar: :any, arm64_big_sur:  "17abc8b2fe72184327bbb6db9638093aa91ec757b40c5d99308de7d91acd0eba"
-    sha256 cellar: :any, monterey:       "786cb663b29a0ff89185870eaf33e4328b75b3d58f4390878619935e7a87e436"
-    sha256 cellar: :any, big_sur:        "38d2106e8658d58ae923ad89154cb98fe4c7ed2b26ed5aa273829082194ebef0"
-    sha256 cellar: :any, catalina:       "9d4d18b352e5bb2eb5813824d4880d70703296b18d005d8ac80cd61de48b635e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0f6200e6eee84022d6de21df3b7f37a6950ac703c042a4f52187dc422185875c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d87c04cc49760cd85996ed4eff4b7f23e5f396b0ca0e87e02fc5d4474315ba3"
+    sha256 cellar: :any_skip_relocation, monterey:       "768154426e58bbb4e5d510e7a8682f89e86a10ffd5b5107645c01548230b6baf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b9a25b29efb07d0ee4657d3a03dc6284553b1a33cde9a9b217f52b3e5c5b17ce"
+    sha256 cellar: :any_skip_relocation, catalina:       "eb695c1ac9bb884442ce8e42a902f7d7d6c0c518b6b95c132a3c049ac5f22d13"
   end
 
-  depends_on "libffi"
-
+  depends_on "pkg-config" => :build
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "libffi", since: :catalina
 
   def install
     system "./configure", "--prefix=#{prefix}", "--inline=static inline"
@@ -30,6 +31,6 @@ class Txr < Formula
   end
 
   test do
-    assert_equal "3", shell_output(bin/"txr -p '(+ 1 2)'").chomp
+    assert_equal "3", shell_output("#{bin}/txr -p '(+ 1 2)'").chomp
   end
 end

@@ -1,44 +1,38 @@
 class Unpaper < Formula
   desc "Post-processing for scanned/photocopied books"
   homepage "https://www.flameeyes.com/projects/unpaper"
-  url "https://www.flameeyes.com/files/unpaper-6.1.tar.xz"
-  sha256 "237c84f5da544b3f7709827f9f12c37c346cdf029b1128fb4633f9bafa5cb930"
+  url "https://www.flameeyes.com/files/unpaper-7.0.0.tar.xz"
+  sha256 "2575fbbf26c22719d1cb882b59602c9900c7f747118ac130883f63419be46a80"
   license "GPL-2.0-or-later"
-  revision 7
+  head "https://github.com/unpaper/unpaper.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "294f7cece1a54c389382ed61101719710e0ec7c5f26dd679cd9fa9ce68e919f4"
-    sha256 cellar: :any,                 arm64_big_sur:  "8aadd07d5712465893b6c3625e7da966c8bfdee572c7ba660cedaa3b0cdff034"
-    sha256 cellar: :any,                 monterey:       "dca1c952850c1e9f3496cf2facf1b570d50c90fde110d9297360db337c2d4906"
-    sha256 cellar: :any,                 big_sur:        "a9841d58884ee1a0616a2a115c21c593eab613c0e040bf2b21d02ddeec682765"
-    sha256 cellar: :any,                 catalina:       "63a30f9ac771386a0f7d7302c31abe60855b4c4028458cbf9371270f42ee49e6"
-    sha256 cellar: :any,                 mojave:         "15d95668bd014ac329b703502832f020efcdb9011558ab8ba86ee0c8a458046d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5719e8ac973a33236779dfc6f7cf56ee3d93987510d1b6edae9da1d091f162a3"
+    sha256 cellar: :any,                 arm64_monterey: "74997b9a9738930333b8c4cb000a055d2bc9dd42510be3e9d6d2f96a80908eba"
+    sha256 cellar: :any,                 arm64_big_sur:  "d0b6c4e384cc73092163b88989eed3a87a5d489e693ecafcebfa5770f4e3d6d3"
+    sha256 cellar: :any,                 monterey:       "1dad125fcaf9aa24d1b347a575d286dbad91c7e5e475813314f3084ee1dd3947"
+    sha256 cellar: :any,                 big_sur:        "3e23cbc93bf46fce64ebd7277e23207090c1275b067294f360d3437778cf9c03"
+    sha256 cellar: :any,                 catalina:       "58134afe9017002e684e0ff392e77ee1eca707fa8e323ee7283858054be811eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "abeb5bcc20a8037dd4629cb662d1eaf71ebcf901474e508b13e911d65dce1317"
   end
 
-  head do
-    url "https://github.com/Flameeyes/unpaper.git"
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-  end
-
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "sphinx-doc" => :build
   depends_on "ffmpeg"
 
-  uses_from_macos "libxslt"
-
   on_linux do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
+    depends_on "gcc"
   end
 
+  fails_with gcc: "5" # ffmpeg is compiled with GCC
+
   def install
-    system "autoreconf", "-i" if build.head?
-
-    system "autoreconf", "-i" if OS.linux?
-
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   test do

@@ -1,19 +1,19 @@
 class Inform6 < Formula
   desc "Design system for interactive fiction"
   homepage "https://inform-fiction.org/inform6.html"
-  url "https://ifarchive.org/if-archive/infocom/compilers/inform6/source/inform-6.35-r8.tar.gz"
-  version "6.35-r8"
-  sha256 "a1babb9ac9fc68fc397905ba713f0651e16cade77f828d692f8f91195daa0f57"
+  url "https://ifarchive.org/if-archive/infocom/compilers/inform6/source/inform-6.36-r4.tar.gz"
+  version "6.36-r4"
+  sha256 "9becbad0cc737e993a5fc969b9ee9689781e3884658d52b17db68dad55010f2d"
   license "Artistic-2.0"
   head "https://gitlab.com/DavidGriffith/inform6unix.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "87a9ebbe2e53f442b67bbf92a08a90ab256afc382739a9571f2a5a1d2a87abb9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b865b7bb10a0c39128287d21e780670744fb355dac98a1556fd957fd3a811250"
-    sha256 cellar: :any_skip_relocation, monterey:       "8d2403a74d5cd2b64e3fe490564f4f5b44a2b3d5fc6d1519bdca5cbccb4b7ce5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f64149f2294a826a37443b9ec8483cb638ccabc7f857e03d9d8806bbc40a7c13"
-    sha256 cellar: :any_skip_relocation, catalina:       "7b7c896e5770b09a8cc63dbc69366d9436e42f9f0e9d7ee6836b5f8c14c9c2af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d18942e3a310db80139f4ec408a3ac08a8a9c7e7f2ef64cc328c7e6c85e50d1f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c8386cf374d8690cf513678d54dee79c616dec61e8afa802c50195786be46fbb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e7fb9812fcb9ea6d4d15b66710346521f08f6c309b21cdf36a8b9eaf18ed947a"
+    sha256 cellar: :any_skip_relocation, monterey:       "d8a1d622812e76712f05ae8cd211a053f0b9bc6f35e3b2498afe2154c608e044"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4a54cfbb593981d2320542a8f4d7809d3d041ca609de15e8557b80b780bd946d"
+    sha256 cellar: :any_skip_relocation, catalina:       "359e10ec5b6956b1367c7d8e1aa93703260bdf010a14769acf8a4f718be79ea4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e55a57d2b20c7f7330c8d91f4a6f99719c730e8f5b1d6eb3cda1f763554ea305"
   end
 
   resource "homebrew-test_resource" do

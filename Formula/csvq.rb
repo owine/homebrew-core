@@ -1,8 +1,8 @@
 class Csvq < Formula
   desc "SQL-like query language for csv"
   homepage "https://mithrandie.github.io/csvq"
-  url "https://github.com/mithrandie/csvq/archive/v1.15.2.tar.gz"
-  sha256 "013d27df901c00dfb75ea164dcc89e93c3ed3d300086d30eff23688f4519c103"
+  url "https://github.com/mithrandie/csvq/archive/v1.17.10.tar.gz"
+  sha256 "0285f2d1e11eb3d571809d5bb4c2cf568b22c5dec68193c828b2f1c89f59da4e"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,12 @@ class Csvq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6f6ed16c9215d9eb3f655d7f6d6e8662eb6bafba47e2c966f031cd8f61e60b2e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "02bea931968c6d43c8addab05167b4581a97157f8f232e9f9455f1307559d92e"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4219bb2b00a45fd20b65f8e5bcc3a88e1efa618561aa7f3b1a27111e8a55830"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2ef66a80dbf62ec07ccf9646db9650b56862a4908eb6d9bd6f481f754b4749d1"
-    sha256 cellar: :any_skip_relocation, catalina:       "f978e4066823494d805bd1d9672c0f9cd9b0d5917763b221e5d2b697c6fa49a0"
-    sha256 cellar: :any_skip_relocation, mojave:         "6512f703828def15a4763fea61299339795e808f9399c048e8807fb1d5e072bb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7102a7561fcf110fd0d7180087fa5697360915ac4616bc1b321c64e3cba1830a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "32c77a4f4c69a1b75523af4767bf9a9b6b16141799aa01f370e05aa9b5612de8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "201bade79a136fe172b91154f5cea4f20866c1ffc2ab2ca0b7e1f0446c32bf8a"
+    sha256 cellar: :any_skip_relocation, monterey:       "55ef3795fa0977fa726cf56d15875d0786f480612ae3532cb04cb77cb951eb5f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "206878815431a29b9f7a74ddd2d8f7fa9256bda68a452fb08d19974a6bffb4d7"
+    sha256 cellar: :any_skip_relocation, catalina:       "b36ae6f75dcb1af8051ac311bc40c956cd0f03e2cd235f33124132e913019ebb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cff744d07f89372e4cacb2c31b29c3a0a9d449d3b91bbdbfcf22e9d2ce0e77b0"
   end
 
   depends_on "go" => :build

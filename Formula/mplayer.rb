@@ -1,10 +1,10 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://mplayerhq.hu/"
-  url "https://mplayerhq.hu/MPlayer/releases/MPlayer-1.4.tar.xz"
-  sha256 "82596ed558478d28248c7bc3828eb09e6948c099bbd76bb7ee745a0e3275b548"
+  url "https://mplayerhq.hu/MPlayer/releases/MPlayer-1.5.tar.xz"
+  sha256 "650cd55bb3cb44c9b39ce36dac488428559799c5f18d16d98edb2b7256cbbf85"
   license all_of: ["GPL-2.0-only", "GPL-2.0-or-later"]
-  revision 2
+  revision 1
 
   livecheck do
     url "https://mplayerhq.hu/MPlayer/releases/"
@@ -12,12 +12,12 @@ class Mplayer < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 monterey:     "5e7407733e35bf8ec46946effb64630c6530bfb4a8441aa4322fd5dea4a8b1e1"
-    sha256 cellar: :any,                 big_sur:      "7482460cff2275c11a9a0249bd77b018a211d926cc2fde68912e1063b2769dbd"
-    sha256 cellar: :any,                 catalina:     "cbbbc082ba6ceb67c119d97a4ecce0c2af5f7e19668e4361093e761cd981a6a6"
-    sha256 cellar: :any,                 mojave:       "2ee069c78251cc7e45bd3c1b6bd5941e927b01f43af5f6deeb4fcdd744dbc52b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "7f9423624070d5446b50c0770e8afefadf7283322eb5c83a2cb96d25d4cc8531"
+    sha256 cellar: :any,                 arm64_monterey: "990f18527e83dddb5c93b7dbf3ebc57b58e8f75e06f3c8bc192fafae0f2ceb4a"
+    sha256 cellar: :any,                 arm64_big_sur:  "d6f924fc2e95ae087a3614edee922fc72fd49aa2d2052593f8035841b8b77356"
+    sha256 cellar: :any,                 monterey:       "bdea6626f7acb3fc1e82394302084dd9b69590775729de0c6a1197415fa1ef7f"
+    sha256 cellar: :any,                 big_sur:        "8998319dfcc43ea2bff8cd11b9d169be0c95562646c1eea3f533468a31ef6a79"
+    sha256 cellar: :any,                 catalina:       "0a4a3b3373a86d490192e55ad5a611bc00559185cc619d5ed3f15f66530bae72"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2d487630a4dd8aa8a8c4c89b785c6c0ec7e40ef3eb1e3a989fae27b6c484b43"
   end
 
   head do
@@ -32,6 +32,7 @@ class Mplayer < Formula
   depends_on "yasm" => :build
   depends_on "fontconfig"
   depends_on "freetype"
+  depends_on "jpeg-turbo"
   depends_on "libcaca"
 
   def install

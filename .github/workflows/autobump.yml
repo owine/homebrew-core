@@ -12,7 +12,8 @@ on:
 
 env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
-  FORMULAE: |
+  FORMULAE: >
+    abcmidi
     ack
     activemq
     alda
@@ -23,6 +24,7 @@ env:
     ammonite-repl
     angular-cli
     annie
+    ansible-lint
     ant
     ant@1.9
     anycable-go
@@ -34,15 +36,21 @@ env:
     apache-spark
     apidoc
     apktool
-    archiver
+    apt
+    arb
     argo
     argocd
     argocd-autopilot
     argocd-vault-plugin
+    arkade
     armadillo
+    arrayfire
     artifactory
+    arturo
     asciidoctorj
+    ask-cli
     assh
+    asuka
     asymptote
     atlantis
     atuin
@@ -50,7 +58,9 @@ env:
     autorestic
     avrdude
     aws-cdk
+    aws-elasticbeanstalk
     aws-es-proxy
+    aws-rotate-key
     azcopy
     b3sum
     bagit
@@ -63,14 +73,15 @@ env:
     bbtools
     bcoin
     bear
-    bee
     benthos
     berglas
     bettercap
     bigloo
+    binaryen
     bnd
     bosh-cli
     bottom
+    brev
     brew-php-switcher
     brook
     broot
@@ -79,10 +90,13 @@ env:
     buildkit
     buildozer
     buildpulse-test-reporter
+    buku
     bundletool
+    bupstash
     butane
     byacc
     byteman
+    bzt
     caddy
     cadence
     cadence-workflow
@@ -101,51 +115,65 @@ env:
     cassandra-reaper
     catch2
     cdk8s
+    certigo
     cfr-decompiler
     cfssl
+    cgl
     chamber
+    charmcraft
     cheat
     checkstyle
     chezmoi
+    choose-rust
     chromaprint
     chronograf
     cilium-cli
     circleci
     clair
+    clamav
+    clarinet
     clash
+    clazy
     cliclick
     clojurescript
     closure-compiler
     cloud-nuke
     cloudflare-wrangler
+    cloudformation-guard
     clusterctl
+    cobalt
     code-minimap
     cointop
     coinutils
+    colima
     composer
+    condure
     conftest
     consul
     consul-template
+    contentful-cli
     convox
     copilot
     coredns
     cortex
     cosign
     couchdb
-    crane
     croc
     cromwell
     crowdin
     crun
     css-crush
+    csvq
     csvtk
-    ctop
     cubejs-cli
+    cweb
     cypher-shell
+    cyrus-sasl
     dafny
+    darkstat
     datree
-    davmail
     dbdeployer
+    ddrescue
     deark
     delve
     deno
@@ -155,12 +183,17 @@ env:
     detox
     devspace
     dex2jar
+    diamond
+    diesel
+    diffoscope
+    difftastic
     digdag
     django-completion
     djl-serving
     dnscontrol
     dnscrypt-proxy
     dnsx
+    docfx
     docker
     docker-compose
     docker-compose-completion
@@ -170,14 +203,22 @@ env:
     doctl
     docuum
     dolt
+    dosbox-staging
+    dotenv-linter
     double-conversion
+    doxygen
     dprint
     driftctl
+    drill
     drone-cli
     druid
     dstask
-    dtm
+    dua-cli
+    duckscript
+    dune
+    dust
     dvc
+    dynare
     easyengine
     efm-langserver
     ehco
@@ -185,11 +226,14 @@ env:
     elan-init
     elasticsearch@6
     elfutils
+    elixir
+    embulk
     emscripten
     envconsul
     envoy
     esbuild
     eslint
+    esptool
     etcd
     ethereum
     exploitdb
@@ -197,40 +241,52 @@ env:
     fabric-installer
     fantom
     faudio
+    fblog
+    fdroidserver
     feh
     fennel
+    feroxbuster
+    ffsend
+    findomain
     firebase-cli
+    firefoxpwa
+    flac
     flank
     flarectl
     fleet-cli
     flow-cli
     fluent-bit
     flume
-    flux
     fluxctl
     flyway
     fmt
     fn
+    fontforge
     fop
     ford
     fortio
     frugal
+    fselect
     func-e
     fuse-overlayfs
     fuseki
     futhark
     gatsby-cli
     gau
-    gauge
     gdu
+    geeqie
+    geph4
+    gerbil-scheme
     gh
     ghz
     ghz-web
+    gifski
     ginac
     git-annex
     git-cliff
     git-delta
     git-lfs
+    git-town
     gitbackup
     gitbucket
     gitlab-runner
@@ -241,13 +297,13 @@ env:
     global
     glooctl
     gmailctl
+    gmic
     gmsh
     gnunet
     gnupg-pkcs11-scd
     gnuplot
     go-md2man
     go@1.16
-    gofish
     gofumpt
     gojq
     golang-migrate
@@ -270,9 +326,13 @@ env:
     gradle-profiler
     grafana
     grails
+    grin
+    gromacs
     groovy
     groovysdk
+    gsmartcontrol
     gsoap
+    gupnp-tools
     hadoop
     halide
     hapi-fhir-cli
@@ -281,20 +341,25 @@ env:
     helm
     helmfile
     helmsman
+    hexyl
     hidapi
+    himalaya
     hive
     hivemind
+    hledger
+    hpack
     htmldoc
     htmlq
     htmltest
     htpdate
     httpx
-    hugo
+    hyperfine
     iamy
     igv
     imagemagick
     imagemagick@6
     imap-backup
+    imapsync
     imgproxy
     influxdb
     influxdb-cli
@@ -314,12 +379,12 @@ env:
     jenkins-job-builder
     jenkins-lts
     jetty
-    jetty-runner
     jfrog-cli
     jhipster
     jmeter
     jnethack
     jql
+    jrnl
     jruby
     jsonnet
     jsonschema
@@ -336,11 +401,13 @@ env:
     kalker
     kamel
     kapacitor
+    kcat
     kcptun
     keptn
     kepubify
     keydb
     ki
+    kickstart
     kind
     kitchen-sync
     kn
@@ -367,32 +434,44 @@ env:
     kubeseal
     kubespy
     kubevela
+    kubie
     kumactl
     kustomize
     kyma-cli
+    kyverno
     languagetool
     latex2html
     latexml
     lazydocker
+    ld-find-code-refs
     lean-cli
     lefthook
     lego
     leiningen
     lexbor
+    lf
     libdap
+    libepoxy
     libgetdata
     libgr
+    liblinear
+    libnfs
     liboqs
     libpano
     libpipeline
     librdkafka
+    librespot
+    libsndfile
     lima
     linkerd
+    linode-cli
     liquibase
     lmod
     localstack
     log4cxx
     lout
+    luau
+    lychee
     macchina
     mage
     mailutils
@@ -406,34 +485,56 @@ env:
     mdbook
     mdcat
     mdzk
+    meilisearch
+    melody
+    memcached
+    mesa
     meson
     metabase
     micro
     micronaut
     mill
+    minetest
     minikube
+    miniserve
+    mitmproxy
     mmark
     mmctl
     moar
     mockery
+    mockserver
     moco
+    molecule
     mongocli
+    mongodb-atlas-cli
+    monolith
     moto
     mpv
     muffet
     murex
+    mutt
+    mydumper
     mypy
     naabu
+    nagios
     nanoflann
     nativefier
     nats-server
     nats-streaming-server
+    naturaldocs
     navi
-    ncc
+    ncspot
+    needle
     neo4j
     neofetch
+    neomutt
+    nerdctl
+    nest
+    netdata
+    nethogs
     netlify-cli
     newrelic-cli
+    newrelic-infra-agent
     nexus
     nfpm
     nng
@@ -443,68 +544,106 @@ env:
     notcurses
     nsq
     nuclei
+    numcpp
     nushell
     oauth2_proxy
+    ocaml-findlib
     oci-cli
+    ocp
+    ocrmypdf
     octant
     octave
+    oha
     okteto
+    omniorb
+    onednn
     onedrive
+    onscripter
     ooniprobe
     opa
+    openrtsp
     opensearch
     operator-sdk
+    or-tools
     oras
     orc-tools
     orientdb
+    orocos-kdl
     ortp
+    osm
+    ott
     oxipng
     pacapt
     packer
     packr
+    passenger
+    patchelf
     payara
     pdftk-java
+    pdm
+    pdnsrec
+    pgbadger
+    pgbouncer
     pgloader
     pgweb
     phoronix-test-suite
     php-code-sniffer
     php-cs-fixer
     phpmd
+    phpmyadmin
     phpstan
+    pianod
     picard-tools
-    pickle
     pig
     pillow
-    pkg-config-wrapper
     plantuml
     plow
     pmd
     pngquant
     pnpm
-    pocsuite3
     podman
+    postgis
+    powerman
     pre-commit
     prestd
     presto
+    principalmapper
     procs
     protoc-gen-go-grpc
     psalm
+    pstoedit
+    pueue
+    pushpin
+    pwntools
+    py-spy
+    pyflow
+    pyoxidizer
+    qjackctl
     qpid-proton
     questdb
     rancher-cli
+    rav1e
+    rbspy
     rbw
     rclone
+    rcs
     rebar3
+    recode
     regina-rexx
+    regula
     reminiscence
     reposurgeon
     revive
+    rhit
     riemann
     rke
     rollup
     rosa-cli
+    rover
+    rpg-cli
     rqlite
     rubberband
+    rustup-init
     s-search
     s2n
     saml2aws
@@ -523,39 +662,66 @@ env:
     ser2net
     server-go
     serverless
+    shadowenv
+    sheldon
+    shellharden
     shellz
     shfmt
+    signal-cli
+    silicon
     singularity
     sjk
     skaffold
     skopeo
+    skylighting
     slackcat
     sleuthkit
     slides
     smimesign
+    sn0int
+    sniffer
+    sniffglue
     solana
+    sollya
     solr
     solr@7.7
     sonarqube
-    sonarqube-lts
     sonobuoy
     sponge
     spotbugs
+    spotify-tui
+    sqlancer
     sqlc
     sqlmap
+    sqlx-cli
+    sshs
+    sslyze
     stanford-corenlp
     starship
+    staticcheck
+    statix
     stdman
+    stellar-core
     step
     storm
+    streamlink
     stress-ng
     structurizr-cli
+    stunnel
+    stylish-haskell
+    subfinder
     subversion
+    suite-sparse
+    sundials
+    suricata
+    svgbob
     svgo
     svtplay-dl
     swagger-codegen
     swagger-codegen@2
+    swagger2markup-cli
     syncthing
+    sysdig
     talisman
     tanka
     tcsh
@@ -563,15 +729,16 @@ env:
     tealdeer
     tectonic
     tektoncd-cli
+    teku
     teleport
     tendermint
     tengo
-    termius
     termshark
     terracognita
     terraform-inventory
     terraform-ls
     terraform-provider-libvirt
+    terraform-rover
     terraformer
     terragrunt
     terrascan
@@ -580,28 +747,35 @@ env:
     thrift
     tika
     tile38
+    timg
     tm
     toast
     tomcat
     tomcat-native
     tomcat@8
     tomcat@9
-    tomee-plume
     tomee-plus
     tomee-webprofile
     topgrade
     traefik
     traefik@1
     trafficserver
-    trino
+    tree-sitter
+    triangle
+    trivy
     trojan-go
     typedb
     tz
+    uni
     universal-ctags
     v2ray
+    vala
+    valabind
     vale
+    vapoursynth
     vault
     vault-cli
+    veclibfort
     velero
     vercel-cli
     vgrep
@@ -609,34 +783,64 @@ env:
     virustotal-cli
     vite
     vitess
+    vivid
+    vnstat
+    volta
     vpn-slice
     vsearch
     vsh
     vue-cli
+    wabt
     wakatime-cli
+    wallpaper
+    wapm
+    wartremover
+    wasm-pack
     wasmer
     wasmtime
+    watchexec
     waypoint
+    webdis
+    webp
     webpack
+    websocat
     webtorrent-cli
     wgcf
     whistle
     whois
     wildfly-as
+    wireguard-go
     wiremock-standalone
     wolfssl
+    wxwidgets
     xalan-c
     xcbeautify
+    xclogparser
+    xdpyinfo
     xerces-c
     xgboost
+    xh
     xplr
     xray
     yaegi
+    ykman
+    yosys
     youtubedr
     yq
+    z3
+    zabbix
     zbctl
     zellij
+    zenith
+    znapzend
+    zola
     zookeeper
+    zoxide
+    zstd
+    zydis
+
+permissions:
+  contents: read
 
 jobs:
   autobump:

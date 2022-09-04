@@ -3,24 +3,24 @@ class AllRepos < Formula
 
   desc "Clone all your repositories and apply sweeping changes"
   homepage "https://github.com/asottile/all-repos"
-  url "https://files.pythonhosted.org/packages/7b/fa/519428f5e2f272a57f7fd450cc437b3ab1539663afb512c8e1f2444e1a59/all_repos-1.21.3.tar.gz"
-  sha256 "65e914237cc779cc2a5179204ebec943dfccae480b30fb5db6f4e22d87548861"
+  url "https://files.pythonhosted.org/packages/b7/4c/e99264b9f39e447e5077840037c8bb9e7ef7cd49de4c8646654b83dbbdfb/all_repos-1.23.0.tar.gz"
+  sha256 "5ecba787dfbacd45632cfcba53ab01a1d81a52633ceb7555a0f81d1325fdcc70"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "56fd86708254d95178a85b47f0ce195cb565ba8e40d03840c5be382a17453db8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "56fd86708254d95178a85b47f0ce195cb565ba8e40d03840c5be382a17453db8"
-    sha256 cellar: :any_skip_relocation, monterey:       "ce5a4bb6f07c52d8cbdb5ef109750c598445b3f9ae37a9ee2357cd9da01b9d99"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ce5a4bb6f07c52d8cbdb5ef109750c598445b3f9ae37a9ee2357cd9da01b9d99"
-    sha256 cellar: :any_skip_relocation, catalina:       "ce5a4bb6f07c52d8cbdb5ef109750c598445b3f9ae37a9ee2357cd9da01b9d99"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60618cbd84a252c728655da405fd83d40139dd697b79f41996425cac5a704232"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb54b0ca6c34163f7dfb0b0637834c4e2f638aa9d7a713387950bca943fdeb91"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fb54b0ca6c34163f7dfb0b0637834c4e2f638aa9d7a713387950bca943fdeb91"
+    sha256 cellar: :any_skip_relocation, monterey:       "d4924a02371c783d2ad14653aeb8c23baf772657a7ec7c4e206f84fc74156b43"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d4924a02371c783d2ad14653aeb8c23baf772657a7ec7c4e206f84fc74156b43"
+    sha256 cellar: :any_skip_relocation, catalina:       "d4924a02371c783d2ad14653aeb8c23baf772657a7ec7c4e206f84fc74156b43"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40d6d9f6aa0e09635e744d9e7ff7967fff79ddcd21e8a17249e98d4ddbbeba8e"
   end
 
   depends_on "python@3.10"
 
   resource "identify" do
-    url "https://files.pythonhosted.org/packages/3f/b7/931c3dbe30b5a03db56689a97d38b0692289369b32ea353a9265d318a32f/identify-2.4.1.tar.gz"
-    sha256 "64d4885e539f505dd8ffb5e93c142a1db45480452b1594cacd3e91dca9a984e9"
+    url "https://files.pythonhosted.org/packages/e5/8e/408d590e26fbc75a2e974aa1103d95a3ffef014209967f66f491306c4824/identify-2.5.1.tar.gz"
+    sha256 "3d11b16f3fe19f52039fb7e39c9c884b21cb1b586988114fbe42671f03de3e82"
   end
 
   def install

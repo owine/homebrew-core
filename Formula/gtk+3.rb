@@ -1,10 +1,9 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "https://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.30.tar.xz"
-  sha256 "ba75bfff320ad1f4cfbee92ba813ec336322cc3c660d406aad014b07087a3ba9"
+  url "https://download.gnome.org/sources/gtk+/3.24/gtk+-3.24.34.tar.xz"
+  sha256 "dbc69f90ddc821b8d1441f00374dc1da4323a2eafa9078e61edbe5eeefa852ec"
   license "LGPL-2.0-or-later"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,12 +11,12 @@ class Gtkx3 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "f62f7380b2af3404ccdc0acd2b60905cfd3601dedc127c2f9de515e0cb85ba8a"
-    sha256 arm64_big_sur:  "b15f71d2812ad9ab6eb8b39a81b4f5a9e62a5ed791c37a4261ed0398474bf728"
-    sha256 monterey:       "e343c15b8b8dc8a82a8b25acbfc84270852f2ed645edf8244340ea83e392fc1d"
-    sha256 big_sur:        "5a95198f2dc0db4b6e38b45c8ebe2afa4f5272202cb6cceee0ac0dcd13119247"
-    sha256 catalina:       "9265ed649be9bec04adb2cba082ac44d41e54fa2e64b7b84b1997cc9530d6de1"
-    sha256 x86_64_linux:   "477b64ab32e7e940360515d1065382b3b2ee6afc4fd213f9fff72fd7aaeb3c7e"
+    sha256 arm64_monterey: "433f1b8aa72afcaf5784b099c40373e60da5a5782dddbe867bd315b6dfa9466f"
+    sha256 arm64_big_sur:  "f033af2b4714244846c3eabf558626d356e0cdcff6e5b8a1302e6d7a8b21a0e7"
+    sha256 monterey:       "309a7ff2894c4290d18a52f83c36ba9f9b8d156492d8034f7b39fe7771127a47"
+    sha256 big_sur:        "6b502ca8e38cfc2bbf63e4d72609cb70a829381240ebd1965412ec0d80013dc9"
+    sha256 catalina:       "2b3df91ceb20e12404020549f3cf94710c99379b9090dd327ec29a00f5bb1105"
+    sha256 x86_64_linux:   "9319cbd1929a839be964268450d593b3630ab749dc906a2f6ee643beb47e538b"
   end
 
   depends_on "docbook" => :build
@@ -42,22 +41,8 @@ class Gtkx3 < Formula
     depends_on "cairo"
     depends_on "iso-codes"
     depends_on "libxkbcommon"
-    depends_on "xorgproto"
     depends_on "wayland-protocols"
-  end
-
-  # Patch to fix new coordinate system in macOS 12
-  # Remove in next minor release
-  patch do
-    url "https://gitlab.gnome.org/GNOME/gtk/-/commit/36315cbe2b3c9d1c1b7508d9494a251eddbc4452.diff"
-    sha256 "880b3ac53c7b2947e68e4842a14c00de3c3dcd278db504ece6b74f6eac2a447b"
-  end
-
-  # Patch to fix detection of Quartz on macOS 12
-  # Remove in next minor release
-  patch do
-    url "https://gitlab.gnome.org/GNOME/gtk/-/commit/a752e338381bc37dbe8d4c04ec23e4f6fd911b30.diff"
-    sha256 "ffb088e94eb4ff320fab948b531908b661f26892280f31e4247259cee0d8ceb9"
+    depends_on "xorgproto"
   end
 
   def install
@@ -152,9 +137,7 @@ class Gtkx3 < Formula
       -lpango-1.0
       -lpangocairo-1.0
     ]
-    on_macos do
-      flags << "-lintl"
-    end
+    flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
     # include a version check for the pkg-config files

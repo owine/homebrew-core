@@ -2,18 +2,18 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.15.2",
-      revision: "fd322dad6ceafec40c84df4d2a0694ea357d16cc"
+      tag:      "v8.4.1",
+      revision: "fe210d46ebc339459e363ac313b07d4a9ba78fc7"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e73dfb2eb755d5c4ce0d5a9ddd479374ff9c5e197d3e0569f230488b02e09814"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "87640c6b0180daaac542bd52e30edd5c677bb40e5c6a4c24ce51fc1c3bc1660a"
-    sha256 cellar: :any_skip_relocation, monterey:       "dd13a6cd22ed5848c8ef028a724398fa097f8301140892bae890b0a1438d30d7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "17e55607ed092e427b00bd285d79baa6e2b837a769cf719b3f305e0b8b1d9156"
-    sha256 cellar: :any_skip_relocation, catalina:       "9007419ea291be2c1bfe1ad8ce5189822b7dfae8a3edf3d9c889656c8e42a24e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "300173af6f4b0c59cd0184b96d9f013e4e13a5131b6c99ddda99dc0e9735f9e6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cfda1dab24ecad47e7a9606e2ce6d1cefe6da09f53429f9f394ac67c7926425c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "45d23b5a771b29f05a0d4a2fb96d1fdf74a7ba65f89e6d5667ea483a9bb86e4b"
+    sha256 cellar: :any_skip_relocation, monterey:       "130f4659dcc2224410f59e95ce7df453a0cd140b760f02cdf9eaed1a8bbb05aa"
+    sha256 cellar: :any_skip_relocation, big_sur:        "317bf0f311f3282f26c3bbf13eaa17ad75b4e77eca12f9f2536b16cb671bff7e"
+    sha256 cellar: :any_skip_relocation, catalina:       "32b18e23b3c07c6a178bab978df17cf7638fe0b4647d80168a94a8bf783d7ed9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48b5458051ea09a7c959ad69fdbf51bb2315390e30e80035879d2c2319f4397f"
   end
 
   depends_on "go" => :build
@@ -57,6 +57,10 @@ class Heartbeat < Formula
   end
 
   test do
+    # FIXME: This keeps stalling CI when tested as a dependent. See, for example,
+    # https://github.com/Homebrew/homebrew-core/pull/91712
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"].present?
+
     port = free_port
 
     (testpath/"config/heartbeat.yml").write <<~EOS
@@ -78,7 +82,14 @@ class Heartbeat < Formula
     end
     sleep 5
     assert_match "hello", pipe_output("nc -l #{port}", "goodbye\n", 0)
+
     sleep 5
-    assert_match "\"status\":\"up\"", (testpath/"heartbeat/heartbeat").read
+    output = JSON.parse((testpath/"data/meta.json").read)
+    assert_includes output, "first_start"
+
+    (testpath/"data").glob("heartbeat-*.ndjson") do |file|
+      s = JSON.parse(file.read)
+      assert_match "up", s["status"]
+    end
   end
 end

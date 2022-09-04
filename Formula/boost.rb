@@ -1,9 +1,10 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "https://www.boost.org/"
-  url "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2"
-  sha256 "f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41"
+  url "https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.bz2"
+  sha256 "475d589d51a7f8b3ba2ba4eda022b170e562ca3b760ee922c146b6c65856ef39"
   license "BSL-1.0"
+  revision 1
   head "https://github.com/boostorg/boost.git", branch: "master"
 
   livecheck do
@@ -15,16 +16,17 @@ class Boost < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "56cd220f6bed3263cda3deb79a569fcff8e583895d1ad6cc247fafa2ef9de010"
-    sha256 cellar: :any,                 arm64_big_sur:  "3a336c8b1a917f7d9c55abba2905be99dade914bf9b829aab9d5fb6069b6ffcc"
-    sha256 cellar: :any,                 monterey:       "971054f698fc1ce13e5897f8e0b0958755aa54b6660bb197f16bef3e22308e09"
-    sha256 cellar: :any,                 big_sur:        "35c726d8bea731d85af3d6ba173e95b1726cdfac04e020e259937c8e99c3d4e7"
-    sha256 cellar: :any,                 catalina:       "758658d7f1f8cf6c6790609f2a0b0f8349993653c8afce66869ea91d57b1f26f"
-    sha256 cellar: :any,                 mojave:         "1b45c1009cef2b67b2ec21f86e0ff743f2efdbcb5af510067cba3587d44967cb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6203e3d6ae16a3e71d79ad67763a59733e84457253c1d44b01a15a72623b8a95"
+    sha256 cellar: :any,                 arm64_monterey: "9005c4f4da1a41353a1069797311dd9da6f007cfd9726508d6d7f6d10cc507c5"
+    sha256 cellar: :any,                 arm64_big_sur:  "f6e5027a8f65b955bfdd0ea181aca098cef286f08f5b5c2d532f9ace5fc984b8"
+    sha256 cellar: :any,                 monterey:       "032ce4d7839013bdb1c75de46f07e023f51f65814c79b7eb2c67ee795171ce26"
+    sha256 cellar: :any,                 big_sur:        "a6d93188e8fe85a659fe0fed0f9afbbd22a049f022825e98ea30acc9b9c2dc40"
+    sha256 cellar: :any,                 catalina:       "90bf24b4c813df7af152cb9de6f8b390093a2582aa403472cbb2beeecb05c7d4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f79b77d14b09ee25c73a2b13fae6c583d748f8abd5f19f3b2043eddf52cd8c9"
   end
 
   depends_on "icu4c"
+  depends_on "xz"
+  depends_on "zstd"
 
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
@@ -64,8 +66,6 @@ class Boost < Formula
       -j#{ENV.make_jobs}
       --layout=tagged-1.66
       --user-config=user-config.jam
-      -sNO_LZMA=1
-      -sNO_ZSTD=1
       install
       threading=multi,single
       link=shared,static
@@ -84,10 +84,19 @@ class Boost < Formula
   test do
     (testpath/"test.cpp").write <<~EOS
       #include <boost/algorithm/string.hpp>
+      #include <boost/iostreams/device/array.hpp>
+      #include <boost/iostreams/device/back_inserter.hpp>
+      #include <boost/iostreams/filter/zstd.hpp>
+      #include <boost/iostreams/filtering_stream.hpp>
+      #include <boost/iostreams/stream.hpp>
+
       #include <string>
+      #include <iostream>
       #include <vector>
       #include <assert.h>
+
       using namespace boost::algorithm;
+      using namespace boost::iostreams;
       using namespace std;
 
       int main()
@@ -98,10 +107,30 @@ class Boost < Formula
         assert(strVec.size()==2);
         assert(strVec[0]=="a");
         assert(strVec[1]=="b");
+
+        // Test boost::iostreams::zstd_compressor() linking
+        std::vector<char> v;
+        back_insert_device<std::vector<char>> snk{v};
+        filtering_ostream os;
+        os.push(zstd_compressor());
+        os.push(snk);
+        os << "Boost" << std::flush;
+        os.pop();
+
+        array_source src{v.data(), v.size()};
+        filtering_istream is;
+        is.push(zstd_decompressor());
+        is.push(src);
+        std::string s;
+        is >> s;
+
+        assert(s == "Boost");
+
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++14", "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++14", "-o", "test", "-L#{lib}", "-lboost_iostreams",
+                    "-L#{Formula["zstd"].opt_lib}", "-lzstd"
     system "./test"
   end
 end

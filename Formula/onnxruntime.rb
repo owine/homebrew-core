@@ -2,8 +2,8 @@ class Onnxruntime < Formula
   desc "Cross-platform, high performance scoring engine for ML models"
   homepage "https://github.com/microsoft/onnxruntime"
   url "https://github.com/microsoft/onnxruntime.git",
-      tag:      "v1.10.0",
-      revision: "0d9030e79888d1d5828730b254fedc53c7b640c1"
+      tag:      "v1.12.1",
+      revision: "70481649e3c2dba0f0e1728d15a00e440084a217"
   license "MIT"
 
   livecheck do
@@ -12,16 +12,16 @@ class Onnxruntime < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5817b21eef47792e11597da08925902336d99fca94125fa80c722d5334f799de"
-    sha256 cellar: :any,                 arm64_big_sur:  "459ee4ff5095d1c8050b17413bdafcf4969b3956e636f84a7c1f98af87e892fd"
-    sha256 cellar: :any,                 monterey:       "3d70898f0aefa81b3431fa2b6349ffac25a6c03aeca09389c6d2a8f4e14cadc7"
-    sha256 cellar: :any,                 big_sur:        "00d77c4048689717574dd1de7c632b5ca7e19573dadf7a0c1195c225316c43a9"
-    sha256 cellar: :any,                 catalina:       "b268057d08855d1b6a720b477eb265a462f2b7bea9bb8c5a67460bf6ac6401be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80ed8b1c18469c379c7149bdc733664f2bf56cba4a2a268ef4fe13ddba9c5442"
+    sha256 cellar: :any,                 arm64_monterey: "cdac93f2044a8ed03a0bba92156f3ea083086245d7e7e52431c47605f3d06683"
+    sha256 cellar: :any,                 arm64_big_sur:  "bf3175a3e5eca7000a64ce5c3bbbd20f19642886d75a55988a70163a7f03217a"
+    sha256 cellar: :any,                 monterey:       "e8ee54aedea8f788c66470e4d32a4cf725be72efe1451f83b1920da58596a3c2"
+    sha256 cellar: :any,                 big_sur:        "9401fd0650bc89ae510d639183a0ac0053dc0031aec64ea05105408dbdadb7e9"
+    sha256 cellar: :any,                 catalina:       "d91fe2217bf5faaa6cdb16ec7f0a58e7eb96d147018dc5f1341c0ef87f1dd7d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "123549ac2b7f9629527152d9d2711bd1e5ba09274a6fe77dab8acda705d776cd"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   on_linux do
     depends_on "gcc"
@@ -33,7 +33,7 @@ class Onnxruntime < Formula
     cmake_args = %W[
       -Donnxruntime_RUN_ONNX_TESTS=OFF
       -Donnxruntime_GENERATE_TEST_REPORTS=OFF
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
+      -DPYTHON_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3
       -Donnxruntime_BUILD_SHARED_LIB=ON
       -Donnxruntime_BUILD_UNIT_TESTS=OFF
     ]

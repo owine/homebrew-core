@@ -1,33 +1,30 @@
 class Kepubify < Formula
   desc "Convert ebooks from epub to kepub"
   homepage "https://pgaskin.net/kepubify/"
-  url "https://github.com/pgaskin/kepubify/archive/v4.0.3.tar.gz"
-  sha256 "6e511240b1ac080940fdf4718f8dabac214f1088026e9337a82d8c6a7a0ba82a"
+  url "https://github.com/pgaskin/kepubify/archive/v4.0.4.tar.gz"
+  sha256 "a3bf118a8e871b989358cb598746efd6ff4e304cba02fd2960fe35404a586ed5"
   license "MIT"
   head "https://github.com/pgaskin/kepubify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c0ce08493ac1eeeeb0d6de786704c60f19865f46a2a83be25740d53fd9eda10"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1ffb2ca43618648f24f67a86545477330ef93ab1630cfb0869339cbc75fa420b"
-    sha256 cellar: :any_skip_relocation, monterey:       "583fb07c1136c2a70c752672be635ea0f0a175ebc1f25a1664e543bae0719d39"
-    sha256 cellar: :any_skip_relocation, big_sur:        "67afc66b3a4036cd114109971d797c52cb1f9c10b997b400968e287bd0f16e3b"
-    sha256 cellar: :any_skip_relocation, catalina:       "f81cff74730aa1b35205f8c9d3fc7dfb6c8675a09bcd5b10fde9314de324a885"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e8e1c3ecf95832330a8275b62d09d81810973cff9a3d54ebb549aaf48a5782ec"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "190fcf71bfa7069608000948821b08e64ebf230bef805c6285d365bf3bc22a04"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "813a2a57f898d3146f374a6c77e15eeba052d434e78d881602d88e5cb8162d1c"
+    sha256 cellar: :any_skip_relocation, monterey:       "b9944734812a60b9fff0895d49385d3ce15321da417a292e23760ab31ac54135"
+    sha256 cellar: :any_skip_relocation, big_sur:        "07e78d188d1c64ac4ab876f6afb18458419ac056c791c1e2227788136639c3d2"
+    sha256 cellar: :any_skip_relocation, catalina:       "420b866883a73bc7fd2dff37105f09805b4d9f983aee5aec4583dd14a68e609f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e247e97968a140a0ce04a70e3b750e1c6d7e8f50b402fb712cefd20837cfc27a"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-
     %w[
       kepubify
       covergen
       seriesmeta
     ].each do |p|
-      system "go", "build", "-o", bin/p,
-                   "-ldflags", "-s -w -X main.version=#{version}",
-                   "./cmd/#{p}"
+      system "go", "build", *std_go_args(output: bin/p, ldflags: "-s -w -X main.version=#{version}"), "./cmd/#{p}"
     end
   end
 

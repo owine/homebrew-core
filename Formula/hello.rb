@@ -1,17 +1,17 @@
 class Hello < Formula
   desc "Program providing model for GNU coding standards and practices"
   homepage "https://www.gnu.org/software/hello/"
-  url "https://ftp.gnu.org/gnu/hello/hello-2.11.tar.gz"
-  sha256 "8c9ce0572d3c44ed0670eb1cde980584e038b6f62c25fdfde8ef128de15004bd"
+  url "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz"
+  sha256 "8d99142afd92576f30b0cd7cb42a8dc6809998bc5d607d88761f512e26c7db20"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bb2c428f4d0667df4049a1a94b8ecc7ceb3a63be30423dbdcee77bdee859cd7c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cfbce13d943feb89318c14f97cc71d686b4c59100dde0f125b7cf086ae491fc0"
-    sha256 cellar: :any_skip_relocation, monterey:       "557501b7ccf982b496e484b0be41ec3e85f6d8f5ad18e99c950fb61f4b57f2ca"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7dd1beef8bfcc1c4bf1aa6dbd4baf262419fef189e8dffa72455853c0236fd59"
-    sha256 cellar: :any_skip_relocation, catalina:       "8368282ba548c6c551d1ab9374cbfb93304cbd890092a156d851b6bfe19f2931"
-    sha256                               x86_64_linux:   "f262a5395166c745eddcd002d029f4b1d8461976251330c5fd1ee1ef5599aab8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a0103553329c8a010ed68a1143bf9126b0f1977fec308953e9068a9722790d9d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e8c7459b0310a5c99d441e1a5814f9eb1723b11e84b58efad01c0db4aeaf8d36"
+    sha256 cellar: :any_skip_relocation, monterey:       "62534bceb8f7074827fa2146dd13603018aaf07c82e22cfef96571c8133ce8a1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "480a77f0f4e0ea6aa4175b3853feba7bdeda9f0b3dd808ad02eeb358b8a48f4a"
+    sha256 cellar: :any_skip_relocation, catalina:       "c30c2be3191bd643f36e96b45b1282b5a750219bc8cab2e31d3c23d4cad5d70c"
+    sha256                               x86_64_linux:   "7935d0efdae69742f5140d514ef2e3e50d1d7cb82104cf6033ad51b900c12749"
   end
 
   conflicts_with "perkeep", because: "both install `hello` binaries"

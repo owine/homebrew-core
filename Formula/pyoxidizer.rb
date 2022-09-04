@@ -1,8 +1,8 @@
 class Pyoxidizer < Formula
   desc "Modern Python application packaging and distribution tool"
   homepage "https://github.com/indygreg/PyOxidizer"
-  url "https://github.com/indygreg/PyOxidizer/archive/pyoxidizer/0.19.0.tar.gz"
-  sha256 "ca0ef41c359ad8ad4217b4c99f3cba4179278308d846f404175183f8ec71067b"
+  url "https://github.com/indygreg/PyOxidizer/archive/pyoxidizer/0.22.0.tar.gz"
+  sha256 "16fc48067467d19049476923d82f33b27ba944551ec39d4d129415ddc0cac738"
   license "MPL-2.0"
   head "https://github.com/indygreg/PyOxidizer.git", branch: "main"
 
@@ -12,18 +12,20 @@ class Pyoxidizer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "367f1fdce86f89f92472fc2bdefe8d11da9f0b769d4d36f586d0d2281793f99d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0c468f253d4079687e234f63ce05b81f8c56197578a24719cf52a873df27c755"
-    sha256 cellar: :any_skip_relocation, monterey:       "5613815563a5da8cce53713073697a1f10899bf7f9067a90ae4abb8986792492"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d04cf6692c1a7c569e4c5c6774dffc6169f61b6b2eade7527b544d23372d017d"
-    sha256 cellar: :any_skip_relocation, catalina:       "3a5efe1ff4374f50f8c58ad0157ae8984bf609ff740245ad7892addffd5b0dbb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b940fc30625300fff17268ebd769e3af03a1f0ab2f3dacc1e2f5dc064794a3a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "36363b96a5bb8b74a88fdcccc49e7d0d33de2090e42fd5dda2e75641d2c1a6a1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "35b6d9f269eae4a5611caaed0fe0779f9f5042cb25bc66a3373d652cc63cb004"
+    sha256 cellar: :any_skip_relocation, monterey:       "47b5770b9e916c3a675b0ff6d44340004987dd6d203b3735292d08ee937c930f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f3879e10e9c10974220fdbe17b8469686182191d48c58733418dc881bdca23eb"
+    sha256 cellar: :any_skip_relocation, catalina:       "19f95c7acf6b1c2ea99c7cd59a3d684a0bff43778612d12bab76076c982bef13"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0c4948b577a48fa5944423a1a1d148a5ee332ea4d14effe227bef7210b65184"
   end
 
   depends_on "rust" => :build
   # Currently needs macOS 11 SDK due to checking for DeploymentTargetSettingName
   # Remove when issue is fixed: https://github.com/indygreg/PyOxidizer/issues/431
-  depends_on xcode: "12.2" if MacOS.version <= :catalina
+  on_catalina :or_older do
+    depends_on xcode: "12.2"
+  end
 
   def install
     system "cargo", "install", *std_cargo_args(path: "pyoxidizer")
@@ -31,8 +33,12 @@ class Pyoxidizer < Formula
 
   test do
     system bin/"pyoxidizer", "init-rust-project", "hello_world"
+    assert_predicate testpath/"hello_world/Cargo.toml", :exist?
+
     cd "hello_world" do
-      system bin/"pyoxidizer", "build"
+      system bin/"pyoxidizer", "build", "--verbose"
     end
+
+    assert_match version.to_s, shell_output("#{bin}/pyoxidizer --version")
   end
 end

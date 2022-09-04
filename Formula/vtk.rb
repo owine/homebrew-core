@@ -1,18 +1,30 @@
 class Vtk < Formula
   desc "Toolkit for 3D computer graphics, image processing, and visualization"
   homepage "https://www.vtk.org/"
-  url "https://www.vtk.org/files/release/9.1/VTK-9.1.0.tar.gz"
-  sha256 "8fed42f4f8f1eb8083107b68eaa9ad71da07110161a3116ad807f43e5ca5ce96"
   license "BSD-3-Clause"
-  revision 1
-  head "https://github.com/Kitware/VTK.git", branch: "master"
+  revision 6
+  head "https://gitlab.kitware.com/vtk/vtk.git", branch: "master"
+
+  stable do
+    url "https://www.vtk.org/files/release/9.1/VTK-9.1.0.tar.gz"
+    sha256 "8fed42f4f8f1eb8083107b68eaa9ad71da07110161a3116ad807f43e5ca5ce96"
+
+    # Fix vtkpython support for Python 3.10. Remove in the next release.
+    # First patch backports part of older commit so we can directly patch in upstream commit.
+    patch :DATA
+    patch do
+      url "https://gitlab.kitware.com/vtk/vtk/-/commit/3eea0e12acfb608a76d6ae36fb36566a4a6b0e9b.diff"
+      sha256 "1c1c4622a58f8c852d196759c8d9036e4d513a5ebe16fe0bfa14583832886572"
+    end
+  end
 
   bottle do
-    sha256                               arm64_monterey: "a2ad11a39d276494e011de69cc26910fe87d86bff9fe0151fdb88dc9609a1e22"
-    sha256                               arm64_big_sur:  "20b0335af2031a2f80f75d3cefbc8356e5100a4d62c7ff9996566571dffbaec1"
-    sha256                               big_sur:        "3fb6007395e9e0ce09b03bb14b81e2f8511eff74e71b8d660b9e78acf6d1f368"
-    sha256                               catalina:       "2aa0c85c665572b92fecc642d6cf00d7392547f42cd021ec5712a0400e298eaf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5806db1b35587147c06e87764c1c58b8af36d2c305929a24cc2b02635757ae7a"
+    sha256                               arm64_monterey: "33456b64eecdf614f7db9d5b4a11145e660d9d6dc3f5c48b7c9e19958b722b78"
+    sha256                               arm64_big_sur:  "f03fb2e0b2c54b0eef6fc5f1f7665c5e9fade0025c3fe62a4e57eb0622c160cd"
+    sha256                               monterey:       "d651127e36f34dc5218d9bf36b700bf6786261e3237092569382d31e94fbfbe6"
+    sha256                               big_sur:        "aa60276bc28b6a8d94d95f098caaa2ed3652c4ae7a536842f49c049b5dcc151e"
+    sha256                               catalina:       "8290e82320543d08c058312d803d3cbd78ba58d7bce9e44e6853b010129b08ff"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f15c9f69ea940f69a2938f8cfdfa742fa5eac35e7d4788d5785856db7f06245b"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -23,7 +35,7 @@ class Vtk < Formula
   depends_on "gl2ps"
   depends_on "glew"
   depends_on "hdf5"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "jsoncpp"
   depends_on "libogg"
   depends_on "libpng"
@@ -32,7 +44,7 @@ class Vtk < Formula
   depends_on "netcdf"
   depends_on "pugixml"
   depends_on "pyqt@5"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "qt@5"
   depends_on "sqlite"
   depends_on "theora"
@@ -44,20 +56,34 @@ class Vtk < Formula
   uses_from_macos "tcl-tk"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+  end
+
   on_linux do
     depends_on "gcc"
-    depends_on "szip"
+    depends_on "libaec"
     depends_on "mesa-glu"
   end
 
   fails_with gcc: "5"
 
+  # clang: error: unable to execute command: Segmentation fault: 11
+  # clang: error: clang frontend command failed due to signal (use -v to see invocation)
+  # Apple clang version 13.1.6 (clang-1316.0.21.2)
+  fails_with :clang if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+
   def install
-    args = std_cmake_args + %W[
+    if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+      ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
+      ENV.llvm_clang
+    end
+
+    args = %W[
       -DBUILD_SHARED_LIBS:BOOL=ON
-      -DBUILD_TESTING:BOOL=OFF
       -DCMAKE_INSTALL_NAME_DIR:STRING=#{opt_lib}
       -DCMAKE_INSTALL_RPATH:STRING=#{rpath}
+      -DCMAKE_DISABLE_FIND_PACKAGE_ICU:BOOL=ON
       -DVTK_WRAP_PYTHON:BOOL=ON
       -DVTK_PYTHON_VERSION:STRING=3
       -DVTK_LEGACY_REMOVE:BOOL=ON
@@ -84,8 +110,9 @@ class Vtk < Formula
       -DVTK_MODULE_USE_EXTERNAL_VTK_tiff:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_utf8:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_zlib:BOOL=ON
-      -DPython3_EXECUTABLE:FILEPATH=#{Formula["python@3.9"].opt_bin}/python3
+      -DPython3_EXECUTABLE:FILEPATH=#{which("python3.10")}
       -DVTK_GROUP_ENABLE_Qt:STRING=YES
+      -DVTK_QT_VERSION:STRING=5
     ]
 
     # https://github.com/Homebrew/linuxbrew-core/pull/21654#issuecomment-738549701
@@ -93,14 +120,19 @@ class Vtk < Formula
 
     args << "-DVTK_USE_COCOA:BOOL=ON" if OS.mac?
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
+    # Force use of Apple Clang on macOS that needs LLVM to build
+    ENV.clang if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+
+    vtk_dir = lib/"cmake/vtk-#{version.major_minor}"
+    vtk_cmake_module = vtk_dir/"VTK-vtk-module-find-packages.cmake"
+    assert_match Formula["boost"].version.to_s, vtk_cmake_module.read, "VTK needs to be rebuilt against Boost!"
+
     (testpath/"CMakeLists.txt").write <<~EOS
       cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
       project(Distance2BetweenPoints LANGUAGES CXX)
@@ -120,9 +152,7 @@ class Vtk < Formula
       }
     EOS
 
-    vtk_dir = Dir[opt_lib/"cmake/vtk-*"].first
-    system "cmake", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON",
-      "-DVTK_DIR=#{vtk_dir}", "."
+    system "cmake", ".", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON", "-DVTK_DIR=#{vtk_dir}"
     system "make"
     system "./Distance2BetweenPoints"
 
@@ -136,3 +166,18 @@ class Vtk < Formula
     system bin/"vtkpython", "Distance2BetweenPoints.py"
   end
 end
+
+__END__
+diff --git a/Documentation/release/dev/python-3.10-wheels.md b/Documentation/release/dev/python-3.10-wheels.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f4e81411c73f30724ad420ccb7f3c6c07a6f8e3d
+--- /dev/null
++++ b/Documentation/release/dev/python-3.10-wheels.md
+@@ -0,0 +1,7 @@
++## Python 3.10 wheels
++
++VTK now generates Python 3.10 wheels. Note that `vtkpython` and other tools
++using `vtkPythonInterpreter` still do not support the new initialization
++behaviors introduced in Python 3.10. See [this issue][vtk-python-3.10-support].
++
++[vtk-python-3.10.support]: https://gitlab.kitware.com/vtk/vtk/-/issues/18317

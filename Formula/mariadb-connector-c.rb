@@ -1,11 +1,11 @@
 class MariadbConnectorC < Formula
   desc "MariaDB database connector for C applications"
   homepage "https://mariadb.org/download/?tab=connector&prod=connector-c"
-  url "https://downloads.mariadb.com/Connectors/c/connector-c-3.2.5/mariadb-connector-c-3.2.5-src.tar.gz"
-  mirror "https://fossies.org/linux/misc/mariadb-connector-c-3.2.5-src.tar.gz/"
-  sha256 "296b992aec9fdb63fb971163e00ff6d9299b09459fba2802a839e3185b8d0e70"
+  url "https://downloads.mariadb.com/Connectors/c/connector-c-3.3.2/mariadb-connector-c-3.3.2-src.tar.gz"
+  mirror "https://fossies.org/linux/misc/mariadb-connector-c-3.3.2-src.tar.gz/"
+  sha256 "7e0722e07d30bb906fac9fe10fb582cde1e148e05a83d9ca7b6fcc884b68fbce"
   license "LGPL-2.1-or-later"
-  head "https://github.com/mariadb-corporation/mariadb-connector-c.git", branch: "3.2"
+  head "https://github.com/mariadb-corporation/mariadb-connector-c.git", branch: "3.3"
 
   # https://mariadb.org/download/ sometimes lists an older version as newest,
   # so we check the JSON data used to populate the mariadb.com downloads page
@@ -16,12 +16,12 @@ class MariadbConnectorC < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ceb4ed8ef1577513f4a2894c84fc1493f934d5e0890e1604e0e87968f2eea440"
-    sha256 arm64_big_sur:  "6e4c10a0186b34fcad4bc34f25c15ad2d17a6be10ed826a42b41bb2417f6abc9"
-    sha256 monterey:       "a270d6a54be27de1b1046442f6f234838a4970d06cc36ff0d6eb329bbbfd3347"
-    sha256 big_sur:        "5689a9fc8d1f00df4f98eaae4c0d65de90089bad8e38d3ca21f00e89f8c507fd"
-    sha256 catalina:       "2776adc988cc46b619fc6b21ad17fca88612f32b3b4056975e0534d52532dcb4"
-    sha256 x86_64_linux:   "8003aa9abf2344e26b2534b243e021ee1dcc7fcc742450c4db5b2eded6da27c3"
+    sha256 arm64_monterey: "28cd53c9451194da94ed22382060c95b01f32226773677f526c5249407c8da7d"
+    sha256 arm64_big_sur:  "867bfea66548adb9893b570a346cf773b4e78d7e41fff26c91038728e3fca69d"
+    sha256 monterey:       "2ad5a88aaf06bfd3497ff3456688d1f08a99e0f88af2bab2c752a202eab2ff33"
+    sha256 big_sur:        "7a902856f3b57fcfce029610344d9a97d07349af4dc19edb4ffa2f0ca3559cc4"
+    sha256 catalina:       "0a3e6735f17398d2f41a8fefce33c690042c953c7415d15e46b41f38f8283194"
+    sha256 x86_64_linux:   "f797d3f35c8b782d661782d7a3cabbd782c0ee54e198d2a434d921c3faa0b7e9"
   end
 
   depends_on "cmake" => :build

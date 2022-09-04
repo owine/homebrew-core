@@ -1,9 +1,9 @@
 class Icon < Formula
   desc "General-purpose programming language"
   homepage "https://www.cs.arizona.edu/icon/"
-  url "https://github.com/gtownsend/icon/archive/v9.5.21b.tar.gz"
-  version "9.5.21b"
-  sha256 "5dd46cd4e868c75ff1b50de275f1ec06a09641afcb8c18b072333f97f86d3bcc"
+  url "https://github.com/gtownsend/icon/archive/v9.5.22e.tar.gz"
+  version "9.5.22e"
+  sha256 "e09ab5a7d4f10196be0e7ca12624c011cd749fc93e50ad4ed87bd132d927c983"
   license :public_domain
 
   livecheck do
@@ -12,19 +12,18 @@ class Icon < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f2ccc00b4af7b3a086b6b72a1eb42dee8c1ac01862163090d13da1d718b4a5f8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f125fa0da1cf68ea312bf3f4b17c2b49491effc3ec55918f5578b7e819b87ea3"
-    sha256 cellar: :any_skip_relocation, monterey:       "5b169e29f1af9e4c21f38eb6bae5da048c568fb11e6840de26b14ee89a590141"
-    sha256 cellar: :any_skip_relocation, big_sur:        "26221c72cd120274c75db2dca9926ff6d651f380814946005f1bb20fa8a12be9"
-    sha256 cellar: :any_skip_relocation, catalina:       "c59f68713faf7424ff485f8e5b3407367d29cd1412af432355c0f6d525d78f71"
-    sha256 cellar: :any_skip_relocation, mojave:         "7882a95b7c29003762ee254bc6fb4e2f1ca857edadc679d0802328dfcd0ab7c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f219d790f552dba33c724f3bb60bb91392f81ac62df185bebb137d4c8efdfb6e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "57b881bd78c52d53cc0fa461db50bebfaa3c938a4aca48e1dc3707f8d8708533"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fbd4950d7c8beb19264d472245baba21ba73d01677122e619beb0e7c33e77f89"
+    sha256 cellar: :any_skip_relocation, monterey:       "84ad1fd67613956eef4f81baa575376d13871b9eb281b88fad482d7d467051ec"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4ca9796155abe1bdeb8375b564cb0438c599f88de7f34acd52365edf644c2664"
+    sha256 cellar: :any_skip_relocation, catalina:       "6d45d0a928ff6d7f5bf37797cfe85a7f7e0319b2f57783a2401b19892f0f0831"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3894f311892055d393661a75fc398e710b218da79c13b96954cfbe26659b7143"
   end
 
   def install
     ENV.deparallelize
     target = if OS.mac?
-      "posix"
+      "macintosh"
     else
       "linux"
     end

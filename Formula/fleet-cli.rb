@@ -2,8 +2,8 @@ class FleetCli < Formula
   desc "Manage large fleets of Kubernetes clusters"
   homepage "https://github.com/rancher/fleet"
   url "https://github.com/rancher/fleet.git",
-      tag:      "v0.3.8",
-      revision: "ce9c0d6c0a455d61e87c0f19df79d0ee11a89eeb"
+      tag:      "v0.3.10",
+      revision: "093cee590dd64451b0de23925ea05a44df866fe2"
   license "Apache-2.0"
   head "https://github.com/rancher/fleet.git", branch: "master"
 
@@ -13,12 +13,12 @@ class FleetCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c73209136e109ff8d5adc4c711124fa6db936464f7eeb5985c28c78f79592c42"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "506a0d781ac1970085e82b745a0de04a02a1a1b0b304ff85ab6d7a3fe8b1f2dd"
-    sha256 cellar: :any_skip_relocation, monterey:       "874f72342c86c0d6e0d4b60579985ee1664a11f60c9992ceddcd0de9ac35fb76"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f00cd48be8faf992adbf09f13ded9e22c545eedb4ea4913a75611da3044ba3cd"
-    sha256 cellar: :any_skip_relocation, catalina:       "d20c39cf55d97f255f0313b92d306c9a25bf0e16d61fd81a43b12ace61a1fc53"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e1259b69247022f390fa78bb0724753c5454375243bff8d251a0c9a0b1df670"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "efa4426b36fd91d03cb9ced44929cff78094ee1c9a424e4a79710fdb333a9e99"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "80c192b5bc40a23d40ef51f4bbfcee7a292cbc836c4c5bf5545e3bbe7740de3f"
+    sha256 cellar: :any_skip_relocation, monterey:       "c1c75762096b92c8144f64c3dc6783ae1a245792743c08ab91d7c5ff5a8227e7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2059cf252073b4301e91ad6b8569c509536336f356857ec9c7ae58b615deaa17"
+    sha256 cellar: :any_skip_relocation, catalina:       "c089becae31676292cfe11b954f72cadc282b877ae64de52591ed0b68f664812"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95a7b4cc2f8d36533465fcd9ed883ca45fde85ded4f2836ab1c7614acbba0677"
   end
 
   depends_on "go" => :build

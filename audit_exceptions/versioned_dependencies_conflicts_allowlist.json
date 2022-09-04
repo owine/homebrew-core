@@ -1,12 +1,10 @@
 [
-  "anjuta",
-  "coin3d",
-  "gjs",
+  "emscripten",
   "hive",
-  "mpv",
+  "libgaiagraphics",
+  "librasterlite",
   "predictionio",
-  "pyside",
-  "pyside@2",
   "sqoop",
-  "watchman"
+  "swtpm",
+  "synergy-core"
 ]

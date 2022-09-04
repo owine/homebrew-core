@@ -1,9 +1,9 @@
 class Tkdiff < Formula
   desc "Graphical side by side diff utility"
   homepage "https://tkdiff.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/tkdiff/tkdiff/5.3/tkdiff-5-3.zip"
-  version "5.3"
-  sha256 "193476bd40766e5c49e2e27c30dc446f97abca8b0b5fe82e6ce8af6e71ea85e7"
+  url "https://downloads.sourceforge.net/project/tkdiff/tkdiff/5.5.2/tkdiff-5-5-2.zip"
+  version "5.5.2"
+  sha256 "31718411fa181ea4a6c9c7f8eea115a7b86c50dff5a1a070bc7ad26381d7176b"
   license "GPL-2.0-only"
 
   livecheck do
@@ -12,7 +12,7 @@ class Tkdiff < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "f1d782dec7a5d13a11cd37a82d4458f97ebed93c84c4abe900c5ca0396c9e5be"
+    sha256 cellar: :any_skip_relocation, all: "59fd6426bcef5f58c200294a6bff1736866e5844d301fa3a8cd8d33cebb81a1b"
   end
 
   uses_from_macos "tcl-tk"
@@ -22,13 +22,7 @@ class Tkdiff < Formula
   end
 
   test do
-    on_macos do
-      system "#{bin}/tkdiff", "--help"
-    end
-
-    on_linux do
-      # Fails with: no display name and no $DISPLAY environment variable
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    # Fails with: no display name and no $DISPLAY environment variable on GitHub Actions
+    system "#{bin}/tkdiff", "--help" if OS.mac?
   end
 end

@@ -1,5 +1,4 @@
 [
-  "cmockery",
-  "vapoursynth-ocr",
-  "vapoursynth-sub"
+  "opencv@3",
+  "synergy-core"
 ]

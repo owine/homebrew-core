@@ -1,37 +1,26 @@
 class Kubecm < Formula
   desc "KubeConfig Manager"
   homepage "https://kubecm.cloud"
-  url "https://github.com/sunny0826/kubecm/archive/v0.16.2.tar.gz"
-  sha256 "38a812f6ee37493e8297ef4db4061a8dd1c466f72f6e0f70ec94308e8b107856"
+  url "https://github.com/sunny0826/kubecm/archive/v0.19.3.tar.gz"
+  sha256 "fac64ce68b69af9e92367b28b12b93a2162d8e4cb683d6f18ecf56ef1c182cd8"
   license "Apache-2.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "963191a58acd64f1850727ef85a98ba8152dcf7892058f5ea5f88b992650dda7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "72db3ab2eb040beab05575160702e1badb7b56f448e3fa99d186ccd717ee3f93"
-    sha256 cellar: :any_skip_relocation, monterey:       "55457ff2b2b63f598a4cbf839988201aa28e056f4724024fa605972f253b018b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f3225ac3c412f809d1d37959bd29d49716c6a528f6962e1a314a6632e22afd34"
-    sha256 cellar: :any_skip_relocation, catalina:       "c5203b6b68e268bab2b2603a1bfec4db4d23782205de930e22fe0b005440adb1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb2ba6dad5e4e636fdd27caa08fd3fb5f0befb57e2417015925ca3d56240247d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c01bbda06bbc77cc419b06cd5f34d775eeb3a760c17a6b03aa079b0ef6ef1f82"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d6b89bf0c40835d79b395e615771268e33419c9105b4b51caefacf292fe17b9"
+    sha256 cellar: :any_skip_relocation, monterey:       "ed4b0da885859af43f70cf9d58e2dadfcf9ce852c2edef4399112c93db09eda5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d15f05825490628ee143a7d58240206f08afde16cb739d67e7f2e2f23bc6c59f"
+    sha256 cellar: :any_skip_relocation, catalina:       "fb52e49363052f999eed651adc3530dea5b0bd869c3bab418978c657c1fd3a29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91ff06d283462a95364baca954abe8880830fc95f5b7caec84a06239d58958ab"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = "-s -w -X github.com/sunny0826/kubecm/cmd.kubecmVersion=#{version}"
+    ldflags = "-s -w -X github.com/sunny0826/kubecm/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "bash")
-    (bash_completion/"kubecm").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "zsh")
-    (zsh_completion/"_kubecm").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"kubecm", "completion", "fish")
-    (fish_completion/"kubecm.fish").write output
+    generate_completions_from_executable(bin/"kubecm", "completion")
   end
 
   test do

@@ -1,18 +1,17 @@
 class Libhandy < Formula
   desc "Building blocks for modern adaptive GNOME apps"
   homepage "https://gitlab.gnome.org/GNOME/libhandy"
-  url "https://download.gnome.org/sources/libhandy/1.4/libhandy-1.4.0.tar.xz"
-  sha256 "2676d51fa1fa40fdee7497d3e763fefa18b0338bffcd2ee32e7f7e633c885446"
+  url "https://gitlab.gnome.org/GNOME/libhandy/-/archive/1.7.0/libhandy-1.7.0.tar.gz"
+  sha256 "4a20ec0d3ba7c4743fee65d8421f2500bf627f73df5ee99699cdb4c54ccce3f0"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "a1bc08ba132d264744d3f8f5101d6997bae896e4ce3f0d420c9d2ace092aec2d"
-    sha256 arm64_big_sur:  "67c5f4982894646b07942c0f387443c2aac2813167aaa3de9197cd760fc93e5b"
-    sha256 monterey:       "9846518bcebff7818836942e043f03f4e7e8ac07f618646b6d0396407085e1c9"
-    sha256 big_sur:        "337f9be107164821d8436c443c20dcb79d66bc3268fac909ace2878432bcc652"
-    sha256 catalina:       "2e04f3f8004ac544fea47905a65a6597908b8ced6dadd5c330d87b8a310951d9"
-    sha256 mojave:         "a8972dc9efc8c2d6a6fe0f038ebda941a741c3e0d7be57b51b9c634120d1a479"
-    sha256 x86_64_linux:   "17515106b873bbdbc591ca0daca12c043485e6a52b478cff912f9a835620c825"
+    sha256 arm64_monterey: "2e2205fcb369590d99bf1244dd7dda9030b45089a910abf47b6c1a04db09c7f0"
+    sha256 arm64_big_sur:  "89a7fa9f2395dff4d99c67eaf9bfb032724179d7971fbe4e31e813b1ba865f32"
+    sha256 monterey:       "2b166e8d56b1c339b9646d58a1155342fa9ecda16c6a364e7abc5d8c4e6df446"
+    sha256 big_sur:        "5e664307f41f5e7bcfe076770b93736cd6f6e1a78fb7c3a501c9889b1f0cb166"
+    sha256 catalina:       "32f2f6643c7ab5648997a2f2d43f017d72d53abf42afad5db5acb1a33c75249a"
+    sha256 x86_64_linux:   "73032904b4bb9d851aca2081de2bf18603089c8c34c6e033ca7f7ea623762b60"
   end
 
   depends_on "gettext" => :build
@@ -91,13 +90,9 @@ class Libhandy < Formula
       -lpango-1.0
       -lpangocairo-1.0
     ]
-    on_macos do
-      flags << "-lintl"
-    end
+    flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags
     # Don't have X/Wayland in Docker
-    on_macos do
-      system "./test"
-    end
+    system "./test" if OS.mac?
   end
 end

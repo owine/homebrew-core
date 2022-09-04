@@ -4,15 +4,15 @@ class Minidlna < Formula
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.3.0/minidlna-1.3.0.tar.gz"
   sha256 "47d9b06b4c48801a4c1112ec23d24782728b5495e95ec2195bbe5c81bc2d3c63"
   license "GPL-2.0-only"
-  revision 1
+  revision 4
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "db29d32f52db2f939303ebfe9fadc4198cbf124b3eaea49708d862910dd397c9"
-    sha256 cellar: :any,                 arm64_big_sur:  "d35c538a159b100120b6adb5f61c659fdf2a9d0e436abd089cc27a88f3e874ed"
-    sha256 cellar: :any,                 monterey:       "e08ad5a4607e1b18dc9102fff5a18609e6288b28ef466e59064a15386fd0a3ef"
-    sha256 cellar: :any,                 big_sur:        "84ad29fbefad1de42626e8cee294439c48f9d517edb2600221943faae4b2263b"
-    sha256 cellar: :any,                 catalina:       "96292e855293ce1fa5b3b24ad9d50d26deb183c572ce8020d60571337c014574"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d09940a0842037febe0e1e4d08e0e810ede2462c2a6049f86c5346d8dab92d7"
+    sha256 cellar: :any,                 arm64_monterey: "1c7913138763b5a466470cbda993c72da2236e6286badc45728c48084d2e4e0e"
+    sha256 cellar: :any,                 arm64_big_sur:  "76ca2bb23a966e93b39f28b3d2ef5fc19cca8f1074f31cdc9f4c7caf562a3c75"
+    sha256 cellar: :any,                 monterey:       "5159e029a8b9885ad2892119974690ee7f0a8ca21b83c16839e5241596c5a0f5"
+    sha256 cellar: :any,                 big_sur:        "85ea96fe99907a4ff774fb7c1e922a7ab5ce32acd6d675a1ffeec8c27ad004e1"
+    sha256 cellar: :any,                 catalina:       "9dc72f2c444380754e6d2491a91c8cc7bdc23dd752ffa688799f7fdfb14687e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9473c427835d028710a76203143d114b22b650cc6ca45e18e607c8ff20f9cc7c"
   end
 
   head do
@@ -26,25 +26,27 @@ class Minidlna < Formula
 
   depends_on "ffmpeg"
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libid3tag"
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "sqlite"
 
+  fails_with gcc: "5" # ffmpeg is compiled with GCC
+
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   def post_install
     conf = <<~EOS
       friendly_name=Mac DLNA Server
-      media_dir=#{ENV["HOME"]}/.config/minidlna/media
-      db_dir=#{ENV["HOME"]}/.config/minidlna/cache
-      log_dir=#{ENV["HOME"]}/.config/minidlna
+      media_dir=#{Dir.home}/.config/minidlna/media
+      db_dir=#{Dir.home}/.config/minidlna/cache
+      log_dir=#{Dir.home}/.config/minidlna
     EOS
 
     (pkgshare/"minidlna.conf").write conf unless File.exist? pkgshare/"minidlna.conf"
@@ -62,8 +64,8 @@ class Minidlna < Formula
   end
 
   service do
-    run [opt_sbin/"minidlnad", "-d", "-f", "#{ENV["HOME"]}/.config/minidlna/minidlna.conf",
-         "-P", "#{ENV["HOME"]}/.config/minidlna/minidlna.pid"]
+    run [opt_sbin/"minidlnad", "-d", "-f", "#{Dir.home}/.config/minidlna/minidlna.conf",
+         "-P", "#{Dir.home}/.config/minidlna/minidlna.pid"]
     keep_alive true
     log_path var/"log/minidlnad.log"
     error_log_path var/"log/minidlnad.log"

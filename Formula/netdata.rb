@@ -1,8 +1,8 @@
 class Netdata < Formula
   desc "Diagnose infrastructure problems with metrics, visualizations & alarms"
   homepage "https://netdata.cloud/"
-  url "https://github.com/netdata/netdata/releases/download/v1.33.0/netdata-v1.33.0.tar.gz"
-  sha256 "d167d4b2d8529119fa4047ae40d22833dac9d360a6ed07c314ba313807c027eb"
+  url "https://github.com/netdata/netdata/releases/download/v1.36.1/netdata-v1.36.1.tar.gz"
+  sha256 "f4a1233112b55e07e2862ffda0416255f0aa4c8e2b16929b76fa7ad6b69fd931"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Netdata < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "f15328221a2e5b4e8f78697d1bbf951b09f14b41ba44e47f0aa44b860b2c07c9"
-    sha256 arm64_big_sur:  "591ad576bdef3f6b89b7abb39ea760c8f3f0eafdf773eebeca5badb33f625932"
-    sha256 monterey:       "8e847c3a39ace106a1330d1cd2b15e02a690bb5d33fb9dd6ea819aef170b366d"
-    sha256 big_sur:        "b49585adefd324086a942492954a4bba8b615d5a17545240cd2b3e3e95b50997"
-    sha256 catalina:       "803292f46a528e0bbfd85652622de401e9a54ee0218d1d5a02b2a9e9c1fdea3b"
-    sha256 x86_64_linux:   "ec35854abc1c7c6ee9fdae20bd1e49a1ec337b9edd8b205992a369e828eed1ec"
+    sha256 arm64_monterey: "d512dabe93ee951a8952636e2e006da4570ddc6c8bd496613f23f4779e43d31e"
+    sha256 arm64_big_sur:  "b0eb5533886dfc014f02b8015fdbeca1b3b8143e4911129870ae08fba11d020c"
+    sha256 monterey:       "4eb1331def7402540fbbbc9b7a5591f7ca13f2e1211afecf02cdaabbf0d2b646"
+    sha256 big_sur:        "f901b0389f560f986a9466e261782312bc90f91649e5f31804a6729b4272b202"
+    sha256 catalina:       "408ef315509af5d834b522de314d6f7f1075a569acf0ea2155a9caeeb7d8d5a6"
+    sha256 x86_64_linux:   "6dde898bd4c5e0b43ef50ba8968f97adadc4bb7fb2092da28934b050655e2b9c"
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +25,8 @@ class Netdata < Formula
   depends_on "json-c"
   depends_on "libuv"
   depends_on "lz4"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
+  depends_on "protobuf-c"
 
   uses_from_macos "zlib"
 
@@ -39,6 +40,9 @@ class Netdata < Formula
   end
 
   def install
+    # https://github.com/protocolbuffers/protobuf/issues/9947
+    ENV.append_to_cflags "-DNDEBUG"
+
     # We build judy as static library, so we don't need to install it
     # into the real prefix
     judyprefix = "#{buildpath}/resources/judy"
@@ -85,11 +89,6 @@ class Netdata < Formula
   end
 
   def post_install
-    config = etc/"netdata/netdata.conf"
-    inreplace config do |s|
-      s.gsub!(/web files owner = .*/, "web files owner = #{ENV["USER"]}")
-      s.gsub!(/web files group = .*/, "web files group = #{Etc.getgrgid(prefix.stat.gid).name}")
-    end
     (var/"cache/netdata/unittest-dbengine/dbengine").mkpath
     (var/"lib/netdata/registry").mkpath
     (var/"log/netdata").mkpath

@@ -1,13 +1,13 @@
 class Sysstat < Formula
   desc "Performance monitoring tools for Linux"
   homepage "https://github.com/sysstat/sysstat"
-  url "https://github.com/sysstat/sysstat/archive/v12.5.5.tar.gz"
-  sha256 "a0f7488e15fff0aa12fa683fa4387df301f2b98b65d8b714ff81458101916afc"
+  url "https://github.com/sysstat/sysstat/archive/v12.6.0.tar.gz"
+  sha256 "ffbcf991446a4fc67877340696dae28d71087d0d5e1acd3f46ca9cab15286dc7"
   license "GPL-2.0-or-later"
   head "https://github.com/sysstat/sysstat.git", branch: "master"
 
   bottle do
-    sha256 x86_64_linux: "14e0319c32ccc62efec04ab7a4669763f76964cc54eca1a4e698e76003b59e92"
+    sha256 x86_64_linux: "ce10ef2c413f3096c6685f2acbfdde78e55eb6c03deb9563a19716d19b9cc00f"
   end
 
   depends_on :linux

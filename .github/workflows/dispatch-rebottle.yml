@@ -20,6 +20,9 @@ on:
         description: "Whether to fail immediately on a single OS version failure (default: true)"
         default: "true"
         required: false
+        
+permissions:
+  contents: read
 
 env:
   HOMEBREW_DEVELOPER: 1
@@ -92,16 +95,27 @@ jobs:
 
       - name: Failures summary for brew test-bot --only-formulae
         if: always()
-        run: |
-          touch bottles/steps_output.txt
-          cat bottles/steps_output.txt
-          rm bottles/steps_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/steps_output.txt
+          step_name: 'Build summary on ${{ matrix.runner }}'
+
+      - name: Output brew linkage result
+        if: always()
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/linkage_output.txt
+          step_name: '`brew linkage` output on ${{ matrix.runner }}'
 
       - name: Output brew bottle result
         if: always()
-        run: |
-          cat bottles/bottle_output.txt
-          rm bottles/bottle_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/bottle_output.txt
+          step_name: '`brew bottle` output on ${{ matrix.runner }}'
 
       - name: Upload logs
         if: failure()
@@ -150,6 +164,10 @@ jobs:
           bot: BrewTestBot
 
   upload:
+    permissions:
+      issues: write # for Homebrew/actions/post-comment
+      contents: write # for Homebrew/actions/git-try-push
+      packages: write # for brew pr-upload
     runs-on: ubuntu-latest
     needs: bottle
     if: github.event.inputs.upload

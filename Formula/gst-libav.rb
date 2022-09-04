@@ -1,8 +1,8 @@
 class GstLibav < Formula
   desc "GStreamer plugins for Libav (a fork of FFmpeg)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.18.5.tar.xz"
-  sha256 "822e008a910e9dd13aedbdd8dc63fedef4040c0ee2e927bab3112e9de693a548"
+  url "https://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.20.3.tar.xz"
+  sha256 "3fedd10560fcdfaa1b6462cbf79a38c4e7b57d7f390359393fc0cef6dbf27dfe"
   license "LGPL-2.1-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-libav.git", branch: "master"
 
@@ -12,12 +12,12 @@ class GstLibav < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "e8966bbb5d208f222af893b8b3a9342c9e51801944a3aafdde8a4564ae6ddec3"
-    sha256 cellar: :any, arm64_big_sur:  "91b97f75dfec46ff4a5af1039d070c32ccd1935bb1a391eff25fe09b3c8d47cd"
-    sha256 cellar: :any, monterey:       "ff617de0b10f0922ad9cd298d9adcb6afef8001c6a1a60c9141c3d29f95e7394"
-    sha256 cellar: :any, big_sur:        "a3d8a0b77267c24a251f55093d40e2c63fed1af4e35f28e1c4a5d57f126ff630"
-    sha256 cellar: :any, catalina:       "441579ff37ed24b7b608afa7c004770d9a9adea55fa5097f5e05a5023b30276b"
-    sha256               x86_64_linux:   "6951f2ec1007973263e830baa836127128f3db914cacdf651a966d054da86fab"
+    sha256 cellar: :any, arm64_monterey: "fc2fb6970dcc2e153b11d6cd53bbb61216aeb19398de18727ca75ecae450313b"
+    sha256 cellar: :any, arm64_big_sur:  "99c1537bd90d255df9e4e92a90037b24a57beeb51ab44daf590dfe3a45a1b801"
+    sha256 cellar: :any, monterey:       "d09097cb0f504f0e6da37f125078bc171a1923de817261f16fd3ca086f3b557c"
+    sha256 cellar: :any, big_sur:        "a016cd9ef794ed2c9281c1e30f8052a59d47d21641bd083721b0cfa88bbf1db6"
+    sha256 cellar: :any, catalina:       "acf202daebcfd054d1f226797c562ec8dcb610b9e5794a1548df4cd4afa89357"
+    sha256               x86_64_linux:   "4b36f679caf58d93cd3434c7c517809ac57a3353571c2ee2e436d83bb76ef3d8"
   end
 
   depends_on "meson" => :build
@@ -27,6 +27,12 @@ class GstLibav < Formula
   depends_on "ffmpeg"
   depends_on "gst-plugins-base"
   depends_on "xz" # For LZMA
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   def install
     mkdir "build" do

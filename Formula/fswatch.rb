@@ -1,8 +1,8 @@
 class Fswatch < Formula
   desc "Monitor a directory for changes and run a shell command"
   homepage "https://github.com/emcrisostomo/fswatch"
-  url "https://github.com/emcrisostomo/fswatch/releases/download/1.16.0/fswatch-1.16.0.tar.gz"
-  sha256 "95ece85eb01af71e99afef0173755fcedb737b639163f8efc7fed674f6f5372f"
+  url "https://github.com/emcrisostomo/fswatch/releases/download/1.17.1/fswatch-1.17.1.tar.gz"
+  sha256 "c38e341c567f5f16bfa64b72fc48bba5e93873d8572522e670e6f320bbc2122f"
   license all_of: ["GPL-3.0-or-later", "Apache-2.0"]
 
   livecheck do
@@ -11,13 +11,12 @@ class Fswatch < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "9286194b4e2df96b68c14a6eb30175b3d6846a457806f898822b611b395c97cd"
-    sha256 cellar: :any, arm64_big_sur:  "a9857b4d1cc1320e967edcc5ba5c61bd9215fac591204bc005bc89223f107228"
-    sha256 cellar: :any, monterey:       "173627c62aeb6a956a07097a34604e00504e3224c7709858be4c82a2827c343a"
-    sha256 cellar: :any, big_sur:        "f930656cf465723b282216767a932555efdfd6b75d0404cd904c52005fad53ac"
-    sha256 cellar: :any, catalina:       "a5df0020481ef351591515771abd877adc2968061ce41f4b6429f13d6ab06d30"
-    sha256 cellar: :any, mojave:         "4423be79c01f66ffea513d6dcf8758bb9c1a005f77823620c6d93ec6f0bb3da2"
-    sha256               x86_64_linux:   "d7940f62b241d4880410bf42184fb1198e60e8cebd8fd4be51ec9801f04a08f0"
+    sha256 cellar: :any, arm64_monterey: "b7f5facb15c82b5dc9eb94e8cfaa4857e562609be24fdd716051c35bd2e85e8b"
+    sha256 cellar: :any, arm64_big_sur:  "ec08b3bf8f659a864d0c54f022939b45ea647c25769a8ab908f60f28ffbd803c"
+    sha256 cellar: :any, monterey:       "6c57d2ea9ff9e425069580bba25c74f5890f454b807f4a94810271909d47283e"
+    sha256 cellar: :any, big_sur:        "1da6e45f4051477e02acbf2f3d13a7917b8a80a38ca35d6ac8cbaff780df4651"
+    sha256 cellar: :any, catalina:       "c97ee3973b847257ad99f6ffff3c6ba3d33dbf2a333e0bbe289832b7e490f051"
+    sha256               x86_64_linux:   "60e3f628f00ace185e22523a1850f0521184e7477263ef69a1a0fcebd8b0f077"
   end
 
   def install

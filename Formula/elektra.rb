@@ -1,8 +1,8 @@
 class Elektra < Formula
   desc "Framework to access config settings in a global key database"
-  homepage "https://libelektra.org/"
-  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.8.tar.gz"
-  sha256 "b1e8908c138b84e788fdff25eab1c2b07e0b422a5fd1667814539ea02f151c58"
+  homepage "https://www.libelektra.org/home"
+  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.10.tar.gz"
+  sha256 "ee50fb5e9814b45a8e99f39435b1461d4b7a7daa27eee240bdbfed98f2c4c0f5"
   license "BSD-3-Clause"
   head "https://github.com/ElektraInitiative/libelektra.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Elektra < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8e1d59c5be2d3130f43d06b1b3f9d5903024bea0ee9ba5e3c028af1c51ec224e"
-    sha256 arm64_big_sur:  "7e1dd629af27f13b6bfe769c221f4c976cb22ad1ac9716601be0c37371633490"
-    sha256 monterey:       "34466435979b032bc07256a5b3f0a2fd0c2b7d4e3fd75e56c641019dceb2a09c"
-    sha256 big_sur:        "aab3adfe2c4413d61a9b817e32e6eb9f8a13066f219bb4e889601db6a81871ff"
-    sha256 catalina:       "08adc201df239e698550c10cc565cba877b4a29656cc120c372e474567dd48f8"
-    sha256 mojave:         "3dbb5277e94c3b9e8cc2ad2e1304b8cbe37938f47727a643adf47ff3303bb8f6"
-    sha256 x86_64_linux:   "bcc445acf471321f69e511e11b03a3222119f9de1082e98c620991fa3d6e13f5"
+    sha256 arm64_monterey: "c5f7a09d64f19cd3474dae214fb24d33c7fd8935eb57c6eebcbfba9e06956825"
+    sha256 arm64_big_sur:  "82e55cb29a2e11c555dc23e617581ab4cd2e1f699c9005e1c9614fc25281c505"
+    sha256 monterey:       "4c979274ddcddc7375d23dd2bcd87472fc6b95ecf4acdd1cd995e119f5d7a657"
+    sha256 big_sur:        "1b3480d48cd12985264bd1380aa78ecd5384f403a8288669156d3b170cf914ac"
+    sha256 catalina:       "c44e21a140c93ec947b905ec626929c4811fa463499ebb217e22364d752a8df9"
+    sha256 x86_64_linux:   "b74dccff8c603fcf6e55431b58995ba78e6b1f43a6d6336f127ab38534e685aa"
   end
 
   depends_on "cmake" => :build
@@ -27,7 +26,7 @@ class Elektra < Formula
   def install
     mkdir "build" do
       system "cmake", "..", "-DBINDINGS=cpp", "-DTOOLS=kdb;",
-                            "-DPLUGINS=NODEP", *std_cmake_args
+                            "-DPLUGINS=NODEP;-tracer", *std_cmake_args
       system "make", "install"
     end
 

@@ -1,10 +1,10 @@
 class Openldap < Formula
   desc "Open source suite of directory software"
   homepage "https://www.openldap.org/software/"
-  url "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.1.tgz"
-  mirror "http://fresh-center.net/linux/misc/openldap-2.6.1.tgz"
-  mirror "http://fresh-center.net/linux/misc/legacy/openldap-2.6.1.tgz"
-  sha256 "9d576ea6962d7db8a2e2808574e8c257c15aef55f403a1fb5a0faf35de70e6f3"
+  url "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.6.3.tgz"
+  mirror "http://fresh-center.net/linux/misc/openldap-2.6.3.tgz"
+  mirror "http://fresh-center.net/linux/misc/legacy/openldap-2.6.3.tgz"
+  sha256 "d2a2a1d71df3d77396b1c16ad7502e674df446e06072b0e5a4e941c3d06c0d46"
   license "OLDAP-2.8"
 
   livecheck do
@@ -13,12 +13,12 @@ class Openldap < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d7affa175537fa764aa33608d8e0029b1a80764743ef769b3f8cf4be2fd200c3"
-    sha256 arm64_big_sur:  "5b312b24c8bbd740a7c7a765cdeb50fbebf305472ae17b8afb90640c9f332ab3"
-    sha256 monterey:       "e2d098cbc57f94ddca5121b016350b20737960dc9517d0d46edd259e1bd10852"
-    sha256 big_sur:        "a84f34991c1bee01efb067984c3407f4777fc111fa258821698d4ecda71582e6"
-    sha256 catalina:       "7ad505e0578547ea2bb4a1cd3bbef466ec4c214d6b5342d2c280685dfc061dd4"
-    sha256 x86_64_linux:   "12a1be636f9fb47fb2ab77849e3b16b47272745ebece94b6b396d5ec23788f8c"
+    sha256 arm64_monterey: "d3f0bdb0fdab90601339ec57ad4291aa08907733d40162a7450f3bafd3768e8a"
+    sha256 arm64_big_sur:  "9f347097480480f7df1519279a588cd68bf98e7befa11971c803a858843ebc6a"
+    sha256 monterey:       "107f7937af3e60ecf4262b4f60b7da74c38ef55c07c735c3f906f2bdb0067934"
+    sha256 big_sur:        "5881d9b771d9296d464a8d2f8e00908e76b31076df50d2c86225a9151ec64a85"
+    sha256 catalina:       "542b132bd0ae22ad6ffe2bb2f25f17c1933943ead28791bcf7e53888b48f5de1"
+    sha256 x86_64_linux:   "236b263f5d84e1c580380289599cad1719cc8c8b2bb1c78b48578aa139dc1095"
   end
 
   keg_only :provided_by_macos

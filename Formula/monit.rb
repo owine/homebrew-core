@@ -1,9 +1,10 @@
 class Monit < Formula
   desc "Manage and monitor processes, files, directories, and devices"
   homepage "https://mmonit.com/monit/"
-  url "https://mmonit.com/monit/dist/monit-5.30.0.tar.gz"
-  sha256 "e85649dfa8586f4fcdd34a0295c55ddd69b0eda6cfbdac47105a2673d10b1008"
+  url "https://mmonit.com/monit/dist/monit-5.32.0.tar.gz"
+  sha256 "1077052d4c4e848ac47d14f9b37754d46419aecbe8c9a07e1f869c914faf3216"
   license "AGPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://mmonit.com/monit/dist/"
@@ -11,15 +12,17 @@ class Monit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2f6358307e57abfb67bed43795f111e35b4c73cc3b8aa2fb55dcf4faab15a4c1"
-    sha256 cellar: :any,                 arm64_big_sur:  "a1675e5bc8df5ba9fa78fbc81a343745cfb223872b5a2a1ffbfbdbbb8d911210"
-    sha256 cellar: :any,                 monterey:       "583be054633b9b3f9d2c12d119e1e62987edaff1faef91e410863a463bba0477"
-    sha256 cellar: :any,                 big_sur:        "3cace631abc2ab4efb7fe4728f18899a66ad2eacaae6dc9e950ba531ddc98d80"
-    sha256 cellar: :any,                 catalina:       "9d64bbb0b2be8e5293fce0e6c3eb453ae593f9e212474342061a85003b049db4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1dfdf7ae8ddf0bc11e2612b8bc9da3acc990bb9d112b72bccf57bf984ddd1f49"
+    sha256 cellar: :any,                 arm64_monterey: "21eb3d11227e8bda20795b418f8f355b5694a363e0f8b8694d2559475f2d7421"
+    sha256 cellar: :any,                 arm64_big_sur:  "aa19c34d3170a64dc8c825ea17f20c2a7f5b622b6344a0fe6b7e6a8a725a4733"
+    sha256 cellar: :any,                 monterey:       "0224a3b0547aac17b806f2c7a7039dc69c4b4189e58f7738861f5fb853a2d10c"
+    sha256 cellar: :any,                 big_sur:        "a6ed1f2d8263769e3796f296a108656f07e854887f4ac648d0f69711a44699f0"
+    sha256 cellar: :any,                 catalina:       "76e57e50992213d7f62dc6d33e622013f4252bb2ebb99f1c0dacb89898d04fe8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa1e9ac3c7c0c129debf80185f30ec4b8dcea96a392649edd46f7bea7188b6f4"
   end
 
   depends_on "openssl@1.1"
+
+  uses_from_macos "libxcrypt"
 
   on_linux do
     depends_on "linux-pam"

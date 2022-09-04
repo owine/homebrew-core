@@ -2,7 +2,7 @@ class Collectd < Formula
   desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
   license "MIT"
-  revision 1
+  revision 4
 
   stable do
     url "https://collectd.org/files/collectd-5.12.0.tar.bz2"
@@ -21,17 +21,16 @@ class Collectd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "1a82ae21e794db579661851b68e64f8b5308b970314e9904c291b33810c54ed5"
-    sha256 arm64_big_sur:  "c0a9e32a3407d094ae4fe5f8bf0fc19d0b4f5f0bb40f8ce6335fe4d2241a72b3"
-    sha256 monterey:       "f80f9f9a0d15884d587de0631f1d573d2a194e90e88bd579191825c7a58ea781"
-    sha256 big_sur:        "73233ee8e731722660a1098db2a72ae276508b8b09475f101f50a8d5ddc49251"
-    sha256 catalina:       "33f0fa042a98883dbf363865a66d64fd53e2eaebc330829257e2d5c87c7b5a4d"
-    sha256 mojave:         "a38f5912b4ed2b48e37e7285e0dd6e4f97d31799e5e7c47f438cddd7806a1252"
-    sha256 x86_64_linux:   "9b7b93198f1b6008763a8012fa7209c108b5e179a0b38da1599234b6fe06523a"
+    sha256 arm64_monterey: "0e458ec53ea191bcd9674df6319fc12ddd6237a29572e8094ede1d1eefd90cf0"
+    sha256 arm64_big_sur:  "86de826e614056a49f494ea1bd764a5eaa566fe79ac7dd471c98f27a8ac28364"
+    sha256 monterey:       "36707976a260835ac0c871086f6d8869f75b9d5f7d61c5c291e39e846dc80097"
+    sha256 big_sur:        "5d6c61543e3db6c65f8adff020392bf2185a1b186a9fffca4f512183c5439c1f"
+    sha256 catalina:       "82111df6006519d6c6f0eae1e0dd5dec1756997e8a772ce3fc1458e87b017a80"
+    sha256 x86_64_linux:   "fa7db8c94c7508f40740bebc17d3ebc7d9fdf8bcc5cb7cc438bc6e0bab376d09"
   end
 
   head do
-    url "https://github.com/collectd/collectd.git"
+    url "https://github.com/collectd/collectd.git", branch: "main"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -43,19 +42,17 @@ class Collectd < Formula
   depends_on "net-snmp"
   depends_on "riemann-client"
 
-  uses_from_macos "bison"
-  uses_from_macos "flex"
+  uses_from_macos "bison" => :build
+  uses_from_macos "flex" => :build
   uses_from_macos "perl"
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    args = std_configure_args + %W[
       --localstatedir=#{var}
       --disable-java
       --enable-write_riemann
     ]
+    args << "--with-perl-bindings=PREFIX=#{prefix} INSTALLSITEMAN3DIR=#{man3}" if OS.linux?
 
     system "./build.sh" if build.head?
     system "./configure", *args

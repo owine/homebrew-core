@@ -1,14 +1,14 @@
 class Ipfs < Formula
   desc "Peer-to-peer hypermedia protocol"
-  homepage "https://ipfs.io/"
-  url "https://github.com/ipfs/go-ipfs.git",
-      tag:      "v0.11.0",
-      revision: "67220edaaef4a938fe5fba85d793bfee59db3256"
+  homepage "https://ipfs.tech/"
+  url "https://github.com/ipfs/kubo.git",
+      tag:      "v0.15.0",
+      revision: "3ae52a41e39ec95aacc48d67b2882c9baeabc2ff"
   license all_of: [
     "MIT",
     any_of: ["MIT", "Apache-2.0"],
   ]
-  head "https://github.com/ipfs/go-ipfs.git", branch: "master"
+  head "https://github.com/ipfs/kubo.git", branch: "master"
 
   livecheck do
     url :stable
@@ -16,22 +16,23 @@ class Ipfs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2ff080a3e25cc5f6ad62948039dbaaaebe1be58cf553de6ea1989d69a8a2241"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3bf45662b9350f70b706bd22e8018a3975d16b3aec29b97b07c02990ef24d953"
-    sha256 cellar: :any_skip_relocation, monterey:       "3ff1a3d219552f778912f08ad791800d43b2600f0e39a8b0a966db48b8c67069"
-    sha256 cellar: :any_skip_relocation, big_sur:        "241568d148a8a0b4701820b8ce11a186fc7d6302174f3cbc27d69961f7e2d634"
-    sha256 cellar: :any_skip_relocation, catalina:       "03a432f02fe5b35016e839733c6669612a5555b3af20a8e9c5f5da1b46bc9d64"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "778cd577024337b5f730272c5a8a06b9640050514cd6d4ed333d29436851acbc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "20bbc3537dbcf1b967adc0c21ac7c2a29016c3fb1220e895f7ec580967f41224"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "49e28f7381907b6f081a72b923a317770b0e33d5fe9e1015f18576fc57fa4cb4"
+    sha256 cellar: :any_skip_relocation, monterey:       "7cbac2ff6ca2cf1917d2b647a917601945ff4a7cd50960c28f76b5ff04a35479"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6e20af6ce911d73fc5e5304b20fe44d784f473ad3109211eab7dd229a37048de"
+    sha256 cellar: :any_skip_relocation, catalina:       "18fbf0dcf3a44e0e70c822bb4df944a0496905e81546b630a8944f593f9a4399"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a79c98ad0011a0c05176ded94c8c63568947f53bd09ab0117b3518479990a8c"
   end
 
-  depends_on "go" => :build
+  # Required lucas-clemente/quic-go >= 0.28
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
   def install
     system "make", "build"
     bin.install "cmd/ipfs/ipfs"
 
-    bash_output = Utils.safe_popen_read(bin/"ipfs", "commands", "completion", "bash")
-    (bash_completion/"ipfs-completion.bash").write bash_output
+    generate_completions_from_executable(bin/"ipfs", "commands", "completion", shells: [:bash])
   end
 
   service do

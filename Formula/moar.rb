@@ -1,17 +1,17 @@
 class Moar < Formula
   desc "Nice to use pager for humans"
   homepage "https://github.com/walles/moar"
-  url "https://github.com/walles/moar/archive/refs/tags/v1.8.4.tar.gz"
-  sha256 "00fe9ae0631d89bce109ac5b8fb3f5ed0e090df1a5fe9e26cc54fa21f0e40710"
+  url "https://github.com/walles/moar/archive/refs/tags/v1.9.7.tar.gz"
+  sha256 "c296a7c5a2a9c84bd5de7a08134af98e1c8065de6ee82e7da5206aa11285bb96"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "66841021e43d87ad1ffa7d48a8cc1d673a7db326ffd5a6c513b3311c7e34e32d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "66841021e43d87ad1ffa7d48a8cc1d673a7db326ffd5a6c513b3311c7e34e32d"
-    sha256 cellar: :any_skip_relocation, monterey:       "bb1bd388171482baf71c082ee8281f20fd79152f42fd27d4d279279eb0912519"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bb1bd388171482baf71c082ee8281f20fd79152f42fd27d4d279279eb0912519"
-    sha256 cellar: :any_skip_relocation, catalina:       "bb1bd388171482baf71c082ee8281f20fd79152f42fd27d4d279279eb0912519"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "079bfc91158a3f91d3260b69d95ab27b892c35b48589584f9b42dc0a60697a89"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "900ea87db04cb33aae60acf4ece3f807ad22a05df51b111805f92e2aa76dabed"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "900ea87db04cb33aae60acf4ece3f807ad22a05df51b111805f92e2aa76dabed"
+    sha256 cellar: :any_skip_relocation, monterey:       "5d3125f959075329295f18e1c2366ad6b9f1b109e10c0ec36a1618db46f5f001"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5d3125f959075329295f18e1c2366ad6b9f1b109e10c0ec36a1618db46f5f001"
+    sha256 cellar: :any_skip_relocation, catalina:       "5d3125f959075329295f18e1c2366ad6b9f1b109e10c0ec36a1618db46f5f001"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4e1696a2f4fa6ce854837b8ff036eb09a3c0fa45d0d88898e2860083f9cd9ce"
   end
 
   depends_on "go" => :build
@@ -19,6 +19,7 @@ class Moar < Formula
   def install
     ldflags = "-s -w -X main.versionString=v#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags)
+    man1.install "moar.1"
   end
 
   test do

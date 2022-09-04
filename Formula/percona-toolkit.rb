@@ -5,8 +5,8 @@ class PerconaToolkit < Formula
 
   desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.3.1/source/tarball/percona-toolkit-3.3.1.tar.gz"
-  sha256 "60fc106b195b6716f1ebb3ca16b401692228c1a2a885da72111a93391fd12090"
+  url "https://www.percona.com/downloads/percona-toolkit/3.4.0/source/tarball/percona-toolkit-3.4.0.tar.gz"
+  sha256 "330c56723d4e6b966d0ad89f556efdf867a46f89462dd894eda331596aa88008"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
   head "lp:percona-toolkit", using: :bzr
 
@@ -16,11 +16,12 @@ class PerconaToolkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "1877facb5a23a5eea41fd11e8f02373d151fbead2a9c6e32249fb83bc15107d3"
-    sha256 cellar: :any,                 big_sur:       "8da16ad8dae9b642f959763c04f504e8e844f608ad34ecb5c47f8118acec5d81"
-    sha256 cellar: :any,                 catalina:      "a4a756d4c47f72d67680d33eb3f6e179eb857d5d12aa90cfb4f665a9d7ff10b5"
-    sha256 cellar: :any,                 mojave:        "d702da603979b5205d7e762e4b7e387a954dd1b987b982730de15b0c44a553ae"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a2f41f215b4e4a2a19b70c00e4f2fe91e8a8b3efe021b947dd3198859e5ec4a0"
+    sha256 cellar: :any,                 arm64_monterey: "02b8645c31c1dbc613049b92beea76566521953538733109d749c86bb9178902"
+    sha256 cellar: :any,                 arm64_big_sur:  "cc026046227611a83c3f3d081d15119a83a518eec51d5626dc80b995a5314d42"
+    sha256 cellar: :any,                 monterey:       "f5768c6c6498278a2fafca391fe498ff8c6cd06e2463cf22a5bfead8b8d23799"
+    sha256 cellar: :any,                 big_sur:        "31a91aef0643e348de8653b5563c1897f484a83d18172eb42f9fdc12c832f498"
+    sha256 cellar: :any,                 catalina:       "bc616aebe1a63d674e4fe0c366425a42c13d4b0020696b698be0636cc87bb819"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d01ccdce731c74a3b19d37dde24a9854afe3e51431f7d53eb215caf974423a70"
   end
 
   depends_on "mysql-client"
@@ -73,7 +74,7 @@ class PerconaToolkit < Formula
     # Disable dynamic selection of perl which may cause segfault when an
     # incompatible perl is picked up.
     # https://github.com/Homebrew/homebrew-core/issues/4936
-    bin.find { |f| rewrite_shebang detected_perl_shebang, f }
+    rewrite_shebang detected_perl_shebang, *bin.children
 
     bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
   end

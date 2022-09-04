@@ -1,18 +1,18 @@
 class Glfw < Formula
   desc "Multi-platform library for OpenGL applications"
   homepage "https://www.glfw.org/"
-  url "https://github.com/glfw/glfw/archive/3.3.6.tar.gz"
-  sha256 "ed07b90e334dcd39903e6288d90fa1ae0cf2d2119fec516cf743a0a404527c02"
+  url "https://github.com/glfw/glfw/archive/3.3.8.tar.gz"
+  sha256 "f30f42e05f11e5fc62483e513b0488d5bceeab7d9c5da0ffe2252ad81816c713"
   license "Zlib"
   head "https://github.com/glfw/glfw.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "8f155b434f74ac11c303fab7887b5b41b2ea6440f438e101172b2b0a813ca004"
-    sha256 cellar: :any,                 arm64_big_sur:  "dca3eaac840e35f4e56f57a0825b557e932fcdc1bc9963b98fa18bf90c0af647"
-    sha256 cellar: :any,                 monterey:       "0eca3ff0166f1ece7deceb367e65b4edfbca79796b39675c6cb5e97e062908c2"
-    sha256 cellar: :any,                 big_sur:        "9cbe17a177731240a8fc404aa28610f9377001e6b22c0d9824f06ba7079a6177"
-    sha256 cellar: :any,                 catalina:       "843ed388610abf58783e081e47974eaa000cd67a1146b5795df6e17fba4c2062"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0f4bed83bf9ff81bb0bb0d78b35b07c6405777e5ad82b9e8e73606ab4f24677"
+    sha256 cellar: :any,                 arm64_monterey: "d979c217a8fc5751683d81a282adba61ed04cb7f6849fec877ca6c91738b2f29"
+    sha256 cellar: :any,                 arm64_big_sur:  "6cbdaf38af57b2184d5d5fd9100008ebf7ca38920e36c0047b0d10214c806c8c"
+    sha256 cellar: :any,                 monterey:       "38ebd6a36fb6197a334f7bafa907470c87d4f1e9a8b12f0901204ce366c896a0"
+    sha256 cellar: :any,                 big_sur:        "9fdc214eeb24662a4d7ac08a049d5dc0a48b7dbd31de40e1ee1530e343a9cf2a"
+    sha256 cellar: :any,                 catalina:       "7fa08baa7a8e14084d1b2d7a593529c3d38b47fad444af9212b2f37fad83fde5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "348b005f5bacae71410ff4ec043a1079edc349e0926332f1a80cb8834079bdfc"
   end
 
   depends_on "cmake" => :build
@@ -51,10 +51,7 @@ class Glfw < Formula
     system ENV.cc, "test.c", "-o", "test",
                    "-I#{include}", "-L#{lib}", "-lglfw"
 
-    on_linux do
-      # glfw does not work in headless mode
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     system "./test"
   end

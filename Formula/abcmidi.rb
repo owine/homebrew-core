@@ -1,8 +1,8 @@
 class Abcmidi < Formula
   desc "Converts abc music notation files to MIDI files"
   homepage "https://ifdo.ca/~seymour/runabc/top.html"
-  url "https://ifdo.ca/~seymour/runabc/abcMIDI-2022.01.28.zip"
-  sha256 "4e8b532d3bc7af8752b0f48c810247eb18cd3e1e5b814c14a89d4e2a3bc44310"
+  url "https://ifdo.ca/~seymour/runabc/abcMIDI-2022.09.01.zip"
+  sha256 "583933c4277760c52fffd6ec87af1b62967759378cb9f2a8b41e0da4468cac4b"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Abcmidi < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "49870b6a8f7f04980d6e6bcf2cde8449b698d41c1f9a0803e0943feabbaa53ba"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3c5029c46e27a083b380f7e19ab78a6af01df50c2a57fb47b1ba62ac36943d70"
-    sha256 cellar: :any_skip_relocation, monterey:       "cc0710bf6df23a347347ca56a8531ab66eab5ccbf1064742c2f0cda66d50a85a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "35d5a1f09f59d90c54a8b201e9098bbf8cb99f6819fa764bc4c0bee057676a1a"
-    sha256 cellar: :any_skip_relocation, catalina:       "6db934a3e630c81fe5a547b5c74b779674129d6595aaab448594d13880e919ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c47aa563f8919700becee4057b90c87dbd4d4c0c41475776861bdfdaf509622"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d3b9cb25733443207fad61b61b264d84b7af219db13706629d0cea3484b49e6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c2480430d0a5a00b6c06df940bcc49d3d0e85bdcc06a8bbb4e45b4297db8ca2"
+    sha256 cellar: :any_skip_relocation, monterey:       "8f4220120dab7f6157db034fbc4e18bce0760fc6e957604b30bb82d12ed8ea6b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "eb82591a23a317227699ac5b8fc27f944a4b3d61d10d97b832b99206905c959b"
+    sha256 cellar: :any_skip_relocation, catalina:       "7be30959e86a787db2b8a2f15a24bb265ef1bf700c7a9e904aa992bfed7a6463"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a63df2b9e74ed271a09ef9ac6f76ba989619c805528b6254a4da77a2a004ce2e"
   end
 
   def install

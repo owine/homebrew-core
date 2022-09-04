@@ -1,21 +1,20 @@
 class VapoursynthSub < Formula
   desc "VapourSynth filters - Subtitling filter"
   homepage "https://www.vapoursynth.com"
-  url "https://github.com/vapoursynth/subtext/archive/R2.tar.gz"
-  sha256 "509fd9b00f44fd3db5ad0de4bfac6ccff3e458882281d479a11c10ac7dfc37e4"
+  url "https://github.com/vapoursynth/subtext/archive/R3.tar.gz"
+  sha256 "d0a1cf9bdbab5294eaa2e8859a20cfe162103df691604d87971a6eb541bebd83"
   license "MIT"
   version_scheme 1
 
   head "https://github.com/vapoursynth/subtext.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "28810861f7eea8d5c0b1225edcd8547ce264d11add68186d470b6b46ef5a39f0"
-    sha256 cellar: :any,                 arm64_big_sur:  "77ff99cf76d94fa5cbcc961e58a739c1af1fce4cd3587a8b7bb34561e7179473"
-    sha256 cellar: :any,                 monterey:       "40238f510f53a8e03d0e75a7a00a4c7d1d9f18361d1fe4bc06a84116609495b8"
-    sha256 cellar: :any,                 big_sur:        "9970926b50e25df64e9c8a13e3c575d823cbf5ff93b4244257941af17932bd9b"
-    sha256 cellar: :any,                 catalina:       "dd5762ff060f077b961b229cf4daecb93f5b3130fdcd23d6b0fed8cfbdd49e09"
-    sha256 cellar: :any,                 mojave:         "146a023ced7c207b5b1a054abc25b7587b1e3e6513034e97bf4c57fb7bbbaa22"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6cd479be090c286ebbe0c2e7af858d597d6581b52178748c9b629ed608b771c3"
+    sha256 cellar: :any,                 arm64_monterey: "598c2f969d228c6aad738f79102fd549d47facea2ebfd8fd25b1f3d7e85edbd2"
+    sha256 cellar: :any,                 arm64_big_sur:  "b279a50abb9df0e703a3ed9edbc2f65146e5ee2cedc0e49fd9d593a8001e1f42"
+    sha256 cellar: :any,                 monterey:       "adeb08c0941dbfb5ade18eb806408659a450c1bc3f0a84501e2bb2e24023c190"
+    sha256 cellar: :any,                 big_sur:        "022a82b6d201fbdf76b421695bd6338fe2c02710f5fae1e17b9d304a9ef228a3"
+    sha256 cellar: :any,                 catalina:       "eaa0081cf6b8569686e3d6405267aa9825e2e1021e63a7128f37c269f4bd4fdc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f74fda462cb23aadfd9c57d0f98dd67980f5dfbd303015a864143def16ebf356"
   end
 
   depends_on "cmake" => :build
@@ -23,6 +22,8 @@ class VapoursynthSub < Formula
   depends_on "ffmpeg"
   depends_on "libass"
   depends_on "vapoursynth"
+
+  fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   def install
     # A meson-based install method has been added but is not present
@@ -34,6 +35,10 @@ class VapoursynthSub < Formula
   end
 
   test do
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "from vapoursynth import core; core.sub"
+    python = Formula["vapoursynth"].deps
+                                   .find { |d| d.name.match?(/^python@\d\.\d+$/) }
+                                   .to_formula
+                                   .opt_bin/"python3"
+    system python, "-c", "from vapoursynth import core; core.sub"
   end
 end

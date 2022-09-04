@@ -1,10 +1,9 @@
 class GrpcSwift < Formula
   desc "Swift language implementation of gRPC"
   homepage "https://github.com/grpc/grpc-swift"
-  url "https://github.com/grpc/grpc-swift/archive/1.6.1.tar.gz"
-  sha256 "40c3701f158b2a19d3920e957fc061f6561ccfabc020fdb9b6da88db710f6c18"
+  url "https://github.com/grpc/grpc-swift/archive/1.9.0.tar.gz"
+  sha256 "81b03f5233102df9f0adee75a79d84b798c9eb38eabe1ab5fd1c912d2c690b10"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/grpc/grpc-swift.git", branch: "main"
 
   livecheck do
@@ -13,15 +12,14 @@ class GrpcSwift < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2fc6be0ea6038ff43b084f85b4768fbf0650f2c0032a3903282b4a50b132013c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7b2a06f346479740cdb34c34f3ef5612ef5c5a590c97068ecb61ef422a24dbae"
-    sha256 cellar: :any_skip_relocation, monterey:       "d82fcc299020ab76d98c05fde79d441ec650e944cc46d72dd50223364eaa7355"
-    sha256 cellar: :any_skip_relocation, big_sur:        "edc94a047b3394c4dac2653f5191f362919853f83702946c66acd6901102ca03"
-    sha256 cellar: :any_skip_relocation, catalina:       "b18a3c14b6c61b5b3c1ae27e4c2085ca577d260ea8eec300994dde23463f40bf"
-    sha256                               x86_64_linux:   "579df359e14d7db6f11d8a17dbbd6cd07bb16a15b23fe4ebcae65926384a6993"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f8707f495f9f3de586b757c60f922f3089b1847452735434e6f29686bffe9303"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a43fb0a0c1d7d15b6e6f62307ebcc6d4e46fc08abdc246adc1d69b012e7fe670"
+    sha256 cellar: :any_skip_relocation, monterey:       "4f895d50b86e197acd7e75be2c1405082676b0ea8dd5d0081e8716e1a28e8c99"
+    sha256 cellar: :any_skip_relocation, big_sur:        "81c12794d2242d498830b3fdc9e6e67115d700544cb320d15e1401f02d970dff"
+    sha256                               x86_64_linux:   "73ce26fb7c594bcb688ed16dbc58485cf7c4405063b9c2c0398d2e0dc3cc95da"
   end
 
-  depends_on xcode: ["12.0", :build]
+  depends_on xcode: ["12.5", :build]
   depends_on "protobuf"
   depends_on "swift-protobuf"
 

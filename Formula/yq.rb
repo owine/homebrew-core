@@ -1,8 +1,8 @@
 class Yq < Formula
   desc "Process YAML documents from the CLI"
   homepage "https://github.com/mikefarah/yq"
-  url "https://github.com/mikefarah/yq/archive/v4.18.1.tar.gz"
-  sha256 "9883f6292fc5b2cc697a2f7f7441965948545831265af8dad51a4b12696be086"
+  url "https://github.com/mikefarah/yq/archive/v4.27.3.tar.gz"
+  sha256 "21865c7db6f0aa4d019106f8b7bfceb0ca746ca0265f4d61c855edb0ed41b17d"
   license "MIT"
   head "https://github.com/mikefarah/yq.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Yq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb5a262169242f2fc31c3d1bd6ee867dcc6f12c94111fe1df368ddc7a8a9b696"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4241d61fbd7a4c46164f84ea8127158f64eb08b40210283f795230e30243039a"
-    sha256 cellar: :any_skip_relocation, monterey:       "2bb58a0ab69057b26b2eae2b66ecbd85a6f6bf261301c60202503df22fe46915"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b8b1a612f88cfa597c55e19d175d75a670eff8b0c3cf739c719dd2248b6c3fe4"
-    sha256 cellar: :any_skip_relocation, catalina:       "c56056ff92fbec83d2b0497d42e45e7c27b195e2433482226314c5a03b799d6e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "86b472a1ab4edbf67cd966eb191802d6fbf5df2403ba8f5ca50a2b7a734ce82f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "73ab89282b06b1e82776f405351dbad5aa4d78987e9f764e82879426eca26bfe"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8a7896f8b06a74d00bf3a975afdb48cbee2044818d08e1e356861e54ff2d5c5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "7bf58ff88069758b0a5d16b6d21141892ea7a50ea5f89261969397591a98ee89"
+    sha256 cellar: :any_skip_relocation, big_sur:        "256f81c0b0118a6b22617c9f673ef4b151c069c423b6255f15a9d6d465686eba"
+    sha256 cellar: :any_skip_relocation, catalina:       "ca8b1a7ed73df03707fb883d8dab1f960724ecb41f6776ab57fa7286e4b68fc7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b8fb8da1f017a043dce6058664083cb74529cf482a4d861ebadb7ca0b9c2365"
   end
 
   depends_on "go" => :build
@@ -29,9 +29,7 @@ class Yq < Formula
     system "go", "build", *std_go_args(ldflags: "-s -w")
 
     # Install shell completions
-    (bash_completion/"yq").write Utils.safe_popen_read(bin/"yq", "shell-completion", "bash")
-    (zsh_completion/"_yq").write Utils.safe_popen_read(bin/"yq", "shell-completion", "zsh")
-    (fish_completion/"yq.fish").write Utils.safe_popen_read(bin/"yq", "shell-completion", "fish")
+    generate_completions_from_executable(bin/"yq", "shell-completion")
 
     # Install man pages
     system "./scripts/generate-man-page-md.sh"

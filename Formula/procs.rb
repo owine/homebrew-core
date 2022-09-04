@@ -1,17 +1,17 @@
 class Procs < Formula
   desc "Modern replacement for ps written by Rust"
   homepage "https://github.com/dalance/procs"
-  url "https://github.com/dalance/procs/archive/v0.12.1.tar.gz"
-  sha256 "ce84e98dd85cb8d5afda871ad2ddceb4faec077d9e019469aa668a75821e4fc2"
+  url "https://github.com/dalance/procs/archive/v0.13.0.tar.gz"
+  sha256 "77642878d503f876db05d99a620c8c91834354a074bf71ab65474aa433f75fc5"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "77a13dce5e6266798af40688a6a1f323e0084d3ce9e199911e3f0523f13af658"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6b7d2f32f3753035cc5c1cc19b697fa16d916e33aabc0b3dd68cba6d9fc318ca"
-    sha256 cellar: :any_skip_relocation, monterey:       "278d61cdbd6fb7d0e0f00f4cbed41f3802cb8cdf9bed8ca3468b2abcb7253c59"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0539c269b9f0921486ecb443e6053aa93193f1e56d73d49245c7a12c448f1f6c"
-    sha256 cellar: :any_skip_relocation, catalina:       "ac9da774b5b83fea1c55b3a4663a2a80d3b843c968b941bc3e420577e3fe3e4b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "70af6a97ef22ef5b57340aaa69b0faa5b913f94cef0687daeffecd251f5b9ac4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "17e8bfdcbda59e63ebb95355cab2f68610c8dc2f7431f0bccdfdc8bdbf741a81"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "eb3fdbbe55e7addc2f10cb058a124475cc5b8851c5e323aa565b6a64e0baba03"
+    sha256 cellar: :any_skip_relocation, monterey:       "8cca4cf1b843200f8b0a6d2bd935ca647ed74242490ac57ebfebaada3c6b1037"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f2d0e607ad4e282ba9d529f261ba99b2c059323e23e7ba726c8e07fd44f9b560"
+    sha256 cellar: :any_skip_relocation, catalina:       "577d41ffda4ab435ed507fc80c566b0184f230776c813dc84bbada1b32fbe7a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd5e9324e8dae71349ee60cff89b8e17fb314befd104c7b667fd5c50d1fc8230"
   end
 
   depends_on "rust" => :build

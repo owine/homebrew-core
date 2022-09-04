@@ -1,10 +1,11 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://mkvtoolnix.download/"
-  url "https://mkvtoolnix.download/sources/mkvtoolnix-64.0.0.tar.xz"
-  mirror "https://fossies.org/linux/misc/mkvtoolnix-64.0.0.tar.xz"
-  sha256 "843ea623f21ae2407f8f42839c41a22abf116bdd509e87d875bdc737703ab953"
+  url "https://mkvtoolnix.download/sources/mkvtoolnix-70.0.0.tar.xz"
+  mirror "https://fossies.org/linux/misc/mkvtoolnix-70.0.0.tar.xz"
+  sha256 "64324b7ee6b4aa6fab5f517ca93667d12260a4ea92ea80b97575beda3a91693a"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://mkvtoolnix.download/sources/"
@@ -12,12 +13,12 @@ class Mkvtoolnix < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "32e3b3b42baea699e66462b0d72b36d1c475ebc05ef5a76c9bf45764e32a2bbf"
-    sha256 cellar: :any, arm64_big_sur:  "87b3f6b9a17c2037cfd998847a2d1d4a82adb8a1d16210e568767ad688c2984a"
-    sha256 cellar: :any, monterey:       "5505b5bdad5074edd514f956bb28aaaf70a4ed6c5df62decb71f4c22a7fca9d5"
-    sha256 cellar: :any, big_sur:        "f4608cbda19b5d0c81a4cdb0e7d2c43665e14408ca27a5057481ec6ce1b3bfce"
-    sha256 cellar: :any, catalina:       "09881f322cebb5259030dc84c48b1a68cf7c247df8801563b8af202b8baf3c95"
-    sha256               x86_64_linux:   "135c2a09f9880d5910822e62f7e58cbde08e55bb91082986832dd9c6300d27d5"
+    sha256 cellar: :any, arm64_monterey: "b16fd142dddc9332abf39423840ca65a33435d5a44a49c95427582b7c46da077"
+    sha256 cellar: :any, arm64_big_sur:  "29b0763668256b59bdbb2bb8e2f27af9ce7fe362147e496db29996d0d0dc9469"
+    sha256 cellar: :any, monterey:       "ec113ec2d8e50f25c3b8adc9e26d6af8892ac422e9ed4c132b9b33d22d71c560"
+    sha256 cellar: :any, big_sur:        "a11dc0fa44af876dfbf426d4f2f0a91dd5e12c84b4cf25e4f5b0e4d6898f2d9e"
+    sha256 cellar: :any, catalina:       "f15a7da41b46305bbdaf8e959997d41cbc95b4ae0f38649c363b827fa0c492e3"
+    sha256               x86_64_linux:   "a851bae7a5af88b9486dab6b004a0d7691e4087e8dfb9de8d4ee59a2814e6160"
   end
 
   head do

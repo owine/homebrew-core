@@ -1,7 +1,7 @@
 class Infrakit < Formula
   desc "Toolkit for creating and managing declarative infrastructure"
-  homepage "https://github.com/docker/deploykit"
-  url "https://github.com/docker/deploykit.git",
+  homepage "https://github.com/docker-archive/deploykit"
+  url "https://github.com/docker-archive/deploykit.git",
       tag:      "v0.5",
       revision: "3d2670e484176ce474d4b3d171994ceea7054c02"
   license "Apache-2.0"
@@ -15,7 +15,7 @@ class Infrakit < Formula
     sha256 cellar: :any_skip_relocation, sierra:      "8db80c4d2d7842486a4cedfa4952ed06e453f2e61f4e6818a08b17fa694d1a1c"
   end
 
-  deprecate! date: "2020-02-19", because: :repo_archived
+  disable! date: "2022-07-31", because: :repo_archived
 
   depends_on "go" => :build
   depends_on "libvirt" => :build

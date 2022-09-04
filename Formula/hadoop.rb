@@ -1,42 +1,77 @@
 class Hadoop < Formula
   desc "Framework for distributed processing of large data sets"
   homepage "https://hadoop.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz"
-  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz"
-  sha256 "ad770ae3293c8141cc074df4b623e40d79782d952507f511ef0a6b0fa3097bac"
+  url "https://www.apache.org/dyn/closer.lua?path=hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz"
+  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz"
+  sha256 "6a483d1a0b123490ebd8df3f71b64eb39f333f78b95f090aeb58e433cbc2416d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9137835a8e895a63beeb16e429b52d9578973b20de89c8ea5bf3b327c4070229"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9137835a8e895a63beeb16e429b52d9578973b20de89c8ea5bf3b327c4070229"
-    sha256 cellar: :any_skip_relocation, monterey:       "b7a267d1262025ee2ba27a3f7b3262e742728226834f9224e7cf64f5bef8a2c4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b7a267d1262025ee2ba27a3f7b3262e742728226834f9224e7cf64f5bef8a2c4"
-    sha256 cellar: :any_skip_relocation, catalina:       "b7a267d1262025ee2ba27a3f7b3262e742728226834f9224e7cf64f5bef8a2c4"
-    sha256 cellar: :any_skip_relocation, mojave:         "b7a267d1262025ee2ba27a3f7b3262e742728226834f9224e7cf64f5bef8a2c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6ab7ec87e14d03ddfae37c0c2ab5526570dfcd35a27dd253b70d27a1109bf3f8"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "caad5e1aa87bf016bdb4bd6e828e21640136ad33d18de09410d2bf4f2e985f00"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "caad5e1aa87bf016bdb4bd6e828e21640136ad33d18de09410d2bf4f2e985f00"
+    sha256 cellar: :any_skip_relocation, monterey:       "a7285cf8aeaae3e175340d73f5458aad739dcf377e5e3c622867f3889a5921da"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a7285cf8aeaae3e175340d73f5458aad739dcf377e5e3c622867f3889a5921da"
+    sha256 cellar: :any_skip_relocation, catalina:       "a7285cf8aeaae3e175340d73f5458aad739dcf377e5e3c622867f3889a5921da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d96e6b62f7237f82f55f5c17708ab79f9bec11e15e0f16d9986b21566eaf73cb"
   end
 
-  depends_on "openjdk"
+  # WARNING: Check https://cwiki.apache.org/confluence/display/HADOOP/Hadoop+Java+Versions before updating JDK version
+  depends_on "openjdk@11"
 
   conflicts_with "yarn", because: "both install `yarn` binaries"
 
   def install
     rm_f Dir["bin/*.cmd", "sbin/*.cmd", "libexec/*.cmd", "etc/hadoop/*.cmd"]
     libexec.install %w[bin sbin libexec share etc]
-    Dir["#{libexec}/bin/*"].each do |path|
-      (bin/File.basename(path)).write_env_script path, JAVA_HOME: Formula["openjdk"].opt_prefix
+
+    hadoop_env = Language::Java.java_home_env("11")
+    hadoop_env[:HADOOP_LOG_DIR] = var/"hadoop"
+
+    (libexec/"bin").each_child do |path|
+      (bin/File.basename(path)).write_env_script path, hadoop_env
     end
-    Dir["#{libexec}/sbin/*"].each do |path|
-      (sbin/File.basename(path)).write_env_script path, JAVA_HOME: Formula["openjdk"].opt_prefix
+    (libexec/"sbin").each_child do |path|
+      (sbin/File.basename(path)).write_env_script path, hadoop_env
     end
-    Dir["#{libexec}/libexec/*.sh"].each do |path|
-      (libexec/File.basename(path)).write_env_script path, JAVA_HOME: Formula["openjdk"].opt_prefix
+    libexec.glob("libexec/*.sh").each do |path|
+      (libexec/File.basename(path)).write_env_script path, hadoop_env
     end
+
     # Temporary fix until https://github.com/Homebrew/brew/pull/4512 is fixed
-    chmod 0755, Dir["#{libexec}/*.sh"]
+    chmod 0755, libexec.glob("*.sh")
   end
 
   test do
     system bin/"hadoop", "fs", "-ls"
+
+    # Test if resource manager can start successfully
+    port = free_port
+    classpaths = %w[
+      etc/hadoop
+      share/hadoop/common/lib/*
+      share/hadoop/common/*
+      share/hadoop/hdfs
+      share/hadoop/hdfs/lib/*
+      share/hadoop/hdfs/*
+      share/hadoop/mapreduce/*
+      share/hadoop/yarn
+      share/hadoop/yarn/lib/*
+      share/hadoop/yarn/*
+      share/hadoop/yarn/timelineservice/*
+      share/hadoop/yarn/timelineservice/lib/*
+    ].map { |path| libexec/path }
+
+    pid = Process.spawn({
+      "JAVA_HOME" => Language::Java.java_home("11"),
+      "CLASSPATH" => classpaths.join(":"),
+    }, Formula["openjdk@11"].opt_bin/"java", "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager",
+                                             "-Dyarn.resourcemanager.webapp.address=127.0.0.1:#{port}")
+    sleep 8
+
+    Process.getpgid pid
+    system "curl", "http://127.0.0.1:#{port}"
+  ensure
+    Process.kill "TERM", pid
   end
 end

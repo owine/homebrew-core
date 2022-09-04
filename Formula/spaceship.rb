@@ -1,25 +1,38 @@
 class Spaceship < Formula
   desc "Zsh prompt for Astronauts"
   homepage "https://spaceship-prompt.sh"
-  url "https://github.com/spaceship-prompt/spaceship-prompt/archive/v3.16.2.tar.gz"
-  sha256 "ee4d814de6e0cbd16d018de198a9f41ae40f6ffc0a091231eaacdf709b18bdfa"
+  url "https://github.com/spaceship-prompt/spaceship-prompt/archive/v4.2.0.tar.gz"
+  sha256 "717e82f52959a74e4586a687cfcc14a761415c957b334276aa118b5738e405ad"
   license "MIT"
   head "https://github.com/spaceship-prompt/spaceship-prompt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "586ef18148719d02465eed249deb1e05a783f7102daae08c2953b46776021654"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5384f8075e349091da1b7d21e32e90a7cb71d4c4b391c436619badc7e6ea3154"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dddeb5264a9f36d12d2313d1984621d8b2411d8b2d22fd732f015164887ab332"
+    sha256 cellar: :any_skip_relocation, monterey:       "71787b25a9a430fd2c972ff7972779ed6948885ad993ef3f885b10b9e4005f73"
+    sha256 cellar: :any_skip_relocation, big_sur:        "493357766099d139e4863e14eec2497a3cdf09e5eddfe58ec8c578e851376a18"
+    sha256 cellar: :any_skip_relocation, catalina:       "b5d6ec54aba18eeb684745eac0143c8bbfb17fb6ed7b46ed3c1d69f76f90302f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6ce8d0c63eaf1ab2619629b65d6fbe0467f892fc6d119239f96a48dd89ca2f21"
   end
 
-  depends_on "zsh" => :test
+  depends_on "zsh-async"
+  uses_from_macos "zsh" => :test
 
   def install
-    libexec.install "spaceship.zsh", "lib", "sections"
-    zsh_function.install_symlink libexec/"spaceship.zsh" => "prompt_spaceship_setup"
+    system "make", "compile"
+    prefix.install Dir["*"]
+  end
+
+  def caveats
+    <<~EOS
+      To activate Spaceship, add the following line to ~/.zshrc:
+        source "#{opt_prefix}/spaceship.zsh"
+      If your .zshrc sets ZSH_THEME, remove that line.
+    EOS
   end
 
   test do
-    ENV["SPACESHIP_CHAR_SYMBOL"] = "🍺"
-    prompt = "setopt prompt_subst; autoload -U promptinit; promptinit && prompt -p spaceship"
-    assert_match ENV["SPACESHIP_CHAR_SYMBOL"], shell_output("zsh -c '#{prompt}'")
+    assert_match "SUCCESS",
+      shell_output("zsh -fic '. #{opt_prefix}/spaceship.zsh && (( ${+SPACESHIP_VERSION} )) && echo SUCCESS'")
   end
 end

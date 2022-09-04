@@ -3,20 +3,20 @@ class Lit < Formula
 
   desc "Portable tool for LLVM- and Clang-style test suites"
   homepage "https://llvm.org"
-  url "https://files.pythonhosted.org/packages/f7/fc/aba44ef618619519d4fb56e604163fd85f4b598a4fd8a105e32e4e456798/lit-13.0.0.tar.gz"
-  sha256 "4da976f3d114e4ba6ba06cbe660ce1393230f4519c4df15b90bc1840f00e4195"
+  url "https://files.pythonhosted.org/packages/ce/bf/c6b46590aa185b1695faa5a588dd96eb87cee21f9cb7644dd444b67febdc/lit-15.0.0.tar.gz"
+  sha256 "6341b7caeeebdf2253f009f553008b676a0cf7845cf119ad005131ddfcfdc0df"
   license "Apache-2.0" => { with: "LLVM-exception" }
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "306d83ed52347e1f2e8f0781048c20dcd147ba2248d3e1a6458f88a75d6ca8de"
+    sha256 cellar: :any_skip_relocation, all: "5557673c8df8e201358c55e0367c97c6bc7a3bc312909e3ebc20c8b3c0c66e31"
   end
 
   depends_on "llvm" => :test
   depends_on "python@3.10"
 
   def install
-    system "python3", *Language::Python.setup_install_args(prefix)
+    system "python3", *Language::Python.setup_install_args(prefix),
+                      "--install-lib=#{prefix/Language::Python.site_packages("python3")}"
 
     # Install symlinks so that `import lit` works with multiple versions of Python
     python_versions = Formula.names

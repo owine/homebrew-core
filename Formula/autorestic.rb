@@ -1,18 +1,18 @@
 class Autorestic < Formula
   desc "High level CLI utility for restic"
   homepage "https://autorestic.vercel.app/"
-  url "https://github.com/cupcakearmy/autorestic/archive/v1.5.1.tar.gz"
-  sha256 "f0ad322b51408d5a47435923b9cc4858c4ba030bc0e7ad192ec40c5e7cc80e67"
+  url "https://github.com/cupcakearmy/autorestic/archive/v1.7.2.tar.gz"
+  sha256 "a04317c81f3dfafc28cb72c96b1b6ae8d90f2a5e5fab8d571b1b1a846b574dba"
   license "Apache-2.0"
   head "https://github.com/cupcakearmy/autorestic.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "552199bf5cbb62d1b449959202cbeb96432074fd4e006fa919afe5923dcaf3e5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "28d3b47d0c8710949ef2d1c758078b065e9fb7f215b81438defe564cd6228c08"
-    sha256 cellar: :any_skip_relocation, monterey:       "7f7d1cc3b3ef65a561dd6792e7b946c8b194a71753d9958c36ea29642bb3dc37"
-    sha256 cellar: :any_skip_relocation, big_sur:        "118d6e0abe7588d7ca40eb3744f4b6bf518b9652ce510ca778dbff2fd703dff5"
-    sha256 cellar: :any_skip_relocation, catalina:       "6c47c02a5e21d3754fc8960660328982f4d52b0fcbc7d0396d32e30faace9086"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf42e1779cbb641919354a277022b015aff2be2d9564bf668b4afe0c892d3d29"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d47f81f636baf69ba9931d713f8c6bb84ec44f2b881a3f28155ddcd8c6ade94c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0731a66c87db47cf155e08da423a46fa3c6b019aad96b84b2191cfd90aed49ff"
+    sha256 cellar: :any_skip_relocation, monterey:       "8d65f2f071c8f13691a7163ba59a279dea8fc6a5c5ccda4c72526772621f5d0d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "080755d384ecf39f7e76318eaca2928b65536d1f9b806d587e2d8baf483ba794"
+    sha256 cellar: :any_skip_relocation, catalina:       "f4e825513f90e980789b2e6f9b06881c3c850cebb51f847c0fa384be9928f3a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f6dddcdd2fbbe6bef9f918380e4f4f64ec207a9b7a92c85b1d366aea2d46776a"
   end
 
   depends_on "go" => :build
@@ -20,9 +20,7 @@ class Autorestic < Formula
 
   def install
     system "go", "build", *std_go_args, "./main.go"
-    (bash_completion/"autorestic").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "bash")
-    (zsh_completion/"_autorestic").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "zsh")
-    (fish_completion/"autorestic.fish").write Utils.safe_popen_read("#{bin}/autorestic", "completion", "fish")
+    generate_completions_from_executable(bin/"autorestic", "completion")
   end
 
   test do

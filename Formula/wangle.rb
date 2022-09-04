@@ -1,18 +1,18 @@
 class Wangle < Formula
   desc "Modular, composable client/server abstractions framework"
   homepage "https://github.com/facebook/wangle"
-  url "https://github.com/facebook/wangle/releases/download/v2022.01.24.00/wangle-v2022.01.24.00.tar.gz"
-  sha256 "a0332dcab35f80cf22eaf9fe313141edf764803c0c31df7eba4d765e20fee70e"
+  url "https://github.com/facebook/wangle/releases/download/v2022.08.29.00/wangle-v2022.08.29.00.tar.gz"
+  sha256 "121fc656ac44a68e3e3cc7ee37548854c0e5b9e06ea0e2ef0ab3aaa0cba612d8"
   license "Apache-2.0"
   head "https://github.com/facebook/wangle.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a6aae5cfa1be160385c726e440bdbeb61fc1f423bb3dd804b0812f3753c2985b"
-    sha256 cellar: :any,                 arm64_big_sur:  "30a0992f31ff80d7e0467c3c3e103d015ce43f9c11bcd6a3f65fadcac4b01b45"
-    sha256 cellar: :any,                 monterey:       "ab49937786db844c774366c215f39bba2518fdf1a3fd7780861995ea7c9bdb65"
-    sha256 cellar: :any,                 big_sur:        "9178bf823b516ecb6301fabe011c2aab58baa8b55378e54d82b78c3cab2ffde2"
-    sha256 cellar: :any,                 catalina:       "adf67c95581987faa4a07a8ebedcfda9dd49d1fd80ad911a0e4ed3d451bf27ac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "67ae7382032d6a5a3ffcf7a78d03e95e32c3436a838f320be35a0c46ce7347f8"
+    sha256 cellar: :any,                 arm64_monterey: "bcba6225740076da6ed2a03e8afb29f96b74276d2e0af4a179d7ea306e6a5879"
+    sha256 cellar: :any,                 arm64_big_sur:  "2abe14ebe33bb19414a6870ccdafb93a9d2f18b3ab3eb85e8fa4cf0b38b84370"
+    sha256 cellar: :any,                 monterey:       "aeb2936c0364980c33db67eabb529b156bad3503da5d65018d1471ef886baf85"
+    sha256 cellar: :any,                 big_sur:        "ee1a92659db390a433d0e1cf938f14bd9d3c50e2325a0f3ccfcf26fe5039dabe"
+    sha256 cellar: :any,                 catalina:       "e3d029dcd7363327780958c86cccbef5c8ba96de4fe9fcdbfb7bfa21d03fa3c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4182000d6b8969be39f844982a4bd83bc0fbc947f0b0618353d61c2f08b5dce3"
   end
 
   depends_on "cmake" => :build
@@ -54,7 +54,7 @@ class Wangle < Formula
 
   test do
     cxx_flags = %W[
-      -std=c++14
+      -std=c++17
       -I#{include}
       -I#{Formula["openssl@1.1"].opt_include}
       -L#{Formula["gflags"].opt_lib}
@@ -68,7 +68,7 @@ class Wangle < Formula
       -lfizz
       -lwangle
     ]
-    on_linux do
+    if OS.linux?
       cxx_flags << "-L#{Formula["boost"].opt_lib}"
       cxx_flags << "-lboost_context-mt"
       cxx_flags << "-ldl"
@@ -79,19 +79,16 @@ class Wangle < Formula
     system ENV.cxx, pkgshare/"EchoServer.cpp", *cxx_flags, "-o", "EchoServer"
 
     port = free_port
-    ohai "Starting EchoServer on port #{port}"
     fork { exec testpath/"EchoServer", "-port", port.to_s }
     sleep 10
 
     require "pty"
     output = ""
     PTY.spawn(testpath/"EchoClient", "-port", port.to_s) do |r, w, pid|
-      ohai "Sending data via EchoClient"
       w.write "Hello from Homebrew!\nAnother test line.\n"
       sleep 20
       Process.kill "TERM", pid
       begin
-        ohai "Reading received data"
         r.each_line { |line| output += line }
       rescue Errno::EIO
         # GNU/Linux raises EIO when read is done on closed pty

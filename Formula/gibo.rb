@@ -1,17 +1,17 @@
 class Gibo < Formula
   desc "Access GitHub's .gitignore boilerplates"
   homepage "https://github.com/simonwhitaker/gibo"
-  url "https://github.com/simonwhitaker/gibo/archive/2.2.5.tar.gz"
-  sha256 "f0c84cae0cb55d12ff063ee33fb61246f246224999229a082c18376cb62957e4"
+  url "https://github.com/simonwhitaker/gibo/archive/2.2.7.tar.gz"
+  sha256 "9f44af2d1b1f3c5582620b7b5202ee2eb897a19bffc6e0d7ce95c6f0da2688bb"
   license "Unlicense"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f2eb6cdf80716ffe27ff74f8feb53bb17e557b15124f286c7bf0282a302cec3d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2eb6cdf80716ffe27ff74f8feb53bb17e557b15124f286c7bf0282a302cec3d"
-    sha256 cellar: :any_skip_relocation, monterey:       "3b5c82bda1b0dd1e7d1cfc69aa6205d41ab4cbce64a4e919e73f066868435d40"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3b5c82bda1b0dd1e7d1cfc69aa6205d41ab4cbce64a4e919e73f066868435d40"
-    sha256 cellar: :any_skip_relocation, catalina:       "3b5c82bda1b0dd1e7d1cfc69aa6205d41ab4cbce64a4e919e73f066868435d40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f2eb6cdf80716ffe27ff74f8feb53bb17e557b15124f286c7bf0282a302cec3d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2c14c60bc5f047063f1f65d49b677a885ba1176503902c7619da7985354c9859"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2c14c60bc5f047063f1f65d49b677a885ba1176503902c7619da7985354c9859"
+    sha256 cellar: :any_skip_relocation, monterey:       "77563daca18aeb4823cccfe99a385b2e5e4619897e47e69a4699dd82de916287"
+    sha256 cellar: :any_skip_relocation, big_sur:        "77563daca18aeb4823cccfe99a385b2e5e4619897e47e69a4699dd82de916287"
+    sha256 cellar: :any_skip_relocation, catalina:       "77563daca18aeb4823cccfe99a385b2e5e4619897e47e69a4699dd82de916287"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c14c60bc5f047063f1f65d49b677a885ba1176503902c7619da7985354c9859"
   end
 
   def install

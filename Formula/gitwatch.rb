@@ -11,7 +11,14 @@ class Gitwatch < Formula
   end
 
   depends_on "coreutils"
-  depends_on "fswatch"
+
+  on_macos do
+    depends_on "fswatch"
+  end
+
+  on_linux do
+    depends_on "inotify-tools"
+  end
 
   def install
     bin.install "gitwatch.sh" => "gitwatch"
@@ -19,6 +26,8 @@ class Gitwatch < Formula
 
   test do
     repo = testpath/"repo"
+    system "git", "config", "--global", "user.email", "gitwatch-ci-test@brew.sh"
+    system "git", "config", "--global", "user.name", "gitwatch"
     system "git", "init", repo
     pid = spawn "gitwatch", "-m", "Update", repo, pgroup: true
     sleep 15

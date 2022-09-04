@@ -1,18 +1,19 @@
 class Giza < Formula
   desc "Scientific plotting library for C/Fortran built on cairo"
   homepage "https://danieljprice.github.io/giza/"
-  url "https://github.com/danieljprice/giza/archive/v1.3.1.tar.gz"
-  sha256 "b6bae5ba44a8fd921c3430e61b1ce5c6b7febfe7fa835a7c8724d19089bba0b9"
+  url "https://github.com/danieljprice/giza/archive/v1.3.2.tar.gz"
+  sha256 "080b9d20551bc6c6a779b1148830d0e89314c9a78c5a934f9ec8f02e8e541372"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/danieljprice/giza.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d975aae84df1d51b437f4609fedb6e2c43d90a607e71a6a00d93ec93e23300dc"
-    sha256 cellar: :any,                 arm64_big_sur:  "399cb433ec96d5ee36c0e17cc5827630648b75f5ca47606b51ce15032f71222f"
-    sha256 cellar: :any,                 monterey:       "7b103ac9d9567889e610823092cac1cab927522a3e9e4b5aa93d2ed811b4ba27"
-    sha256 cellar: :any,                 big_sur:        "ba70ab58bd3ed8ac5491b00547c30b1ec728b4324a1fb01ef6ebdbf5f2cf17e5"
-    sha256 cellar: :any,                 catalina:       "0e60f22c26465fe0971cc4df08d79ac30fe886dde744bf77877af6180d87ca41"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "708726ce009cb5618c3550b211179706ab7dd674f7274d95047ee1874c2e39b0"
+    sha256 cellar: :any,                 arm64_monterey: "1a837d975f00941a008235124a59803141fefb8d10614582ce7802ea47a12a78"
+    sha256 cellar: :any,                 arm64_big_sur:  "f78329c4aca9780496941516a59732ceeadfc0be526e1943dce7519a2ca561de"
+    sha256 cellar: :any,                 monterey:       "4edb315ea3a02c388550881052e35fa5ef04b312896e5fcb6be580b5f3b773f7"
+    sha256 cellar: :any,                 big_sur:        "2fac6931d67da26fa46605ef00aa465e81437050e95e2d1960d05f5969383fe2"
+    sha256 cellar: :any,                 catalina:       "5346d386325e486061bdde67c5d9ff826f0304e8b71b2a5355e5a92f41330923"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff1e1f486bbe66c1e80c394e6d6e0e92b447306dcbbad5406ff020980ce1a863"
   end
 
   depends_on "pkg-config" => :build
@@ -57,10 +58,14 @@ class Giza < Formula
       -lgiza
     ]
 
-    testfiles = Dir.children("#{testpath}/C")
-
-    testfiles.first(5).each do |file|
-      system ENV.cc, "C/#{file}", *flags
+    %w[
+      test-XOpenDisplay.c
+      test-cairo-xw.c
+      test-giza-xw.c
+      test-rectangle.c
+      test-window.c
+    ].each do |file|
+      system ENV.cc, testpath/"C"/file, *flags
     end
   end
 end

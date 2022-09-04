@@ -3,45 +3,50 @@ class Doc8 < Formula
 
   desc "Style checker for Sphinx documentation"
   homepage "https://github.com/PyCQA/doc8"
-  url "https://files.pythonhosted.org/packages/76/04/3f70faf4ad8d9bcc5f6a2ee27e4cad48fd3a1ed80f3ce40fc9334f268e2d/doc8-0.10.1.tar.gz"
-  sha256 "376e50f4e70a1ae935416ddfcf93db35dd5d4cc0e557f2ec72f0667d0ace4548"
+  url "https://files.pythonhosted.org/packages/75/8b/6df640e943a1334bebaf96e0017911763d882748e8b8fd748f109c8c3279/doc8-1.0.0.tar.gz"
+  sha256 "1e999a14fe415ea96d89d5053c790d01061f19b6737706b817d1579c2a07cc16"
   license "Apache-2.0"
   head "https://github.com/PyCQA/doc8.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3899ff9e0fda13a433015a2f5309d3f2477c78e6e2798713420340645c716909"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b90d196888743f9f9c8410dc7f55c5e713d02d84bd5283f3b750657d9c5e50c1"
-    sha256 cellar: :any_skip_relocation, monterey:       "f50a2ce5fdb1cdb9691e0fa6e632dfa5471c6c0a807cd51cae51c2c0e0fbbe61"
-    sha256 cellar: :any_skip_relocation, big_sur:        "14b3d14f8ecb4356eb55f28ee566e3e418f8fae8a2ba52efeba23033abc69f86"
-    sha256 cellar: :any_skip_relocation, catalina:       "f07d4456b1d8b5f272f1d05754f7074cea76741c31e4cd8dc941bb09bd23c9c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "040d934c7cac72e0ccc2b7591a11b5d7867e768d2bd0247d15bd1b8b7ec6af92"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2a822998b2a39e570065d75a3fcfb52e9532b62fa5838a00788a8ece7f09a6c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8fd71f85c355beb5d7843a871e22971cef5fd160b0d37744dcc820f48e4731ad"
+    sha256 cellar: :any_skip_relocation, monterey:       "af757567616bc402dedb16d4fc38f8027f7c99dcceaed4a74d2c0b6dc1f5951b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4145a4f2de02c2731eb6c71f68d53bace2ffdb97d5beeb88957230ecb06eeb70"
+    sha256 cellar: :any_skip_relocation, catalina:       "ce70b5a82f3cc3a1944775053e63da6226a00f6a589b8378249f89f93f03184c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0c6893383d7d5854ae0c796ca99ae4be4783fdea457556b741061164d7901283"
   end
 
   depends_on "python@3.10"
 
   resource "docutils" do
-    url "https://files.pythonhosted.org/packages/61/d7/8b2786f10b73e546aa9a85c2791393a6f475a16771b8028c7fb93d6ac8ce/docutils-0.18.tar.gz"
-    sha256 "c1d5dab2b11d16397406a282e53953fe495a46d69ae329f55aa98a5c4e3c5fbb"
+    url "https://files.pythonhosted.org/packages/6b/5c/330ea8d383eb2ce973df34d1239b3b21e91cd8c865d21ff82902d952f91f/docutils-0.19.tar.gz"
+    sha256 "33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6"
   end
 
   resource "pbr" do
-    url "https://files.pythonhosted.org/packages/69/7e/e420b9b6b06f9597827571e871f9492512701497971a4cf3f4638c03bc7a/pbr-5.7.0.tar.gz"
-    sha256 "4651ca1445e80f2781827305de3d76b3ce53195f2227762684eb08f17bc473b7"
+    url "https://files.pythonhosted.org/packages/96/9f/f4bc832eeb4ae723b86372277da56a5643b0ad472a95314e8f516a571bb0/pbr-5.9.0.tar.gz"
+    sha256 "e8dca2f4b43560edef58813969f52a56cef023146cbb8931626db80e6c1c4308"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/b7/b3/5cba26637fe43500d4568d0ee7b7362de1fb29c0e158d50b4b69e9a40422/Pygments-2.10.0.tar.gz"
-    sha256 "f398865f7eb6874156579fdf36bc840a03cab64d1cde9e93d68f46a425ec52c6"
+    url "https://files.pythonhosted.org/packages/59/0f/eb10576eb73b5857bc22610cdfc59e424ced4004fe7132c8f2af2cc168d3/Pygments-2.12.0.tar.gz"
+    sha256 "5eb116118f9612ff1ee89ac96437bb6b49e8f04d8a13b514ba26f620208e26eb"
   end
 
   resource "restructuredtext-lint" do
-    url "https://files.pythonhosted.org/packages/45/69/5e43d0e8c2ca903aaa2def7f755b97a3aedc5793630abbd004f2afc3b295/restructuredtext_lint-1.3.2.tar.gz"
-    sha256 "d3b10a1fe2ecac537e51ae6d151b223b78de9fafdd50e5eb6b08c243df173c80"
+    url "https://files.pythonhosted.org/packages/48/9c/6d8035cafa2d2d314f34e6cd9313a299de095b26e96f1c7312878f988eec/restructuredtext_lint-1.4.0.tar.gz"
+    sha256 "1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"
   end
 
   resource "stevedore" do
-    url "https://files.pythonhosted.org/packages/67/73/cd693fde78c3b2397d49ad2c6cdb082eb0b6a606188876d61f53bae16293/stevedore-3.5.0.tar.gz"
-    sha256 "f40253887d8712eaa2bb0ea3830374416736dc8ec0e22f5a65092c1174c44335"
+    url "https://files.pythonhosted.org/packages/f5/70/7953626fd19faa7a0852779c1949650e825f650ee6060f68658a84584c26/stevedore-4.0.0.tar.gz"
+    sha256 "f82cc99a1ff552310d19c379827c2c64dd9f85a38bcd5559db2470161867b786"
+  end
+
+  resource "tomli" do
+    url "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz"
+    sha256 "de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
   end
 
   def install

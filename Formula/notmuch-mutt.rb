@@ -1,8 +1,8 @@
 class NotmuchMutt < Formula
   desc "Notmuch integration for Mutt"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.34.3.tar.xz"
-  sha256 "3fe910483bfd815a5c3b950e226a7bca8156053fd32d7ad1eb1a0a8a3acae888"
+  url "https://notmuchmail.org/releases/notmuch-0.37.tar.xz"
+  sha256 "0e766df28b78bf4eb8235626ab1f52f04f1e366649325a8ce8d3c908602786f6"
   license "GPL-3.0-or-later"
   head "https://git.notmuchmail.org/git/notmuch", using: :git, branch: "master"
 
@@ -11,12 +11,12 @@ class NotmuchMutt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4fe94ac97dd110d3563404d873eab96cfc0231caf7216078151caeb840c68495"
-    sha256 cellar: :any,                 arm64_big_sur:  "57b7846f5ec9a9c78d94d6ac95fca87e569af98df07dd5ad30cfa9d6350e7616"
-    sha256 cellar: :any,                 monterey:       "5cce160224034aa58c1829469490f3693d0d97993fa80be9188ec08d4428caf5"
-    sha256 cellar: :any,                 big_sur:        "ac66973522128d7c78637a8c0b02accda58b961e314f44015d7e650b05a4d88e"
-    sha256 cellar: :any,                 catalina:       "211bb3de92b59c3307990191f9ccbf1db2e97a0cc6f29306c7732b0d2d3ff454"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01a1a0cd5243fb5ceab1cccc5282539fdc76b8ef3ec966e462cb925135c754cc"
+    sha256 cellar: :any,                 arm64_monterey: "fe70dc43e3db8da7cda11364cccf84b00d4ea31e6f430e8cf086928437431f72"
+    sha256 cellar: :any,                 arm64_big_sur:  "d3c29fa91e5251cd84d7954878e37f3f53c83505c28079c32841cd9047f2dd6c"
+    sha256 cellar: :any,                 monterey:       "88b138b05fd875d3cd94feae70bfeadc2b7506142ed58723d0a237b9db5bf95b"
+    sha256 cellar: :any,                 big_sur:        "79208cd497a43ac2b284b1b93080039d5d3bcf8338786d039779311694d0c57a"
+    sha256 cellar: :any,                 catalina:       "9f752552f320e607b87c513b6427cb64daed813b60b0ce2f45ec6fe505c432e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b10a1926b83286823c6ec7e07a17d8d531a4d1f477fbb4edaceee7d0290c916"
   end
 
   depends_on "notmuch"

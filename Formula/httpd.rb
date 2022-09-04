@@ -1,18 +1,19 @@
 class Httpd < Formula
   desc "Apache HTTP server"
   homepage "https://httpd.apache.org/"
-  url "https://dlcdn.apache.org/httpd/httpd-2.4.52.tar.bz2"
-  mirror "https://downloads.apache.org/httpd/httpd-2.4.52.tar.bz2"
-  sha256 "0127f7dc497e9983e9c51474bed75e45607f2f870a7675a86dc90af6d572f5c9"
+  url "https://dlcdn.apache.org/httpd/httpd-2.4.54.tar.bz2"
+  mirror "https://downloads.apache.org/httpd/httpd-2.4.54.tar.bz2"
+  sha256 "eb397feeefccaf254f8d45de3768d9d68e8e73851c49afd5b7176d1ecf80c340"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "7c71a42a41693093015c11813cd3ec9e714f303884afde9bde61b3eb86f2fbae"
-    sha256 arm64_big_sur:  "2bda2c7798b135b519882bd010bc2b4c8b6fb243c69046713639b22cff689400"
-    sha256 monterey:       "6a35059e2c3f69635ac6035c0a638030a1038cc62e648604ab53b4a280a88ba8"
-    sha256 big_sur:        "59ee7e0491e7a79a8844b05d0f4075d9b76b707190e6f229b84f763b58b9728a"
-    sha256 catalina:       "af1a311706c4eb1adb63b2179e2677e305f49ec346e74c3a29e60fe9fa8e5d60"
-    sha256 x86_64_linux:   "6d602ea4372d756c6ffb622373c5daa750ddb79d65818e4fa686070025b7f8ae"
+    sha256 arm64_monterey: "3f62a259d006b6edb185630e69dc388a29445a409b50f737ab1f4a01df47445a"
+    sha256 arm64_big_sur:  "d837cd002696e9215283031669a63bcbbfe018c2a94fdf13946198779975159b"
+    sha256 monterey:       "c02ce41fea0925e48986f3997d447c5aab462b1fa9bf74a5d0ebe3234b95cd85"
+    sha256 big_sur:        "b6398e308e34eb5e1883ab39880c7fb7de6147dc04ad3467ac9c864b43f5d700"
+    sha256 catalina:       "f477b0030a9b897bbb638007c458c1d2971964b9ac49248f145ea1231fbcb30f"
+    sha256 x86_64_linux:   "7d502362fe3f134b10d4994a604d97d33f14925ad75e8f420ca104fff13c288c"
   end
 
   depends_on "apr"
@@ -20,7 +21,7 @@ class Httpd < Formula
   depends_on "brotli"
   depends_on "libnghttp2"
   depends_on "openssl@1.1"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
@@ -77,7 +78,7 @@ class Httpd < Formula
                           "--with-mpm=prefork",
                           "--with-nghttp2=#{Formula["libnghttp2"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
-                          "--with-pcre=#{Formula["pcre"].opt_prefix}",
+                          "--with-pcre=#{Formula["pcre2"].opt_prefix}/bin/pcre2-config",
                           "--with-z=#{zlib}",
                           "--disable-lua",
                           "--disable-luajit"
@@ -112,7 +113,7 @@ class Httpd < Formula
     end
 
     inreplace "#{lib}/httpd/build/config_vars.mk" do |s|
-      pcre = Formula["pcre"]
+      pcre = Formula["pcre2"]
       s.gsub! pcre.prefix.realpath, pcre.opt_prefix
       s.gsub! "${prefix}/lib/httpd/modules", HOMEBREW_PREFIX/"lib/httpd/modules"
       s.gsub! Superenv.shims_path, HOMEBREW_PREFIX/"bin"
@@ -170,6 +171,9 @@ class Httpd < Formula
       sleep 3
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
+
+      # Check that `apxs` can find `apu-1-config`.
+      system bin/"apxs", "-q", "APU_CONFIG"
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

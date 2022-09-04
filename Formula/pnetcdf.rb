@@ -1,8 +1,8 @@
 class Pnetcdf < Formula
   desc "Parallel netCDF library for scientific data using the OpenMPI library"
   homepage "https://parallel-netcdf.github.io/index.html"
-  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.2.tar.gz"
-  sha256 "3ef1411875b07955f519a5b03278c31e566976357ddfc74c2493a1076e7d7c74"
+  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.3.tar.gz"
+  sha256 "439e359d09bb93d0e58a6e3f928f39c2eae965b6c97f64e67cd42220d6034f77"
   license "NetCDF"
   revision 1
 
@@ -12,16 +12,18 @@ class Pnetcdf < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "2e94a26e3540b4281fce3cef0c1e965447ac4b4bd090eb816f0f91a9b0a238e2"
-    sha256 arm64_big_sur:  "e15cc2caf8c4aeffa65126c52e3dceffdf6fc93dee09eed8dae9db2085756f38"
-    sha256 monterey:       "7c928b2dc13add9556400b02dcc3cfdc39f89d2128896c7f401f7b1ffca16c0d"
-    sha256 big_sur:        "c2f92ef84469ce44c4b502c72120a750ff64eb06b08e0ed6ebdbf74c11f026d2"
-    sha256 catalina:       "4813fb99e57bd2399fe44683d58cae95638ee4a7837ef00a0fb7ef9e7151842c"
-    sha256 mojave:         "845ad46ce85c49bb2e680fb2f3313bf86bce98d4dc0756be208dc60c678fb429"
+    sha256 arm64_monterey: "1543e607fd7d317f0d235655c746f6e23e9b1f2646d366c4503008cab3b2ee1d"
+    sha256 arm64_big_sur:  "3835889299b0058c33d17b94b2f1c57b21d10a00694d9a43c19ea95079035200"
+    sha256 monterey:       "026bca86c31dc0ce029f790e93db11616877121173a780aa4a3954864ebd347a"
+    sha256 big_sur:        "2708f28a2cc2b81cb4ef5338219fdc644e23a666001ab0c622f3cfe97c731479"
+    sha256 catalina:       "1d5b9405435f5c0621fd1214e2678e8a52c84b27da7f7540a3a6e7a4ccac7c50"
+    sha256 x86_64_linux:   "315a952a703528f06ded6287166bfd92373ae53a8de6774ac32a638d322431a8"
   end
 
   depends_on "gcc"
   depends_on "open-mpi"
+
+  uses_from_macos "m4" => :build
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do

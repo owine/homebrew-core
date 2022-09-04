@@ -1,17 +1,17 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "https://www.veripool.org/wiki/verilator"
-  url "https://github.com/verilator/verilator/archive/refs/tags/v4.216.tar.gz"
-  sha256 "64e5093b629a7e96178e3b2494f208955f218dfac6f310a91e4fc07d050c980b"
+  url "https://github.com/verilator/verilator/archive/refs/tags/v4.226.tar.gz"
+  sha256 "70bc941d86e4810253d51aa94898b0802d916ab76296a398f8ceb8798122c9be"
   license any_of: ["LGPL-3.0-only", "Artistic-2.0"]
 
   bottle do
-    sha256 arm64_monterey: "64e904c9c83ab057476ed63a80277656df6d554f30d589c82b42333ca2ec9866"
-    sha256 arm64_big_sur:  "7b9d457edce98a8703f88ed0f646c0a1cb33f6a51d9cfc2778e61040ea76cf80"
-    sha256 monterey:       "26efe02e1808eee8ebc6bc480c27bd886f4024a49f4ced13c56655eec2acf4a6"
-    sha256 big_sur:        "40459e084b741bffc67f6e7b72cf0c701428415434ad23ba635cf3fda9840276"
-    sha256 catalina:       "e0158aa800c6028a36f456d7e60a4b1ef102c863e03e8f4b83dd0a6261cf898d"
-    sha256 x86_64_linux:   "f337bdd7247fbb8a3245d28fa4531d69af420047e0058557f601ea8eefad9661"
+    sha256 arm64_monterey: "ef87fc6399d3f6da48ff60b67c1e009202f19c42fb7f1d59737ccc1743c92be2"
+    sha256 arm64_big_sur:  "10c1c488e94765f5531281f4dc4fd4640938d1db83947f8c5a55f7db85c6bff2"
+    sha256 monterey:       "9dfee8b25d4ba52111c841ef109b0aabd7f27089aaeb5ec689a59fd97b442aa4"
+    sha256 big_sur:        "7ff4ff84a34df0c65da91b144aa7a3b0e1194f3960c264d201b3305d77f9abb9"
+    sha256 catalina:       "c47ed2b560a824281e2a8af2a4d301556cd2ad4830e9a11c3d5e5fdd365730ea"
+    sha256 x86_64_linux:   "bb2b488c700f8bc421a3cc217d018dda191bc2a4201f9b99b8aaf7cbbefa38f2"
   end
 
   head do
@@ -21,13 +21,19 @@ class Verilator < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "python@3.10" => :build
-  depends_on "cmake" => :test
 
   uses_from_macos "bison"
   uses_from_macos "flex"
   uses_from_macos "perl"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
   skip_clean "bin" # Allows perl scripts to keep their executable flag
+
+  # error: specialization of 'template<class _Tp> struct std::hash' in different namespace
+  fails_with gcc: "5"
 
   def install
     system "autoconf"
@@ -35,6 +41,18 @@ class Verilator < Formula
     # `make` and `make install` need to be separate for parallel builds
     system "make"
     system "make", "install"
+  end
+
+  def post_install
+    return if OS.mac?
+
+    # Ensure the hard-coded versioned `gcc` reference does not go stale.
+    ohai "Fixing up GCC references..."
+    gcc_version = Formula["gcc"].any_installed_version.major
+    inreplace(pkgshare/"include/verilated.mk") do |s|
+      s.change_make_var! "CXX", "g++-#{gcc_version}"
+      s.change_make_var! "LINK", "g++-#{gcc_version}"
+    end
   end
 
   test do
@@ -54,16 +72,9 @@ class Verilator < Formula
           exit(0);
       }
     EOS
-    (testpath/"CMakeLists.txt").write <<~EOS
-      project(test)
-      cmake_minimum_required(VERSION 3.12)
-      find_package(verilator)
-      add_executable(Vtest test.cpp)
-      verilate(Vtest SOURCES test.v)
-    EOS
-    system "cmake", "-B", "build", "."
-    system "cmake", "--build", "build", "--"
-    cd "build" do
+    system "/usr/bin/perl", bin/"verilator", "-Wall", "--cc", "test.v", "--exe", "test.cpp"
+    cd "obj_dir" do
+      system "make", "-j", "-f", "Vtest.mk", "Vtest"
       expected = <<~EOS
         Hello World
         - test.v:2: Verilog $finish

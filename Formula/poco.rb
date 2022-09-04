@@ -1,8 +1,8 @@
 class Poco < Formula
   desc "C++ class libraries for building network and internet-based applications"
   homepage "https://pocoproject.org/"
-  url "https://pocoproject.org/releases/poco-1.11.1/poco-1.11.1-all.tar.gz"
-  sha256 "31ccce6020047270003bfb5b0da7e2ad432884c23d3cd509c86f47cf3a5e5d2a"
+  url "https://pocoproject.org/releases/poco-1.12.2/poco-1.12.2-all.tar.gz"
+  sha256 "642faec888acb619954d870f89c12a834052813306ff8d8a071becb1eee708aa"
   license "BSL-1.0"
   head "https://github.com/pocoproject/poco.git", branch: "master"
 
@@ -12,25 +12,30 @@ class Poco < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c5803cfda14c21ccc0308d63aee47309308fa8b3a4538769536eb7af15212fdb"
-    sha256 cellar: :any,                 arm64_big_sur:  "48c3e8a3c7bb4839ba4476294912c4c638f7e158c0d665eea66aa854002045f9"
-    sha256 cellar: :any,                 monterey:       "cee35bb37b7d15eff1b7c76c82e423115c53c417528aa54ada947f4de9d05157"
-    sha256 cellar: :any,                 big_sur:        "379a4a4055a10827facf52791873c6040dc349836588cfa18a4d14a938b6e5ae"
-    sha256 cellar: :any,                 catalina:       "9d6965f8ae6b9249dd2d4d9c14b02f8e684d60dde9b1a5e48080f3f34ae29c21"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "15f5fb5a0c2d491148ab5cb029d987fc555a07b47d9799e6aa62bdf5eb0adf3c"
+    sha256 cellar: :any,                 arm64_monterey: "4e97f98c2fb41f8ce19584e96b4da3d3ebb249a88b822a51e20a969437283adf"
+    sha256 cellar: :any,                 arm64_big_sur:  "581acee0c0c7ef9fd67018df4edf413c950118e299aac7192368079430edc51c"
+    sha256 cellar: :any,                 monterey:       "796f707d2664dc470386a0551a3180b6abc27b101d2ee8472fa5eef5236305ca"
+    sha256 cellar: :any,                 big_sur:        "2d82e850db4860e7e343e6c9a713408b098615603c62c287c5f0ea5780ea2fc7"
+    sha256 cellar: :any,                 catalina:       "f9529787d8abb8adfbeffb32cb35bc5f4dc9a527673eb4077ffc051445b75c81"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "251eff8e8d3e07e03821e7426287f24434ac1eb3879c0e54885fb0f14ab92a9d"
   end
 
   depends_on "cmake" => :build
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
+  depends_on "pcre2"
+
+  uses_from_macos "expat"
+  uses_from_macos "sqlite"
+  uses_from_macos "zlib"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args,
-                            "-DENABLE_DATA_MYSQL=OFF",
-                            "-DENABLE_DATA_ODBC=OFF",
-                            "-DCMAKE_INSTALL_RPATH=#{rpath}"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DENABLE_DATA_MYSQL=OFF",
+                    "-DENABLE_DATA_ODBC=OFF",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DPOCO_UNBUNDLED=ON"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

@@ -1,14 +1,13 @@
 class Mvnvm < Formula
   desc "Maven version manager"
   homepage "https://mvnvm.org/"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.15.tar.gz"
-  sha256 "2d2163b89d918e07146131407751eb7aff9c5fb5ae8c954b912e60860fb1c8ea"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.18.tar.gz"
+  sha256 "12fb91301a04f17755dcc1f6381822e13f12a1288603429902a39e7b19f701cd"
   license "Apache-2.0"
   head "https://bitbucket.org/mjensen/mvnvm.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "d302f0e086f47adc21c6c401b1ab6fab48ab5c9bbf82459c94c886a07b8a5b8c"
+    sha256 cellar: :any_skip_relocation, all: "a59907f147d21bfa8d3510cce0bf62f8adba3e82026708070b1946361936ab34"
   end
 
   depends_on "openjdk"

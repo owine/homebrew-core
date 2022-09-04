@@ -1,21 +1,25 @@
 class DhallYaml < Formula
   desc "Convert between Dhall and YAML"
   homepage "https://github.com/dhall-lang/dhall-haskell/tree/master/dhall-yaml"
-  url "https://hackage.haskell.org/package/dhall-yaml-1.2.9/dhall-yaml-1.2.9.tar.gz"
-  sha256 "8637b4e78b60a9318d17ffe99a45a9931886e0a4f5e99922d2b246187196c93e"
+  url "https://hackage.haskell.org/package/dhall-yaml-1.2.11/dhall-yaml-1.2.11.tar.gz"
+  sha256 "90ba0e61caeb1f1b671dd5d21ced247d5c761fb9b1c3d7b467c907fbe24b16c7"
   license "BSD-3-Clause"
   head "https://github.com/dhall-lang/dhall-haskell.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b8dd55ac7cc30a3956d0a70572ad5677436b4e70d8ade82a781b72c88217dd44"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7001df466b1aee72cc5b489d66b744b6a4c904bc8b05349af7e0c0a4ea0b960f"
-    sha256 cellar: :any_skip_relocation, monterey:       "3c3006edca87e012f87d933cf87b7d3f7694cc1a9cedf5a1c3a93b09bca1d50f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c796a7a8b7210d51a26ad45e1713dfb0128d1e88cc4c2efcadc9c5fa7d5f19c7"
-    sha256 cellar: :any_skip_relocation, catalina:       "a7dbf68429b1fb9d6e8b15baf8b75b290772803e1efa43f4036d267be8b69e67"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8103d97ef51d7a331d4c15b9073e3847e7f9bd3e57a093b6476ebca10b550a99"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f85fdec06f8fe38a8b6da9453651f9c07f49889ecaa9c30a31e64598e33774f8"
+    sha256 cellar: :any_skip_relocation, monterey:       "4e970a26b036b0b0f34412c1aa49b5e31e6b5c46e30465dac5ca9c7e332d13ff"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cebe8b981ee53551733d158dffd23f483b0dcd108fec9f6078b6add6eb082600"
+    sha256 cellar: :any_skip_relocation, catalina:       "1995b281bf300de48db36c0ad04e4f69cf10ea184d4001e8fa1e07ec76a5fa80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bff559058b2bef2ecce72d231c8d26128b4dfc433cc5cea935521426304edf84"
   end
 
   depends_on "cabal-install" => :build
   depends_on "ghc" => :build
+
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   def install
     system "cabal", "v2-update"

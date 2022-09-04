@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
   desc "Free Heroes of Might and Magic II is a recreation of HoMM2 game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/0.9.11.tar.gz"
-  sha256 "afd56848083a28effcc8eb5a10983abe27f8ec8a469f470b04317e822ac27cb4"
+  url "https://github.com/ihhub/fheroes2/archive/0.9.18.tar.gz"
+  sha256 "bcd9afce7b869630f97cfdb713668f0f7dccf69fc6b31db1ca74ac2f63524a8d"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e576740ff5d1b1c0b4adfa19da56cd31e74fd21a221f61cc95d726e6aa1c40ed"
-    sha256 arm64_big_sur:  "f4f64b20647ff4eb125eab7af50e3cfa8ccb4d26911a7d188a84e60eec957709"
-    sha256 monterey:       "879763ee0e1b57c8842459753605a43c641a404bdba752878a86cdda7bdbcfbf"
-    sha256 big_sur:        "fb6d6411e764a697d34dc52b9bc0852c466f4b038b3b50c30ba45096bc56ea0e"
-    sha256 catalina:       "8f6a31ffcba22ba95ad9b63fcbc9bb107b131e9881050adc9c3cbe757bf89c60"
-    sha256 x86_64_linux:   "3e1c28af5d3efdbcfc4cbd0bb9ad46acbeb50c5d5c6bbc31c2570784aeb722f2"
+    sha256 arm64_monterey: "69c9a533f239193b06146dfe4b0b008626a6388bff4b31347b2ebc31360a7962"
+    sha256 arm64_big_sur:  "f0f7fcb57b6f09209431a7dfc8ee92c184a39a22e9e8f99a7d4ce92222b725b0"
+    sha256 monterey:       "9a8ceb085dfdcf9b469dfd04df2c8e6ea7ed6f2083606495bc20dc898cf39c54"
+    sha256 big_sur:        "85edf07788903707cb4fe5f8573c02018342c799371b4d5469b0f314c35d1578"
+    sha256 catalina:       "fdc9cab4c43d028d34e1339812c9803d4db3629c1950460e79215c97d6fbe568"
+    sha256 x86_64_linux:   "c28595b79336768b8bbc419b4161fb732263ae416f4c827c4f31797f36db8917"
   end
 
   depends_on "cmake" => :build
@@ -30,15 +30,16 @@ class Fheroes2 < Formula
 
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-    system "make", "-C", "files/lang"
-
-    (pkgshare/"files/lang").install Dir["files/lang/*.mo"]
-    pkgshare.install "fheroes2.key"
-    bin.install "script/demo/download_demo_version.sh" => "fheroes2-install-demo"
   end
 
   test do

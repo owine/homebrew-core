@@ -3,30 +3,30 @@ class GalleryDl < Formula
 
   desc "Command-line downloader for image-hosting site galleries and collections"
   homepage "https://github.com/mikf/gallery-dl"
-  url "https://files.pythonhosted.org/packages/b8/a9/f79c98fb44f3bd021703c34430617c69ed4fe8b803e5f7a7097fd39cffcf/gallery_dl-1.20.3.tar.gz"
-  sha256 "6d1d97bd08a2a0dcfb0578e759fb83c4902b395405b3e3238673f684973b0556"
+  url "https://files.pythonhosted.org/packages/89/36/f286ec47795fed7285cede2f914e81f222bbcb522556e8b7ccb6f9f09c0a/gallery_dl-1.23.0.tar.gz"
+  sha256 "7062edcf950f4c8a7459f0a1296767ac3e02fa61aff9df3778746bce90fb308b"
   license "GPL-2.0-only"
   head "https://github.com/mikf/gallery-dl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8328b0806a139a3e8e9a62f506d1bcf0c67cc958dfcb1ef928bb060bb0c5da7a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8328b0806a139a3e8e9a62f506d1bcf0c67cc958dfcb1ef928bb060bb0c5da7a"
-    sha256 cellar: :any_skip_relocation, monterey:       "4e7d08d36f195436951948915ff963eae1fd692ff53bfefd3b57edd0de663db6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4e7d08d36f195436951948915ff963eae1fd692ff53bfefd3b57edd0de663db6"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e7d08d36f195436951948915ff963eae1fd692ff53bfefd3b57edd0de663db6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5be383ab343b429db96ccb2357f18ecdad3a8cc394d2d268f0337ad23767f4b5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d2dc5146e9a918e11ba6f0b4e1f69382c8eba571e989e1fdda1d6aa596a7e4d8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "57d6d542ca7ceda2ee77d6f6a1e7acf2731fa567a730aa4298aaae18669d4843"
+    sha256 cellar: :any_skip_relocation, monterey:       "58411d57c5f863c49471625a95949841b1b1773dc366ff7df92822934aa2051d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "013c1a764c04a9e5d926e36994ff30e8197197dbb9d4396aec4b49cd345fa40e"
+    sha256 cellar: :any_skip_relocation, catalina:       "393f84691e278885dc13dda8c400bda2f9d063f4edef8b746261ebc595315a8f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "961b09fa7c507d8cb425e83715d6b73d60bbd320d4d9247187f4aa5500554afc"
   end
 
   depends_on "python@3.10"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/6c/ae/d26450834f0acc9e3d1f74508da6df1551ceab6c2ce0766a593362d6d57f/certifi-2021.10.8.tar.gz"
-    sha256 "78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"
+    url "https://files.pythonhosted.org/packages/cc/85/319a8a684e8ac6d87a1193090e06b6bbb302717496380e225ee10487c888/certifi-2022.6.15.tar.gz"
+    sha256 "84c85a9078b11105f04f3036a9482ae10e4621616db313fe045dd24743a0820d"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/48/44/76b179e0d1afe6e6a91fd5661c284f60238987f3b42b676d141d01cd5b97/charset-normalizer-2.0.10.tar.gz"
-    sha256 "876d180e9d7432c5d1dfd4c5d26b72f099d503e8fcc0feb7532c9289be60fcbd"
+    url "https://files.pythonhosted.org/packages/a1/34/44964211e5410b051e4b8d2869c470ae8a68ae274953b1c7de6d98bbcf94/charset-normalizer-2.1.1.tar.gz"
+    sha256 "5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"
   end
 
   resource "idna" do
@@ -35,13 +35,13 @@ class GalleryDl < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
-    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
+    url "https://files.pythonhosted.org/packages/a5/61/a867851fd5ab77277495a8709ddda0861b28163c4613b011bc00228cc724/requests-2.28.1.tar.gz"
+    sha256 "7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/b0/b1/7bbf5181f8e3258efae31702f5eab87d8a74a72a0aa78bc8c08c1466e243/urllib3-1.26.8.tar.gz"
-    sha256 "0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
+    url "https://files.pythonhosted.org/packages/b2/56/d87d6d3c4121c0bcec116919350ca05dc3afd2eeb7dc88d07e8083f8ea94/urllib3-1.26.12.tar.gz"
+    sha256 "3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"
   end
 
   def install

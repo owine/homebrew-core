@@ -3,31 +3,38 @@ require "language/node"
 class ProtocGenGrpcWeb < Formula
   desc "Protoc plugin that generates code for gRPC-Web clients"
   homepage "https://github.com/grpc/grpc-web"
-  url "https://github.com/grpc/grpc-web/archive/1.3.0.tar.gz"
-  sha256 "6ba86d2833ad0ed5e98308790bea4ad81214e1f4fc8838fe34c2e5ee053b73e6"
+  url "https://github.com/grpc/grpc-web/archive/1.3.1.tar.gz"
+  sha256 "d292df306b269ebf83fb53a349bbec61c07de4d628bd6a02d75ad3bd2f295574"
   license "Apache-2.0"
   revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "694f70b69029f55a659d0981473b025467dc9f88ec84195f6b88d6ca2d67c3cf"
-    sha256 cellar: :any,                 arm64_big_sur:  "b8c378b553e2ac95659369ada0af31198ef30e72391c3ac867faa999be965ede"
-    sha256 cellar: :any,                 monterey:       "25779d4c29e4c1f8299db7ada86e4d568cd8d6a5ce8bbce2956d1f6a2785e347"
-    sha256 cellar: :any,                 big_sur:        "f4ffae6839a5a559e198d61c79bc567a714fa0fc884f0f6f031ebd9c78c83115"
-    sha256 cellar: :any,                 catalina:       "7480b35d0d8e6e280da6824c70a8e0c58308a51511f4010fdf2c165f1d8e14ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae7d825f02135ab092f592229bea5a3d0dff5ae02374bebb3ff6920efcd9b7f0"
+    sha256 cellar: :any,                 arm64_monterey: "e5328893bcbe0358cf13cd9271930f43f84133876b3af516fd05ed56d2abe907"
+    sha256 cellar: :any,                 arm64_big_sur:  "c58d3cce1fae0841e43f388a4882c8c1f0a2ce6dadc8d602c3868de812919041"
+    sha256 cellar: :any,                 monterey:       "b2c76d8ecbe7fd209f8ce81ca5df924b4cb42cb30fb8bbbda1ad969cfbec5eaf"
+    sha256 cellar: :any,                 big_sur:        "8be0ebdbcc638da05576db96c7e250f37cb76652d49e5f914dc0acd9fab6c99e"
+    sha256 cellar: :any,                 catalina:       "6b9587aa8e753496fb131bddbfe34c034b59daffe48f58ba3108873cde26b034"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c22f91d1442b02b6d546eaa5a10675221d01cf457bb9a408c574dfdfc67825ed"
   end
 
   depends_on "cmake" => :build
   depends_on "node" => :test
   depends_on "typescript" => :test
-  depends_on "protobuf"
+  depends_on "protobuf@3"
 
   def install
     bin.mkpath
     system "make", "install-plugin", "PREFIX=#{prefix}"
+
+    # Remove these two lines when this formula depends on unversioned `protobuf`.
+    libexec.install bin/"protoc-gen-grpc-web"
+    (bin/"protoc-gen-grpc-web").write_env_script libexec/"protoc-gen-grpc-web",
+                                                 PATH: "#{Formula["protobuf@3"].opt_bin}:${PATH}"
   end
 
   test do
+    ENV.prepend_path "PATH", Formula["protobuf@3"].opt_bin
+
     # First use the plugin to generate the files.
     testdata = <<~EOS
       syntax = "proto3";
@@ -47,8 +54,8 @@ class ProtocGenGrpcWeb < Formula
     EOS
     (testpath/"test.proto").write testdata
     system "protoc", "test.proto", "--plugin=#{bin}/protoc-gen-grpc-web",
-      "--js_out=import_style=commonjs:.",
-      "--grpc-web_out=import_style=typescript,mode=grpcwebtext:."
+                     "--js_out=import_style=commonjs:.",
+                     "--grpc-web_out=import_style=typescript,mode=grpcwebtext:."
 
     # Now see if we can import them.
     testts = <<~EOS

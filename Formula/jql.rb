@@ -1,18 +1,18 @@
 class Jql < Formula
   desc "JSON query language CLI tool"
   homepage "https://github.com/yamafaktory/jql"
-  url "https://github.com/yamafaktory/jql/archive/v3.0.7.tar.gz"
-  sha256 "cce5e6b0c5523526e2d70f57895c336cf31c4f87a8d0c59f94e6a3d7ed35713d"
+  url "https://github.com/yamafaktory/jql/archive/v5.0.1.tar.gz"
+  sha256 "c1074e2db2bb53da6e3786ac016039356638861a0875ee2c20feb894eb7e242b"
   license "MIT"
   head "https://github.com/yamafaktory/jql.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bbf76df33ded11594628c00c0c1348a052f82ee18a2c88569c2b8ab2b78711b9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "18169e5e6905095ff5942cf5139ce8bdfa084e53e9dfcac8a48a6e1535a0131a"
-    sha256 cellar: :any_skip_relocation, monterey:       "ffe36ac903af5881e233681510dc476980903f74f73f48eec27ad904aed11680"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4ff47c98ee26bd5374ce908ffee6f5f8e98b79260a42d435713c70ee1300d69e"
-    sha256 cellar: :any_skip_relocation, catalina:       "a7138abb881566dc395d86f1210ad15b5474ceedf996c95d0282e138fe19a94c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "876f5cd7dcabdd565907d7e346c13cf6ee6f8acc9950b7c37c4d85c0a79926c6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cad48553dc48816d3812b18910f754e57b96a795c3b1ad1c4f1b53f74d516154"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "13875794cd4ab7069996324fc7dce75b02764feaa75fb4e32825f8932ba3879e"
+    sha256 cellar: :any_skip_relocation, monterey:       "6e9b48dfcdf9def9302ad641773694b30e810ffa2201f0ae084421cd3f065e5a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a57e4b1b5208889ab85ccb2773edddf01aa8db7a42881513242d779a0418530c"
+    sha256 cellar: :any_skip_relocation, catalina:       "4961f73a4a253901b715d8c4d4259275284f4c0b95dca03c8ee0d7e8ec3c5978"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dfbc0d0518344ea62a078994b69aaeba673fc529727d0215cb90cab4b93b307f"
   end
 
   depends_on "rust" => :build

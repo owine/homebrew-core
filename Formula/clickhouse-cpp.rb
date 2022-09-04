@@ -1,18 +1,18 @@
 class ClickhouseCpp < Formula
   desc "C++ client library for ClickHouse"
   homepage "https://github.com/ClickHouse/clickhouse-cpp#readme"
-  url "https://github.com/ClickHouse/clickhouse-cpp/archive/refs/tags/v2.0.0.tar.gz"
-  sha256 "ea9f068f874d4f678dd23aec1bda414df16c9a869101438fc7ec195d0b5678f0"
+  url "https://github.com/ClickHouse/clickhouse-cpp/archive/refs/tags/v2.2.1.tar.gz"
+  sha256 "53eaccb1dbb96f82d27400a8e336bbf59c9bcb15495458c09e4c569717314f17"
   license "Apache-2.0"
   head "https://github.com/ClickHouse/clickhouse-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "1b42955f4dd85ff527216e6ea7bc5b7bc0b6c9fefdc12e0e486da8a828fbfef3"
-    sha256 cellar: :any,                 arm64_big_sur:  "728aabedffe514a18f43e49f121fae4d50bfcf7eccecfa942f4580a035168f07"
-    sha256 cellar: :any,                 monterey:       "89724b1341b84f1f3611ed66bbf16c8fb3c32af36cc17bdef1db37a9084b5a7d"
-    sha256 cellar: :any,                 big_sur:        "cd9e75d6000ab927aa483e54161ac28a14936e734c529984c07dd70fc14a5024"
-    sha256 cellar: :any,                 catalina:       "1dfc7b327c57b76a173aad4075a14a6aee17f240c7e5660371401b5ecee2e603"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "97073a69174969b32e67a6990bea1129bdca1c7ba952e8e570d548211bf37015"
+    sha256 cellar: :any,                 arm64_monterey: "40ef8f4f3bc27a5ee551b8f7c4e8ef318807a7971d519d6b0065fa4925ac7bd6"
+    sha256 cellar: :any,                 arm64_big_sur:  "381e2ceafc379b18af83bd0d9a2818ec68cfa8ba7106bc3efacc0494fc3fac2b"
+    sha256 cellar: :any,                 monterey:       "c22c3635df58255958a0aa8079ed69a106ac3630c9ac15945e219e44644d66e8"
+    sha256 cellar: :any,                 big_sur:        "c71ab093cebbb1a3bbd45a7dc67f83ff93be4bb1525f4b3b2530d5f4d4efddd9"
+    sha256 cellar: :any,                 catalina:       "0b322aada774fac76d78b280a6d178d5a7d470c4267f122aab44355b10989ac8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5122312978fc0dc91995dddbba8d0f7bc8f9d95e6eab4f7ec7584b1ae775fb3d"
   end
 
   depends_on "cmake" => [:build, :test]

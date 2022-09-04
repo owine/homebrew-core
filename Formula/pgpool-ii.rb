@@ -1,8 +1,8 @@
 class PgpoolIi < Formula
   desc "PostgreSQL connection pool server"
   homepage "https://www.pgpool.net/mediawiki/index.php/Main_Page"
-  url "https://www.pgpool.net/mediawiki/images/pgpool-II-4.3.0.tar.gz"
-  sha256 "1650cb7db960c83386dade17372f2306c427d05f42e2a94559abc183576dd213"
+  url "https://www.pgpool.net/mediawiki/images/pgpool-II-4.3.3.tar.gz"
+  sha256 "6c73434baee581386a9555fe59628bf467820f7d5bdbe3341768399a0382c979"
 
   livecheck do
     url "https://www.pgpool.net/mediawiki/index.php/Downloads"
@@ -10,15 +10,17 @@ class PgpoolIi < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "3c5917083bf0def3d3d21b53634a7bdd79c41d0b91ba016817ba229730de903f"
-    sha256 arm64_big_sur:  "5c3800b2dff1f8dd85446a0fe1f14758acb04f4ffa56adb7f99e089384efc955"
-    sha256 monterey:       "baaae18ee88dc96cfa0d05b0588a44dc00ad95bfb4e2094aaa88045e18fc8211"
-    sha256 big_sur:        "f383d0419b277ba1c6708cec92d0ea777003b84c1b4d450c23aa327d844e32e8"
-    sha256 catalina:       "caaf22c3c01c3ed2e8e5598d349b2171f5554f788633dfea4443a54b3de6957d"
-    sha256 x86_64_linux:   "b752a7a0c9a3a414cf1f54d8c96e43bf1f4b16f20dc917de44a130abe0e6e71a"
+    sha256 arm64_monterey: "eedfa1554111d90bae8aeff5a14169b69823ef348672c4cfc554a03c6ffe6775"
+    sha256 arm64_big_sur:  "6ba946c5d04acd2bd5101d9d3b882d58f4a4dbae5ba92f3f5d96c5bfec7821ca"
+    sha256 monterey:       "82546227f35da4d840670417ac58917fb2d393b1ae8467d6281080d24fd28850"
+    sha256 big_sur:        "361c2fa788bbf27fdeffa1e7b75b83f45c32a7b4651b6e4acd20f0939f4bcecd"
+    sha256 catalina:       "d81047a9c76402e976246f7f3ccc48c0fd0943e9957a7b02ad1e78c16379d412"
+    sha256 x86_64_linux:   "85f0be3bbb50f34930fc55f0dca98ed4f79cd25fcd7802fec31a4befb33591c9"
   end
 
-  depends_on "postgresql"
+  depends_on "libpq"
+
+  uses_from_macos "libxcrypt"
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do

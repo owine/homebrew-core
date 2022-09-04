@@ -1,8 +1,8 @@
 class Librist < Formula
   desc "Reliable Internet Stream Transport (RIST)"
   homepage "https://code.videolan.org/rist/"
-  url "https://code.videolan.org/rist/librist/-/archive/v0.2.6/librist-v0.2.6.tar.gz"
-  sha256 "88b35b86af1ef3d306f33674f2d9511a27d3ff4ec76f20d3a3b3273b79a4521d"
+  url "https://code.videolan.org/rist/librist/-/archive/v0.2.7/librist-v0.2.7.tar.gz"
+  sha256 "7e2507fdef7b57c87b461d0f2515771b70699a02c8675b51785a73400b3c53a1"
   license "BSD-2-Clause"
   revision 1
   head "https://code.videolan.org/rist/librist.git", branch: "master"
@@ -13,12 +13,12 @@ class Librist < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4d72554a101bdc2828090eb8403226f041226b2a19e73ac22f6579bb8980b20c"
-    sha256 cellar: :any,                 arm64_big_sur:  "417402199b57d04ad74c097e649d72fbb18573c32621af8b31ad18a97117ddf2"
-    sha256 cellar: :any,                 monterey:       "00d5af03d5ade1b78e2b9ffe5ddde2a47219d3aba5bb86770b3f4c5a9d4718f3"
-    sha256 cellar: :any,                 big_sur:        "74f30c477bd07b734fe287d0a08520d66db9a21c4800197b2bfd282e8089c517"
-    sha256 cellar: :any,                 catalina:       "6433c18aeeffd921e6d068db2e634ee5c0b3daa4244e2bb0112271a1ba1906de"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5c4031495d0ab4d7a8ad966a9f87d07059add7e7f02fe7eca66abd312fcca1ed"
+    sha256 cellar: :any,                 arm64_monterey: "05565a30880ee384c7d93fe794e9049ba26fa3defca0eeb2d404e92501a8bf32"
+    sha256 cellar: :any,                 arm64_big_sur:  "cc67eb033dd721686532b5510f8cb491d6a34d1f61abdec3b37c793a7170d5b9"
+    sha256 cellar: :any,                 monterey:       "aa1d34394b985cc887e1e29dac1ba66cf300f47e3c29a818d0e16278b7b92b1b"
+    sha256 cellar: :any,                 big_sur:        "1236ff0ecd6cef12b1d75dafe96666ac2934f5a321b12f9bdb8f9cb42e742b9e"
+    sha256 cellar: :any,                 catalina:       "46ea9a2c900a027285fb9f321664987491bc8703d22f92d9a5047fffb8c25f69"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2724f4e1c469f66420ba87918041ca6871c772249470a92a99fd195c4977b46"
   end
 
   depends_on "meson" => :build
@@ -29,8 +29,10 @@ class Librist < Formula
 
   def install
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath}"
-    system "meson", *std_meson_args, "build", ".", "--default-library", "both"
-    system "ninja", "install", "-C", "build"
+
+    system "meson", "setup", "--default-library", "both", "-Dfallback_builtin=false", *std_meson_args, "build", "."
+    system "meson", "compile", "-C", "build"
+    system "meson", "install", "-C", "build"
   end
 
   test do

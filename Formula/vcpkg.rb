@@ -1,23 +1,33 @@
 class Vcpkg < Formula
   desc "C++ Library Manager"
   homepage "https://github.com/microsoft/vcpkg"
-  url "https://github.com/microsoft/vcpkg/archive/2021.05.12.tar.gz"
-  sha256 "907f26a5357c30e255fda9427f1388a39804f607a11fa4c083cc740cb268f5dc"
+  url "https://github.com/microsoft/vcpkg-tool/archive/2022-07-21.tar.gz"
+  version "2022.07.21"
+  sha256 "44085e694a913d529d8f16d03cb9d3c7ba614e82452fc0156bb075f7f6df5920"
   license "MIT"
-  head "https://github.com/microsoft/vcpkg.git", branch: "master"
+  revision 1
+  head "https://github.com/microsoft/vcpkg-tool.git", branch: "main"
+
+  # The source repository has pre-release tags with the same
+  # format as the stable tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/v?(\d{4}(?:[._-]\d{2}){2})["' >]}i)
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8116bce6059d312ab0532fc41b37d7a1e96b3676aab2e36b1d700cdb4b777807"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e58d2e3fbf843883563579ec544828788ca051c9b5bd46edc0e5df71c35b90dc"
-    sha256 cellar: :any_skip_relocation, monterey:       "65fcbc684c9d1a081ce9e21efe81c81a6688eef365057abb14006cc264f6de01"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d963bef9ed861e8e67c4ef2080f04adf3a91bb971776f60f3f40bd5a6a875e07"
-    sha256 cellar: :any_skip_relocation, catalina:       "143a0c4e50b0d96bdaa7ed913105654188664ac105500c74f66add89fe1cf098"
-    sha256 cellar: :any,                 mojave:         "301a0c5460bebfa3f05fb2ed8d264fce2a9fe9f261853fed991a59d1c1cd58ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aac3ac181306d79ac32984bdfecf34c9fa90703ed11e78044fae8630ca085222"
+    sha256 cellar: :any,                 arm64_monterey: "2de454e03fedee3166f2a4be0c1f59297f699e058427be3ced8e3bc41d305c2d"
+    sha256 cellar: :any,                 arm64_big_sur:  "a7242d2bf802deb9ca3b793c7c83787fc1a04a8d7c321abf5b2451d546ab1c7c"
+    sha256 cellar: :any,                 monterey:       "a82e7e4b09f453de0b3badfd28bf38c394935b36e9c7d373a1e2d600132d531f"
+    sha256 cellar: :any,                 big_sur:        "6e5641ac22030db3792eaf997be464ae9f0dff508f5e22a9bb6f6ccb1d4c5320"
+    sha256 cellar: :any,                 catalina:       "30f3eb90c5b5db20bc0f26f8ab45b80ae309f28d0b0921a34776a76ab80d144f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c6744de38a161beec485edfbd8d9ba7e2ee04b6eb5d5312e195806cdf1cb363"
   end
 
   depends_on "cmake" => :build
-  depends_on "ninja" => :build
+  depends_on "fmt"
+  depends_on "ninja" # This will install its own copy at runtime if one isn't found.
 
   on_linux do
     depends_on "gcc" # for C++17
@@ -25,35 +35,40 @@ class Vcpkg < Formula
 
   fails_with gcc: "5"
 
-  if MacOS.version <= :mojave
-    depends_on "gcc"
-    fails_with :clang do
-      cause "'file_status' is unavailable: introduced in macOS 10.15"
-    end
+  # Fix build with fmt 9+
+  # https://github.com/microsoft/vcpkg-tool/pull/634
+  patch do
+    url "https://github.com/microsoft/vcpkg-tool/commit/5fba654cc47c175202491a5d80f280c0e39b364d.patch?full_index=1"
+    sha256 "e9a61b8fc8e2ce21ae5eae36bf36b5e5214b0a624ef7c938ddea0e739a61340a"
   end
 
   def install
-    # fix for conflicting declaration of 'char* ctermid(char*)' on Mojave
-    # https://github.com/microsoft/vcpkg/issues/9029
-    ENV.prepend "CXXFLAGS", "-D_CTERMID_H_" if MacOS.version == :mojave
+    # Improve error message when user fails to set `VCPKG_ROOT`.
+    inreplace ["include/vcpkg/base/messages.h", "locales/messages.json", "locales/messages.en.json"],
+              "If you are trying to use a copy of vcpkg that you've built, y", "Y"
 
-    args = %w[-useSystemBinaries -disableMetrics]
-    args << "-allowAppleClang" if MacOS.version > :mojave
-    system "./bootstrap-vcpkg.sh", *args
-
-    bin.install "vcpkg"
-    bin.env_script_all_files(libexec/"bin", VCPKG_ROOT: libexec)
-    libexec.install Dir["*.txt", ".vcpkg-root", "{ports,scripts,triplets}"]
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DVCPKG_DEVELOPMENT_WARNINGS=OFF",
+                    "-DVCPKG_BASE_VERSION=#{version.to_s.tr(".", "-")}",
+                    "-DVCPKG_VERSION=#{version}",
+                    "-DVCPKG_DEPENDENCY_EXTERNAL_FMT=ON",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
-  def post_install
-    (var/"vcpkg/installed").mkpath
-    (var/"vcpkg/packages").mkpath
-    ln_s var/"vcpkg/installed", libexec/"installed"
-    ln_s var/"vcpkg/packages", libexec/"packages"
+  # This is specific to the way we install only the `vcpkg` tool.
+  def caveats
+    <<~EOS
+      This formula provides only the `vcpkg` executable. To use vcpkg:
+        git clone https://github.com/microsoft/vcpkg "$HOME/vcpkg"
+        export VCPKG_ROOT="$HOME/vcpkg"
+    EOS
   end
 
   test do
-    assert_match "sqlite3", shell_output("#{bin}/vcpkg search sqlite")
+    # DO NOT CHANGE. If the test breaks then the `inreplace` needs fixing.
+    message = "error: Could not detect vcpkg-root. You must define the VCPKG_ROOT environment variable"
+    assert_match message, shell_output("#{bin}/vcpkg search sqlite", 1)
   end
 end

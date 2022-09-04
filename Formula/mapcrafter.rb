@@ -4,18 +4,15 @@ class Mapcrafter < Formula
   url "https://github.com/mapcrafter/mapcrafter/archive/v.2.4.tar.gz"
   sha256 "f3b698d34c02c2da0c4d2b7f4e251bcba058d0d1e4479c0418eeba264d1c8dae"
   license "GPL-3.0"
-  revision 3
+  revision 5
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "0fc673ca240833009c6a16222285b092f51624419618b666bb75cd893d28dd7e"
-    sha256 cellar: :any, arm64_big_sur:  "b6a779b0bcd0f98e5b07cb6f2c9474b8974da9cba0f82e55311a8b253b74cd56"
-    sha256 cellar: :any, monterey:       "5da5d1d7203910c4de7f81af194ffb67a067f746cd6f4368f03c9c5e1bec53e6"
-    sha256 cellar: :any, big_sur:        "6b8ce30b655e743288ca868c0bdf231f45c6c7b094eb62797d3fa87c5b98e118"
-    sha256 cellar: :any, catalina:       "986224321f7be4d777cb1ac012a237535c2cbb44586e86327cf84589fe85c327"
-    sha256 cellar: :any, mojave:         "ef50257242f50111c034ddc97be5d592b8a91d255053a2bb50b6cb9ea791e930"
-    sha256 cellar: :any, high_sierra:    "f3ce96014ce5e35f2a40034bd0498a583d4c92fe27ecc5ed3039733c1b049757"
-    sha256 cellar: :any, sierra:         "f0e35d940f533e1a4a8a3575afafe567523c89c72e81dc7276679c39b173800b"
-    sha256 cellar: :any, el_capitan:     "5b10b03e8125110487845f76b36dd5fea958e0d98b8f7ef14e72956f1c98b6f2"
+    sha256 cellar: :any,                 arm64_monterey: "787a4156146e10c6a47853010fe3a6209ee29edd99288739053959e3fe942bfc"
+    sha256 cellar: :any,                 arm64_big_sur:  "c16d450b6f17c7940672a2a029f30db1436703783643d5086767eac97185d711"
+    sha256 cellar: :any,                 monterey:       "4f10840bc41b9609ae938b2c17a19f11dbdf2905c8e96aad173a2f66dae1c9c9"
+    sha256 cellar: :any,                 big_sur:        "27d406bba19b092d6713d17b5d11583c6022c672fda0f4231cb3be73ef8ccb1a"
+    sha256 cellar: :any,                 catalina:       "3126138292de05f6fe29ca6f951696efafb01e44ad7ace316a1e9df6db5cdbab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "182394f0857e830efd8705bfbdd52bb5afd9a86ca1f33fc98d8ed6b5710b394f"
   end
 
   depends_on "cmake" => :build
@@ -28,7 +25,7 @@ class Mapcrafter < Formula
 
     args = std_cmake_args
     args << "-DJPEG_INCLUDE_DIR=#{Formula["jpeg-turbo"].opt_include}"
-    args << "-DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib}/libjpeg.dylib"
+    args << "-DJPEG_LIBRARY=#{Formula["jpeg-turbo"].opt_lib/shared_library("libjpeg")}"
 
     system "cmake", ".", *args
     system "make", "install"

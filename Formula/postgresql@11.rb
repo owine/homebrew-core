@@ -1,8 +1,8 @@
 class PostgresqlAT11 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v11.14/postgresql-11.14.tar.bz2"
-  sha256 "965c7f4be96fb64f9581852c58c4f05c3812d4ad823c0f3e2bdfe777c162f999"
+  url "https://ftp.postgresql.org/pub/source/v11.17/postgresql-11.17.tar.bz2"
+  sha256 "6e984963ae0765e61577995103a7e6594db0f0bd01528ac123e0de4a6a4cb4c4"
   license "PostgreSQL"
   revision 1
 
@@ -12,12 +12,12 @@ class PostgresqlAT11 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "f25b99cfd35c4acef61f280d7ef6131d256d20f91c078e39d4f4c163f9ac74f2"
-    sha256 arm64_big_sur:  "e1d203c7c934386eba75e7155f270421d89d2332479ea0a4687e74aaf94099f7"
-    sha256 monterey:       "dd15bcd71343eaa00478023cbd95ed9607c33e554f279d4e4888a8ce39bc070a"
-    sha256 big_sur:        "f5c368ef4663d8da89014adf3d1533a9281523563734d98044eb0cd726039440"
-    sha256 catalina:       "8bdacf41dc01ae753a1a8842637e189fd75b9d86f877111d546b9676df6a63ce"
-    sha256 x86_64_linux:   "d01f0b212c75dbe97fe7147b283ae85ccf2974e4c027952b0ea2d92e1c12503e"
+    sha256 arm64_monterey: "a90716bff226295e9fb84871c027c180ef4a377bf2473e4bee73f464b5c325a7"
+    sha256 arm64_big_sur:  "a78c536a8b2e4c8fad7a06e27d633fb024eea207da425ce5eab828f4fe4ec3b1"
+    sha256 monterey:       "51879280fbfcb85825542c4ce3d9e398cc7c9e4baa81498714b9a9df4270c0f0"
+    sha256 big_sur:        "38f902892cb108897306ca756b50b86bd4c599802f38d116433e2c521265e15d"
+    sha256 catalina:       "b4aa9f089517f7487bbd75dfb1f35ca148318049e43f58ee6ed890d95c6efdec"
+    sha256 x86_64_linux:   "9d7371940fd47106eee18f555e550651a42cc43bb22714c1c5524e514a9a9aa2"
   end
 
   keg_only :versioned_formula
@@ -124,10 +124,10 @@ class PostgresqlAT11 < Formula
   end
 
   service do
-    run [opt_bin/"postgres", "-D", var/"postgresql@11"]
+    run [opt_bin/"postgres", "-D", f.postgresql_datadir]
     keep_alive true
-    log_path var/"log/postgresql@11.log"
-    error_log_path var/"log/postgresql@11.log"
+    log_path f.postgresql_log_path
+    error_log_path f.postgresql_log_path
     working_dir HOMEBREW_PREFIX
   end
 

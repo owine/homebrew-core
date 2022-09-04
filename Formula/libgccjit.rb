@@ -1,39 +1,33 @@
 class Libgccjit < Formula
   desc "JIT library for the GNU compiler collection"
-  if Hardware::CPU.arm?
-    # Branch from the Darwin maintainer of GCC with Apple Silicon support,
-    # located at https://github.com/iains/gcc-darwin-arm64 and
-    # backported with his help to gcc-11 branch. Too big for a patch.
-    url "https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211124.tar.gz"
-    sha256 "d7f8af7a0d9159db2ee3c59ffb335025a3d42547784bee321d58f2b4712ca5fd"
-    version "11.2.0"
-  else
-    url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
-
-    # Darwin 21 (Monterey) support
-    patch do
-      url "https://github.com/iains/gcc-darwin-arm64/commit/20f61faaed3b335d792e38892d826054d2ac9f15.patch?full_index=1"
-      sha256 "c0605179a856ca046d093c13cea4d2e024809ec2ad4bf3708543fc3d2e60504b"
-    end
-  end
   homepage "https://gcc.gnu.org/"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
-  revision 1
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
+
+  stable do
+    url "https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    sha256 "e549cf9cf3594a00e27b6589d4322d70e0720cdd213f39beb4181e06926230ff"
+
+    # Branch from the Darwin maintainer of GCC, with a few generic fixes and
+    # Apple Silicon support, located at https://github.com/iains/gcc-12-branch
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/1d184289/gcc/gcc-12.2.0-arm.diff"
+      sha256 "a7843b5c6bf1401e40c20c72af69c8f6fc9754ae980bb4a5f0540220b3dcb62d"
+    end
+  end
 
   livecheck do
     formula "gcc"
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "7b5c768fc2f10513e7f3e2f8586f555a58e4319da9cad99d7c776ccd05952a95"
-    sha256 arm64_big_sur:  "c2d958d5156ebb71a25bdef33701faf393c2a4dce788a46fdcb3f046b86612c3"
-    sha256 monterey:       "7abf6d27997972fc32e1846c8008b5bd9823d34638c5fcd1f67b920fec21b503"
-    sha256 big_sur:        "f7226e1d4230ee0ee059bab2d7b489b4c64aaf8c4bc15903d50f331b03303f38"
-    sha256 catalina:       "ca16e3b69b15df1ced2a9b1d853c4560e16a27695d337621bd15b0032d42b456"
+    sha256 arm64_monterey: "b9dfa10c1e056616bc9d637c03617e13b4620b613678e0abc45af4d3869328d5"
+    sha256 arm64_big_sur:  "40984147835921a54fc6474ccb118b8c8ecf0886d8df0b9237cebc636abe4fdb"
+    sha256 monterey:       "f60548bf308d057615d804c8c57fe76bf9368e8ca73cf94f0c8cdf98d017340a"
+    sha256 big_sur:        "43289b749acef40ffc8a3e23d4dedc8573be1203f62dd4f481bb1ce01c271ecf"
+    sha256 catalina:       "dc1090d2da6c7c4ae491b361107103451314233e472d5bc868c05c4feb842076"
+    sha256 x86_64_linux:   "adefc39946df2174d113c47455430067180d639d88a2b97457f79c921791d827"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -45,6 +39,7 @@ class Libgccjit < Formula
   depends_on "isl"
   depends_on "libmpc"
   depends_on "mpfr"
+  depends_on "zstd"
 
   uses_from_macos "zlib"
 
@@ -56,12 +51,11 @@ class Libgccjit < Formula
     ENV.delete "LD"
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
-    cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
 
+    # Use `lib/gcc/current` to align with the GCC formula.
     args = %W[
-      --build=#{cpu}-apple-darwin#{OS.kernel_version.major}
       --prefix=#{prefix}
-      --libdir=#{lib}/gcc/#{version.major}
+      --libdir=#{lib}/gcc/current
       --disable-nls
       --enable-checking=release
       --with-gcc-major-version-only
@@ -69,41 +63,45 @@ class Libgccjit < Formula
       --with-mpfr=#{Formula["mpfr"].opt_prefix}
       --with-mpc=#{Formula["libmpc"].opt_prefix}
       --with-isl=#{Formula["isl"].opt_prefix}
-      --with-system-zlib
+      --with-zstd=#{Formula["zstd"].opt_prefix}
       --with-pkgversion=#{pkgversion}
       --with-bugurl=#{tap.issues_url}
+      --with-system-zlib
     ]
 
-    # Xcode 10 dropped 32-bit support
-    args << "--disable-multilib" if DevelopmentTools.clang_build_version >= 1000
+    if OS.mac?
+      cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
+      args << "--build=#{cpu}-apple-darwin#{OS.kernel_version.major}"
 
-    # Workaround for Xcode 12.5 bug on Intel
-    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100340
-    args << "--without-build-config" if Hardware::CPU.intel? && DevelopmentTools.clang_build_version >= 1205
+      # System headers may not be in /usr/include
+      sdk = MacOS.sdk_path_if_needed
+      args << "--with-sysroot=#{sdk}" if sdk
+    else
+      # Fix cc1: error while loading shared libraries: libisl.so.15
+      args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
 
-    # System headers may not be in /usr/include
-    sdk = MacOS.sdk_path_if_needed
-    if sdk
-      args << "--with-native-system-header-dir=/usr/include"
-      args << "--with-sysroot=#{sdk}"
+      # Fix Linux error: gnu/stubs-32.h: No such file or directory.
+      args << "--disable-multilib"
+
+      # Change the default directory name for 64-bit libraries to `lib`
+      # https://stackoverflow.com/a/54038769
+      inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
     end
-
-    # Use -headerpad_max_install_names in the build,
-    # otherwise updated load commands won't fit in the Mach-O header.
-    # This is needed because `gcc` avoids the superenv shim.
-    make_args = ["BOOT_LDFLAGS=-Wl,-headerpad_max_install_names"]
 
     # Building jit needs --enable-host-shared, which slows down the compiler.
     mkdir "build-jit" do
       system "../configure", *args, "--enable-languages=jit", "--enable-host-shared"
-      system "make", *make_args
+      system "make"
       system "make", "install"
     end
 
     # We only install the relevant libgccjit files from libexec and delete the rest.
-    Dir["#{prefix}/**/*"].each do |f|
-      rm_rf f if !File.directory?(f) && !File.basename(f).to_s.start_with?("libgccjit")
+    prefix.find do |f|
+      rm_rf f if !f.directory? && !f.basename.to_s.start_with?("libgccjit")
     end
+
+    # Provide a `lib/gcc/xy` directory to align with the versioned GCC formulae.
+    (lib/"gcc"/version.major).install_symlink (lib/"gcc/current").children
   end
 
   test do

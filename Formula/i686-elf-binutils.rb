@@ -1,9 +1,9 @@
 class I686ElfBinutils < Formula
   desc "GNU Binutils for i686-elf cross development"
   homepage "https://www.gnu.org/software/binutils/"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
-  sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+  sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,14 +11,15 @@ class I686ElfBinutils < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "35e3c75705fb0cd0e024b77fb80a95ec7fbec0f0a5e7b7b8fdd6892d60a15b77"
-    sha256 arm64_big_sur:  "04659e65f3d10dc3881947446255bc02f946783669a26daaf79386e99e00039c"
-    sha256 monterey:       "50718679c5eba15d5f981fde99b68ea04a39f96253573275a8b1b3f1a8d17998"
-    sha256 big_sur:        "5fff1dc8e6b6b0859f21ade50d38937bc04c03b7a36e0c48f3e6848efacf8b46"
-    sha256 catalina:       "e67e663a6462dbd85b644a4428c96e7e9ae711b6d70f994383e553b778244541"
-    sha256 mojave:         "e7d88b4c27231de4e75cd4568a37c6ad17261ed3857dafc199f130d0bb92d9c9"
-    sha256 x86_64_linux:   "adc65062f3bb607eab945a84dee5031394abc3bb9c0f8751bf111c27003c4a02"
+    sha256 arm64_monterey: "b165b5ea4d9c0f6c48ae911424b947d0b5fbefe7326a4b08264bcab238adc311"
+    sha256 arm64_big_sur:  "e6fd77d3044070196bcc97994e30103314c202cafbb8d388297b016fe743906a"
+    sha256 monterey:       "9f98933cb5be01be6656c48b0a6af873d052c0a8d2035764aabacb0aa30f7609"
+    sha256 big_sur:        "770b6be941d02848584d1cde5563ccd28c858016818283ac74e57e5c88026f3b"
+    sha256 catalina:       "de959fa65f1b4ecbf25f0684f652fab3b65fd1112e17a4b92d1295a49dea7c08"
+    sha256 x86_64_linux:   "02f56bd4afbcefb52a060a677150939ccbdb13c19cfa6fc3e99796564c1cb864"
   end
+
+  uses_from_macos "texinfo"
 
   def install
     target = "i686-elf"

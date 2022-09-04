@@ -1,8 +1,8 @@
 class Serd < Formula
   desc "C library for RDF syntax"
   homepage "https://drobilla.net/software/serd.html"
-  url "https://download.drobilla.net/serd-0.30.10.tar.bz2"
-  sha256 "affa80deec78921f86335e6fc3f18b80aefecf424f6a5755e9f2fa0eb0710edf"
+  url "https://download.drobilla.net/serd-0.30.14.tar.xz"
+  sha256 "a14137d47b11d6ad431e78da341ca9737998d9eaccf6a49263d4c8d79fd856e3"
   license "ISC"
 
   livecheck do
@@ -11,29 +11,28 @@ class Serd < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "d1bcd61616acf402f9c9d5ba7e45430d7c680907b1ae40e1619abeb6d032ecf5"
-    sha256 cellar: :any,                 arm64_big_sur:  "820e665f024fc4cadc9bdc1dbbed043ff8532b78820bd562111ad58fe7b7c773"
-    sha256 cellar: :any,                 monterey:       "a4c365f5e3f5684668223f58ff83f51b59931fca800eea1883debbad006454e4"
-    sha256 cellar: :any,                 big_sur:        "88b931157faf0b6aee0574b3643a0050cb4bfe457ca8afbd7349d7d44bf69927"
-    sha256 cellar: :any,                 catalina:       "bf3e88a5e10d6f553c16961289a1ab8eae961f9f025ad62b09c2469b9a87529b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44b4777b706dce7681061463bfc96c3040ef6b874fcac9511173c50c03818a59"
+    sha256 cellar: :any,                 arm64_monterey: "88449226b9a9b18d4b59cf0365af5722a3600eee09efd545d0c7742cc116b668"
+    sha256 cellar: :any,                 arm64_big_sur:  "b48484ddbc698e3df53e2e673e74092a749ec5b620e38ca87cf029d555a2c35f"
+    sha256 cellar: :any,                 monterey:       "69212a51830c1a236502f5b5e1a600399b411f6be1b96b2b32ac1f75574b59be"
+    sha256 cellar: :any,                 big_sur:        "502abedf5cca58588ba7241d7e26d1acd3c2896b39b5fa3ff8bfdf3e28780d65"
+    sha256 cellar: :any,                 catalina:       "fec7b444a66a2065eeea33f6d5f76bdde71f25e123cd56ed94a4df8cc04d10a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f03736f95ad66e9f7350136dc14bc49db8b73e61a9457ee3bf38780e3d84583"
   end
 
-  depends_on "pkg-config" => :build
-
-  on_linux do
-    depends_on "python@3.10" => :build
-  end
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin" if OS.linux?
-    system "./waf", "configure", "--prefix=#{prefix}"
-    system "./waf"
-    system "./waf", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   test do
-    pipe_output("serdi -", "() a <http://example.org/List> .", 0)
+    rdf_syntax_ns = "http://www.w3.org/1999/02/22-rdf-syntax-ns"
+    re = %r{(<#{Regexp.quote(rdf_syntax_ns)}#.*>\s+)?<http://example.org/List>\s+\.}
+    assert_match re, pipe_output("serdi -", "() a <http://example.org/List> .")
   end
 end

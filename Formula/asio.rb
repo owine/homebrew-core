@@ -1,8 +1,8 @@
 class Asio < Formula
   desc "Cross-platform C++ Library for asynchronous programming"
   homepage "https://think-async.com/Asio"
-  url "https://downloads.sourceforge.net/project/asio/asio/1.20.0%20%28Stable%29/asio-1.20.0.tar.bz2"
-  sha256 "204374d3cadff1b57a63f4c343cbadcee28374c072dc04b549d772dbba9f650c"
+  url "https://downloads.sourceforge.net/project/asio/asio/1.24.0%20%28Stable%29/asio-1.24.0.tar.bz2"
+  sha256 "8976812c24a118600f6fcf071a20606630a69afe4c0abee3b0dea528e682c585"
   license "BSL-1.0"
   head "https://github.com/chriskohlhoff/asio.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Asio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "55ef1bffa04528d8b719a1d4885a66dedb61417cf6ffb148bbf9cbb46f19c744"
-    sha256 cellar: :any,                 arm64_big_sur:  "6ae63027103addf746fc975cf3b9e521b7ab590e4e1a7891e8e10b433533607e"
-    sha256 cellar: :any,                 monterey:       "74df62b424d6eb41db252df523b3148e73e9d635aabf515434e3e93bec435967"
-    sha256 cellar: :any,                 big_sur:        "685e304d5cbb0291585a2941c4bc521e3d60175e31ecfc91146d480a84f04325"
-    sha256 cellar: :any,                 catalina:       "d98a3f8267b7e3971fb5c712324858aa02252c718b55dc7e842c31922ad72d1c"
-    sha256 cellar: :any,                 mojave:         "ae04393a3164eff530766bf44aa2983534d3eb1115879b0a9f9c6e027b1b9fca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7011f43a03777135319c7e21f5a96e57b31ced599c41fbf07aba6c0c46871e4b"
+    sha256 cellar: :any,                 arm64_monterey: "e20aec9f064477c73792f6803c8e10e26c4cd4ce054b0ce459d6772368921689"
+    sha256 cellar: :any,                 arm64_big_sur:  "a6f2e2deeac5cd08a04b2bee1c526e8edc7c47f32303224ab1071471ed7e0d77"
+    sha256 cellar: :any,                 monterey:       "129fd9c1da610fec3a7a3a2fe12826f627528e105de614af9ca5d52d50a80f2e"
+    sha256 cellar: :any,                 big_sur:        "23ec57ee734521b53c0180751aacf12c44bf81f23767683a194afffd07dd295d"
+    sha256 cellar: :any,                 catalina:       "b8d84401529dd7156387686e552f267474cdebda31786f78320de6e6f6aa5b6e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ad1851fe6c46fa7440e78f0572eb23698fded2b1d80795a7558126ab7c740da"
   end
 
   depends_on "autoconf" => :build
@@ -56,7 +55,6 @@ class Asio < Formula
       assert_match "404 Not Found", shell_output("curl http://127.0.0.1:#{port}")
     ensure
       Process.kill 9, pid
-      Process.wait pid
     end
   end
 end

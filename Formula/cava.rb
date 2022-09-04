@@ -1,18 +1,18 @@
 class Cava < Formula
   desc "Console-based Audio Visualizer for ALSA"
   homepage "https://github.com/karlstav/cava"
-  url "https://github.com/karlstav/cava/archive/0.7.4.tar.gz"
-  sha256 "fefd3cc04d41b03ca416630cafadbfda6c75e2ca0869da1f03963dcb13e1ecb7"
+  url "https://github.com/karlstav/cava/archive/0.8.2.tar.gz"
+  sha256 "99bc302ce77f8093a4ac1cf94be51581e37c075428117f248ffe1fee650f47d8"
   license "MIT"
   head "https://github.com/karlstav/cava.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "a9bcaeba0b6e4a72d01e93909b89f5492c629447e059e19bc076315185e7be10"
-    sha256 cellar: :any, arm64_big_sur:  "eba8aee3d32a5903073a503200b4e4a28d3ea531263085e16ff4591a7b93454e"
-    sha256 cellar: :any, monterey:       "0ea0d7a31c270df64bc423de9623e8e3a32bea2f09ac4e700dc3c204b0b5ed7f"
-    sha256 cellar: :any, big_sur:        "8cfbe0a65351827ec14c810390951c577f48ab9cc21a05b84929d9dc9d4056d6"
-    sha256 cellar: :any, catalina:       "83320de97b0893a387b0e44778e55698ae5e2a6a167947de5b8d7cc6c21765e4"
-    sha256               x86_64_linux:   "9a61fb2396cad4d2a4132bb2027f9aee52d1daff2949187a6ece75c86452e058"
+    sha256 cellar: :any, arm64_monterey: "89c862723b2716b7679e5efc78e716b09d1f45fd2c2a1edbd51a9c65b80d4343"
+    sha256 cellar: :any, arm64_big_sur:  "ac197a673c179b5cc6b908238b390d0895c0c6687310ce242ff906bb833085b7"
+    sha256 cellar: :any, monterey:       "fc8442ab578524fae2beb5b1ee7a27b685201d9cef2156193bd92734300a4948"
+    sha256 cellar: :any, big_sur:        "abc65c805ead74fb13a651f664a692afa4cc208670570123d6fdeb359d8a64f8"
+    sha256 cellar: :any, catalina:       "d96daa890f9abd0fe8d8cd56feb7d9462cc57fe8fbbf59967c88074ffd062fa8"
+    sha256               x86_64_linux:   "2f8f05f61182fd20761e06eb7255f03f34466b7ecd992e72a12bf555e0f5c280"
   end
 
   depends_on "autoconf" => :build
@@ -22,6 +22,7 @@ class Cava < Formula
   depends_on "iniparser"
   depends_on "portaudio"
 
+  uses_from_macos "vim" => :build # needed for xxd
   uses_from_macos "ncurses"
 
   def install
@@ -29,10 +30,6 @@ class Cava < Formula
     inreplace "configure.ac", "ncursesw", "ncurses"
     # force autogen.sh to look for and use our glibtoolize
     inreplace "autogen.sh", "libtoolize", "glibtoolize"
-
-    # to be remove with versions greater 0.7.4:
-    # correct Makefile.am with hardcoded libpath
-    inreplace "Makefile.am", "/usr/local", HOMEBREW_PREFIX unless build.head?
 
     system "./autogen.sh"
     system "./configure", *std_configure_args, "--disable-silent-rules"
@@ -44,7 +41,7 @@ class Cava < Formula
     cava_config = (testpath/"cava.conf")
     cava_stdout = (testpath/"cava_stdout.log")
 
-    (cava_config).write <<~EOS
+    cava_config.write <<~EOS
       [general]
       bars = 2
       sleep_timer = 1

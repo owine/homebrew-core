@@ -3,17 +3,17 @@ require "language/node"
 class WebtorrentCli < Formula
   desc "Command-line streaming torrent client"
   homepage "https://webtorrent.io/"
-  url "https://registry.npmjs.org/webtorrent-cli/-/webtorrent-cli-4.0.2.tgz"
-  sha256 "7ad1c7d39b500cb58d1768e8d09337d1601c052a4a6f1d91bb29a4f8f1f44978"
+  url "https://registry.npmjs.org/webtorrent-cli/-/webtorrent-cli-4.1.0.tgz"
+  sha256 "3b7bac7470e65540e45ed92b8b8d70008bbeca36bf96e81318c15bb9dee8b942"
   license "MIT"
 
   bottle do
-    sha256                               arm64_monterey: "d0265f744d3d88141991939ce76ce844b71b82aa9002d31444a97ecf948e5259"
-    sha256                               arm64_big_sur:  "c15e1dcb96e69c143c75671f100ee2b566756b8a7f7519bd84a4753246a303c5"
-    sha256                               monterey:       "a0b5174808ff98cd8a1d68157deb2b9e90266a2e9a40bb0373a069dcd55b565c"
-    sha256                               big_sur:        "445c94adfe4eac86ff02b6488c158f40651dfcbac81c5169b7be94d9e117eaaa"
-    sha256                               catalina:       "34704644f1ed6f548cc021b701b72d4365d1bdbe8f5ff935a9f3f084d26e685b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ca2fffcf58c185f4cf6e3adffe679743cc32b8b0a4d040f374f158d1a41a648"
+    sha256                               arm64_monterey: "0e582b5e95bd7ae1462caca1b66e796fa83553b75dcf9c1b98b7e4e36f2f57bf"
+    sha256                               arm64_big_sur:  "4658471f872e03c58d8f1ace044942a3debb7e6ad9dbf2a1ac9546e93efde890"
+    sha256                               monterey:       "257f5b960d1291aa153aff64eb1785ae36512bb78516d7d2d132d52a9ff44671"
+    sha256                               big_sur:        "3dc242aefbede7812f1bf60486f7f6627590942b96e44af31197cfaf088e7d0f"
+    sha256                               catalina:       "066aab7a937b40b19e50cc2efe6e336aa89dccbd958022d79e8956a10aa4eaa3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b87f6ede3b7fa60052d477c30c12c72f2cf0d2c50223376d05579c5f43e7ee1"
   end
 
   depends_on "node"

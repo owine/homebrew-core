@@ -1,17 +1,17 @@
 class Lego < Formula
   desc "Let's Encrypt client and ACME library"
   homepage "https://go-acme.github.io/lego/"
-  url "https://github.com/go-acme/lego/archive/v4.6.0.tar.gz"
-  sha256 "a7101491392309b1549be0394c5e3d368f2dae3fcc351f6f653fe4b33ffd4bee"
+  url "https://github.com/go-acme/lego/archive/v4.8.0.tar.gz"
+  sha256 "2cebfd9c7471c0a64ad877c4270378b2c45712103332674e5f26e5a347b8b6b1"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dd1ec81c6d2428c082d5804d9eb506f7105948db3d12a1a82169961c80484a66"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "03fb5f8f2ac1790094807c3891e882e725e576c9529e45474f2e03b57e4d1ce5"
-    sha256 cellar: :any_skip_relocation, monterey:       "d0f4b0c26427c607dd8606fb43f84069ae57c9779378a69be6dacf536428c616"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d9d7b1af751e4bd3b65bdcec0b681d255b9329b82679850a4418c186557d87fc"
-    sha256 cellar: :any_skip_relocation, catalina:       "f39f671a7ef8f95ed3ee2b30f493ad93c9b53490f9228063ee0008a1a13d7f1b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "67056e62ed928cbdf90ead32e075ed3adf27dc908791bcbdd1db78c649e6f76d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c1614f1bd4a7fff7ceb2eae01d16ee7d114b36c6973e846e2b62d66c6494a27d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7576733ae6ded208c8ae8ee6702fc56f5ffe999fa44b7df89c3d7aa0e5b59a4d"
+    sha256 cellar: :any_skip_relocation, monterey:       "b7c3c84b4f05f5ae33b8b7e5e26584c336e335ca53e41b4c150725eabe2bff16"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ec037467befe2042b3ccbef9a523d35ae7e07620d28d4781650a47dc8cd24317"
+    sha256 cellar: :any_skip_relocation, catalina:       "dac48b36424dacd2e878be7e406721096dd308d1013a5313f33d276f1fec9247"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "25933b7c4d06bf96e4e3f4a1290011499260c0c31523fe33741ec929036aeb08"
   end
 
   depends_on "go" => :build

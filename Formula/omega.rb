@@ -1,8 +1,8 @@
 class Omega < Formula
   desc "Packaged search engine for websites, built on top of Xapian"
   homepage "https://xapian.org/"
-  url "https://oligarchy.co.uk/xapian/1.4.18/xapian-omega-1.4.18.tar.xz"
-  sha256 "14bec53234bea5eb36aa4b91940842e62c7968f4fd68c959db396c15069acbaf"
+  url "https://oligarchy.co.uk/xapian/1.4.20/xapian-omega-1.4.20.tar.xz"
+  sha256 "09fd7d6c60b394fd00d84700649969a1fcc3aa2b88bb2c6ca220fdfa8d25881f"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,16 +11,17 @@ class Omega < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "e93f8e12861eae4aef56482f4daad7d017060bb420cbb9b6973dc1e4756286e1"
-    sha256 big_sur:       "a9adc43192d3cfefc48b5102405b8542549336ae7c7a73c4f964c64f2f3c9306"
-    sha256 catalina:      "171d9ac0866a0124ef2da5c8f23bbe755ba8db69dd30b7ecf6ef2a924f288444"
-    sha256 mojave:        "21777656dec508784295f638ecce1a7c54aa32870b16d6d5bf9951b01a7803a2"
-    sha256 x86_64_linux:  "a8b1b2fafdc1bc9285c4be52516c8605f9e99c66cc0f82cb910b6d26698ee995"
+    sha256 arm64_monterey: "f31fc4528304c469409597cc3e5020ca3b64d18df7b9d478423c2d722a3cb7f4"
+    sha256 arm64_big_sur:  "d528b1f8c49977851c96018a85fcabb6123a02295e6ffd78f178a4e954032b15"
+    sha256 monterey:       "24aa73ee85c48d037cd4e89372c1b3a77d29dd0751e5bec17f3735833c2ab09c"
+    sha256 big_sur:        "4825314fe767f36588ed224150bb35fbe97dc11fe8f3d51404443b27a09c6677"
+    sha256 catalina:       "355a1633fb902636576152608fa9bc78fea0571ba5c7049d9c4d953f29bb95a4"
+    sha256 x86_64_linux:   "280e98c2623fa1636caf48a11a58ee15a07885ffec9f310153daf82283754277"
   end
 
   depends_on "pkg-config" => :build
   depends_on "libmagic"
-  depends_on "pcre"
+  depends_on "pcre2"
   depends_on "xapian"
 
   def install

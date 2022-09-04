@@ -1,18 +1,22 @@
 class Vapor < Formula
   desc "Command-line tool for Vapor (Server-side Swift web framework)"
   homepage "https://vapor.codes"
-  url "https://github.com/vapor/toolbox/archive/18.3.3.tar.gz"
-  sha256 "07d4b6aa15aa25e16b3bd380c6d6e30013b83c92ceafd8ac58dece5d60a37d96"
+  url "https://github.com/vapor/toolbox/archive/18.5.1.tar.gz"
+  sha256 "65c0d8ccf17fcce050110de1706fd345b00ad74267b0f5945d4345e04fc11672"
   license "MIT"
   head "https://github.com/vapor/toolbox.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ef27c5d3d9afad7c3b8dbe07659a74a3a59b0c39f4ca027f4fe76e1c018dcde1"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1f974b1496e99550fc96dc8a7adf39ad0b1c056be4d6a1d0103513c685e240c4"
-    sha256 cellar: :any_skip_relocation, catalina:      "8a7c9c84674db7f43939ce9d9cb328cf89d1c97027ee62a0973bcb52e2a1ab54"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a597647b1d2ea5a2d93a3c3bc6e2ea712934742bc7edb13eca1974a5e5a9882"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d2acb3bf8b7d15b0933afa89ca60a7425105eebaf74cf43022649a7031b219da"
+    sha256 cellar: :any_skip_relocation, monterey:       "cb34deecc5f3b363eb852cc9c362007343c041435db6825c3b3d936c0b6fc824"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5bbfd3cd885e0723bacf848b55dd2cb98e8c706bf0a1287463d19ea47e7a304b"
+    sha256                               x86_64_linux:   "b72618849d01ac80902ae0443c0c831fe129c57f60fb55cf129d293822f9bebc"
   end
 
   depends_on xcode: "11.4"
+
+  uses_from_macos "swift", since: :big_sur
 
   def install
     system "swift", "build", "--disable-sandbox", "-c", "release", "-Xswiftc", \

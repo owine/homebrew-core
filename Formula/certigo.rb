@@ -1,8 +1,8 @@
 class Certigo < Formula
   desc "Utility to examine and validate certificates in a variety of formats"
   homepage "https://github.com/square/certigo"
-  url "https://github.com/square/certigo/archive/v1.14.1.tar.gz"
-  sha256 "3ed30adc63869fcbded9bff51e07eaadb08c243980ee08f18858cb6c2a86d232"
+  url "https://github.com/square/certigo/archive/v1.16.0.tar.gz"
+  sha256 "a6ce89964ca2fbe7d45d2e2019b06a21984f133c4f1f110eee12a67dd60c4145"
   license "Apache-2.0"
   head "https://github.com/square/certigo.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Certigo < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1ccb58f1dac1161219e2310d72e8a7a404ffab99d2a8a7ae8be2c315f7033ceb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4622407b65e5f8c0298291455a40eae661eeac4f684f2299ea8e9fefd2444706"
-    sha256 cellar: :any_skip_relocation, monterey:       "cb9fb5641222de7cd94b67149ec8e69e0651d391881401cc4c5f5efed5b3cfab"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d42f36d0e0736aed44c5550cbdbf0927bfea21e5bb001461be1fc5f172c0ddf3"
-    sha256 cellar: :any_skip_relocation, catalina:       "2f254dfc8abbe62963c2932d9ede812196e1151991830919af29900fdaf41313"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "013d339004641eb9b7bbf488ab06fe4c3482eaed0612c46fd55a8fd8f2bfa1fc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a663a86882876335dfd364332494270957a0b6778975aa0f9e8ba2fd83f8aa52"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c632fa6622d2cd6f5899c3f1682f6646803e9d33efb56b4bc39417d09b55a72"
+    sha256 cellar: :any_skip_relocation, monterey:       "f923b26c0f5b4115434a770994e0c791d192a482121840bf82323ae14b1627d5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a69ecd639ae8ae13f627bfb182a1fc29467b6ca58b917863d5d01d09731f98ff"
+    sha256 cellar: :any_skip_relocation, catalina:       "e3f412c147bc0a3b42167d3b0c349b4d6bd175bb4a89fe4603cb68400630c471"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10522c5a7fcd8524a1a0ce6755c2ffba1a6e76e63249f77d24326400c9ddc243"
   end
 
   depends_on "go" => :build
@@ -26,13 +26,8 @@ class Certigo < Formula
     system "./build"
     bin.install "bin/certigo"
 
-    # Install bash completion
-    output = Utils.safe_popen_read("#{bin}/certigo", "--completion-script-bash")
-    (bash_completion/"certigo").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read("#{bin}/certigo", "--completion-script-zsh")
-    (zsh_completion/"_certigo").write output
+    generate_completions_from_executable(bin/"certigo", shell_parameter_format: "--completion-script-",
+                                                        shells:                 [:bash, :zsh])
   end
 
   test do

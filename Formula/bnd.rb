@@ -1,8 +1,8 @@
 class Bnd < Formula
   desc "Swiss Army Knife for OSGi bundles"
   homepage "https://bnd.bndtools.org/"
-  url "https://search.maven.org/remotecontent?filepath=biz/aQute/bnd/biz.aQute.bnd/6.1.0/biz.aQute.bnd-6.1.0.jar"
-  sha256 "63a280427cda7bdf7de764eb05b1083b5e625cb5e1e13bfebd2e4b74481d8571"
+  url "https://search.maven.org/remotecontent?filepath=biz/aQute/bnd/biz.aQute.bnd/6.3.1/biz.aQute.bnd-6.3.1.jar"
+  sha256 "019a7b3d61060c6b335feee0c84445bfaaf0839e7b3213156b951034c4540254"
   license any_of: ["Apache-2.0", "EPL-2.0"]
 
   livecheck do
@@ -11,7 +11,7 @@ class Bnd < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c235bd7855a309d8d8bbb24c0765502be2d7a99e2cc41456e626dcb776aefee7"
+    sha256 cellar: :any_skip_relocation, all: "aa9f51264dbc00785812df13ae1d158f110d862de2bdecc8414689bc2aedff40"
   end
 
   depends_on "openjdk"
@@ -50,8 +50,8 @@ class Bnd < Formula
       -runrequires: osgi.identity;filter:='(osgi.identity=#{test_bsn})'
     EOS
 
-    (testpath/"cnf/build.bnd").write <<~EOS
-    EOS
+    mkdir "cnf"
+    touch "cnf/build.bnd"
 
     output = shell_output("#{bin}/bnd resolve resolve -b launch.bndrun")
     assert_match(/BUNDLES\s+#{test_bsn};version='\[#{test_version},#{test_version_next}\)'/, output)

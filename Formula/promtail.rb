@@ -1,8 +1,8 @@
 class Promtail < Formula
   desc "Log agent for Loki"
   homepage "https://grafana.com/loki"
-  url "https://github.com/grafana/loki/archive/v2.4.2.tar.gz"
-  sha256 "725af867fa3bece6ccd46e0722eb68fe72462b15faa15c8ada609b5b2a476b07"
+  url "https://github.com/grafana/loki/archive/v2.6.1.tar.gz"
+  sha256 "4b41175e552dd198bb9cae213df3c0d9ca8cacd0b673f79d26419cea7cfb2df7"
   license "AGPL-3.0-only"
   head "https://github.com/grafana/loki.git", branch: "main"
 
@@ -11,15 +11,17 @@ class Promtail < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9a34837c96d69d2b3cbf662cbd104254fe651e6459d7940fa39eb2346f749cb7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d93f3b3a2686e61ee90d73c7ea2303bcfabb4b6f1476834296481d6e872ef52b"
-    sha256 cellar: :any_skip_relocation, monterey:       "18725b2acfb54672963511e4d93e498cb2b5c344b43caf235a6e57b05df72bf1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "770bae3eb309b842bb9d7851762a44d79514f346bc560b2f391a32309127c9c1"
-    sha256 cellar: :any_skip_relocation, catalina:       "7ccbfab03c5edffb1d865432652ad980feb7f6b38229e5379b7e78d7597a9e33"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "355b0dfce83f87f0f724dc1e2b69ba302d266e6e42e6390f86db06112ff8c657"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f0f5960c4637bb193365ba2d99416fc2b82033ed2ec53d23a0e8e70cb9ab0c5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2b9545a183837e09e5000a58e31c08947ceaadba9ee5ffd968d8111005203e84"
+    sha256 cellar: :any_skip_relocation, monterey:       "cf70e87ee25c1b32a10b71970aca3d3160c69d6d6f56b1bf6c2bbaa6b258a275"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fc799404268114067883f8adfd87c7e9943c40fb61fe9647289aed61c323b484"
+    sha256 cellar: :any_skip_relocation, catalina:       "3fe64c6da40e1cb419b858633cec6699c6574b4b7eb413b40aab9713f6df65d8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d04c1fb084e997340dd03a306343b114c9b59ab16e7526a2468e6c3ddeb3f7cc"
   end
 
-  depends_on "go" => :build
+  # Required latest https://pkg.go.dev/go4.org/unsafe/assume-no-moving-gc
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
   on_linux do
     depends_on "systemd"
@@ -27,9 +29,17 @@ class Promtail < Formula
 
   def install
     cd "clients/cmd/promtail" do
-      system "go", "build", *std_go_args
+      system "go", "build", *std_go_args(ldflags: "-s -w")
       etc.install "promtail-local-config.yaml"
     end
+  end
+
+  service do
+    run [opt_bin/"promtail", "-config.file=#{etc}/promtail-local-config.yaml"]
+    keep_alive true
+    working_dir var
+    log_path var/"log/promtail.log"
+    error_log_path var/"log/promtail.log"
   end
 
   test do

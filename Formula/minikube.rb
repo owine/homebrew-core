@@ -2,18 +2,18 @@ class Minikube < Formula
   desc "Run a Kubernetes cluster locally"
   homepage "https://minikube.sigs.k8s.io/"
   url "https://github.com/kubernetes/minikube.git",
-      tag:      "v1.25.1",
-      revision: "3e64b11ed75e56e4898ea85f96b2e4af0301f43d"
+      tag:      "v1.26.1",
+      revision: "62e108c3dfdec8029a890ad6d8ef96b6461426dc"
   license "Apache-2.0"
   head "https://github.com/kubernetes/minikube.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4c20abe357ff2726082b8eacbc3a4e286a7e030bd1460f5a7ded5e559ce2e330"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9758947d5f4424b19865dd3260ffd041175d8318eaace49fef67f15b745bd0c9"
-    sha256 cellar: :any_skip_relocation, monterey:       "55bb120a3c56de1237e827772e22b63332b846694affdaca249306643a9da7f1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a617029b4a94477847087fa368e8725a74dd3a6a188e607307f3ab8c533db339"
-    sha256 cellar: :any_skip_relocation, catalina:       "5d119f190435d45fc83b264e6377e92318ccad9303996ee8e82baad083a04dce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d33f239e285820de9e51773078b1a9cfc100214382af36dfbe7437e005c80df"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ae9660e6a96289bfe9c3c8ab6e8e313fcfd46661710b2e77ba75ca315f5648a3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "78b706d37a0a265df8a83898eaf0cb511d78b2153669d39a2c2f751a72c8edb7"
+    sha256 cellar: :any_skip_relocation, monterey:       "2bdf472a85208242313060def43b69c79c4571325076e6854d798442cf35a826"
+    sha256 cellar: :any_skip_relocation, big_sur:        "22f479980e0b8c0c0b2857246f8b498f7c0758896ba19d167698b122cc69da6c"
+    sha256 cellar: :any_skip_relocation, catalina:       "445bed958a7af5a8a77914f02c00c80eb94fd8cb6761789057e4b5fc4b4ec313"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a8b5e593170c5a4eb520dfa86d7b77ed3781f085a5aaa2eead83c31b774534f"
   end
 
   depends_on "go" => :build
@@ -24,14 +24,7 @@ class Minikube < Formula
     system "make"
     bin.install "out/minikube"
 
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "bash")
-    (bash_completion/"minikube").write output
-
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "zsh")
-    (zsh_completion/"_minikube").write output
-
-    output = Utils.safe_popen_read(bin/"minikube", "completion", "fish")
-    (fish_completion/"minikube.fish").write output
+    generate_completions_from_executable(bin/"minikube", "completion")
   end
 
   test do

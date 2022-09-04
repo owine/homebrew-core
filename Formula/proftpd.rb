@@ -1,11 +1,11 @@
 class Proftpd < Formula
   desc "Highly configurable GPL-licensed FTP server software"
   homepage "http://www.proftpd.org/"
-  url "https://github.com/proftpd/proftpd/archive/v1.3.7c.tar.gz"
-  mirror "https://fossies.org/linux/misc/proftpd-1.3.7c.tar.gz"
-  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.7c.tar.gz"
-  version "1.3.7c"
-  sha256 "7070968b9b6cf614ce7f756c8c1a66c32c1afa4f961784a62301790a801400da"
+  url "https://github.com/proftpd/proftpd/archive/v1.3.7e.tar.gz"
+  mirror "https://fossies.org/linux/misc/proftpd-1.3.7e.tar.gz"
+  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.7e.tar.gz"
+  version "1.3.7e"
+  sha256 "6e716a3b53ee069290399fce6dccf4c229fafe6ec2cb14db3778b7aa3f9a8c92"
   license "GPL-2.0-or-later"
 
   # Proftpd uses an incrementing letter after the numeric version for
@@ -18,14 +18,15 @@ class Proftpd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "6661c5df232e3e2f8e0609fad62bcaaee63d626d831752bdcdfb8d84a9d124b2"
-    sha256 arm64_big_sur:  "0429e46d82d193acdb80410a84c9d00d26e8a0510b0b5ec29ab7aa543d41f46a"
-    sha256 monterey:       "add62615c7234194288b6d780955ed00e7bbeb5b854765acc5a380ac1d203fd2"
-    sha256 big_sur:        "1a4d0410392d18250ea4f29fe056e3e647345bb940f3b918fae448fe16bb4562"
-    sha256 catalina:       "e40fb1eb3c76ff530fbf95275200defdcc38bb16ed3de8dfe90f5bcdf0965ae4"
-    sha256 mojave:         "c6143e56532ccfe54ce0ef2889a356656d7c9800c93e18cdafd8d5430be3a43c"
-    sha256 x86_64_linux:   "9539952d41b01326e358bc32ae8aa96297154b992e5359b5ee29e3a4b1f20036"
+    sha256 arm64_monterey: "af16db8ab4261d0daa4ee5e5f51046045a20b017dc854adb1421f26407688982"
+    sha256 arm64_big_sur:  "07fadba73d0440b08846a2e3a5ddca07b2b398ef949d71931acf384c7d607181"
+    sha256 monterey:       "1cb51eb56dab1081f6c64ac75904e38e59065ba1ec78f43cd761ab88c0de0117"
+    sha256 big_sur:        "429dc14ebcbf7b31e4073578522fab149c08abc8986ca39b9e0c6a698e2c4a69"
+    sha256 catalina:       "23aaeb1f2c8f08fd561cb9e2a4fac400b1176365726bb3044487a0658b0cdb24"
+    sha256 x86_64_linux:   "f88d9dbcb70b79b0c008e23ddfeb7f72211116c7d89759dc9324dca3d348b3ed"
   end
+
+  uses_from_macos "libxcrypt"
 
   def install
     # fixes unknown group 'nogroup'
@@ -37,7 +38,7 @@ class Proftpd < Formula
                           "--localstatedir=#{var}"
     ENV.deparallelize
     install_user = ENV["USER"]
-    install_group = `groups`.split[0]
+    install_group = Utils.safe_popen_read("groups").split.first
     system "make", "INSTALL_USER=#{install_user}", "INSTALL_GROUP=#{install_group}", "install"
   end
 

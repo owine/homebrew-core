@@ -1,9 +1,10 @@
 class RubyAT27 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.5.tar.xz"
-  sha256 "d216d95190eaacf3bf165303747b02ff13f10b6cfab67a9031b502a49512b516"
+  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.xz"
+  sha256 "54dcd3044726c4ab75a9d4604720501442b229a3aed6a55fe909567da8807f24"
   license "Ruby"
+  revision 1
 
   livecheck do
     url "https://www.ruby-lang.org/en/downloads/"
@@ -11,12 +12,12 @@ class RubyAT27 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d8c9aded81bad1b4c0a02c77416a5cfe2c781ae7ef4fd875a13dcc431c863a46"
-    sha256 arm64_big_sur:  "4ebd01ffb6558f9f32efa209b1142ed6c238af312dd7af99387161da114630a1"
-    sha256 monterey:       "3cd2c86c5a74cfa1c9eee07749ffcb649f3f4ec7a710f61475c24a56075661bc"
-    sha256 big_sur:        "dfe8b9f8490d362bc9063ce6aba89337ecf0170e68063f608f6191149aff11fe"
-    sha256 catalina:       "11ed255dd542265b600a5e3719f890282db7f55a7faad715522d84facb7e5ca0"
-    sha256 x86_64_linux:   "76f0e1305defee984188fb940c6ea1e823edfe850dde97ec76c81ddd156e5c7f"
+    sha256 arm64_monterey: "efb3bc1db53bbde6746a41181abbdb26dac2cdd3b8a504e0296f14653d2bcd9f"
+    sha256 arm64_big_sur:  "6cefedc69d5be3f339cbd93b58396abc0a6aad5a6f426b30648deb6744e143ab"
+    sha256 monterey:       "6083bfcbff65e642c9a6b98a2d5255b10abd5cd5164b802efc093297232f17d0"
+    sha256 big_sur:        "d1ebf48b9d58bb72b14b2f29b30340cd45a30e8bf8295e823a1b81458d1660a2"
+    sha256 catalina:       "769d1f81b562c03486eb97b224641bfcc6a362ba6036cc452eccd6ade7f3a60f"
+    sha256 x86_64_linux:   "369e603f4dc8e1ab2c2f1a5eb863feec00fd3e4191cffa8ad39bc992df4e0eb1"
   end
 
   keg_only :versioned_formula
@@ -26,14 +27,15 @@ class RubyAT27 < Formula
   depends_on "openssl@1.1"
   depends_on "readline"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
 
   # Should be updated only when Ruby is updated (if an update is available).
   # The exception is Rubygem security fixes, which mandate updating this
   # formula & the versioned equivalents and bumping the revisions.
   resource "rubygems" do
-    url "https://rubygems.org/rubygems/rubygems-3.2.22.tgz"
-    sha256 "368979ef8103b550a98fc6479543831f0d55c3567d5ee4622d5aa569ee17418b"
+    url "https://rubygems.org/rubygems/rubygems-3.3.11.tgz"
+    sha256 "64184aec5bf3d4314eca3b8bae2085c5ddec50564b822340035187431dc1c074"
   end
 
   def api_version
@@ -91,16 +93,21 @@ class RubyAT27 < Formula
 
       system "#{bin}/ruby", "setup.rb", "--prefix=#{buildpath}/vendor_gem"
       rg_in = lib/"ruby/#{api_version}"
+      rg_gems_in = lib/"ruby/gems/#{api_version}"
 
       # Remove bundled Rubygem and Bundler
-      rm_rf rg_in/"bundler"
-      rm_rf rg_in/"rubygems"
-      rm_f rg_in/"rubygems.rb"
-      rm_f rg_in/"ubygems.rb"
-      rm_f bin/"gem"
+      rm_r rg_in/"bundler"
+      rm rg_in/"bundler.rb"
+      rm_r Dir[rg_gems_in/"gems/bundler-*"]
+      rm Dir[rg_gems_in/"specifications/default/bundler-*.gemspec"]
+      rm_r rg_in/"rubygems"
+      rm rg_in/"rubygems.rb"
+      rm bin/"gem"
 
       # Drop in the new version.
       rg_in.install Dir[buildpath/"vendor_gem/lib/*"]
+      (rg_gems_in/"gems").install Dir[buildpath/"vendor_gem/gems/*"]
+      (rg_gems_in/"specifications/default").install Dir[buildpath/"vendor_gem/specifications/default/*"]
       bin.install buildpath/"vendor_gem/bin/gem" => "gem"
       (libexec/"gembin").install buildpath/"vendor_gem/bin/bundle" => "bundle"
       (libexec/"gembin").install_symlink "bundle" => "bundler"

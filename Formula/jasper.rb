@@ -1,9 +1,10 @@
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
   homepage "https://ece.engr.uvic.ca/~frodo/jasper/"
-  url "https://github.com/jasper-software/jasper/releases/download/version-2.0.33/jasper-2.0.33.tar.gz"
-  sha256 "28d28290cc2eaf70c8756d391ed8bcc8ab809a895b9a67ea6e89da23a611801a"
+  url "https://github.com/jasper-software/jasper/releases/download/version-3.0.6/jasper-3.0.6.tar.gz"
+  sha256 "169be004d91f6940c649a4f854ada2755d4f35f62b0555ce9e1219c778cffc09"
   license "JasPer-2.0"
+  revision 2
 
   livecheck do
     url :stable
@@ -11,24 +12,19 @@ class Jasper < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3d81460f695f07a776aed0a304cbf71e32db97d439d2daf3bc4a64d1c2e4d648"
-    sha256 cellar: :any,                 arm64_big_sur:  "d3a5b5039c95970e08dc6265aa845e4a4e675987519fd1cfe5ae3990b0b236b8"
-    sha256 cellar: :any,                 monterey:       "7f5cd02f1f30c50f98dceafc0f9cc5bbf30bd85667f141e44eef5ceb8ae61af5"
-    sha256 cellar: :any,                 big_sur:        "7462315306489ccf06bddad20b9ba97b5872574f8155dfa7f5d316d905da76b8"
-    sha256 cellar: :any,                 catalina:       "7c7ae386ed0221d5b04f50b0258afddda977ec8e968f3dcb1e099a1826bb30d7"
-    sha256 cellar: :any,                 mojave:         "4c6c520094341ba62068984ed5ee928c992c942d3040956818a92c6a43f26724"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f37c44732a8782727150b229ad8dc04bd4f2261b95be05c5d11bebbf197326d"
+    sha256 cellar: :any,                 arm64_monterey: "8c8f086fe1649d27b4c0be5b5bcfd327a6f12b34cc77aa2b3eedb80c3d0b4e16"
+    sha256 cellar: :any,                 arm64_big_sur:  "dcdab9d270f1bca6a4ed051e0066c151a9af509c6c57eca5cf67d247cd80adba"
+    sha256 cellar: :any,                 monterey:       "8b646454b4333ef3560dd64e5dd79d71aa966019083be54fa6ac53ef89f47cfe"
+    sha256 cellar: :any,                 big_sur:        "5b46bdd3bbce39c5c2a0134ecae52d52135af33fdf73ee6bb8d33b0aa8e561fd"
+    sha256 cellar: :any,                 catalina:       "db95321eda1aa0ac95e55ad0054136df530ae86d30c5acf007450881eea09894"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dd28bd1233a4be70ba6f3c025eb71b2fa72d5c23fb356088280145f5b128c6c9"
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
-
-  on_linux do
-    depends_on "freeglut"
-  end
+  depends_on "jpeg-turbo"
 
   def install
-    mkdir "build" do
+    mkdir "tmp_cmake" do
       args = std_cmake_args
       args << "-DJAS_ENABLE_DOC=OFF"
 
@@ -37,6 +33,8 @@ class Jasper < Formula
         # Reported to CMake upstream 4 Apr 2016 https://gitlab.kitware.com/cmake/cmake/issues/16045
         glut_lib = "#{MacOS.sdk_path}/System/Library/Frameworks/GLUT.framework"
         args << "-DGLUT_glut_LIBRARY=#{glut_lib}"
+      else
+        args << "-DJAS_ENABLE_OPENGL=OFF"
       end
 
       system "cmake", "..",

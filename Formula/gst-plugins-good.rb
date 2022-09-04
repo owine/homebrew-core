@@ -1,9 +1,10 @@
 class GstPluginsGood < Formula
   desc "GStreamer plugins (well-supported, under the LGPL)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.18.5.tar.xz"
-  sha256 "3aaeeea7765fbf8801acce4a503a9b05f73f04e8a35352e9d00232cfd555796b"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.20.3.tar.xz"
+  sha256 "f8f3c206bf5cdabc00953920b47b3575af0ef15e9f871c0b6966f6d0aa5868b7"
   license "LGPL-2.0-or-later"
+  revision 1
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,12 @@ class GstPluginsGood < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b9a4c700974a3dc9fa4e537594fabd6c9295420bf2bde8749084c397bcce51b0"
-    sha256 arm64_big_sur:  "23c5545d7dbb05726bef1fc711bffe95c5a337eacb6053dc141fa08523faed53"
-    sha256 monterey:       "28e2bd546fecb0a2e90f632e71d55c67108c88d3324f1db67a99002ea593f6a0"
-    sha256 big_sur:        "34ac73b746d4fc3c962e253fe71ec3a35a3dbed2f20342bd22955aa492a53562"
-    sha256 catalina:       "72ba1c6c4e161443ef3b7913fe5ad6f733d818aef27de007645eb2b6195864df"
-    sha256 x86_64_linux:   "def92a5fff0a77ba3c384bc78cec86756342005a27242fb07e689f6b92440602"
+    sha256 arm64_monterey: "843f786682e0838948787af9e334f78200e69e6aa029555b14ab784eadbbeae5"
+    sha256 arm64_big_sur:  "0add3160d6455fef21ce06aa8ec72b3211701ff053c30cd9d5d326f63cf78b4f"
+    sha256 monterey:       "97a73d2e1517c8b4a14cfcacd99cfc37bc0b51ac73e6d3d45e268aa26f6b500f"
+    sha256 big_sur:        "548d976418b0674c3bfae090dfdf95caf81265ed28d8f805581969c87bdf5969"
+    sha256 catalina:       "8af212934a8a49b17608ab23867c199ae8dc8b20ec34c16fadb18fbd484688bf"
+    sha256 x86_64_linux:   "17eaf185e0943aa1c8b4fc1a270ba0ca76dac7a65f8edf27ca8ad6e744e94b53"
   end
 
   depends_on "meson" => :build
@@ -28,27 +29,20 @@ class GstPluginsGood < Formula
   depends_on "gettext"
   depends_on "gst-plugins-base"
   depends_on "gtk+3"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "lame"
   depends_on "libpng"
   depends_on "libshout"
-  depends_on "libsoup@2"
+  depends_on "libsoup"
   depends_on "libvpx"
   depends_on "orc"
   depends_on "speex"
   depends_on "taglib"
 
   def install
-    args = std_meson_args + %w[
-      -Dgoom=disabled
-      -Dximagesrc=disabled
-    ]
-
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build", "-Dgoom=disabled", "-Dximagesrc=disabled"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   test do

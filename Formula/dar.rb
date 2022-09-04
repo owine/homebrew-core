@@ -1,8 +1,8 @@
 class Dar < Formula
   desc "Backup directory tree and files"
   homepage "http://dar.linux.free.fr/doc/index.html"
-  url "https://downloads.sourceforge.net/project/dar/dar/2.7.3/dar-2.7.3.tar.gz"
-  sha256 "c3bd34e517592a33fb5eb3bf878df23342ec868e0c38a58bca7262983da81f06"
+  url "https://downloads.sourceforge.net/project/dar/dar/2.7.7/dar-2.7.7.tar.gz"
+  sha256 "c03e2f52efd65a2f047b60bbeda2460cb525165e1be32f110b60e0cece3f2cc9"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,21 +11,21 @@ class Dar < Formula
   end
 
   bottle do
-    sha256 cellar: :any, monterey:     "daf54c249f1aeb0de1d5d899a7891a0714c907173e8202fca3dca03f95215066"
-    sha256 cellar: :any, big_sur:      "556e064ef047a4c84af0200c1a18be7c8ee165b2825e623634282ed35e287cd9"
-    sha256 cellar: :any, catalina:     "d29fc17511b26f554f26e7feffea3f9b69aec38b8080048e8e5c8f02ef7ec4c3"
-    sha256               x86_64_linux: "ed4ae171a9d7c66ba49690d06e2f42752130815c6f966dac256ef481d7b63770"
+    sha256               arm64_monterey: "10d3c7bb9c0266b2d5a31e189b88a2b28ce6131ba5040f01210fddf2d6765e3d"
+    sha256               arm64_big_sur:  "8e79ea81d12cb5b2f7aa061dd9fe04549ff440ecc322d5a278b5de7b6e8acc07"
+    sha256 cellar: :any, monterey:       "d7d1ca1fd0b59185da504470e9946248b04aac7fa1163ef4f61578cb79d18d49"
+    sha256 cellar: :any, big_sur:        "ad50c99bd6c49c7d6dcc8ab5415d7787e49607582608c483c00bbcca0cafc79c"
+    sha256 cellar: :any, catalina:       "ea7ccf588f504d7a947fb47815d44da9088ebbb8eb64be8c653fbf74406589b5"
+    sha256               x86_64_linux:   "16cad6bb257d467529187f3d2846e9e981b684e49ca319a5cf49084b85b03080"
   end
 
-  depends_on "upx" => :build
   depends_on "libgcrypt"
   depends_on "lzo"
+
   uses_from_macos "zlib"
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  on_intel do
+    depends_on "upx" => :build
   end
 
   def install

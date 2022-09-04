@@ -7,12 +7,6 @@ class YoutubeDlc < Formula
   revision 1
   head "https://github.com/blackjack4494/yt-dlc.git", branch: "master"
 
-  livecheck do
-    url :stable
-    strategy :github_latest
-    regex(%r{href=.*?/tag/v?(\d+(?:[.-]\d+)+)["' >]}i)
-  end
-
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_monterey: "3b783d95acf80bf416f5914825a6526f20a1cf2efaf796c034e7b681c77cf14d"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3b783d95acf80bf416f5914825a6526f20a1cf2efaf796c034e7b681c77cf14d"
@@ -21,6 +15,8 @@ class YoutubeDlc < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "3b783d95acf80bf416f5914825a6526f20a1cf2efaf796c034e7b681c77cf14d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1f1a851f379d37a98f7753ed90d6935b5075e02e19d62ae6f3584fdd9e377fa2"
   end
+
+  deprecate! date: "2022-03-21", because: :unmaintained
 
   depends_on "pandoc" => :build
   depends_on "python@3.10"

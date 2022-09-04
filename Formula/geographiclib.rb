@@ -1,18 +1,17 @@
 class Geographiclib < Formula
   desc "C++ geography library"
   homepage "https://geographiclib.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.52.tar.gz"
-  sha256 "5d4145cd16ebf51a2ff97c9244330a340787d131165cfd150e4b2840c0e8ac2b"
+  url "https://downloads.sourceforge.net/project/geographiclib/distrib-C++/GeographicLib-2.1.1.tar.gz"
+  sha256 "28080fc48e1c76560eb2f8c306404de80c13d35687f676ff47a51695506e4a0a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "109df3bbbe080ac511135624045a1e36e3a4f8173480257adea9f9e3a5e4779e"
-    sha256 cellar: :any,                 arm64_big_sur:  "302202edfb516879e561d78a6cf81a3476aba292f1a6cf23bb272c9a60bc301c"
-    sha256 cellar: :any,                 monterey:       "40d853915374106cd7eb9966128519dd6fee630a30d43910f5bcafcb6a4dbb84"
-    sha256 cellar: :any,                 big_sur:        "13facfd20eec2fe0a6ad291a0090a4e66b38e74830306b69cca5ac54674c0072"
-    sha256 cellar: :any,                 catalina:       "beeca9653f64dc20bdd907fdeae179d53c9b1cf58590b452f5f02f1d70a7905b"
-    sha256 cellar: :any,                 mojave:         "c10d4bb46beafe818efa240b7dd7916e0dc2a9567dcef0a26823e564e1e679b4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2338e72cf9eb6bb5a7a382857d89dd32cf29ba46a69d10093dfbbe503d6bbe9"
+    sha256 cellar: :any,                 arm64_monterey: "bfe0a6587b1795fb82b5c1b59c9b34462f720450ae32cb5940f6f3d4daf8b1ff"
+    sha256 cellar: :any,                 arm64_big_sur:  "a16bfa8a86ba9e3d72cc97ad1f3fdcb18fe60b16d09bfdcda16b19a12d4b38e2"
+    sha256 cellar: :any,                 monterey:       "c6f56914e3a91a17d2fdaccfe69b555936229cf85ec8e49cb331145eaf071a02"
+    sha256 cellar: :any,                 big_sur:        "ffeeacbc0e4fc7508d59d8c194b4f898545ad783d1e8e8aa56e5654722c96027"
+    sha256 cellar: :any,                 catalina:       "c4f069e57eff006d3f062ffe998ca0a8cefc9c42a93ea7969ec0bc187bef6064"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3aa5a4b955500a20587ef6c0b6a7064cac7e62620a69406ba3af1a002646f0bb"
   end
 
   depends_on "cmake" => :build
@@ -21,6 +20,7 @@ class Geographiclib < Formula
     mkdir "build" do
       args = std_cmake_args
       args << "-DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}" if OS.mac?
+      args << "-DEXAMPLEDIR="
       system "cmake", "..", *args
       system "make", "install"
     end

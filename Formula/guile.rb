@@ -1,20 +1,19 @@
 class Guile < Formula
   desc "GNU Ubiquitous Intelligent Language for Extensions"
   homepage "https://www.gnu.org/software/guile/"
-  url "https://ftp.gnu.org/gnu/guile/guile-3.0.7.tar.xz"
-  mirror "https://ftpmirror.gnu.org/guile/guile-3.0.7.tar.xz"
-  sha256 "f57d86c70620271bfceb7a9be0c81744a033f08adc7ceba832c9917ab3e691b7"
+  url "https://ftp.gnu.org/gnu/guile/guile-3.0.8.tar.xz"
+  mirror "https://ftpmirror.gnu.org/guile/guile-3.0.8.tar.xz"
+  sha256 "daa7060a56f2804e9b74c8d7e7fe8beed12b43aab2789a38585183fcc17b8a13"
   license "LGPL-3.0-or-later"
   revision 2
 
   bottle do
-    sha256 arm64_monterey: "9e502a17827847d49b26440303e5b2e2113d9561ff1e28ac63c1df3079bac395"
-    sha256 arm64_big_sur:  "9f383d7cc5fe926b957e1f6d280a0dbb1752c822e4e28170331060c8284a83ae"
-    sha256 monterey:       "d8f4ae245ee7af5e361d77669a706b01e22fdf7b288df5f188f6ec42d919ca6a"
-    sha256 big_sur:        "707b16f2249da069f21acadc2a2d1c0721c84251a3fe455b97e0d02b82d4a471"
-    sha256 catalina:       "e6933c219cefd49ff8d0600dc7b6f484319978da91beb6896c5d3d8b8048e876"
-    sha256 mojave:         "4f71c527bff738902cb2412242c445bd25927af19e6705faac59e633b41c956e"
-    sha256 x86_64_linux:   "ec6b2a3f9d14830c1ae0a362a50bcd2bbb703eb1f0e8fd6f0f2d191e74aa3d8c"
+    sha256 arm64_monterey: "56fc54551418481510668be3665501ebae56e681856c761d2246117760e18b7a"
+    sha256 arm64_big_sur:  "e60bb58c6fdfca0d7c5f948cb75dbd2767ba12588d9e60abd55f7cc6d1b089f5"
+    sha256 monterey:       "73a962893b19f8b57f53183b6366029a65c292fa2dc8fa73ee15d13a897faf7b"
+    sha256 big_sur:        "f7b6347634567f73383b9c1d2c1a04168f8a10d352bc386b633b60cf47abaa76"
+    sha256 catalina:       "d797092caee30cc7da0e8c22c2f7416db7f317090832529926acae0a408e1ce7"
+    sha256 x86_64_linux:   "cac793bc25c769435753ac8a5ca98efe420612f8946b8fa193dc69dd45e12b58"
   end
 
   head do
@@ -29,21 +28,14 @@ class Guile < Formula
   depends_on "gnu-sed" => :build
   depends_on "bdw-gc"
   depends_on "gmp"
-  depends_on "libffi"
   depends_on "libtool"
   depends_on "libunistring"
   depends_on "pkg-config" # guile-config is a wrapper around pkg-config.
   depends_on "readline"
 
   uses_from_macos "gperf"
-
-  # This patch fixes an issue where Guile >= 3.0.6 doesn't properly load dynamic
-  # libraries on macOS.
-  # To be removed after Guile 3.0.8 is released.
-  patch do
-    url "https://git.savannah.gnu.org/cgit/guile.git/patch/?id=1f100a4f20c3a6e57922fb26fce212997e2a03cb"
-    sha256 "a857c5fde2eb1c05379a97ba88047404da1c5b1da0291903f036d0a8745d85b5"
-  end
+  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libxcrypt"
 
   def install
     # Avoid superenv shim
@@ -74,7 +66,7 @@ class Guile < Formula
     # of opt_prefix usage everywhere.
     inreplace lib/"pkgconfig/guile-3.0.pc" do |s|
       s.gsub! Formula["bdw-gc"].prefix.realpath, Formula["bdw-gc"].opt_prefix
-      s.gsub! Formula["libffi"].prefix.realpath, Formula["libffi"].opt_prefix
+      s.gsub! Formula["libffi"].prefix.realpath, Formula["libffi"].opt_prefix if MacOS.version < :catalina
     end
 
     (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.scm"]

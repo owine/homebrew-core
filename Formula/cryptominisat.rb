@@ -6,36 +6,52 @@ class Cryptominisat < Formula
   # Everything that's needed to run/build/install/link the system is MIT licensed. This allows
   # easy distribution and running of the system everywhere.
   license "MIT"
-  revision 1
+  revision 4
 
   livecheck do
-    url "https://github.com/msoos/cryptominisat.git"
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "cbfd9b642da561b05f4b73677892b9175b87af7c1bd43542f9326b164bfe330f"
-    sha256                               arm64_big_sur:  "8b9940bdf5011a8f060de82576726b7138a60975f56fcd7113b692e026444021"
-    sha256 cellar: :any,                 monterey:       "0f9ea0f5cc7850fcba9c5f72a13dcd03bad10f1b200d57c70aebde2c9aa9b67e"
-    sha256                               big_sur:        "ca952863f4a030cff0f60b3dc1b598c9a070460b5372577e63c8df577008e5eb"
-    sha256                               catalina:       "9314367f35d7d82790d4840b04d744fba37196f068fa38b899c7ac4c7e8f987b"
-    sha256                               mojave:         "2ad7c47169eae4780e42ddec65f1f6144fc59ee5585dd8d26ff5d270d25d9cc3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "add4bd75d5ec2f5a1ce559282d81e207e99cd6da2b90234a2971808e3e8a222b"
+    sha256 cellar: :any,                 arm64_monterey: "967e81c4de469fcca8cdd17e243083bb7226109a803fb90aa596bf6e9cd212b8"
+    sha256 cellar: :any,                 arm64_big_sur:  "bfcf82cac8669f69facbae7042b80467c01564b674c57941fde79f52f5e5fb2d"
+    sha256 cellar: :any,                 monterey:       "7e945a25fe6701eb5431b6ce6e0535dda6850aaad9a7b87106aab64b529302c1"
+    sha256 cellar: :any,                 big_sur:        "023747bdc60af30e7287a74762800b3051a7ffeab14dff1189c4a64c470f9455"
+    sha256 cellar: :any,                 catalina:       "abd2c00cf458f891ff1dd006ad928e198712bb58113a852c487741d22781f1d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f17416cfc5100bc03e00d233d9b9c77bf803aa83ae8c203e3c44182fe094dfdc"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
+
+  # Fix build error with setuptools 61+
+  patch do
+    url "https://github.com/msoos/cryptominisat/commit/a01179ffd6b0dd47bfdef2d9350d80b575571f24.patch?full_index=1"
+    sha256 "a75998d5060d1de13f2173514b85b2c3ce13ad13085ef624b0d711e062fc6289"
+  end
 
   def install
     # fix audit failure with `lib/libcryptominisat5.5.7.dylib`
     inreplace "src/GitSHA1.cpp.in", "@CMAKE_CXX_COMPILER@", ENV.cxx
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DNOM4RI=ON", "-DCMAKE_INSTALL_RPATH=#{rpath}"
-      system "make", "install"
-    end
+    # fix building C++ with the value of PY_C_CONFIG
+    inreplace "python/setup.py.in", "cconf +", "cconf + ['-std=gnu++11'] +"
+
+    # fix error: could not create '/usr/local/lib/python3.10/site-packages/pycryptosat.cpython-310-darwin.so':
+    # Operation not permitted
+    site_packages = prefix/Language::Python.site_packages("python3")
+    inreplace "python/CMakeLists.txt",
+              "COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install",
+              "COMMAND ${PYTHON_EXECUTABLE} ${SETUP_PY} install --install-lib=#{site_packages}"
+
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DNOM4RI=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -57,6 +73,6 @@ class Cryptominisat < Formula
       solver.add_clause([-1, 2, 3])
       print(solver.solve()[1])
     EOS
-    assert_equal "(None, True, False, True)\n", shell_output("#{Formula["python@3.9"].opt_bin}/python3 test.py")
+    assert_equal "(None, True, False, True)\n", shell_output("#{Formula["python@3.10"].opt_bin}/python3 test.py")
   end
 end

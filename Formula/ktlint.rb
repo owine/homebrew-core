@@ -1,12 +1,12 @@
 class Ktlint < Formula
   desc "Anti-bikeshedding Kotlin linter with built-in formatter"
   homepage "https://ktlint.github.io/"
-  url "https://github.com/pinterest/ktlint/releases/download/0.43.2/ktlint"
-  sha256 "1d74e463037a53cc72c601678faf672d2a5b0c2a96516792baa9596eab910faa"
+  url "https://github.com/pinterest/ktlint/releases/download/0.47.0/ktlint"
+  sha256 "36e3641018c559492214ab9dd6c30575890edb3d84034dd73daca50b46316384"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "18a74e0f9177b36c202a54f142450e02db4b284e72a8d3e04bf9a7e172d96628"
+    sha256 cellar: :any_skip_relocation, all: "017fc6bb39413ac029b64af8e0ba20c89f7e5a8f1779653a534f93d7ec0af36f"
   end
 
   depends_on "openjdk@11"
@@ -21,13 +21,13 @@ class Ktlint < Formula
   end
 
   test do
-    (testpath/"In.kt").write <<~EOS
+    (testpath/"Main.kt").write <<~EOS
       fun main( )
     EOS
     (testpath/"Out.kt").write <<~EOS
       fun main()
     EOS
-    system bin/"ktlint", "-F", "In.kt"
-    assert_equal shell_output("cat In.kt"), shell_output("cat Out.kt")
+    system bin/"ktlint", "-F", "Main.kt"
+    assert_equal shell_output("cat Main.kt"), shell_output("cat Out.kt")
   end
 end

@@ -1,17 +1,17 @@
 class Psalm < Formula
   desc "PHP Static Analysis Tool"
   homepage "https://psalm.dev"
-  url "https://github.com/vimeo/psalm/releases/download/4.19.0/psalm.phar"
-  sha256 "7af93dc446701f303ee8a82c070118b654decc2ecc9251ee6577241d875d1fb8"
+  url "https://github.com/vimeo/psalm/releases/download/4.27.0/psalm.phar"
+  sha256 "f9e9ead5c504108f4424d8d5216a5f4fb8d0bf79935d3b19b59c1fba2f5f2639"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d71ae0c07a4dcc971637b88f4d651b92a39d6f1c9bd156a28d0fdf0d55647511"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d71ae0c07a4dcc971637b88f4d651b92a39d6f1c9bd156a28d0fdf0d55647511"
-    sha256 cellar: :any_skip_relocation, monterey:       "9476091b3e2dcb05488443f5f7de4ba08e9313767ae38639e6ef28285562ca6d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9476091b3e2dcb05488443f5f7de4ba08e9313767ae38639e6ef28285562ca6d"
-    sha256 cellar: :any_skip_relocation, catalina:       "9476091b3e2dcb05488443f5f7de4ba08e9313767ae38639e6ef28285562ca6d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d71ae0c07a4dcc971637b88f4d651b92a39d6f1c9bd156a28d0fdf0d55647511"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ebeb2524206d01abf96f0b28732b47d7ef6f7f99d7d6cffdfe9976e806e0c81f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ebeb2524206d01abf96f0b28732b47d7ef6f7f99d7d6cffdfe9976e806e0c81f"
+    sha256 cellar: :any_skip_relocation, monterey:       "5757ebe5a458fcd18f58f60597462252a08da1c407e3ce10bf9c5da78251e1eb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5757ebe5a458fcd18f58f60597462252a08da1c407e3ce10bf9c5da78251e1eb"
+    sha256 cellar: :any_skip_relocation, catalina:       "5757ebe5a458fcd18f58f60597462252a08da1c407e3ce10bf9c5da78251e1eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ebeb2524206d01abf96f0b28732b47d7ef6f7f99d7d6cffdfe9976e806e0c81f"
   end
 
   depends_on "composer" => :test
@@ -19,7 +19,9 @@ class Psalm < Formula
 
   # Keg-relocation breaks the formula when it replaces `/usr/local` with a non-default prefix
   on_macos do
-    pour_bottle? only_if: :default_prefix if Hardware::CPU.intel?
+    on_intel do
+      pour_bottle? only_if: :default_prefix
+    end
   end
 
   def install

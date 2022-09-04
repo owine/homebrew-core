@@ -1,8 +1,8 @@
 class S6 < Formula
   desc "Small & secure supervision software suite"
   homepage "https://skarnet.org/software/s6/"
-  url "https://skarnet.org/software/s6/s6-2.11.0.1.tar.gz"
-  sha256 "ad7f204587634eeb20ef8f7a7beb6dd63ba3080a46a3a650448ca7cc0826f90a"
+  url "https://skarnet.org/software/s6/s6-2.11.1.2.tar.gz"
+  sha256 "6c1474be3e889dac392cee307abe015cd4be0c85c725c84ea7f184f0e34503a2"
   license "ISC"
 
   livecheck do
@@ -11,22 +11,22 @@ class S6 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "13615918f388b38eeef30dea23dad86323e05a9d8abd530adc9a2f87a5820fd6"
-    sha256 arm64_big_sur:  "b9da08275302eeb6457ba5bf2dff2ce96659bdbdc1105f7477e2dbf96ef9d22f"
-    sha256 monterey:       "b94e04c86c6977b9387269d9e01d71ca58f77c2ab594a019fd53dc45305ea657"
-    sha256 big_sur:        "24d615356898f31742e83bc79e1441802a845f511bc9a4a127e6f496c676eaaf"
-    sha256 catalina:       "d59a7a1fc6bac32484b4bd3771f2dd230da609acdc6402b54ed59bfb1a1f2e91"
-    sha256 x86_64_linux:   "50d2f7b24c46b5c06f60433a6b89c0228646995338330b66ea3c707a037d34fa"
+    sha256 arm64_monterey: "8040b376f8b7e81456e6cdb3e2ec78ec5efd1000aaa4303c36740502eaf725fb"
+    sha256 arm64_big_sur:  "34a66871395e134964e4f20658c37d615d83f2bb23d8ea6b561a71401f2e1bf1"
+    sha256 monterey:       "84aa2c3a0f4529d6a2927dedb2ed32710a6eb1a979b1098150fa779e17ea5c78"
+    sha256 big_sur:        "55ded7a207a4db5c804bb966e6f8565f3b3f41160412a98e76441eea28365aef"
+    sha256 catalina:       "1a87f90655ae72c9a47421df1b74726224e2a5a715506bbcd103c7925f91a430"
+    sha256 x86_64_linux:   "670d1cc52edecdf5f08ff795533cd9b6f2f36c444a91262284e44fd267f17d76"
   end
 
   resource "skalibs" do
-    url "https://skarnet.org/software/skalibs/skalibs-2.11.1.0.tar.gz"
-    sha256 "400180b4d5b651e4fafaf0297b933f5f863b467d357f5b36a6545cf6eb14eab9"
+    url "https://skarnet.org/software/skalibs/skalibs-2.12.0.1.tar.gz"
+    sha256 "3e228f72f18d88c17f6c4e0a66881d6d3779427b7e7e889f3142b6f26da30285"
   end
 
   resource "execline" do
-    url "https://skarnet.org/software/execline/execline-2.8.2.0.tar.gz"
-    sha256 "2fdf7607f306e94fe42ebe2b49872d0f654aa2297a576d5a2d8037d4d9583341"
+    url "https://skarnet.org/software/execline/execline-2.9.0.1.tar.gz"
+    sha256 "01260fcaf80ffbca2a94aa55ea474dfb9e39b3033b55c8af88126791879531f6"
   end
 
   def install

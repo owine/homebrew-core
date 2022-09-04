@@ -1,8 +1,8 @@
 class QtUnixodbc < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.2/6.2.2/submodules/qtbase-everywhere-src-6.2.2.tar.xz"
-  sha256 "85ab9180180c2eaf84cd11ae4c6d5a6a69f2f8fd7260aaccfd91a3e7e7232c1a"
+  url "https://download.qt.io/official_releases/qt/6.3/6.3.1/submodules/qtbase-everywhere-src-6.3.1.tar.xz"
+  sha256 "0a64421d9c2469c2c48490a032ab91d547017c9cc171f3f8070bc31888f24e03"
   license all_of: ["GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
 
   livecheck do
@@ -10,11 +10,12 @@ class QtUnixodbc < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "e87cb8ae19f36cf396475a8d6ba1af46a8fa03398812e395c9116b582d4d8dd0"
-    sha256 cellar: :any, arm64_big_sur:  "7eeb36677d6178effb0beaf6ad32c95aed5eee5c504f2ee7980970d070145d0f"
-    sha256 cellar: :any, monterey:       "921be09299e5525515bf0d0fc52f524bd7054c11a84672c6d2f3137239e8aa97"
-    sha256 cellar: :any, big_sur:        "dd0e61f1a6adb085acc1b783f88880ff862040502a42eea57ff4b20a27ee0d53"
-    sha256 cellar: :any, catalina:       "dfd3009f1566abfdd2908e482d196ba66bd3a47d47df7a649b4025a2e11475ec"
+    sha256 cellar: :any,                 arm64_monterey: "13842c76f260141baa640f4e5bb2e5e06f2e9cf9bff2aaa8167337b2431b4375"
+    sha256 cellar: :any,                 arm64_big_sur:  "dd328d2706a689a4cbbf47c5a4166781de931f0aee5f7992606357ef33adaafb"
+    sha256 cellar: :any,                 monterey:       "be2aec554cadf84746cb57601d0ec5467559233087c2b76409e48c844b4ea143"
+    sha256 cellar: :any,                 big_sur:        "0d75f9508d27d3f99c8e5eb1ba0fa557ac86febd23ac699fa641eebde2a8fc45"
+    sha256 cellar: :any,                 catalina:       "91f7d05503abdc2d84e64ba124dd3238565a15fc86cd4c6132cbec764451be88"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60e3d97bff9657e498e9443ef8db95afcd96d696f98d24995fc9c8468d813948"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -22,8 +23,14 @@ class QtUnixodbc < Formula
   depends_on "qt"
   depends_on "unixodbc"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
   conflicts_with "qt-libiodbc",
     because: "qt-unixodbc and qt-libiodbc install the same binaries"
+
+  fails_with gcc: "5"
 
   def install
     args = std_cmake_args + %W[
@@ -76,6 +83,7 @@ class QtUnixodbc < Formula
       #include <cassert>
       int main(int argc, char *argv[])
       {
+        QCoreApplication::addLibraryPath("#{share}/qt/plugins");
         QCoreApplication a(argc, argv);
         QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
         assert(db.isValid());

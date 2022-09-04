@@ -1,19 +1,18 @@
 class Mapcidr < Formula
   desc "Subnet/CIDR operation utility"
   homepage "https://projectdiscovery.io"
-  url "https://github.com/projectdiscovery/mapcidr/archive/v0.0.8.tar.gz"
-  sha256 "8ff4b6ba994f8346197e5266b3939e469dec541d65701bc71134c9081e01e3ee"
+  url "https://github.com/projectdiscovery/mapcidr/archive/v1.0.1.tar.gz"
+  sha256 "8ea191b954a217b6a4bdc2111b9ac3c9b67bc05fb0e613d2bae8e45769851a35"
   license "MIT"
   head "https://github.com/projectdiscovery/mapcidr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "92ecb467386d10bfab30928188f047eff374ce8f9866ae10cb302e07966be7fd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ee9e513d9c3207c4ea60e968b24d681e8aaaeb889007007815cfd7dd23b36f37"
-    sha256 cellar: :any_skip_relocation, monterey:       "538c36fd427c21cf099e3493426c20054599d4cf0404ac131c85f71b7a163e0d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f4dbc663d7818217dd387c99c08a8ddc9e596202360d48a69ab2d28edc2f5d46"
-    sha256 cellar: :any_skip_relocation, catalina:       "6108174a8882be51d7630f7147adbc078270fc6b5e304271a0370e9555bf44a4"
-    sha256 cellar: :any_skip_relocation, mojave:         "b8c7fe7d85135eb8a9d366b1eb95ebf708dd0b21af32f8193934c8f70dd87aa4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b19f4cc9371f930349a0f8567a48745c722e2f49b222cfb0101d4a22413b8b05"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e66c9864c26f4b9b96fe649ffdf0f76998641ac5e83119aed9770852e306f74"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "064b51df363d485f1ed6411488beec2366040cce8703da981dd8dc12cf72f302"
+    sha256 cellar: :any_skip_relocation, monterey:       "95afb257909d16239b59c4615427647b2df094026f96a48c6fbac89504aed48f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "21f9de858d7f1347eebb92d2ef5b135788144535cdf13a1ecad20583c330b326"
+    sha256 cellar: :any_skip_relocation, catalina:       "4bbb48da30d0ca0c241ebe382c031b4fa8170ac738a925db5e0c7e866296fc2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a62bfbfdeb6d79df4a949784ed359fb9e87820a61a1346092b2ac7a8745a33c5"
   end
 
   depends_on "go" => :build

@@ -1,18 +1,18 @@
 class Tldr < Formula
   desc "Simplified and community-driven man pages"
   homepage "https://tldr.sh/"
-  url "https://github.com/tldr-pages/tldr-c-client/archive/v1.4.2.tar.gz"
-  sha256 "532cc30b21ea146d23ba880142ae284bd2774c27c247ecc00221d9434bd9343f"
+  url "https://github.com/tldr-pages/tldr-c-client/archive/v1.5.0.tar.gz"
+  sha256 "8e3f0c3f471896f8cfadbf9000aa8f2eff61fc3d76e25203ddc7640331c2a2af"
   license "MIT"
   head "https://github.com/tldr-pages/tldr-c-client.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c0fcc938b223d6a92066cac07ee07a17a159fd42d3feea456559d64b4f508d89"
-    sha256 cellar: :any,                 arm64_big_sur:  "4667ddde137d5b3659817f81be5d801775912071fd073ba09f41d3648ab088ec"
-    sha256 cellar: :any,                 monterey:       "c4c0985e0df92f83a992b06de3abb519f3f82f756be4e6efc053378435aa835d"
-    sha256 cellar: :any,                 big_sur:        "352bfada409f8f2423e91ce47448f08c1bceba72ac87c2800952457e6e4df3ef"
-    sha256 cellar: :any,                 catalina:       "74320c7e9fffe0b57532b5fb37883186ea10d585a1d939b3c23f813957b7f871"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f9fa882302c99813e436643d82f6a769b601e8c9706fa668b8a272db0447f1f"
+    sha256 cellar: :any,                 arm64_monterey: "3f969a50b717145b7711c699aeff9290e98c43833a9e9d01119fa5c22c87b861"
+    sha256 cellar: :any,                 arm64_big_sur:  "c0fa874b41e4f1a9e6e597bd8cb462f4f0180aae9844f0e9154e778c1e030ee9"
+    sha256 cellar: :any,                 monterey:       "79b6fb23aadf46144c104d3c53ea8cae750f8475bd4ff09be6f498fda0f83016"
+    sha256 cellar: :any,                 big_sur:        "bbb0d3d550e2e55c1a0b3bbe48aca47995b988940ae5a05633fd515793a31cf2"
+    sha256 cellar: :any,                 catalina:       "639a83243ed67d2d6294882b56ad0706526e6d50d837e85379fcb4f65e63abca"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "948fa2f4233dc829670e11d5eed35ac8180383d3629bd3090761bf6ca3e9a767"
   end
 
   depends_on "pkg-config" => :build

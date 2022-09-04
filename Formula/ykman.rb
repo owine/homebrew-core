@@ -3,25 +3,24 @@ class Ykman < Formula
 
   desc "Tool for managing your YubiKey configuration"
   homepage "https://developers.yubico.com/yubikey-manager/"
-  url "https://files.pythonhosted.org/packages/53/6a/a3ff56677f0ebb14d56c43bce4b6cc9b494920e470b45c385285ebfca3fe/yubikey-manager-4.0.7.tar.gz"
-  sha256 "9972db8a1c7c13eb1a618015a8ad8011c03a045a08fee248e5de4f120f55fc4f"
+  url "https://files.pythonhosted.org/packages/f8/67/734ba60a918822d2f35d5120e81a277f1f0274fcbd8e02ff7486ef9157cc/yubikey-manager-4.0.9.tar.gz"
+  sha256 "384e3a2a66df4ce417aede734eb8c5d0c1b7981290e9bc940c85cc000ef833b4"
   license "BSD-2-Clause"
-  revision 1
   head "https://github.com/Yubico/yubikey-manager.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "79abda55160cd30a6287c24a2e9146eb3352ef0041c7e3e84f20b166dc469105"
-    sha256 cellar: :any,                 arm64_big_sur:  "fd85250ee051dd400d046ff2d950cc08fa13e62e4ed510561130f109e67a381f"
-    sha256 cellar: :any,                 monterey:       "561453d58cee66db7a264bc20a952607beab864dda09608ea0d25c7d88a18553"
-    sha256 cellar: :any,                 big_sur:        "b9ae9a5530e4ae78cfd3ed7312f0328b3f3e9e37373e410160612fa41bffca07"
-    sha256 cellar: :any,                 catalina:       "8ca23d5defacb45cddc59075950aa75f7e25127d69e297001e6fe6c3e0411609"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bc3d373b749caa00e6f79f141f0b87cd335b8190579b6736ca811d2dda6b744"
+    sha256 cellar: :any,                 arm64_monterey: "15df54911e49fb6587f25a118ac7298f12b23d52d353c03b3a025e13f723db0f"
+    sha256 cellar: :any,                 arm64_big_sur:  "a5fe7a9b79cb4aa376e6252e00e581eb7240249724531aa2fc24ae4ec3a12bfc"
+    sha256 cellar: :any,                 monterey:       "047fef4ac134412addc87edd7b7f86ec87c648b4acbb9a96ef8c6e138301a3c7"
+    sha256 cellar: :any,                 big_sur:        "451d0584cd81f4e2dae215d4eeb087b273b81c4187132c1c87eb51f23356bc3b"
+    sha256 cellar: :any,                 catalina:       "f7e5c72a377d524e1cd2428f7c620ed51da549465820e9ab8fe5398886dc59bc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "41e8f8540b98f9fe6d1bf92bce80590f0be5c89c34b1f29a926b23aba4b26adc"
   end
 
   depends_on "rust" => :build
   depends_on "swig" => :build
   depends_on "openssl@1.1"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   uses_from_macos "libffi"
 
@@ -31,43 +30,38 @@ class Ykman < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/2e/92/87bb61538d7e60da8a7ec247dc048f7671afe17016cd0008b3b710012804/cffi-1.14.6.tar.gz"
-    sha256 "c9a875ce9d7fe32887784274dd533c57909b7b1dcadcc128a2ac21331a9765dd"
+    url "https://files.pythonhosted.org/packages/00/9e/92de7e1217ccc3d5f352ba21e52398372525765b2e0c4530e6eb2ba9282a/cffi-1.15.0.tar.gz"
+    sha256 "920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954"
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/21/83/308a74ca1104fe1e3197d31693a7a2db67c2d4e668f20f43a2fca491f9f7/click-8.0.1.tar.gz"
-    sha256 "8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"
+    url "https://files.pythonhosted.org/packages/59/87/84326af34517fca8c58418d148f2403df25303e02736832403587318e9e8/click-8.1.3.tar.gz"
+    sha256 "7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/cc/98/8a258ab4787e6f835d350639792527d2eb7946ff9fc0caca9c3f4cf5dcfe/cryptography-3.4.8.tar.gz"
-    sha256 "94cc5ed4ceaefcbe5bf38c8fba6a21fc1d365bb8fb826ea1688e3370b2e24a1c"
+    url "https://files.pythonhosted.org/packages/51/05/bb2b681f6a77276fc423d04187c39dafdb65b799c8d87b62ca82659f9ead/cryptography-37.0.2.tar.gz"
+    sha256 "f224ad253cc9cea7568f49077007d2263efa57396a2f2f78114066fd54b5c68e"
   end
 
   resource "fido2" do
-    url "https://files.pythonhosted.org/packages/80/c3/5077ee98edd23ee00b9f5f889fd65e8dd8dbe7717d663d3b5137e31f07e6/fido2-0.9.1.tar.gz"
-    sha256 "8680ee25238e2307596eb3900a0f8c0d9cc91189146ed8039544f1a3a69dfe6e"
+    url "https://files.pythonhosted.org/packages/cd/69/1af41955530255ca2337bab370a75b3dbbb8be8707f6280c9efedfb77a85/fido2-1.0.0.tar.gz"
+    sha256 "2509a4958b666d747fd5754dfa9357da2d81b52edc0ecff75b68cea939154c02"
   end
 
   resource "pycparser" do
-    url "https://files.pythonhosted.org/packages/0f/86/e19659527668d70be91d0369aeaa055b4eb396b0f387a4f92293a20035bd/pycparser-2.20.tar.gz"
-    sha256 "2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"
+    url "https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz"
+    sha256 "e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"
   end
 
   resource "pyOpenSSL" do
-    url "https://files.pythonhosted.org/packages/98/cd/cbc9c152daba9b5de6094a185c66f1c6eb91c507f378bb7cad83d623ea88/pyOpenSSL-20.0.1.tar.gz"
-    sha256 "4c231c759543ba02560fcd2480c48dcec4dae34c9da7d3747c508227e0624b51"
+    url "https://files.pythonhosted.org/packages/35/d3/d6a9610f19d943e198df502ae660c6b5acf84cc3bc421a2aa3c0fb6b21d1/pyOpenSSL-22.0.0.tar.gz"
+    sha256 "660b1b1425aac4a1bea1d94168a85d99f0b3144c869dd4390d27629d0087f1bf"
   end
 
   resource "pyscard" do
-    url "https://files.pythonhosted.org/packages/23/e2/42e3de90edfe9a7a0bde2d0a303aac447a4022778e8e552965db5a74ea8f/pyscard-2.0.1.tar.gz"
-    sha256 "2ba5ed0db0ed3c98e95f9e34016aa3a57de1bc42dd9030b77a546036ee7e46d8"
-  end
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/10/00/8dcf33f0695ea3b1eac265c95a6d61cae138eb60527d9f58d7dd7b8cc812/pyscard-2.0.3.tar.gz"
+    sha256 "13c3e108163fac4f1237804ed20c5b1eb1bd5d5ee3e96adb60bfb6b9122f528d"
   end
 
   def install

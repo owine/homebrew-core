@@ -1,26 +1,26 @@
 class Cocoapods < Formula
   desc "Dependency manager for Cocoa projects"
   homepage "https://cocoapods.org/"
-  url "https://github.com/CocoaPods/CocoaPods/archive/1.11.2.tar.gz"
-  sha256 "c1f7454a93e334484cc15ec8a88ded4080bf5e39df2b0dff729a2e77044dc3df"
+  url "https://github.com/CocoaPods/CocoaPods/archive/1.11.3.tar.gz"
+  sha256 "91d31754611520529b101ee57a059c5caadcd7ddb3c5b3b1065edc0ef5c43372"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "fa607ac25dd409d479125d25a2fcd97aad4e7ab5759b9dfa24c90b6d461bf801"
-    sha256 cellar: :any,                 arm64_big_sur:  "d792e6ff2dbbc51e436000addd1bcf86edb34feb4b53194e64f6889d48527ee0"
-    sha256                               monterey:       "4eb89ca73f311a1e0c52a0b72d2215b4c0201588156faf8fada8b9d595d22aa2"
-    sha256                               big_sur:        "a62461a2f591e9a765801d02ea83e0977782839e68a1886920a0928423683501"
-    sha256                               catalina:       "560c574cd0a9ae0958ae32ad136476982552186d6d500ac1167d43eff72d2007"
-    sha256 cellar: :any,                 mojave:         "f24d3cde3c06c8fd3806979d2c34c9edd8ad67e014c8f3aee69a487ccb1058c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d808399f02cb62f443bde184a986bcda9d52d2e48cbddb396008666f7e1f0d1c"
+    sha256 cellar: :any,                 arm64_monterey: "0e8ecf1b4a9028ffca29e1bba075b1cf572c9caf30ff6c0a8cf7f82f24563cea"
+    sha256 cellar: :any,                 arm64_big_sur:  "b55909267f5f2853f40ab081e6f6b1b47d725a16cabcd0df3900eecae2095957"
+    sha256                               monterey:       "92ea102a56b7f97ea877b289b92ac7005f10be6ad68917f451160f9734535895"
+    sha256                               big_sur:        "93e099815313bbf5efa3d3ab64113c57c3d5720089f8c76317bb18801456c3b9"
+    sha256                               catalina:       "ab21df98d9843b3ebc1ee0faa6a6573db5ee5af05bf5f188b01de4c743d28bae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ab2c8941c901fd4936ac10bd42c099ff81fb93de3d866e83630beb4027c1ef5"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "ruby" if Hardware::CPU.arm?
-
   uses_from_macos "libffi", since: :catalina
   uses_from_macos "ruby", since: :catalina
+
+  on_arm do
+    depends_on "ruby"
+  end
 
   def install
     if MacOS.version >= :mojave && MacOS::CLT.installed?

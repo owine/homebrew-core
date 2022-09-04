@@ -1,8 +1,8 @@
 class Spack < Formula
   desc "Package manager that builds multiple versions and configurations of software"
   homepage "https://spack.io"
-  url "https://github.com/spack/spack/archive/v0.17.1.tar.gz"
-  sha256 "96850f750c5a17675275aa059eabc2ae09b7a8c7b59c5762d571925b6897acfb"
+  url "https://github.com/spack/spack/archive/v0.18.1.tar.gz"
+  sha256 "d1491374ce280653ee0bc48cd80527d06860b886af8b0d4a7cf1d0a2309191b7"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/spack/spack.git", branch: "develop"
 
@@ -12,17 +12,18 @@ class Spack < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c94d242fcbb5bcb1bb55dbe6cce7e687584aab95e993ea819358be79a1134e18"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c94d242fcbb5bcb1bb55dbe6cce7e687584aab95e993ea819358be79a1134e18"
-    sha256 cellar: :any_skip_relocation, monterey:       "d28050f49cae4ed5136fffe0a04d6b37966aa71d1a7d2a8820f0cbfc2608fe50"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d28050f49cae4ed5136fffe0a04d6b37966aa71d1a7d2a8820f0cbfc2608fe50"
-    sha256 cellar: :any_skip_relocation, catalina:       "d28050f49cae4ed5136fffe0a04d6b37966aa71d1a7d2a8820f0cbfc2608fe50"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6af4078fed14988d0903dd41a8c8a70c962c906447fa8b3a1fbbc963b164d50"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6795d73f3871790496ded8e3e7f7bcb2048bbf9adaeedbe9127e2041ad2ce51"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d6795d73f3871790496ded8e3e7f7bcb2048bbf9adaeedbe9127e2041ad2ce51"
+    sha256 cellar: :any_skip_relocation, monterey:       "3e61196fe5ea3e29d8c0e16f4f771c503a16b9d8dc62c88cfa336dde511974b6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3e61196fe5ea3e29d8c0e16f4f771c503a16b9d8dc62c88cfa336dde511974b6"
+    sha256 cellar: :any_skip_relocation, catalina:       "3e61196fe5ea3e29d8c0e16f4f771c503a16b9d8dc62c88cfa336dde511974b6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c064bb613b3784ab0fdac463a919a3a16195e1b829296b5a47fe8f29748c2aa6"
   end
 
-  depends_on "python@3.10"
+  uses_from_macos "python"
 
   def install
+    rm Dir["bin/*.bat", "bin/*.ps1", "bin/haspywin.py"] # Remove Windows files.
     prefix.install Dir["*"]
   end
 
@@ -33,11 +34,8 @@ class Spack < Formula
   test do
     system bin/"spack", "--version"
     assert_match "zlib", shell_output("#{bin}/spack info zlib")
-    on_macos do
-      assert_match "clang", shell_output("spack compiler list")
-    end
-    on_linux do
-      assert_match "gcc", shell_output("spack compiler list")
-    end
+    system bin/"spack", "compiler", "find"
+    expected = OS.mac? ? "clang" : "gcc"
+    assert_match expected, shell_output("#{bin}/spack compiler list")
   end
 end

@@ -1,20 +1,18 @@
 class Fabio < Formula
   desc "Zero-conf load balancing HTTP(S) router"
   homepage "https://github.com/fabiolb/fabio"
-  url "https://github.com/fabiolb/fabio/archive/v1.5.15.tar.gz"
-  sha256 "19dcd4d8c6e4fe16e63e4208564d08ed442a0c724661ef4d91e9dbc85a9afbe1"
+  url "https://github.com/fabiolb/fabio/archive/v1.6.1.tar.gz"
+  sha256 "dafb85fb89a8d23a8edc6e96da54c4bdc0b86fce936fa6378e9f49fa70a04793"
   license "MIT"
   head "https://github.com/fabiolb/fabio.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4309d65486b5f6552f3142cd941563999d376a689c0a23681d199fa6bc037d07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "24a70802040a86892080a151eafa1304f5b1a61da347f7a1cd5565ae73516477"
-    sha256 cellar: :any_skip_relocation, monterey:       "ff1b2d576c9ee56e25a8a672cefb99d53623393c87386752d87f037761282910"
-    sha256 cellar: :any_skip_relocation, big_sur:        "64a7ae7497bc62f44ad203a43b4e0c9bbcb1bad020cb876422bd0d746f6d8bcc"
-    sha256 cellar: :any_skip_relocation, catalina:       "ffbae8584c9186bb63a761cc52aafd82fb90fd3ec35bce7b9fe81ffa0baf5b0d"
-    sha256 cellar: :any_skip_relocation, mojave:         "813e3edb76153f73dbd94b5291213a7584632f43a6bc9d4a8ef4deab6e3f96d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1acc04acdcfaba5e627a62d9257c4ddad3d3dca9169720b9b6e976a38bc3a165"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d22b3de3f85aea8a2df28ae49222c57a2366dc010247ecdf9d824e470a13dbaa"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bca2e5b5ac02f928aad22fe2e0f123ccee4f68fb02a94ef18ed198676c849fcf"
+    sha256 cellar: :any_skip_relocation, monterey:       "9de1458ceb4e43d0d6cc71c47190cdb35c536648060a97c1836b7f0b8ee350e4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e8d272e1512b3f6f9f2d80404861b80006a17f4ee2a58542adf9a517ac24421d"
+    sha256 cellar: :any_skip_relocation, catalina:       "47f122ee01e27213de38affc8cc1a9fddcd3581942276324cbeeab1113f98c50"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00d00f71de9ed14f4b8b867afd7cc7a9b777f94e5111f53d7c939e53656bed73"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class Tree < Formula
   desc "Display directories as trees (with optional color/HTML output)"
   homepage "http://mama.indstate.edu/users/ice/tree/"
-  url "http://mama.indstate.edu/users/ice/tree/src/tree-2.0.1.tgz"
-  sha256 "e3339c5a194cf6b4080f15ec59faa3679f02d5a793b2147912fbfcfb4cdf2239"
+  url "http://mama.indstate.edu/users/ice/tree/src/tree-2.0.3.tgz"
+  sha256 "ba14e77b5f9dc7f8250c3f702ec5b6be2f93cd0fa87311bab3239676866a3b1d"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Tree < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "da97488f8fe9d7a3a311c93baa359af572bb8205b422221811ac92e8eaebbfb2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9a065f2fd243640d2aecf17a13e0a1fc6d0f78c0085efb71cdecaccc844ea36c"
-    sha256 cellar: :any_skip_relocation, monterey:       "c451b0055eec3e37755b4cacb9686939191f5da1e145c266e5f627fa9100ad02"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5703e67113f18d867c877fbb0a07eb25de574a7e1fc20be29b6a959c66a1043c"
-    sha256 cellar: :any_skip_relocation, catalina:       "f568637f90da6103b445ed9c491e4d21e335cc3e2d602aa4649d30d8c0a9eec6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "831c06ebe3bd01f82ee2041c765ac2fb2903ae9b1504180f39453881cc43fa5f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2d6f837075c0dc311482fe60a0ecb479f891be53bc846c4ebc4b1094a849300b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "396aac226fd54af833a2cf5f3fc0985c5b63f234f9455ad481848764fbbf2e80"
+    sha256 cellar: :any_skip_relocation, monterey:       "2514c051ffe6dda5dcdc30d5709e055d6b83c9892648cba17c5ff3f302c73dd5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b913d303f43e57c65f661da1e7dd6c00d8e8c0886303c110ac15d4f0ae1e6a8b"
+    sha256 cellar: :any_skip_relocation, catalina:       "e9ace54bd8824cf47f1c0108b7db70aee15436b3c93184ebfc498a3de0d387b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a35fc1014f454c3fcb15c176728068def9039f530cbc55d50110ed4e64c03a5d"
   end
 
   def install

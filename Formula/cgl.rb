@@ -1,9 +1,9 @@
 class Cgl < Formula
   desc "Cut Generation Library"
   homepage "https://github.com/coin-or/Cgl"
-  url "https://github.com/coin-or/Cgl/archive/releases/0.60.4.tar.gz"
-  sha256 "57db498a0b7e1f3614ca061a93b23dc7e65017f092457c7366fa7d78397b5657"
-  license "EPL-1.0"
+  url "https://github.com/coin-or/Cgl/archive/releases/0.60.6.tar.gz"
+  sha256 "9e2c51ffad816ab408763d6b931e2a3060482ee4bf1983148969de96d4b2c9ce"
+  license "EPL-2.0"
 
   livecheck do
     url :stable
@@ -11,12 +11,12 @@ class Cgl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "af9edac79ea0f5a8fc30db1f281d43d547f360c62ffd00c2fd95219385852c13"
-    sha256 cellar: :any,                 arm64_big_sur:  "1de3f2f7dc22b420586f44b2a0440b80da4aa61e31eed16c17a9fa99e7442a56"
-    sha256 cellar: :any,                 monterey:       "f0efe4ad0f85197708bb5b352379955d8d402e9afefc9e354ee65c2d165fa490"
-    sha256 cellar: :any,                 big_sur:        "7c9411b0cfd540da672c2260557ea1a31ae1bbf5aa444edaf70bbb8e4beb1dd5"
-    sha256 cellar: :any,                 catalina:       "47af428c9a8930916eaf4817bf20960c76adc968cb419ef95509e462eac7f3fa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bdcd0ff443d36ac99f79625ea0e1b92e371883175db2f895dd8abc0874afcc6"
+    sha256 cellar: :any,                 arm64_monterey: "cea5e33d3a1cd912c38bc558e8c962b0ea0495820fa69b1fc29f5fb2d1386dd4"
+    sha256 cellar: :any,                 arm64_big_sur:  "7d100e6e8d3f9366d113cb527c4022c4be871fbab16c9b071d9d3abe9bffd8c1"
+    sha256 cellar: :any,                 monterey:       "4fedffb360740c5faa5bf6b62ae7d451e2d7a4cba55da63f8ed760c95458368e"
+    sha256 cellar: :any,                 big_sur:        "3c01eba7f47e4fb1bbac2f98f44333e1728ebde00d1ec8439b8c69c8b800bb53"
+    sha256 cellar: :any,                 catalina:       "b32056388c0fe4872ba562a456618e4b51cbfd8fb4d92be6c6a16cd53dc08cc5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "81891856e66351a118b8f8640fc6509a10ea93936d46f3ca59132dc3e7a03f5f"
   end
 
   depends_on "pkg-config" => :build

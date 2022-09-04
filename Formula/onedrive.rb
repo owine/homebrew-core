@@ -1,12 +1,12 @@
 class Onedrive < Formula
   desc "Folder synchronization with OneDrive"
   homepage "https://github.com/abraunegg/onedrive"
-  url "https://github.com/abraunegg/onedrive/archive/v2.4.14.tar.gz"
-  sha256 "32c6835ddd2b8c6febc1ec904380cc88a92e7fecfacff8ac4cc6271805c4214f"
+  url "https://github.com/abraunegg/onedrive/archive/v2.4.20.tar.gz"
+  sha256 "116ebb0e4451cbeba4249635d8f74973c18874eae907c886dc5ed144f1f8a615"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "13c7622a3b77367575187d06d25a14ba33a5b2468ecb48acfe8e182f741f4326"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "9ffa990cb3eafb483940a6610873e2129621dc85d33a4d098a68d4922d045d42"
   end
 
   depends_on "ldc" => :build
@@ -17,7 +17,7 @@ class Onedrive < Formula
   depends_on "systemd"
 
   def install
-    system "./configure", *std_configure_args
+    system "./configure", *std_configure_args, "--with-systemdsystemunitdir=no"
     system "make", "install"
     bash_completion.install "contrib/completions/complete.bash" => "onedrive"
     zsh_completion.install "contrib/completions/complete.zsh" => "_onedrive"
@@ -29,7 +29,7 @@ class Onedrive < Formula
     keep_alive true
     error_log_path var/"log/onedrive.log"
     log_path var/"log/onedrive.log"
-    working_dir ENV["HOME"]
+    working_dir Dir.home
   end
 
   test do

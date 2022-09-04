@@ -1,17 +1,23 @@
 class Mongocli < Formula
   desc "MongoDB CLI enables you to manage your MongoDB in the Cloud"
-  homepage "https://github.com/mongodb/mongocli"
-  url "https://github.com/mongodb/mongocli/archive/refs/tags/v1.21.0.tar.gz"
-  sha256 "768c6e272a08860a8b70ea9a5ea5a70da3c0c2e8af2b214d100de5e9d1ce745b"
+  homepage "https://github.com/mongodb/mongodb-atlas-cli"
+  url "https://github.com/mongodb/mongodb-atlas-cli/archive/refs/tags/mongocli/v1.26.1.tar.gz"
+  sha256 "d017394b05b8768795cd108f70f1117ed8898af266ae4dd3bf2a1d4f1013beac"
   license "Apache-2.0"
+  head "https://github.com/mongodb/mongodb-atlas-cli.git", branch: "master"
+
+  livecheck do
+    url :stable
+    regex(%r{^mongocli/v?(\d+(?:\.\d+)+)$}i)
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b93efcb225f876e4fbea80d88422c916099a42615b09124cfe895d078fcc9713"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "943771007be64d3c94631013617222e6044f3c39d57e8b4b90910f2cf9aaf3fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "210c7ea61b37ffbfc03860d27542eaea2eda28024f6c0d1403c880efd9dad732"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2290b9dc16bd44d9bc95f3f45c7281f9c500a49ae83a63e4600f01fe9e92b409"
-    sha256 cellar: :any_skip_relocation, catalina:       "948aaf6949544bd847793b4c2c91060ce4661e602c3f1af1645a240929fd62eb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "120d157027f8fed21e5c709eb70376596a988ccf456159a40bae8dd81c5367c2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "076ff8fc409d0fcc0bb9987560eef94ea5a6385a053818076953d556736e5832"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b42e5e1ee998d36aa436fc94a2b36aeb21a1673da3c0986e118a168f982b0c1c"
+    sha256 cellar: :any_skip_relocation, monterey:       "ee6d4555d56bbad77386af9a340cf170b285ef19f75d0c48db83fafdea9e648b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5700d538527e9192171311a465debde181a666c47e910d066bbc692fff046b8b"
+    sha256 cellar: :any_skip_relocation, catalina:       "9bc50c4ec87e03dd14a59dbfa6201d8a86ca6da3d88a9c43ef6012769773e7fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22ba57e3962435f4720bcc1f3068ea3fa66596f8b32888e47af1ac0d274f3c24"
   end
 
   depends_on "go" => :build
@@ -25,14 +31,12 @@ class Mongocli < Formula
     end
     bin.install "bin/mongocli"
 
-    (bash_completion/"mongocli").write Utils.safe_popen_read(bin/"mongocli", "completion", "bash")
-    (fish_completion/"mongocli.fish").write Utils.safe_popen_read(bin/"mongocli", "completion", "fish")
-    (zsh_completion/"_mongocli").write Utils.safe_popen_read(bin/"mongocli", "completion", "zsh")
+    generate_completions_from_executable(bin/"mongocli", "completion")
   end
 
   test do
     assert_match "mongocli version: #{version}", shell_output("#{bin}/mongocli --version")
-    assert_match "Error: missing credentials", shell_output("#{bin}/mongocli iam projects ls 2>&1", 1)
+    assert_match "Error: this action requires authentication", shell_output("#{bin}/mongocli iam projects ls 2>&1", 1)
     assert_match "PROFILE NAME", shell_output("#{bin}/mongocli config ls")
   end
 end

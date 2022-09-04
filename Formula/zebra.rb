@@ -1,8 +1,8 @@
 class Zebra < Formula
   desc "Information management system"
   homepage "https://www.indexdata.com/resources/software/zebra/"
-  url "https://ftp.indexdata.com/pub/zebra/idzebra-2.2.3.tar.gz"
-  sha256 "85ade449d161d97df47d4a8910a53a5ea3bd5e3598b6189d86fc8986a8effea4"
+  url "https://ftp.indexdata.com/pub/zebra/idzebra-2.2.5.tar.gz"
+  sha256 "747714b33b653cbe5697193703b9955489fa2f51597433f9b072ab2bf9cf92bb"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,16 +11,23 @@ class Zebra < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "eaef0ac6043ea6d81351dd34bd2a96df357dedb4f23c24b72fff47193590c2c6"
-    sha256 arm64_big_sur:  "7a974b65d88ed87b9a83990a357b09aa0c4215a9281961a1a5def5108c307c91"
-    sha256 monterey:       "a9f08214eecf10f5ddc11d591fd6e4b7fa28173d2b642b1abf99ef3b1be7ae6c"
-    sha256 big_sur:        "a1ea1081a94d89b8f47395528de594a0516c3c3f915ce30f54c05b7b73e883e2"
-    sha256 catalina:       "6063cecb5f7cced53e56fe465b5030bfb5f34cd6ea322e5994793b15c836953e"
-    sha256 mojave:         "1114c380d8a57a0f052bca099a7902a42bea70fdf0ff6b88d9d9985c44c5ab6d"
+    sha256 arm64_monterey: "d2d4d08210da41a8cee406e186797b38f8b3e04c9529c3abb27b9bcd79e0e380"
+    sha256 arm64_big_sur:  "08bdad0b345de815886ba491efc05c64301de4f58db1d18b2ac1467da2f1473c"
+    sha256 monterey:       "9327880be4912d03219f7a691b59560bf33a33dfe1f994275bc7ec9ede54a10d"
+    sha256 big_sur:        "9f4f272f7a6d0de6184755bd8304c3c00c9c8ed10d5143f8048f2ff528398854"
+    sha256 catalina:       "23adf3398ce56fbcb527f772362b2d3b551684470563ea4911d06dde14e43b29"
+    sha256 x86_64_linux:   "384a18ddb1e2ab16a1fc679cef45fea988b6df9f93759aaaeeebdec71ba509d5"
   end
 
   depends_on "icu4c"
   depends_on "yaz"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "expat"
+  uses_from_macos "libxcrypt"
+  uses_from_macos "libxml2"
+  uses_from_macos "libxslt"
+  uses_from_macos "zlib"
 
   def install
     system "./configure", "--disable-dependency-tracking",

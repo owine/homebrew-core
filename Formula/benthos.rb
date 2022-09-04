@@ -1,17 +1,18 @@
 class Benthos < Formula
   desc "Stream processor for mundane tasks written in Go"
   homepage "https://www.benthos.dev"
-  url "https://github.com/Jeffail/benthos/archive/v3.62.0.tar.gz"
-  sha256 "356f9df491acfc974ad6acd5cef0d2224e0df3a296940c470c323831837992f8"
+  url "https://github.com/benthosdev/benthos/archive/v4.6.0.tar.gz"
+  sha256 "ab552ea0344d97735dd9b1882cb5bc9575f9a246b3fb67f0822357ab55243ebe"
   license "MIT"
+  head "https://github.com/benthosdev/benthos.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5945dfdeb7401713fe222b5a65f3821afd19fd7ccdcc3b89b9e6b62949868616"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cdb69af338756e85e2f131b2744e0998abb10d02b500b1d347cb42a800c1d691"
-    sha256 cellar: :any_skip_relocation, monterey:       "432f070ab00c9fa771c460bacd8895a06bd77f33ba55fdd40a69a004d0d46c18"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0cfe69a46af567dcf779beb94dd6fcc963ef7564bd7090922ccd12f3ed91f351"
-    sha256 cellar: :any_skip_relocation, catalina:       "f04b56048ac4a905abfa55b178d44778fb9bb8c45a9c6b97453fadf245f0ab12"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63d42d38a54b8594784a088040822c96169e7bbd2869b8d1acbbdd04e3129c8e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7b8c79b16f26f704ed0f8154f37329d4baf974009f50122ce2a4f52a0ebc4cd5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2cbfd3f1b89349261e0d6d7a1983ec4d6f6002a66fed1b9ab1dfa7403d6c80f9"
+    sha256 cellar: :any_skip_relocation, monterey:       "0ef478a445158cec320bd4401d166fff7a3487698c375fd5e7598d9c23bb9e45"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b0e61cbcd817b556545ba697542abd36ee2c2a618d36e00f76650e93fda0064f"
+    sha256 cellar: :any_skip_relocation, catalina:       "4575621db43aa5a92158500e0e024e433ebe8f25cb66856ad8463c6e2cd2be28"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9795f554f3d5a6f4bd793359e566d352935691abfa24fce9ba689fe36dce3f61"
   end
 
   depends_on "go" => :build
@@ -31,17 +32,14 @@ class Benthos < Formula
       logger:
         level: ERROR
       input:
-        type: file
         file:
-          path: ./sample.txt
+          paths: [ ./sample.txt ]
       pipeline:
         threads: 1
         processors:
-         - type: decode
-           decode:
-             scheme: base64
+         - bloblang: 'root = content().decode("base64")'
       output:
-        type: stdout
+        stdout: {}
     EOS
     output = shell_output("#{bin}/benthos -c test_pipeline.yaml")
     assert_match "Benthos rocks!", output.strip

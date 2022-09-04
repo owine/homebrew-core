@@ -4,21 +4,27 @@ class Field3d < Formula
   url "https://github.com/imageworks/Field3D/archive/v1.7.3.tar.gz"
   sha256 "b6168bc27abe0f5e9b8d01af7794b3268ae301ac72b753712df93125d51a0fd4"
   license "BSD-3-Clause"
-  revision 4
+  revision 7
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "da4a49105b11ec76fd729d107b9f2d4a2ab0ad3dc462d7d9570a48b4baaebaeb"
-    sha256 cellar: :any, arm64_big_sur:  "b12b7bbffb37cac1a70220ad329743dbd1eb47c44e7229a8646d9b14124151f2"
-    sha256 cellar: :any, monterey:       "d9c36b3f585c22752afc1cb4f8441439ea6de769e7bb44bc158821eddcba8e1a"
-    sha256 cellar: :any, big_sur:        "90b0c9cc4ab05cfcbfa656aa634f808513d6f4e8f11a51f43d7a34abd8dd4f1f"
-    sha256 cellar: :any, catalina:       "76d498d553b562262c1654c1cd717057eaf0bc78d03bbe20dfb3e55c55f5d5a4"
-    sha256 cellar: :any, mojave:         "c5722c3960ff48af8007245cdf71a818d292ce76b85abf998c2a9623da3297a4"
+    sha256 cellar: :any,                 arm64_monterey: "b39c3161c958937e66aa74d0ef7780a4e2df3d279fd834cddc011c930bbc401c"
+    sha256 cellar: :any,                 arm64_big_sur:  "8be626af06a5963eefff00b617d732055ecc5c981aa9da4b3646f70874f92047"
+    sha256 cellar: :any,                 monterey:       "08450558bd22e30ea9fbc0987f97d7cb08996c768df4da2f1622d369100cdc13"
+    sha256 cellar: :any,                 big_sur:        "6e05fd88a91b386fdacaae1b18d2438ab3be3cbef44c0b98f83d09d9dfb5dc1d"
+    sha256 cellar: :any,                 catalina:       "90a03036d21be5f0546ae00ecc8327e44704093aebe27d5055e9007a7a9bf0f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce229d05e72f9d75644f1a8afdf402ab38e902b6695df6eb95f7d74c136bcb38"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "hdf5"
   depends_on "ilmbase"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
     ENV.cxx11

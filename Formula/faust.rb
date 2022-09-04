@@ -1,25 +1,33 @@
 class Faust < Formula
   desc "Functional programming language for real time signal processing"
   homepage "https://faust.grame.fr"
-  url "https://github.com/grame-cncm/faust/releases/download/2.37.3/faust-2.37.3.tar.gz"
-  sha256 "f14577e9f63041ec341f40a64dae5e9362be8ed77571aa389ed7d389484a31d7"
+  url "https://github.com/grame-cncm/faust/releases/download/2.41.1/faust-2.41.1.tar.gz"
+  sha256 "72145e1d4ffcdd8e687ed7960d1d0717fa2c1dd2566e0bbc3a78fa95bb8b683e"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "1bf84ab85632319d644d791ffec7a0535b7cb188aafad015cdf2068a9cbe11ac"
-    sha256 cellar: :any, arm64_big_sur:  "2bbdef266d98f44577a3ab668d9efff2c254337a8b1d18af38e346ea88a4e266"
-    sha256 cellar: :any, monterey:       "10a68392b508ea5eba3c84568e66417e7e0a6027c7d85795882a1640674d6c3b"
-    sha256 cellar: :any, big_sur:        "5a88b886af7e2d9c78be08afb3893e27e68fa371e7d9072360e1fd905bdd2d58"
-    sha256 cellar: :any, catalina:       "dfacb1d893c7e379c14a4e865bf59ff4ff829fbc245c5b0e55160d43032f0a6f"
+    sha256 cellar: :any,                 arm64_monterey: "fc477fdc2e3c3a3348f3df4365d0e7c4dbec8696368e5d71c910d4bb1f2dc112"
+    sha256 cellar: :any,                 arm64_big_sur:  "58eb9f637145e6ba29ecb77b0b0ea7b31d90a8ef9b33be7fd63d179aa330d988"
+    sha256 cellar: :any,                 monterey:       "ad3bbbcdbf1338dcb675db1e9c213fe04d95fb121b7ec79d1cf97602b322bb65"
+    sha256 cellar: :any,                 big_sur:        "acfb0922b00d37fb2d665aa8f7690fb0744b693369481cc188a5a13cc519af97"
+    sha256 cellar: :any,                 catalina:       "fc933193d738f6dca2a8e8c795665798b40f8f643016d7c08768c77b15b98cb7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c74dd24abdf631a87c512eb3e2f291dc47927717148a3c9d2158fdabba71c5f0"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "libmicrohttpd"
   depends_on "libsndfile"
-  depends_on "llvm@12"
+  depends_on "llvm"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
+    ENV.delete "TMP" # don't override Makefile variable
     system "make", "world"
     system "make", "install", "PREFIX=#{prefix}"
   end

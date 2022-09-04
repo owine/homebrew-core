@@ -1,17 +1,17 @@
 class TRec < Formula
   desc "Blazingly fast terminal recorder that generates animated gif images for the web"
   homepage "https://github.com/sassman/t-rec-rs"
-  url "https://github.com/sassman/t-rec-rs/archive/v0.6.2.tar.gz"
-  sha256 "c24a314c9426322204bf157f83443b84c7a5c22d289edd7b8f0dc1a3e7242df1"
+  url "https://github.com/sassman/t-rec-rs/archive/v0.7.4.tar.gz"
+  sha256 "cb0b741df0e21e2fc7899ecb3b3128554d037df867c7a8eab8e497e11fb5a021"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c052439df721dd53c46d20f21aa41020dbb888fa055011a8062d9fc3d5a2c87"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "603799fd2e15d6648aca52bafe05acb6080b9393c7d08cb3150d51925ae1c642"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4f6bd99d824977f78c75abb6656f2308f4d499535e631ef64467eb2bd52281c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8a5defb7fca8e7ab14917db19fbc399c80dc76324de615ff54ab9aacd4c535af"
-    sha256 cellar: :any_skip_relocation, catalina:       "92ac6a8a7fc95f138bb0df69dd44c384f79e7fec2a31d4e39e063dab5f41b17b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "84fa4ceb8d13057499aa2d51b654b6ea5e4a5dbaff0aacf34193a222ca4d2b10"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1b7d9f0e3c8706a98d91d9ef24bffaff8d7840bc6f82c9b19c47020f4eafe93c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d6caa476f9869ed960c23d6471f1fb6fd31181c14746d4a59bef00f162b339e4"
+    sha256 cellar: :any_skip_relocation, monterey:       "78fbf9c6db61e970395ad30cf10b9d845c800329ea8f60d0b484a7d8fc795803"
+    sha256 cellar: :any_skip_relocation, big_sur:        "53674c3659a7915b8f410517a2fbb4c95d5b82f2b5c92838c8850df2202f2636"
+    sha256 cellar: :any_skip_relocation, catalina:       "9fecb32f33a88a62f903f20b1b83c6eaab61681f3812a0a2c4c86356cfbbf723"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aff882605d28bcac69324c473bfb763141367fb920b77e778be8bb7a9b454d0f"
   end
 
   depends_on "rust" => :build

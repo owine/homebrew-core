@@ -3,9 +3,10 @@ class Uhd < Formula
   homepage "https://files.ettus.com/manual/"
   # The build system uses git to recover version information
   url "https://github.com/EttusResearch/uhd.git",
-      tag:      "v4.1.0.4",
-      revision: "25d617cad7db69fa04699df5f93ece06b0a61199"
+      tag:      "v4.2.0.1",
+      revision: "321295fba49fb66ede365afbd9ef62971cdfbfca"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
+  revision 1
   head "https://github.com/EttusResearch/uhd.git", branch: "master"
 
   livecheck do
@@ -14,12 +15,12 @@ class Uhd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "70594fad59c2faea1b522830123a22765740fc2ced86e2619ee7c83e70784529"
-    sha256 arm64_big_sur:  "4187dd90c18fa8709dc09087efc235f3fd21db604e082fce43c4d469aa789bc3"
-    sha256 monterey:       "dd58c2cfb90bce1ebdfc1f6af3757da33082124217506569b1469d63de2ce8e9"
-    sha256 big_sur:        "49bcc2c07aef5d7fa61702c3f52265b4d3557dba27a884784a1748c24ce2fafe"
-    sha256 catalina:       "a44e180043a677bfacbba30f7fffb4ecdf42359672cd5336689e44b57934301b"
-    sha256 mojave:         "30abc4dd1774370d969095ef735b05450785ac68b008cdde2e5d22fa634c65e6"
+    sha256 arm64_monterey: "0643876ee78155b69c5a3f74c20c9a250f39e149fd1ef686d6d262c3a8db7257"
+    sha256 arm64_big_sur:  "ce05ba23746f4a6e6cf0032ba0e3a89bb0469c6c6978639cb315dc437ad4c58a"
+    sha256 monterey:       "f1da72f1e2e80b77e7bed5e3de8e128f189a292612e343cd5d99695435baf2ba"
+    sha256 big_sur:        "c880ad483752e7a28ed3b908f3c9dada4dfe382dda27d1655c123a80fa54b14f"
+    sha256 catalina:       "a8a587efd44045da5a5f7c0c2a21c40c6084369902bd4c45db387f26f9a61904"
+    sha256 x86_64_linux:   "45989f1da0a5e1980fd653cb014793d80666eaffbacdf4c82ecdb35c5a0cb61f"
   end
 
   depends_on "cmake" => :build
@@ -27,27 +28,37 @@ class Uhd < Formula
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "libusb"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/d1/42/ff293411e980debfc647be9306d89840c8b82ea24571b014f1a35b2ad80f/Mako-1.1.5.tar.gz"
-    sha256 "169fa52af22a91900d852e937400e79f535496191c63712e3b9fda5a9bed6fc3"
+    url "https://files.pythonhosted.org/packages/50/ec/1d687348f0954bda388bfd1330c158ba8d7dea4044fc160e74e080babdb9/Mako-1.2.0.tar.gz"
+    sha256 "9a7c7e922b87db3686210cf49d5d767033a41d4010b284e747682c92bddd8b39"
+  end
+
+  resource "MarkupSafe" do
+    url "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz"
+    sha256 "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
   end
 
   def install
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
+    python = "python3.10"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor"/Language::Python.site_packages(python)
 
-    resource("Mako").stage do
-      system Formula["python@3.9"].opt_bin/"python3",
-             *Language::Python.setup_install_args(libexec/"vendor")
+    resources.each do |r|
+      r.stage do
+        system python, *Language::Python.setup_install_args(libexec/"vendor", python)
+      end
     end
 
-    mkdir "host/build" do
-      system "cmake", "..", *std_cmake_args, "-DENABLE_TESTS=OFF"
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", "host", "-B", "host/build", "-DENABLE_TESTS=OFF", *std_cmake_args
+    system "cmake", "--build", "host/build"
+    system "cmake", "--install", "host/build"
   end
 
   test do

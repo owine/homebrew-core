@@ -1,10 +1,10 @@
 class MingwW64 < Formula
   desc "Minimalist GNU for Windows and GCC cross-compilers"
   homepage "https://sourceforge.net/projects/mingw-w64/"
-  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v9.0.0.tar.bz2"
-  sha256 "1929b94b402f5ff4d7d37a9fe88daa9cc55515a6134805c104d1794ae22a4181"
+  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v10.0.0.tar.bz2"
+  sha256 "ba6b430aed72c63a3768531f6a3ffc2b0fde2c57a3b251450dcf489a894f0894"
   license "ZPL-2.1"
-  revision 2
+  revision 3
 
   livecheck do
     url :stable
@@ -12,13 +12,12 @@ class MingwW64 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "7671527ea0a57310de4c8f367fa0cdfb3ea6f268c243466933df21a8f719e12d"
-    sha256 arm64_big_sur:  "6a226bcd216aa4689fb1426c3459caeaa7ee6a2403276c124956f222e9bdc6c9"
-    sha256 monterey:       "7454839c73ded2b9bdd7914df7d013f93afb760ec2175d299473954dc45e70a3"
-    sha256 big_sur:        "0a48943bac581260148704b796a27aafc21d7650a0dd7b60c9d64dbec148be93"
-    sha256 catalina:       "780144a43e99c22058a07d76668e83107a2bb5e89b651d694c1756174ca65ca3"
-    sha256 mojave:         "55243318eb8179bb7f962c83cb0a35a03fa728e9e444848f4948e82f4e0039c8"
-    sha256 x86_64_linux:   "0976e76105c70de683c1f4f2283248bf70521858d3bd91737e0e6bd01099af17"
+    sha256 arm64_monterey: "a93b02724538ddab682de97fb5954af51a777277ff60ca0c05cb09e98114c6bf"
+    sha256 arm64_big_sur:  "f7c7a35d27f4543226adab2d8b984eb464dd854c8a49bd38840c66e6a33583fb"
+    sha256 monterey:       "410a717fc0c81aabc961058b79411de9ab538c8ca61dd13262787c776f542c1f"
+    sha256 big_sur:        "0ad8f84cfce32fee78aa28bcc78f17184affb786c733be96040ae8b1c81c5bab"
+    sha256 catalina:       "197f1eab5e40be9b76a473b9b34c479d4c7c48f0a4e1b642a6bc13375607c1b5"
+    sha256 x86_64_linux:   "2adcbf1dba5615b4778a73345ca5c37346f902fa3cf06681ba0e765e101cf3b8"
   end
 
   # Apple's makeinfo is old and has bugs
@@ -30,24 +29,15 @@ class MingwW64 < Formula
   depends_on "mpfr"
 
   resource "binutils" do
-    url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
-    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
-    sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
+    url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+    sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   end
 
   resource "gcc" do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
-
-    # Remove when upstream has Apple Silicon support
-    if Hardware::CPU.arm?
-      patch do
-        # patch from gcc-11.1.0-arm branch
-        url "https://github.com/fxcoudert/gcc/commit/eea3046c5fa62d4dee47e074c7a758570d9da61c.patch?full_index=1"
-        sha256 "b55ca05a0ed32f69f63bbe708568df5ad62d938da0e34b515d601bb966d32d40"
-      end
-    end
+    url "https://ftp.gnu.org/gnu/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-12.2.0/gcc-12.2.0.tar.xz"
+    sha256 "e549cf9cf3594a00e27b6589d4322d70e0720cdd213f39beb4181e06926230ff"
   end
 
   def target_archs
@@ -217,9 +207,7 @@ class MingwW64 < Formula
     EOS
 
     ENV["LC_ALL"] = "C"
-    on_macos do
-      ENV.remove_macosxsdk
-    end
+    ENV.remove_macosxsdk if OS.mac?
     target_archs.each do |arch|
       target = "#{arch}-w64-mingw32"
       outarch = (arch == "i686") ? "i386" : "x86-64"

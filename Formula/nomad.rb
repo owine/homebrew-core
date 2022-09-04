@@ -1,8 +1,8 @@
 class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
-  url "https://github.com/hashicorp/nomad/archive/v1.2.4.tar.gz"
-  sha256 "f9f2eba618283238072d18c24a2bbb8835a37aa4ed58c8732db150514cb1481e"
+  url "https://github.com/hashicorp/nomad/archive/v1.3.5.tar.gz"
+  sha256 "79217b094831b0901dfe5ae9c03ff45ddde15ea02078a0fd07fabe2ff8867c83"
   license "MPL-2.0"
   head "https://github.com/hashicorp/nomad.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Nomad < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f5118e6256c051507e0287c4e860ee4fddaf110253661a0df931496108cc35e5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "304ec4dcbe6ce2c8315947d3a9c2734d6640b46bde5ac9972304d97ab7111196"
-    sha256 cellar: :any_skip_relocation, monterey:       "da85bddba76b7d894aff1b12c9c2170249f06c2eb9e7e6473aec28b479fba5d7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "babbd730c2140b729484b0fffeb9fa1afa77710cf08836009fda328c4f38ca11"
-    sha256 cellar: :any_skip_relocation, catalina:       "5d1f1b5afa207c2fda73f11dac65c76db87ec4413a2b59b79ad5c7317aef8794"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa77588ed151e840c2d1165088b8bbbe9f804fe976e46d417a44e8593fbffa95"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "38923f5a6d3cef22718346dc526dfeaeba92f2a8821983b70e91430e0c98cc0a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3019ed3511c2d6cbe472bb0d61b29c61021f138badf079c7238630968247d9b9"
+    sha256 cellar: :any_skip_relocation, monterey:       "98078a662bf5fd597b34ed3d770b29c57fff0a1f36836176f5d711c1f8679779"
+    sha256 cellar: :any_skip_relocation, big_sur:        "939493db69ade43e0a95e8db3a53c3c4791f674769e08f471d5f1bc32b447d47"
+    sha256 cellar: :any_skip_relocation, catalina:       "9974be6c403878ce0d59da6898f73e4c4568683aa20598c50d2a98a4fe971c88"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffaf72937fa46c1c6ed4c9a09180ec1a10ccaa8f6325739a84e728f296a78346"
   end
 
   depends_on "go" => :build

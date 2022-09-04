@@ -1,18 +1,18 @@
 class Httpx < Formula
   desc "Fast and multi-purpose HTTP toolkit"
   homepage "https://github.com/projectdiscovery/httpx"
-  url "https://github.com/projectdiscovery/httpx/archive/v1.1.5.tar.gz"
-  sha256 "e79dc2cf645c5be833d86aeb355fa4431594b5ca2ec39e0e389a7274f6ba9c7a"
+  url "https://github.com/projectdiscovery/httpx/archive/v1.2.4.tar.gz"
+  sha256 "5d95a35586c851bba43be2fb79b790ff417e58aa34ae515a79b3bd8c6f2df7e0"
   license "MIT"
   head "https://github.com/projectdiscovery/httpx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "59f126eb20dd8f3fb93a7e13d0f87d0dcaab6e1c6abd75e383a351710732dde7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6ef6bc73fd9616054bff98f4c8e89c046a532a6e3af42e16f2b67058194029b4"
-    sha256 cellar: :any_skip_relocation, monterey:       "147b63b50ec008943f52fd194fd96c662be06f62ce39708b23191989f96678f8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f8cdee91d1fe7dab1920d5c74ec1aaa9b4563af112da17b364085c62b7147a17"
-    sha256 cellar: :any_skip_relocation, catalina:       "685dbf1fdcc9ddc0462478ade05aab75ddb114a000002a58f258dc0116a082e7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9568b8ea796354bb94a995a06d11dba554770931342ae1b792c5a4b24086117"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8847479dcfd206f2b400c59275b5c89c99f61a432f3f9b4c0b26872509480d15"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e16f44d2f3ffaa3f0826ee09d02917587474aa353e1b3c3cbcf135c6c47b1b90"
+    sha256 cellar: :any_skip_relocation, monterey:       "35d1275e6be68e1ecff9d1df7000e10943a67a059756fa114f8bf93cd5526bb8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "49d8597fec0d9e68d1365ecf7d8b8d8a825073c0f8ad7b49057c11b17bf7308f"
+    sha256 cellar: :any_skip_relocation, catalina:       "0b1f4f21353bd9d413209252e44ba281f1a363e2ebede6f697f32d7dfd244b85"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19f6383086cd06ca7bbade724e0852f83e53a5a2eb9bae00a56cbec588e263ae"
   end
 
   depends_on "go" => :build

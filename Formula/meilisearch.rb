@@ -1,8 +1,8 @@
 class Meilisearch < Formula
   desc "Ultra relevant, instant and typo-tolerant full-text search API"
   homepage "https://docs.meilisearch.com/"
-  url "https://github.com/meilisearch/MeiliSearch/archive/v0.25.2.tar.gz"
-  sha256 "5097f0c6de042125561e669a1d9d09c4ee6425e9715fd0ad59dabeeef1b99ef8"
+  url "https://github.com/meilisearch/meilisearch/archive/v0.28.1.tar.gz"
+  sha256 "1854d219df7829c3b1de107f63f4f3a125954dcaf13a71b36630cd996d286177"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,12 @@ class Meilisearch < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d490db1d3bb63ca88e7bce1696495031ac7a01b0e121c27083f65a8d2e59078c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e37108f4ea93fd81e4e58ae787461c94925c9cb58ea77b15bdbd896adffb81b7"
-    sha256 cellar: :any_skip_relocation, monterey:       "fc08d0b3dd882c2523ae37adb576b30ab7352ec2da253510c6005a7656e7404a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "31096be094eafab9a826b183e6ad689a32a27a6fd852a517388e1db8028b0662"
-    sha256 cellar: :any_skip_relocation, catalina:       "b8bad04595bc4a1f49bceb2d6dab13d1b5c0578d0bb7d4fcefa54cc9c7b424e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38e5d4ec480980ff654e665ab607c2e0a4e229a6999201a429fb340f54bf2f30"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2027a7864a6450c8f3701d5507a227d6fef44f43d1839b6866fdc41bff26920a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "64c71a04c60c6b1bf67ffebbbf9718d9602140d8d58aa8fc51459db19de51c4f"
+    sha256 cellar: :any_skip_relocation, monterey:       "da97e122c1666e18840ae55e0f66c214e05ed4ff09e52fa937ca0b59c15eca7a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f02532b74b9c4d734c77a86a0a34a1cdc82e5a97b018063b33d4f65cb7e0b615"
+    sha256 cellar: :any_skip_relocation, catalina:       "f437746197abecfe37fcee6cd553c7b696d034dcca5fe7e684faf63707a73cc3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e21b159c95ff8c3debf6f971daf92d4fbac1bf3ce7014250e94fd2a9d8033f52"
   end
 
   depends_on "rust" => :build

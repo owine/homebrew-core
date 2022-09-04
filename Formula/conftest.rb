@@ -1,18 +1,18 @@
 class Conftest < Formula
   desc "Test your configuration files using Open Policy Agent"
   homepage "https://www.conftest.dev/"
-  url "https://github.com/open-policy-agent/conftest/archive/v0.30.0.tar.gz"
-  sha256 "666b2001214640ce87ac81086a8e04880c67842a103888328d73bcd5eaf3e7fb"
+  url "https://github.com/open-policy-agent/conftest/archive/v0.34.0.tar.gz"
+  sha256 "7d305b88dd2aae866851301ee0a0db7f4ea37688ff09b77ec2a748240d5c92b9"
   license "Apache-2.0"
   head "https://github.com/open-policy-agent/conftest.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a9f838c5791a60278c126b660ede641552a3680a622b3b3baa18601ffdc42c23"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "49ee0971a08e59619786608f34ed9215ab0581553b4aa2632065165c0a16e7ba"
-    sha256 cellar: :any_skip_relocation, monterey:       "bf7186a58436241823d7c2ee19cd6d9c4e79b78f6a8c4a45af7b2deb93604bfd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "acf45e31258792cd982d98daaab80a02834a2f3b2d88f002865ce0a8ea7bed3d"
-    sha256 cellar: :any_skip_relocation, catalina:       "c4e23863f2ad42c6e0e1ce001d674ea492441bfc608770b684fd35a7e040f48c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db388322026eb2337c41d85612884a83a6dd77b15f366ee39365832c08b81954"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e701a40383b9e466d6fb2fc4a767fdbfa36cdd6c4f864bf9b34328b36b037b17"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "63a1cea2c97080af56d08f855bd94021a077355cc714510e00a365099af6dff5"
+    sha256 cellar: :any_skip_relocation, monterey:       "cfbbfade9c5ff65f386b13390870fe91e93780917a7a865dddd9f8c6545e3e56"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7f8ca8b120d640adaedff17ed08b10862412f6819dcab877f39bdeed55e6188f"
+    sha256 cellar: :any_skip_relocation, catalina:       "d8a33474dec9949abc454eb7ea4142ede3239b46ede87e25de18b695467ecf31"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ead58bf325b95c04868a3e95d10c336973f5914192a099c3ff67179cc53cfff8"
   end
 
   depends_on "go" => :build
@@ -20,14 +20,7 @@ class Conftest < Formula
   def install
     system "go", "build", *std_go_args(ldflags: "-X github.com/open-policy-agent/conftest/internal/commands.version=#{version}")
 
-    bash_output = Utils.safe_popen_read(bin/"conftest", "completion", "bash")
-    (bash_completion/"conftest").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"conftest", "completion", "zsh")
-    (zsh_completion/"_conftest").write zsh_output
-
-    fish_output = Utils.safe_popen_read(bin/"conftest", "completion", "fish")
-    (fish_completion/"conftest.fish").write fish_output
+    generate_completions_from_executable(bin/"conftest", "completion")
   end
 
   test do

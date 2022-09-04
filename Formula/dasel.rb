@@ -1,18 +1,18 @@
 class Dasel < Formula
   desc "JSON, YAML, TOML, XML, and CSV query and modification tool"
   homepage "https://github.com/TomWright/dasel"
-  url "https://github.com/TomWright/dasel/archive/v1.22.1.tar.gz"
-  sha256 "2d80f2eaa326aef1aca1e535f89d73da0642c7c5709ee51a30b972d1bdd132d1"
+  url "https://github.com/TomWright/dasel/archive/v1.26.1.tar.gz"
+  sha256 "44c90753cf4c1b6e7fb82074c6701fd4b47dc6dc26fe4e5504dcccb4d273b946"
   license "MIT"
   head "https://github.com/TomWright/dasel.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "943acac1b078dd41b7019f3df90dcb9fba852c077d0ea86d564b7b6e2d1c53c7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7c6a8f17014cfc1f1e78f91914c7fabca627c3322a4c7688fb58bf7f104da148"
-    sha256 cellar: :any_skip_relocation, monterey:       "ceae8ec5712edcfd72e4eabaa5cd3954aecdd1d271bfe151b71a10ee50d59264"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e3c36d5e238135596e37f33c972cc726812f4b6dcfbb66e7904f7c3b93f28f28"
-    sha256 cellar: :any_skip_relocation, catalina:       "f273fd5ff9520c1f0fa3f823a9597d129d61793363a79f87b07e3a44985c2032"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6d2e145d365441ee2825d81a8d64d48e73fb63e0934fc1883633a2c1b5c9cd87"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2814792a3c59c272215e9463a76ccd297ee0286b825210277b4e6c04315d4322"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "35bbbc6622f9450d9a28a815f620405ae8899a1cc62f5696dd07f0f78586c153"
+    sha256 cellar: :any_skip_relocation, monterey:       "30625642be518512370ebb512c4bcaff060dcc32fc8e2aa8ba98dc1ee9eba0fc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "021522444b0c157afb1ca5a14e704a26f37a45c1e6050e68286db3af6d3e5a0a"
+    sha256 cellar: :any_skip_relocation, catalina:       "bfa2ae611dbf92057792b73c24c02056bf739b80832363cc4bee8312a5d43cb9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f520f53c7f636badf25cba30671bc8448b7ad92925c5f4337f3584937ff1a61f"
   end
 
   depends_on "go" => :build

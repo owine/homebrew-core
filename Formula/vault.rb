@@ -5,8 +5,8 @@ class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      tag:      "v1.9.3",
-      revision: "7dbdd57243a0d8d9d9e07cd01eb657369f8e1b8a"
+      tag:      "v1.11.3",
+      revision: "17250b25303c6418c283c95b1d5a9c9f16174fe8"
   license "MPL-2.0"
   head "https://github.com/hashicorp/vault.git", branch: "main"
 
@@ -16,21 +16,24 @@ class Vault < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4af8849bfb883c6709303e2f477bbf8118f7a610cb5a0588c6cdbefc77fe78aa"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5873ce31a62c522bd87473dc52b896c98437fb8dc0c013b9e50de52d6dacc0a2"
-    sha256 cellar: :any_skip_relocation, monterey:       "8e3641a34533f592e7766e76236113d47f96343a9eac94159d445560ba029904"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e9bbdf0d41dc238b40bb97fcee7d4d7626225d6c0aeb8620654c43fc0a452c4f"
-    sha256 cellar: :any_skip_relocation, catalina:       "904390bafeb870c90cc66989e346b85b1ccae9871835fc3de8643e0c75076d7d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c6c56c8c8651fc682b696516da9c612531a3a5aca2752e75a31867c62ce0be8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7ba293887a946efb82796307e32b68c755e9f46372405a3c09ce638368c89bd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ae1379cfe9e27825f237c253d6bae76d752685b46aab313aa7e20d987023b42b"
+    sha256 cellar: :any_skip_relocation, monterey:       "0d0b0519de19c34b2e38c6e8fe05d0723df0664b2e31019631ed3a98bed45fcd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8acab5c16fa3d555625963976f13ce57412af4bf71fae0e6184ef734b204ed19"
+    sha256 cellar: :any_skip_relocation, catalina:       "f9c51c292a85f52618453445dea925c9f86d835f9958e61d70645cf2293272d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8493da41d5a645a9b23e9f6f68c7d7b0b9fe9aeb00a29cb7f9c62d79daec68c2"
   end
 
   depends_on "go" => :build
   depends_on "gox" => :build
-  # Cannot build with `node` while upstream depends on node-sass<6
-  depends_on "node@14" => :build
+  depends_on "node" => :build
+  depends_on "python@3.10" => :build
   depends_on "yarn" => :build
 
   def install
+    # Needs both `npm` and `python` in PATH
+    ENV.prepend_path "PATH", Formula["node"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin" if OS.mac?
     ENV.prepend_path "PATH", "#{ENV["GOPATH"]}/bin"
     system "make", "bootstrap", "static-dist", "dev-ui"
     bin.install "bin/vault"

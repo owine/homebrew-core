@@ -2,8 +2,8 @@ class Kamel < Formula
   desc "Apache Camel K CLI"
   homepage "https://camel.apache.org/"
   url "https://github.com/apache/camel-k.git",
-      tag:      "v1.8.0",
-      revision: "eb893c22ad451a45525f487af671d7d945ed722c"
+      tag:      "v1.9.2",
+      revision: "405f535a9fe6f1f051ae2f5cd11c6b447e3d9e1c"
   license "Apache-2.0"
   head "https://github.com/apache/camel-k.git", branch: "main"
 
@@ -13,10 +13,12 @@ class Kamel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "81af020bb729671c37fbdb3c80a83f8a0ed566d867cbd589c8258877a2103a51"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6bb0296ca01de2472629f21b1a7ce23ea659b23bf0a6cfa6bb290ba007cef964"
-    sha256 cellar: :any_skip_relocation, catalina:      "dde46e992610679b2e3f58cd83a6fd9afb5ee97cd95b0fcaa63e3a6d8194bcbe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4070e26e7d3cd55d7c42ac8379dc49cef852804be1e3d32e6cffede8a8f3f213"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "da4dc13e152e87e162e6bc21519e76a52f11b082daa3fa1fa176ba6fd0dac4ac"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0dfa513ca886c9363ae2a0488e2eea88599b85ee2612b4d9f3e622de49fba889"
+    sha256 cellar: :any_skip_relocation, monterey:       "123bdf5d7d7f77efa28753c5568054da4ad743ee320d16912878b0279be1a5a7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2a8b32e9c0e651a63c0dadd655f70c709f03e2cfe5f6ae1da5a33fd4775d4a39"
+    sha256 cellar: :any_skip_relocation, catalina:       "e4ecdd5d8d42e460e42a4301066f3adc10951f726503da8d1015acb2a6fb8b12"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c583c5cc8c24b18347288d175c1951a921ceb74d2216ded9608c1aea3760b5ff"
   end
 
   depends_on "go" => :build
@@ -25,14 +27,10 @@ class Kamel < Formula
 
   def install
     ENV["JAVA_HOME"] = Language::Java.java_home("11")
-    system "make"
+    system "make", "build-kamel"
     bin.install "kamel"
 
-    output = Utils.safe_popen_read("#{bin}/kamel", "completion", "bash")
-    (bash_completion/"kamel").write output
-
-    output = Utils.safe_popen_read("#{bin}/kamel", "completion", "zsh")
-    (zsh_completion/"_kamel").write output
+    generate_completions_from_executable(bin/"kamel", "completion", shells: [:bash, :zsh])
   end
 
   test do

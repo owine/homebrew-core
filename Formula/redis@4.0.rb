@@ -1,7 +1,7 @@
 class RedisAT40 < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "https://redis.io/"
-  url "https://github.com/antirez/redis/archive/4.0.14.tar.gz"
+  url "https://github.com/redis/redis/archive/4.0.14.tar.gz"
   sha256 "3b8c6ea4c9db944fe6ec427c1b11d912ca6c5c5e17ee4cfaea98bbda90724752"
   license "BSD-3-Clause"
   revision 1
@@ -17,7 +17,7 @@ class RedisAT40 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2020-04-30", because: :versioned_formula
+  disable! date: "2022-07-31", because: :versioned_formula
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"

@@ -1,21 +1,22 @@
 class GitCinnabar < Formula
   desc "Git remote helper to interact with mercurial repositories"
   homepage "https://github.com/glandium/git-cinnabar"
-  url "https://github.com/glandium/git-cinnabar/archive/0.5.8.tar.gz"
-  sha256 "7971c2ae17d2b919f915efab35e3aba583b951d53ca2bc6ebf69bbd0c22f1067"
+  url "https://github.com/glandium/git-cinnabar/archive/0.5.10.tar.gz"
+  sha256 "20792358201417fa64cb3b1b9ccd6753909f081b0bf11cb9908f55a3607627e1"
   license "GPL-2.0-only"
   head "https://github.com/glandium/git-cinnabar.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "19ed5d8d7c8a59fe542ed94aa565a8d134aedb3d10936ed6a797516ee8e6f315"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5a2415da3841ac338a70dd500083dddf4eafd210b3bf8be37dbb4a87d49beb0d"
-    sha256 cellar: :any_skip_relocation, monterey:       "b85500153d25ede5b84757cabed62051049083ebce4736b6b3d2d37c70a13fa6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0f6a6716f169369b40161c8a2abe5efd68de5bf67a789cf15049389ce3d3f2be"
-    sha256 cellar: :any_skip_relocation, catalina:       "29f41d5d2c312a84893e3d4d284dd3d72a8d518b512c5caebb1c19a6bad980b7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "45c4131d5e6f2334043600361bcbadc35a958f0af1622911bcfa7e6630feb1c8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fae6f93aeabe58a4f42ed4cdad391eef193b86b4cc52dd355d00a16a7a0583d1"
+    sha256 cellar: :any_skip_relocation, monterey:       "ad041f42520a697f1b3e540370dcb76add2436c77b893e349dbb51378c2fdaba"
+    sha256 cellar: :any_skip_relocation, big_sur:        "292c8b28e12de0559e3dced8386aac27696de6bca127e11b9c0733b387f3fd13"
+    sha256 cellar: :any_skip_relocation, catalina:       "a66c188e82bda40b4457fb0da18fec6559350b4c6dab168f1f8f5b4029ebcc04"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35415f00c4cd5caafc3f325893d2b7c2af7e1d3004cc9e758f031173979ea586"
   end
 
-  depends_on :macos # Due to Python 2
   depends_on "mercurial"
+  depends_on "python@3.10"
 
   uses_from_macos "curl"
 
@@ -25,7 +26,8 @@ class GitCinnabar < Formula
     system "make", "helper"
     prefix.install "cinnabar"
     bin.install "git-cinnabar", "git-cinnabar-helper", "git-remote-hg"
-    bin.env_script_all_files(libexec, PYTHONPATH: prefix)
+    bin.env_script_all_files(libexec, PYTHONPATH:          prefix,
+                                      GIT_CINNABAR_PYTHON: Formula["python@3.10"].opt_bin/"python3")
   end
 
   test do

@@ -1,16 +1,17 @@
 class QalculateGtk < Formula
   desc "Multi-purpose desktop calculator"
   homepage "https://qalculate.github.io/"
-  url "https://github.com/Qalculate/qalculate-gtk/releases/download/v3.22.0/qalculate-gtk-3.22.0.tar.gz"
-  sha256 "ba6c0238b5f926ac94e234e15a2dfa84215938da5df6fea136db75c5db488556"
+  url "https://github.com/Qalculate/qalculate-gtk/releases/download/v4.3.0/qalculate-gtk-4.3.0.tar.gz"
+  sha256 "c08a7acc0d9c72bc717f5f6db892a9c8dfdefeb8fa9f31e68484c715adff10f0"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "20acd48e11ad1b432f0b67b23829527d3061c251c22bf3a7645ea52702f773b7"
-    sha256 arm64_big_sur:  "ffa893d85b00e4201a97389f4b4ad4b1e223e61c6a943af2591bf448f6162746"
-    sha256 monterey:       "9f5f210235d527925b99249cf24177a486ccba5d6ade109476e50670023acfae"
-    sha256 big_sur:        "e4cd18b7b758de6bb51b0600034a4f121bebf1b1064357d4819533c2c1f5e765"
-    sha256 catalina:       "d1773412e511081fe8abfbad538102e6d5193ca2c19a42a64a08e67a0df9ef92"
+    sha256 arm64_monterey: "4ba400fc634794bc2b3cfbfd574408910495e0015394c8e031cdef3f75afffaa"
+    sha256 arm64_big_sur:  "ff598e93d2687d61fbc0edda7ad7400d0f271c3434fb65d5870b3874a42413d3"
+    sha256 monterey:       "2d3c9f989b13752d51a02c909cd559b13de798cdd5b488d04a77adc2505e188e"
+    sha256 big_sur:        "b3c82ffd307806f743c9674ffcf4caef3d08beae456e459a576e5d7f921491b7"
+    sha256 catalina:       "90fc39aee49357dfa12a63434afa01a4bc32565485e3f26bf8f0bfcd0b8f3872"
+    sha256 x86_64_linux:   "9c4f0bf59943b79f9920b5ebf32f9525f14a2a0a2dd21e58e8b338a8c506374b"
   end
 
   depends_on "intltool" => :build
@@ -19,7 +20,11 @@ class QalculateGtk < Formula
   depends_on "gtk+3"
   depends_on "libqalculate"
 
+  uses_from_macos "perl" => :build
+
   def install
+    ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
+
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

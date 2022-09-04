@@ -1,8 +1,8 @@
 class Castxml < Formula
   desc "C-family Abstract Syntax Tree XML Output"
   homepage "https://github.com/CastXML/CastXML"
-  url "https://github.com/CastXML/CastXML/archive/v0.4.4.tar.gz"
-  sha256 "e7343edf262b291a9a3d702dbfa6d660e8ed81170454eab6af10a6dbf8c8141d"
+  url "https://github.com/CastXML/CastXML/archive/v0.4.6.tar.gz"
+  sha256 "8dcdbc1f23a130e4bdb0b09f57c30761a02a346b4db4037555048af2a293d66a"
   license "Apache-2.0"
   head "https://github.com/CastXML/castxml.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Castxml < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d76eb4f4e3cce08d062334f2c99f1cba63a3f831857ad00899ac7f5d82ccb2d7"
-    sha256 cellar: :any,                 arm64_big_sur:  "90aa62c5229d1084a1f197090b3c44b9cd85abddaf1695e2fecce2a2720b3f12"
-    sha256 cellar: :any,                 monterey:       "d8f8b6e5b027ae5707cdd74aba6f194babf02413b2251dbbab747426fd21ccac"
-    sha256 cellar: :any,                 big_sur:        "edd91bafec4e441ccbbcacd735d204873db448e36a2c45e84342c7e8f33a21d1"
-    sha256 cellar: :any,                 catalina:       "f44f3a928ad632cc5dd323d1122b597fd93562f83ebad2fbe4663764ad449726"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3fad7d88989008f812bc20583e05db10f9489e8fd9315afc03a22c9f0f9f0fc"
+    sha256 cellar: :any,                 arm64_monterey: "d1d99628e0e867b8b168b12af0e4ac5e510e39fa6b48a7d303520fa2ada90b4e"
+    sha256 cellar: :any,                 arm64_big_sur:  "c70f39cda0cb33152690bf38f9a43977182f75504fb86a870728241f39432f33"
+    sha256 cellar: :any,                 monterey:       "2e91532b9cfefcbdaafbf64b18a21e7219446431b7c9f0ba0e12f90257fb1b69"
+    sha256 cellar: :any,                 big_sur:        "02dfb93291323d19131417c662d642f183952f7aa1410e81f9d4c3690d3f44e6"
+    sha256 cellar: :any,                 catalina:       "40d4626864f888105a1e03f35c1afd49eb062d66ac5b756d8342ae5ccf208242"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "946090879b49cf6797843fd5686013314aabbc155b093b6369f10de6a4552471"
   end
 
   depends_on "cmake" => :build

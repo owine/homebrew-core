@@ -4,8 +4,8 @@ class Agda < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://hackage.haskell.org/package/Agda-2.6.2.1/Agda-2.6.2.1.tar.gz"
-    sha256 "3c4146539e1f2561a05896e3c18a7d0262d98a28f5c5adcc8cce8d8c9d3cbc0d"
+    url "https://hackage.haskell.org/package/Agda-2.6.2.2/Agda-2.6.2.2.tar.gz"
+    sha256 "e5be3761717b144f64e760d8589ec6fdc0dda60d40125c49cdd48f54185c527a"
 
     resource "stdlib" do
       url "https://github.com/agda/agda-stdlib/archive/v1.7.1.tar.gz"
@@ -14,19 +14,19 @@ class Agda < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "265f641da45f9692a4adb6324455315a4f3e679968452fdd279ec1f177768585"
-    sha256 arm64_big_sur:  "8076dab57cf328b2f101bbec616c1465e9e1334e7f89fe97a1c65cb688a343cd"
-    sha256 monterey:       "422bcf016bb915c1887d8e1b5429d113ca0ce14f180db0cd2c027292bbe52195"
-    sha256 big_sur:        "482995407f169a1ac2e9e6bb820f91593ba3bd56394deb142bee001b9974cbb2"
-    sha256 catalina:       "c1c94d764cb76bb657b098f2ba07450f4b93114d64f5ca2d839fedc522513ded"
-    sha256 x86_64_linux:   "33c77a87ac06685d06baeb0d975aa68704cdea4acb1da0e8beae44aed10591ae"
+    sha256 arm64_monterey: "f9450332b803dc4212b194b5692bccd0cc4e2f7935cc0b5e0f4aeb2f3a2ace3c"
+    sha256 arm64_big_sur:  "96def5d383e8004c2165cc75b561789efa33a8d2a61940cc77a9f51c2a2e0462"
+    sha256 monterey:       "89218cc3cc71273dfccb03c1da82d5207ce30cc308b0cc100fd8b3158efff337"
+    sha256 big_sur:        "610fde4f70b27f6ad76f5a1c28e477b9dc7454f079ee209a8ad609e8fbc61bc6"
+    sha256 catalina:       "be368491b302813d8b0f6e8a7b49ae3476ab2fdb2e0782561071b37af2fda7bc"
+    sha256 x86_64_linux:   "29bd833cdec176b7f3eebafb68579613c413fb6de62adc76f615920f1573d29e"
   end
 
   head do
-    url "https://github.com/agda/agda.git"
+    url "https://github.com/agda/agda.git", branch: "master"
 
     resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git"
+      url "https://github.com/agda/agda-stdlib.git", branch: "master"
     end
   end
 
@@ -37,8 +37,8 @@ class Agda < Formula
   uses_from_macos "zlib"
 
   resource "alex" do
-    url "https://hackage.haskell.org/package/alex-3.2.6/alex-3.2.6.tar.gz"
-    sha256 "91aa08c1d3312125fbf4284815189299bbb0be34421ab963b1f2ae06eccc5410"
+    url "https://hackage.haskell.org/package/alex-3.2.7.1/alex-3.2.7.1.tar.gz"
+    sha256 "9bd2f1a27e8f1b2ffdb5b2fbd3ed82b6f0e85191459a1b24ffcbef4e68a81bec"
   end
 
   resource "cpphs" do

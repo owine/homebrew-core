@@ -1,9 +1,10 @@
 class Cherrytree < Formula
   desc "Hierarchical note taking application featuring rich text and syntax highlighting"
   homepage "https://www.giuspen.com/cherrytree/"
-  url "https://www.giuspen.com/software/cherrytree_0.99.45.tar.xz"
-  sha256 "87649f594b8e6e8fb9426d437b1cd651240e073624ffbe0e5268b686759af2a5"
+  url "https://www.giuspen.com/software/cherrytree_0.99.48.tar.xz"
+  sha256 "4bba4f19d23560e8aa59f2ab1e76f128f7f02adaebb5813e826e1753ee5d81fa"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url :homepage
@@ -11,11 +12,12 @@ class Cherrytree < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "bfb5a3b14a4a62259d25ae17a6842d30531936d0c73632a9bfbeb5bc39ed5d2c"
-    sha256 arm64_big_sur:  "1e1b056e3fdec0d7cba717f263dcaef1118972a16cd0b4b9fcf92875b1d66513"
-    sha256 monterey:       "d7fcc3ded3f25ac9fafa9208c653e319404fce604ce0b94f54a801288f41226f"
-    sha256 big_sur:        "8e84898987639bf2e21edf7c8580964663cfd3d52d1a787e36f5dc952cc2932a"
-    sha256 catalina:       "210e40271e3cd19ca54cb3917214d13df911c73885d93c514429d92f607da418"
+    sha256                               arm64_monterey: "08349d32832cfc2e7ab6ad8acbc03246896510e096ad21941690b933038f0877"
+    sha256                               arm64_big_sur:  "6a21616e1b15d01a520333aee04798a8ed62088be22e403371713cf627ab22f2"
+    sha256                               monterey:       "13b9f930542b2b4d169169a20e456871b36650d0b9d9d6cc2c911e3b3359698c"
+    sha256                               big_sur:        "b5baa4dde747d908e200a9732301368a807324c59ff30bdd68d6bce1a6bf4209"
+    sha256                               catalina:       "72393e799894d5a4deb65f8c266bce3793277fed38469ed2defb5558ed284708"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8527fd655991a7d487ee94001563f9566cad5f32cc4a808bbe8ebbccf76a5315"
   end
 
   depends_on "cmake" => :build
@@ -28,9 +30,16 @@ class Cherrytree < Formula
   depends_on "gtksourceviewmm3"
   depends_on "libxml++"
   depends_on "spdlog"
+  depends_on "sqlite" # try to change to uses_from_macos after python is not a dependency
   depends_on "uchardet"
 
   uses_from_macos "curl"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5" # Needs std::optional
 
   def install
     system "cmake", ".", "-DBUILD_TESTING=''", "-GNinja", *std_cmake_args
@@ -39,6 +48,9 @@ class Cherrytree < Formula
   end
 
   test do
+    # (cherrytree:46081): Gtk-WARNING **: 17:33:48.386: cannot open display
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     (testpath/"homebrew.ctd").write <<~EOS
       <?xml version="1.0" encoding="UTF-8"?>
       <cherrytree>

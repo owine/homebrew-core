@@ -3,17 +3,17 @@ class Solargraph < Formula
   homepage "https://solargraph.org"
   # Must be git, because solargraph.gemspec uses git ls-files
   url "https://github.com/castwide/solargraph.git",
-      tag:      "v0.44.2",
-      revision: "e50a6dc4b43e2183e245aded8d23f0003d8c6bf7"
+      tag:      "v0.46.0",
+      revision: "8c03e57437ff3b61850a9b2b577309775b4fc37e"
   license "MIT"
 
   bottle do
-    sha256                               arm64_monterey: "4bdfb2bae2ea0e6651f3880e20163094d0a9e434b8f45595f74dd97174297bd7"
-    sha256                               arm64_big_sur:  "8d2bdef34ad980b87a793e6f67490e68a647162f5294b6e005cb4737eca29089"
-    sha256                               monterey:       "53cdf43975c36f6759dd78b0d94c7511ed06b47f1350a41f346b3c67b32c21ab"
-    sha256                               big_sur:        "cc5a0e00350109e2ce3dfc09afd60b427fc20416bfcfeb68dd5fc4de96682e29"
-    sha256                               catalina:       "572e7ab925e723236509671f9a10f2814417c41771c81b3e155dae990ead1179"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ea302b96d25305df9675aa39f2ab7270cfdf81c13f977a69dcc45abe5cca860"
+    sha256                               arm64_monterey: "b62e75f50d70715eff11165225b9bb586275e44ebef301757c7cfa4f0d44e48a"
+    sha256                               arm64_big_sur:  "a26c960c5346fcd60a170c4ddc2366c6c6dae488c59681efa2fc4e434abe4e4d"
+    sha256                               monterey:       "102afc448910acd5510b8ec99951ae79bef581a8f5fb1fe94859c63d4c78cb36"
+    sha256                               big_sur:        "92385aecc8e181730af066092ed6cdd4564ae73296b10e19a0cdd9f1eaddf7a8"
+    sha256                               catalina:       "67b3191a77818c55cdc713c96c085c299ed0c6f97f5f5494b020c07b1d30f731"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "866fa03f6b364320e3999ea18ffc9b1ca98cd2661cbf23750bfcb24a16653944"
   end
 
   uses_from_macos "ruby", since: :catalina

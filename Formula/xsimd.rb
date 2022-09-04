@@ -1,12 +1,12 @@
 class Xsimd < Formula
   desc "Modern, portable C++ wrappers for SIMD intrinsics"
   homepage "https://xsimd.readthedocs.io/en/latest/"
-  url "https://github.com/QuantStack/xsimd/archive/8.0.5.tar.gz"
-  sha256 "0e1b5d973b63009f06a3885931a37452580dbc8d7ca8ad40d4b8c80d2a0f84d7"
+  url "https://github.com/xtensor-stack/xsimd/archive/9.0.1.tar.gz"
+  sha256 "b1bb5f92167fd3a4f25749db0be7e61ed37e0a5d943490f3accdcd2cd2918cc0"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "b9471757cf5fe31f94cae8ead2b12616efb9ac835f268e4d57ae9d299647c42b"
+    sha256 cellar: :any_skip_relocation, all: "7a6a2027f28660c81074bc690a52cecf4964d875de1e777d9995fd23ce1a8a74"
   end
 
   depends_on "cmake" => :build

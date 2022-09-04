@@ -9,34 +9,47 @@ class Zstd < Formula
   head "https://github.com/facebook/zstd.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "dea9b5e2d3ca1c6aec6a1fadefeb615115c6cf6fb8482e9addb9ed23691c6ce7"
-    sha256 cellar: :any,                 arm64_big_sur:  "17089f121b426d5eccbf42e7f420227a4eec3a7f8915074c399e4af76f53cd84"
-    sha256 cellar: :any,                 monterey:       "92089ac665de71072f944a106df3f2ab510470c5ee9dafe3a223ee6dfab8b707"
-    sha256 cellar: :any,                 big_sur:        "7a86804ef138928d6a5faed965ac23b3c0d9609231ff6f5e0a4702cc0b322a5c"
-    sha256 cellar: :any,                 catalina:       "e5e739bbf409053a990217d7a61a01a172a1cc471068817707b987ef72ce28f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61bb93ed3485d643f87f86817dbed7c3922ecc0eedc74635b3db3b29e7dfdabe"
+    rebuild 3
+    sha256 cellar: :any,                 arm64_monterey: "844b957a277cd93f70f8de91bd4caa21579f9b9e2f55bd5daf0334eee8ef1196"
+    sha256 cellar: :any,                 arm64_big_sur:  "091743749cec2f0ae34482ae370aa5a563d6c7841c42fbc25e0d061863f5faa5"
+    sha256 cellar: :any,                 monterey:       "b0eabfa556c5aed039a5b22cd7e2e3dd52c7d2416c1141e4a8e9e825b9238fc3"
+    sha256 cellar: :any,                 big_sur:        "585bced60a658bfbda88d6a500fa26671871aa354f65cef767f17ea46209b4f2"
+    sha256 cellar: :any,                 catalina:       "bdd2d3349fbcaa7e299cb6184f43e7f2bf29bd5936396d4c7c3d132bd687cd15"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "006b5ab6a4616a8b6f59953cb9efb546d312e3ba231c303bb56749e7f66f56df"
   end
 
   depends_on "cmake" => :build
-
+  depends_on "lz4"
+  depends_on "xz"
   uses_from_macos "zlib"
 
   def install
-    cd "build/cmake" do
-      system "cmake", "-S", ".", "-B", "builddir",
-                      "-DZSTD_BUILD_CONTRIB=ON",
-                      "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                      *std_cmake_args
-      system "cmake", "--build", "builddir"
-      system "cmake", "--install", "builddir"
-    end
+    # Legacy support is the default after
+    # https://github.com/facebook/zstd/commit/db104f6e839cbef94df4df8268b5fecb58471274
+    # Set it to `ON` to be explicit about the configuration.
+    system "cmake", "-S", "build/cmake", "-B", "builddir",
+                    "-DZSTD_PROGRAMS_LINK_SHARED=ON", # link `zstd` to `libzstd`
+                    "-DZSTD_BUILD_CONTRIB=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DZSTD_LEGACY_SUPPORT=ON",
+                    "-DZSTD_ZLIB_SUPPORT=ON",
+                    "-DZSTD_LZMA_SUPPORT=ON",
+                    "-DZSTD_LZ4_SUPPORT=ON",
+                    *std_cmake_args
+    system "cmake", "--build", "builddir"
+    system "cmake", "--install", "builddir"
   end
 
   test do
-    assert_equal "hello\n",
-      pipe_output("#{bin}/zstd | #{bin}/zstd -d", "hello\n", 0)
-
-    assert_equal "hello\n",
-      pipe_output("#{bin}/pzstd | #{bin}/pzstd -d", "hello\n", 0)
+    [bin/"zstd", bin/"pzstd", "xz", "lz4", "gzip"].each do |prog|
+      data = "Hello, #{prog}"
+      assert_equal data, pipe_output("#{bin}/zstd -d", pipe_output(prog, data))
+      if prog.to_s.end_with?("zstd")
+        # `pzstd` can only decompress zstd-compressed data.
+        assert_equal data, pipe_output("#{bin}/pzstd -d", pipe_output(prog, data))
+      else
+        assert_equal data, pipe_output("#{prog} -d", pipe_output("#{bin}/zstd --format=#{prog}", data))
+      end
+    end
   end
 end

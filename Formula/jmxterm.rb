@@ -1,21 +1,19 @@
 class Jmxterm < Formula
   desc "Open source, command-line based interactive JMX client"
   homepage "https://docs.cyclopsgroup.org/jmxterm"
-  url "https://github.com/jiaqi/jmxterm/releases/download/v1.0.2/jmxterm-1.0.2-uber.jar"
-  sha256 "3a8a7cf99d89a3f46fcf3bcfe9bb4838d7778a10730e0983a258edc765fede5c"
+  url "https://github.com/jiaqi/jmxterm/releases/download/v1.0.3/jmxterm-1.0.3-uber.jar"
+  sha256 "04b16c9e49b77acbe33014fbf564dc07fac4f223b63ef8bfa865abfed337155f"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "2e3d2fb1fd7afec204e7556a5c7567cab6c7ce3484e91730dcf0b34c1e8729aa"
+    sha256 cellar: :any_skip_relocation, all: "29b956c7183066e8c41f5e72ecf54d801781b007a391bc0f64bbb33f89a69e2d"
   end
 
-  depends_on "openjdk@8"
+  depends_on "openjdk"
 
   def install
     libexec.install "jmxterm-#{version}-uber.jar"
-    bin.write_jar_script libexec/"jmxterm-#{version}-uber.jar", "jmxterm", "", java_version: "1.8"
+    bin.write_jar_script libexec/"jmxterm-#{version}-uber.jar", "jmxterm", ""
   end
 
   test do

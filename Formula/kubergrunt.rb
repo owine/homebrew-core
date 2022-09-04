@@ -1,20 +1,21 @@
 class Kubergrunt < Formula
   desc "Collection of commands to fill in the gaps between Terraform, Helm, and Kubectl"
   homepage "https://github.com/gruntwork-io/kubergrunt"
-  url "https://github.com/gruntwork-io/kubergrunt/archive/v0.8.0.tar.gz"
-  sha256 "cbb2faa340868a13eae0c4fe845fd45586e57afb48568c9d864725527ef26a7e"
+  url "https://github.com/gruntwork-io/kubergrunt/archive/v0.9.2.tar.gz"
+  sha256 "7e7ec360c78ebfc672593d66766e387f95d5a7807e79d13298efb9e0128feb61"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "624db864f225cd62e012955622304f455c398f3fbb04bf70431a69c9c041da07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8b2b9e8e800d5134736e708276e90bac44b5c52ed12ef6dd21671feaef087646"
-    sha256 cellar: :any_skip_relocation, monterey:       "df59a3cf5e42717f22f59313474420100834d666fea09593d2b0328b2fa49ad3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8d82a465bf245c37e56f2e70452b03fe023fd075303c714a2bcaad607d0ebaf3"
-    sha256 cellar: :any_skip_relocation, catalina:       "32472be7d1c6dc5bdc8281b34529f599e316b5382b5b0518a054f61952a0e97f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0febe5e67ffc420ca144fe13e08d70753b60d8a784f62c2a1d59be79064db916"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "68effe374818b5c91daf501d1c32fd985d2fdec644e7d8bb9a3d1fb9c0144f86"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7810095334d4947510d6df76df7d3c9410c78c5d66b218afe38b7c153f244abe"
+    sha256 cellar: :any_skip_relocation, monterey:       "adb10fb31cbb38e99a9808f94a82c4cd73e115dd9f5eb0ca72f9d077ef6dbf72"
+    sha256 cellar: :any_skip_relocation, big_sur:        "03c1017e5d3e1490e40a140167b5eed305728179d16fc10ae0bd69e09d5e1959"
+    sha256 cellar: :any_skip_relocation, catalina:       "d4f173ddb23848a1206eec66de95471177c7b4212780611c14d46d43ca8d6a86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "782d0bfff784c40ec147bad45fd5bc4c912509d87ef9e6a9543353274e5dd85c"
   end
 
-  depends_on "go" => :build
+  # Bump to 1.18 on the next release, if possible.
+  depends_on "go@1.17" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.VERSION=v#{version}"), "./cmd"

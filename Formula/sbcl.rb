@@ -1,22 +1,26 @@
 class Sbcl < Formula
   desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.1.9/sbcl-2.1.9-source.tar.bz2"
-  sha256 "9e746ff12c4f78d2deabd95e48169b552f9472808cf8b8fc801d84df3e962fa1"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.2.6/sbcl-2.2.6-source.tar.bz2"
+  sha256 "3e23048c8fa826fb913220beb2ac3697dbc5c0cdf2e89fed8db39ed1712304a0"
   license all_of: [:public_domain, "MIT", "Xerox", "BSD-3-Clause"]
   head "https://git.code.sf.net/p/sbcl/sbcl.git", branch: "master"
 
+  livecheck do
+    url "https://sourceforge.net/projects/sbcl/rss?path=/sbcl"
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a1f40fa7fff59aef4b65264a566050b4d241571e715a3c02a3a04fdb98d4fb09"
-    sha256 cellar: :any_skip_relocation, big_sur:       "f8c9ec0cd0498ff23069576bae6d5c959a07d30341f0fd7289a70226936cb6fb"
-    sha256 cellar: :any_skip_relocation, catalina:      "b3bb2b67fb0850705d1fec5ae20630087e189fcf1c7c2ac5bc6adce71dbefa16"
-    sha256 cellar: :any_skip_relocation, mojave:        "9ea1618b1a189c93353622f61fbd7f3b115b389d69ba2d95fe466defb741ba6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea3c8073e192ffac051bd5a9c5ac8c9990c3790d030d59744a280cab3dea4bc8"
+    sha256 cellar: :any,                 arm64_monterey: "e16068a0809bae797fd26f008199ceed86c7c18205710a62c7b0db995b05e7d8"
+    sha256 cellar: :any,                 arm64_big_sur:  "4e931278c566d7886940112073ce713fda39d4b93f8637292788cfe71ebc1bbf"
+    sha256 cellar: :any,                 monterey:       "4c7ca056ef2c4827fb750273945a50dcde9c3f8872a0a46d747934a5a7374191"
+    sha256 cellar: :any,                 big_sur:        "14bf977877ab106d87d6328aada25de73013874547d6e8646840b721b0c91f5c"
+    sha256 cellar: :any,                 catalina:       "e9402c538fd3bd116ffc6664b5f5d4962ae458484a2267a3e7422f98cd9da896"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f7fa408bb4d3b57e041c6f5449193970f4f5bc828078cda252de238eddb31c2"
   end
 
   depends_on "ecl" => :build
-
-  uses_from_macos "zlib"
+  depends_on "zstd"
 
   def install
     # Remove non-ASCII values from environment as they cause build failures

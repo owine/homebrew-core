@@ -1,36 +1,22 @@
 class Findutils < Formula
   desc "Collection of GNU find, xargs, and locate"
   homepage "https://www.gnu.org/software/findutils/"
-  url "https://ftp.gnu.org/gnu/findutils/findutils-4.8.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/findutils/findutils-4.8.0.tar.xz"
-  sha256 "57127b7e97d91282c6ace556378d5455a9509898297e46e10443016ea1387164"
+  url "https://ftp.gnu.org/gnu/findutils/findutils-4.9.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/findutils/findutils-4.9.0.tar.xz"
+  sha256 "a2bfb8c09d436770edc59f50fa483e785b161a3b7b9d547573cb08065fd462fe"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "86e0cb2db77a4b293dac21671faa9b3ffc853ceb60319ad49824921320b6bcdb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "00515eb2dc81769263cbde9066c25807b120e3a25a7dbff3f5a3858c07ba7f6d"
-    sha256 cellar: :any_skip_relocation, monterey:       "9bf672398a53cc57cfee7b0606076f869bc8f13004e691d951f3460e167379a3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ba06afcd59371297f232da8d59a68ebc2d66ce3ffdad3e83f65e2e9abb47a4c0"
-    sha256 cellar: :any_skip_relocation, catalina:       "7e47d6ae1e52d796ce0fd989c17ac169f1b78206e62a28274fe25296185a8a66"
-    sha256 cellar: :any_skip_relocation, mojave:         "78cf4e5b65633636743fd29b7fd3b48aebd20bed727203dc244192fdfa543f62"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1bcba0a1078da1c7c44ca826928def5e3429df58ecc854b3a156896118576575"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e21f10bcc0baed90d33aad5ce7428f9ad24a9cd4e35f4b0003e14160045f8fb5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "72ddcf7cfdccb52f6c4c4f20c2c0cdbb4111d37641d73a1622a4af170ed5b53b"
+    sha256 cellar: :any_skip_relocation, monterey:       "595025aa645a0bc036179b30613986bd436081cc4416db21de0f8fba4d95934b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e2171d40184a93549ca6877410abf8717c7d8b13ae1a0bf3568dd49a24b7747e"
+    sha256 cellar: :any_skip_relocation, catalina:       "a957b1c3b354edee634d1d96f66315fa8ea327efc9f282c8c026b5298d8802e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3be871b90f426c6a6b9f292e65ba359c402017e783523746e965d849436137db"
   end
 
   def install
-    # Work around unremovable, nested dirs bug that affects lots of
-    # GNU projects. See:
-    # https://github.com/Homebrew/homebrew/issues/45273
-    # https://github.com/Homebrew/homebrew/issues/44993
-    # This is thought to be an el_capitan bug:
-    # https://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
-    ENV["gl_cv_func_getcwd_abort_bug"] = "no" if MacOS.version == :el_capitan
-
-    # Workaround for build failures in 4.8.0
-    # https://lists.gnu.org/archive/html/bug-findutils/2021-01/msg00050.html
-    # https://lists.gnu.org/archive/html/bug-findutils/2021-01/msg00051.html
-    ENV.append "CFLAGS", "-D__nonnull\\(params\\)="
-
     args = %W[
       --prefix=#{prefix}
       --localstatedir=#{var}/locate
@@ -75,11 +61,10 @@ class Findutils < Formula
 
   test do
     touch "HOMEBREW"
-    on_macos do
+    if OS.mac?
       assert_match "HOMEBREW", shell_output("#{bin}/gfind .")
       assert_match "HOMEBREW", shell_output("#{opt_libexec}/gnubin/find .")
-    end
-    on_linux do
+    else
       assert_match "HOMEBREW", shell_output("#{bin}/find .")
     end
   end

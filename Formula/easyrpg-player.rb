@@ -4,25 +4,26 @@ class EasyrpgPlayer < Formula
   url "https://easyrpg.org/downloads/player/0.7.0/easyrpg-player-0.7.0.tar.xz"
   sha256 "12149f89cc84f3a7f1b412023296cf42041f314d73f683bc6775e7274a1c9fbc"
   license "GPL-3.0-or-later"
+  revision 2
 
   livecheck do
     url "https://github.com/EasyRPG/Player.git"
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "35402a4ebf31126dc698f350b6b643e84cdf082348cbf91753ddc2ad1edea8b4"
-    sha256 cellar: :any,                 arm64_big_sur:  "cdd4dd54d40d8e659bd0d820deeef99740c46ff2dff90a6d0e788d2a086412bb"
-    sha256 cellar: :any,                 monterey:       "7b925302866f43541ae010d252712bdada3062128eb520c0d89cfdc5ce8118e2"
-    sha256 cellar: :any,                 big_sur:        "941f5709c777356910481260328d4e7c07bbdb30cd226d52640c631da22736bd"
-    sha256 cellar: :any,                 catalina:       "15e33be5dbde27d8df446a845f2ed3a18f36b5d7ae6fdf4f70f7d8af1bbb2df4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "50d1d39d37367d259f49aa643d8070d29b585d3c50ca353a8c33be20e6352463"
+    sha256 cellar: :any,                 arm64_monterey: "a2c5273f9a76fb0b87bfc06025bf31b0eef7cb6f76c239dae727b58ad311b090"
+    sha256 cellar: :any,                 arm64_big_sur:  "993ae4fbe9fb337134aedae988cefbc62d24c0ea56519f9dd1c1525ade0695d0"
+    sha256 cellar: :any,                 monterey:       "e0d23fd23007b642cacfcfee7b29c41f46fe760bd601749b9639a871b6a9731f"
+    sha256 cellar: :any,                 big_sur:        "65d0605d32d94a3d4bb5279c56b8b16d09ed9565c03b7bb514bad0cecff7d021"
+    sha256 cellar: :any,                 catalina:       "5ec244da200a93b1f6dc7459351f3ab4b2835a975b530f4755d7faa45389c352"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b538c2063295c29c8c5c61c2afcc655d4af2234950f905577834da7623cd4ca2"
   end
 
   depends_on "cmake" => :build
   depends_on "fmt"
   depends_on "freetype"
   depends_on "harfbuzz"
+  depends_on "icu4c"
   depends_on "liblcf"
   depends_on "libpng"
   depends_on "libsndfile"

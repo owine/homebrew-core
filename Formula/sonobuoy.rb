@@ -1,17 +1,17 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/vmware-tanzu/sonobuoy"
-  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.0.tar.gz"
-  sha256 "bfaa1d09df8b2f0590b57d50a9a2b556b712231519ae22a7bb71cd6cf5be8b16"
+  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.10.tar.gz"
+  sha256 "c41f7207e5cc46e3635aa6e6ccd2e9be9527327c426be643418f30f4d9974ae2"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "abfa2dcb072ca7515273c72ff5420859043a3bc6eed29926d89616afabcc65af"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e11f09337902bf06d7196ce167ec8f4484e3c5d0061949a605c99b0d379555e"
-    sha256 cellar: :any_skip_relocation, monterey:       "d598b8c9aa35fb68bec97c13aa155ca87c5fb27170a4faf6da5e2a1fb035b36d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "99e1d4afccbb08f92410414bd9b6eb7225184b0930688b6d16b026d458033985"
-    sha256 cellar: :any_skip_relocation, catalina:       "8a30c7ffc461153149b7445b5d134e2c45e4635e3e25634b5cadd9c8bd1c5565"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e6907af4f535531e35c638a9299373aa3c4f121b985170bf5e3e41d81377d847"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "52bf72af4c1d9374ebc54af3c091722c4b9fe927702fcde80f23434c7ba614bc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "457cf15184430889c0e4110857f4a14456a782f17a8227a1169d1b560b55a605"
+    sha256 cellar: :any_skip_relocation, monterey:       "ee127629100128a10f5a9800b1dca1bb066db244c37724a6d19080e414c76a4e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "31529f8aefa3661eac80a67aa70ae50b976489f26d239b20bd254a992fa17cb9"
+    sha256 cellar: :any_skip_relocation, catalina:       "62e996f87d2c7af262eecf4c13a46ce1878e0bb29205fdff5a5cf2ce87c686cf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "144ac82fe76ee1383cde8f0fd62bbd9807b8479ed9f4e684f0a287740031873a"
   end
 
   depends_on "go" => :build

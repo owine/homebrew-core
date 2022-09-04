@@ -1,15 +1,17 @@
 class KotlinLanguageServer < Formula
   desc "Intelligent Kotlin support for any editor/IDE using the Language Server Protocol"
   homepage "https://github.com/fwcd/kotlin-language-server"
-  url "https://github.com/fwcd/kotlin-language-server/archive/refs/tags/1.2.0.tar.gz"
-  sha256 "2121a678d9c6ae2c80a74f3036ccc18fb778fe1ef25a527b3083d24c7c1bbf75"
+  url "https://github.com/fwcd/kotlin-language-server/archive/refs/tags/1.3.1.tar.gz"
+  sha256 "a968e0079787f1a6d2f46b4dbd49b2394c266287c8573097f71a14cdb794223d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "48f56132fceac7ac1513c336ea0a107deac456517b1c64c326d72a6334058b29"
-    sha256 cellar: :any_skip_relocation, big_sur:       "baf223002af8e84ff3b4b95e021282bcaf819a11bca14c80adc208a905b0054a"
-    sha256 cellar: :any_skip_relocation, catalina:      "abe6ab5b194f23f2f4bc79b9f010e60e207bc603c11b18556b19b14a5a429fb3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1ba039a5dd1d1cbee827e439dcdd102ecd3a665937faac51df192715282de48"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ad521214d25e1c4ca6f66cbbfb7b877de45b7f6aeecbdfeb3d812a35d2367d34"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "42be778c6f2825ec713f5a65a8ab55623b8a8b3ec1a8712bd30880f873e25242"
+    sha256 cellar: :any_skip_relocation, monterey:       "cacdac3c30827ebdba6ec8ba7c3194467a43ac05b2fd4e9bc667ee78cbef2b6f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d49a6301254a3824575a106eb4b7cd87f4497851a17a1e8b8cff36162ac7300d"
+    sha256 cellar: :any_skip_relocation, catalina:       "864d2c7571e16472b304581106e2d718cfe3e3df0924416c41a10f9a335cae49"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2b546afa467dea1abbe547c6caea4fcf34d79267eb83ec314465e07fe4fb541"
   end
 
   depends_on "gradle" => :build

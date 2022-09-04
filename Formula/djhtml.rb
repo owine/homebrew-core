@@ -3,17 +3,17 @@ class Djhtml < Formula
 
   desc "Django/Jinja template indenter"
   homepage "https://github.com/rtts/djhtml"
-  url "https://files.pythonhosted.org/packages/19/e6/86ff745dda86c18ac73a0f0c0871ae2c0fca8a3eb347437fce792f0a56e0/djhtml-1.4.11.tar.gz"
-  sha256 "1b0b3d7c4d7207ec729d4720b3b5aa632d220bbee8df2f711d17457a2ce1ebc9"
+  url "https://files.pythonhosted.org/packages/26/8f/b838a00b9fa0033c210e5fddb43d41ac3f500decf840e6b251ea18c3da6e/djhtml-1.5.2.tar.gz"
+  sha256 "b54c4ab6effaf3dbe87d616ba30304f1dba22f07127a563df4130a71acc290ea"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e04a48f43a64028115a6a14dfde11824cf9a3181e40b8ce929ab5e08d6bbdf66"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "553fc7b0c2411d9b30323be4a6d12bb2994c653d2241a265148c13c2f3897037"
-    sha256 cellar: :any_skip_relocation, monterey:       "aa8d7b3922352cfb278b7d446679e8b313f97264e891bd649987d254665659ba"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6f791a9488d76a1832ec8dccabffdf2d2a3c8c6330bd9da170f5f9c74a480c6b"
-    sha256 cellar: :any_skip_relocation, catalina:       "1bd9ed4731b44bb2be813485e61f10a13b65c46576eb7b7625ca3f87d5f9fc31"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "037954f3806f19c908e77c9271a24631e41b3a580cde652a32344c50760ac690"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b76125bdfb4cd9cbe68a56d6d1d6551e63b02bbbb9c39bffeba12dcbabca9b44"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b2f13b84ccb83d160f351e61d459e37b89399dd8a91877fb3c72d4982e723919"
+    sha256 cellar: :any_skip_relocation, monterey:       "f4a6359f07e55c49e28409766cf0bb0aa20aaa41e2b3580d8920091eaf9b014a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "948cda3ae2bf94c34156b0ca67824451e79bd58f81f162cc4195bf7df50bd7b2"
+    sha256 cellar: :any_skip_relocation, catalina:       "020a501a1ed2f3c3a4fef6d155620f4a54bb702bbe9c3f792b057ba97df77baf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "21ca66140574f8b56d5bc2672f7f9a88ea3165c092c2beff6fb6ea83b8fc3377"
   end
 
   depends_on "python@3.10"

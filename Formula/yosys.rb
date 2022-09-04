@@ -1,27 +1,28 @@
 class Yosys < Formula
   desc "Framework for Verilog RTL synthesis"
   homepage "https://yosyshq.net/yosys/"
-  url "https://github.com/YosysHQ/yosys/archive/yosys-0.13.tar.gz"
-  sha256 "004c203cb516887a8c76678a1fd76381198a8c46a17f4d893c34b7521df894b5"
+  url "https://github.com/YosysHQ/yosys/archive/yosys-0.20.tar.gz"
+  sha256 "ee261487badf1b554616d555da8496a7c84ef21ae66a979ddd946b6949a780a4"
   license "ISC"
   head "https://github.com/YosysHQ/yosys.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "e864907be36bf246522849c4c375514e32ea3c088a4f4fe274c2931868d15f32"
-    sha256 arm64_big_sur:  "b114a3083170dc0af7fb4ac28b48c68e04477dab1fb1cb36cc600d38a4dcdc3e"
-    sha256 monterey:       "0e687765d63f982be9b9463b50fe87d81023c56d178e66917ce22b1169a04720"
-    sha256 big_sur:        "157bfcc901029416b64a509310754d70f647b3e7a8c0a8ca96e6ffec0aa694f8"
-    sha256 catalina:       "b48672e61c8b1fd88cd9f7e2814290fe6d411a789b76148d490b1d4997a17ea5"
-    sha256 x86_64_linux:   "b2145ed8545cdbc676e020f058aa81ea894cc310c57d3a04830ecfb94d5e946d"
+    rebuild 1
+    sha256 arm64_monterey: "ec8e2485f732e9235d346c6314b3c5891cefee2b4a3a1f14e9ad73e5a15aa52b"
+    sha256 arm64_big_sur:  "ca1340356d1fc7f9cd8314c9b7dff694eda12a9ffdc7d019bd2441a37a2e4000"
+    sha256 monterey:       "a46a642b3dad0836ac662209b9cf642674bb406fb981474e24c6c7263f603533"
+    sha256 big_sur:        "edc025e0ee8c999ea5cb87d31f6bf0af1e79bfa1c632ff96ba2cd99b71762ee7"
+    sha256 catalina:       "7f8b6ae653fc3e24bd7dcd181a4c4ceb6fec17140ce2b2d194d7d5e16e1348ab"
+    sha256 x86_64_linux:   "b3f54b1b34ab3042e273182fcaebc3f1f63b9762bbaf9bc8bdecd29f125f3259"
   end
 
   depends_on "bison" => :build
   depends_on "pkg-config" => :build
-  depends_on "libffi"
   depends_on "python@3.10"
   depends_on "readline"
 
   uses_from_macos "flex"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "tcl-tk"
 
   def install
@@ -29,6 +30,6 @@ class Yosys < Formula
   end
 
   test do
-    system "#{bin}/yosys", "-p", "hierarchy; proc; opt; techmap; opt;", "-o", "synth.v", "#{pkgshare}/adff2dff.v"
+    system bin/"yosys", "-p", "hierarchy; proc; opt; techmap; opt;", "-o", "synth.v", pkgshare/"adff2dff.v"
   end
 end

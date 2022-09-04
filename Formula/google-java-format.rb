@@ -3,30 +3,25 @@ class GoogleJavaFormat < Formula
 
   desc "Reformats Java source code to comply with Google Java Style"
   homepage "https://github.com/google/google-java-format"
-  url "https://github.com/google/google-java-format/releases/download/v1.13.0/google-java-format-1.13.0-all-deps.jar"
-  sha256 "a036ac9392ff6f2e668791324c26bd73963b09682ed4a0d4cbc117fd6ea3fe55"
+  url "https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar"
+  sha256 "a356bb0236b29c57a3ab678f17a7b027aad603b0960c183a18f1fe322e4f38ea"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c8c651c5f2e77a127ad39a48b29776d92a6b5de39ea1e9239fa339dbe02f7841"
+    sha256 cellar: :any_skip_relocation, all: "0148b7af6496e069695eda9f889999cd942ab795e9ce8a8d911906d1b79b8b05"
   end
 
   depends_on "openjdk"
   depends_on "python@3.10"
 
   resource "google-java-format-diff" do
-    url "https://raw.githubusercontent.com/google/google-java-format/v1.13.0/scripts/google-java-format-diff.py"
+    url "https://raw.githubusercontent.com/google/google-java-format/v1.15.0/scripts/google-java-format-diff.py"
     sha256 "4c46a4ed6c39c2f7cbf2bc7755eefd7eaeb0a3db740ed1386053df822f15782b"
   end
 
   def install
     libexec.install "google-java-format-#{version}-all-deps.jar" => "google-java-format.jar"
-    bin.write_jar_script libexec / "google-java-format.jar", "google-java-format",
-      "--add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED \
-      --add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED \
-      --add-exports jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED \
-      --add-exports jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED \
-      --add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED"
+    bin.write_jar_script libexec/"google-java-format.jar", "google-java-format"
     resource("google-java-format-diff").stage do
       bin.install "google-java-format-diff.py" => "google-java-format-diff"
       rewrite_shebang detected_python_shebang, bin/"google-java-format-diff"

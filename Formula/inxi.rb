@@ -1,18 +1,21 @@
 class Inxi < Formula
   desc "Full featured CLI system information tool"
   homepage "https://smxi.org/docs/inxi.htm"
-  url "https://github.com/smxi/inxi/archive/3.3.12-1.tar.gz"
-  sha256 "fce1a764849bac981c363bcb333ffcdf546740545f41073a64548b8e3b882195"
+  url "https://github.com/smxi/inxi/archive/3.3.21-1.tar.gz"
+  sha256 "19b196e07c881ea8da5ecd628ba6fe607690593eab122c2704f66c932d3dafdd"
   license "GPL-3.0-or-later"
   head "https://github.com/smxi/inxi.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "de60a7a27ba05ca682c7d0f14534c7fa8950ef021871a2887405dd6059afde63"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "de60a7a27ba05ca682c7d0f14534c7fa8950ef021871a2887405dd6059afde63"
-    sha256 cellar: :any_skip_relocation, monterey:       "d0f0a2d590c75997729afc3a917952fa4f68c115e21b34f45e1c9910a364a84c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d0f0a2d590c75997729afc3a917952fa4f68c115e21b34f45e1c9910a364a84c"
-    sha256 cellar: :any_skip_relocation, catalina:       "d0f0a2d590c75997729afc3a917952fa4f68c115e21b34f45e1c9910a364a84c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "43e0e20fd58605138df8388f4e28e934d2efe699da5941fb24459447c9909a5b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "43e0e20fd58605138df8388f4e28e934d2efe699da5941fb24459447c9909a5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "d6b42668a157da9def64b2bedba8dadbecfedddb63499920867cda6ebcb7c32c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d6b42668a157da9def64b2bedba8dadbecfedddb63499920867cda6ebcb7c32c"
+    sha256 cellar: :any_skip_relocation, catalina:       "d6b42668a157da9def64b2bedba8dadbecfedddb63499920867cda6ebcb7c32c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "43e0e20fd58605138df8388f4e28e934d2efe699da5941fb24459447c9909a5b"
   end
+
+  uses_from_macos "perl"
 
   def install
     bin.install "inxi"
@@ -25,10 +28,6 @@ class Inxi < Formula
 
   test do
     inxi_output = shell_output("#{bin}/inxi")
-
-    uname = shell_output("uname").strip
-    assert_match uname.to_str, inxi_output.to_s
-
     uname_r = shell_output("uname -r").strip
     assert_match uname_r.to_str, inxi_output.to_s
   end

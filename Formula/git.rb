@@ -1,8 +1,8 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.35.1.tar.xz"
-  sha256 "d768528e6443f65a203036266f1ca50f9d127ba89751e32ead37117ed9191080"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.37.3.tar.xz"
+  sha256 "814641d7f61659cfbc17825d0462499ca1403e39ff53d76a8512050e6483e87a"
   license "GPL-2.0-only"
   head "https://github.com/git/git.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Git < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e19e56133d9990f9097a31b7720fe307e4ba87d79019cce086ad8f1e25993012"
-    sha256 arm64_big_sur:  "09773f8caeb9490d53dc8fbf552dd4b83c655c2219fec38202d351ab459973fa"
-    sha256 monterey:       "ec4d252f6ac282f2770bcf18af011e8032d1f43fc17af39e54465bb8148d1d2f"
-    sha256 big_sur:        "212244b5acaaa49fdd33b710fc6795c457aa25e89a854d39407bf36532137ef8"
-    sha256 catalina:       "362820c1071869ed3a31ecfb8cb9c022aaef715745348f72f975b90b94091ef8"
-    sha256 x86_64_linux:   "34b29f7801095ae255f03bae5d0dde6fc98910811f17266e8b4af73310c3c314"
+    sha256 arm64_monterey: "a8c3e5a517b342d4dbb29c9931cb471b4d11cbe1e6a35d67f0e4d62e81d3dabf"
+    sha256 arm64_big_sur:  "d3fb7983def6cda8ed2aff9b9b6470de4e1d98aa4669b2630db34639972d8cc4"
+    sha256 monterey:       "3388eb9ef80bd4e75a334dcef8d163493aa50f534f850c6a43b46b8c56e6af8f"
+    sha256 big_sur:        "eabd8b4a14e9905f9a99d805d4096199f36599a83788bfc65bd71e8849ed0e43"
+    sha256 catalina:       "ef29862303db9c7e172ee398d923ee13d1816afc3daf7f7ffa8192b62a21c8ec"
+    sha256 x86_64_linux:   "8b546791ebac51c6659c3ade93eca24c8e743d2327ae025572a022918185638a"
   end
 
   depends_on "gettext"
@@ -25,21 +25,21 @@ class Git < Formula
 
   uses_from_macos "curl", since: :catalina # macOS < 10.15.6 has broken cert path logic
   uses_from_macos "expat"
-  uses_from_macos "zlib"
+  uses_from_macos "zlib", since: :high_sierra
 
   on_linux do
-    depends_on "linux-headers@4.4"
+    depends_on "linux-headers@5.15" => :build
     depends_on "openssl@1.1" # Uses CommonCrypto on macOS
   end
 
   resource "html" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.35.1.tar.xz"
-    sha256 "ca2f0bd4a9d24d9b6b3a021f11b8eacee863948c67a4cc0ff6d7adef8137ea18"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.37.3.tar.xz"
+    sha256 "abbc43fe994622bc414d4d1282a84ebe665e49fe03ea944a67a9b905821874c2"
   end
 
   resource "man" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.35.1.tar.xz"
-    sha256 "e4e3a751f2c05959222c3ea2f0f09481700eca8f915d1398bb270eb6846c3803"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.37.3.tar.xz"
+    sha256 "9c5373549ae6131d4fc7bc04f6e064e33f5038710aacfb65c95e78e479927414"
   end
 
   resource "Net::SMTP::SSL" do
@@ -132,7 +132,6 @@ class Git < Formula
     zsh_completion.install "contrib/completion/git-completion.zsh" => "_git"
     cp "#{bash_completion}/git-completion.bash", zsh_completion
 
-    elisp.install Dir["contrib/emacs/*.el"]
     (share/"git-core").install "contrib"
 
     # We could build the manpages ourselves, but the build process depends
@@ -183,7 +182,7 @@ class Git < Formula
     assert_equal "haunted\nhouse", shell_output("#{bin}/git ls-files").strip
 
     # Check Net::SMTP or Net::SMTP::SSL works for git-send-email
-    on_macos do
+    if OS.mac?
       %w[foo bar].each { |f| touch testpath/f }
       system bin/"git", "add", "foo", "bar"
       system bin/"git", "commit", "-a", "-m", "Second Commit"

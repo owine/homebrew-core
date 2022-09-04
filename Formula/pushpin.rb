@@ -1,33 +1,43 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "https://pushpin.org/"
-  url "https://github.com/fanout/pushpin/releases/download/v1.34.0/pushpin-1.34.0.tar.bz2"
-  sha256 "b6142650bccbc766d98782ce6489b62cf0f7d6e30784fa0b02ffa5307184d572"
+  url "https://github.com/fanout/pushpin/releases/download/v1.35.0/pushpin-1.35.0.tar.bz2"
+  sha256 "62fbf32d75818b08fd8bce077035de85da47a06c07753e5ba10201a5dd35ca5e"
   license "AGPL-3.0-or-later"
+  revision 1
   head "https://github.com/fanout/pushpin.git", branch: "master"
 
   bottle do
-    sha256 big_sur:  "80c0c9374635cbff196946f23e9d301d7a3d61c5fd333c65f79b089614bc2fbb"
-    sha256 catalina: "f997d4655fd9176f796270774f20fab10686a4d9076cf67dd81e60ddc639a396"
+    sha256 monterey:     "cae225af2f581bc51734d14d79c01987a3513a28567041fd08e6684c7e277ba1"
+    sha256 big_sur:      "6a8c063aa71daae09e9e3112f160e3b387b50f93314f804d8aee0f14c31f6c5a"
+    sha256 catalina:     "e28a37a52295ef7f1532f469262259e15f291ff7e3ad5e7c3d47389637247e5a"
+    sha256 x86_64_linux: "2e4a7ef2e448268eb114fd600c7bde007bada0ee328fc67c44d4be9079eebbde"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "condure"
   depends_on "mongrel2"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "qt@5"
   depends_on "zeromq"
   depends_on "zurl"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   def install
-    args = *std_configure_args + ["--configdir=#{etc}",
-                                  "--rundir=#{var}/run",
-                                  "--logdir=#{var}/log"]
-
+    args = %W[
+      --configdir=#{etc}
+      --rundir=#{var}/run
+      --logdir=#{var}/log
+    ]
     args << "--extraconf=QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}" if OS.mac?
-    system "./configure", *args
 
+    system "./configure", *std_configure_args, *args
     system "make"
     system "make", "install"
   end
@@ -86,7 +96,7 @@ class Pushpin < Formula
 
     begin
       sleep 3 # make sure pushpin processes have started
-      system Formula["python@3.9"].opt_bin/"python3", runfile
+      system Formula["python@3.10"].opt_bin/"python3", runfile
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

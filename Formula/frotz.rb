@@ -1,34 +1,34 @@
 class Frotz < Formula
   desc "Infocom-style interactive fiction player"
   homepage "https://661.org/proj/if/frotz/"
-  url "https://gitlab.com/DavidGriffith/frotz/-/archive/2.53/frotz-2.53.tar.bz2"
-  sha256 "8da558828dd74d6d6ee30483bb32276ef918b8b72b7f6e89b4f7cb27e7abf58b"
+  url "https://gitlab.com/DavidGriffith/frotz/-/archive/2.54/frotz-2.54.tar.bz2"
+  sha256 "bdf9131e6de49108c9f032200cea3cb4011e5ca0c9fbdbf5b0c05f7c56c81395"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://gitlab.com/DavidGriffith/frotz.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "4b52b494b83a2d60e856a5663e4b84bb2e20d0479ff4781e77a1148dcdf155b3"
-    sha256 arm64_big_sur:  "a51e453e14b7bd58a0a90169ae238f04650b8ffd1f2178f2245afc09127ff2cd"
-    sha256 monterey:       "919b65bd87568ee0060f6ae9668293f95df602e72185d531af6dd9112b9cc901"
-    sha256 big_sur:        "36f0a6760575194191ee9035e479357451ffeeef291fb4697deb61c19524b2ad"
-    sha256 catalina:       "d84c37e5af40ea04a4a23569605d2648480abf394bddc9a1a8e4d75988c73e24"
-    sha256 mojave:         "44612a1e36afeb27bbec0ada1dd7474e20d8f2d8580d32791dd98c2ea862ff0c"
-    sha256 x86_64_linux:   "4eb6b4247b3e7b99e9ce2646f171c312d4af4b961909e33ab394957ed3fa6112"
+    sha256 arm64_monterey: "a0c7658d7b137bea28fdb1b1f577d91c103158c31d30082f8bfbb352c6d72edb"
+    sha256 arm64_big_sur:  "81e96f649f4c6b2f2d530effe32d1d5ab48a39c9aa47891b715062f1b768c565"
+    sha256 monterey:       "0af910a56a445405c751aafb5c63df26b0ff4d65e254dd34f832bac4d16ccbe5"
+    sha256 big_sur:        "50c1afd7e1de0f785f7a6a6b0587f5a1a6be7738131c9506d848e81a59d7cc72"
+    sha256 catalina:       "300f82c7b6bf644a6883519eadc1e71d2463f5a8490fdf3b5f5ca3f4202d7e1e"
+    sha256 x86_64_linux:   "43dbed2c89d4671dbe3a9469b3981297a5ef02e53332daa6fb7757eb32b3f875"
   end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libao"
   depends_on "libmodplug"
   depends_on "libpng"
   depends_on "libsamplerate"
   depends_on "libsndfile"
   depends_on "libvorbis"
+  depends_on "ncurses"
   depends_on "sdl2"
   depends_on "sdl2_mixer"
 
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   resource("testdata") do

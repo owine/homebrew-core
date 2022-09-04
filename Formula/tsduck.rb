@@ -1,18 +1,19 @@
 class Tsduck < Formula
   desc "MPEG Transport Stream Toolkit"
   homepage "https://tsduck.io/"
-  url "https://github.com/tsduck/tsduck/archive/v3.29-2651.tar.gz"
-  sha256 "cab8f5838993aa1abd1a6a4c2ef7f2afba801da02a4001904f3f5ba5c5fe85a0"
+  url "https://github.com/tsduck/tsduck/archive/v3.31-2761.tar.gz"
+  sha256 "2e9e7956cd1b47b0b24666619fa0f1b27599eed6dc5f1457e1401679496f7562"
   license "BSD-2-Clause"
+  revision 1
   head "https://github.com/tsduck/tsduck.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ba626578a795195ab1a610d896648cdd544711596c1d900726b16e671644f8d8"
-    sha256 cellar: :any,                 arm64_big_sur:  "f7d79b8d3da117459e4dad007c27d48ddd7b32b6c81e4e07c26d04b4695da88b"
-    sha256 cellar: :any,                 monterey:       "f7b4fc39da4a2d69b190829426e62bd7c5415d9419e3c28ec434dd94f1a68350"
-    sha256 cellar: :any,                 big_sur:        "58b15df049434efe28d2c01f36af3474a08db0859be41685ec897ae0c9dce246"
-    sha256 cellar: :any,                 catalina:       "ba74f5dd825ad36ab54e274971e64723ee571e93a6e3cd81d3fa1f01093b3ede"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82200750cbc0fe3c6201fee8716b80bfe381e376bcb929d5b0ee764cd6e5fdfa"
+    sha256 cellar: :any,                 arm64_monterey: "9fd69beedf1bfa47f5a0b20d6d195952d5d6923f16845addb1425da1e06b21ed"
+    sha256 cellar: :any,                 arm64_big_sur:  "f962e717e1e37229879adf75c01b5c8c06515fe00a263c9028b9716bf787b462"
+    sha256 cellar: :any,                 monterey:       "82e38cf2391edc858a6d212b0ca7afd41192fc2eeca55e7bdfed7d15f88acb1a"
+    sha256 cellar: :any,                 big_sur:        "53f2e367f005a2daad65ffc1bd9003ea99fa76f0469ef0d028f17505f865e8a0"
+    sha256 cellar: :any,                 catalina:       "dbbcac32f82480175582f2aa792ddf29d6c26626960becfe980a926fca81b8b9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd8c52eb5f3d9b54e265596241d77f27b00b1152acdfe4f2b641e337eb5b1d1b"
   end
 
   depends_on "dos2unix" => :build
@@ -28,6 +29,7 @@ class Tsduck < Formula
   def install
     ENV["LINUXBREW"] = "true" if OS.linux?
     system "make", "NOGITHUB=1", "NOTEST=1"
+    ENV.deparallelize
     system "make", "NOGITHUB=1", "NOTEST=1", "install", "SYSPREFIX=#{prefix}"
   end
 

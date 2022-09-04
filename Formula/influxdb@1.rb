@@ -1,8 +1,8 @@
 class InfluxdbAT1 < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
-  url "https://github.com/influxdata/influxdb/archive/v1.8.9.tar.gz"
-  sha256 "3730cdee96e5fed8adc39ba91e76772c407c3d60b9c7eead9b9940c5aeb76c83"
+  url "https://github.com/influxdata/influxdb/archive/v1.10.0.tar.gz"
+  sha256 "2efe515ba55e4fee18a994902bb3de242f0d498e3662e6cec1548c7f700d8278"
   license "MIT"
 
   livecheck do
@@ -11,22 +11,38 @@ class InfluxdbAT1 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e87ffa4110bab2fe14d287358c21728cc25d13134277f34b4bca6ff7f3b08d8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "db82d8205433e39160b463693ed6f6e291674735d5aa05f944035213b090b35a"
-    sha256 cellar: :any_skip_relocation, monterey:       "dd9013f106fdbd8fcce4f1995c73638c958e6d0e8b7c3545c8018e1e73a20e9f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2dc4895864df3fe8bc027ebae8fab14152600fd12566ded62d1647b2a47a2608"
-    sha256 cellar: :any_skip_relocation, catalina:       "133759ca7ea95bcb390a87b3d784e6d75f2f650ee4a7be77b488cd8e481cea24"
-    sha256 cellar: :any_skip_relocation, mojave:         "d040c44fa708edea7af6ec05f5a44ec222025569245fa2a71b1b0c697a07b498"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a227d99a24905a7ce83f2b8726643ad96c98e52ffb28a1ad02f91c1b7f8ef155"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "15f2975fbb4840dbf635669ad98a44eedb49a08253e565a692ace55c3ea3a5d2"
+    sha256 cellar: :any_skip_relocation, monterey:       "d29e6e0cf8758c3e0e55becad5e4b908a2aa0b9ff2aa4c90f72258f5986c88af"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ee0a66646092723683a124f764327dc639f24dcc8d090f71899d78f4047c91fd"
+    sha256 cellar: :any_skip_relocation, catalina:       "06ba8b1160b29c9ce3eff969df29478ae2b40241cdadb066e6e3b96e351afd51"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3e95b7e154b320eefc0819528a5c2144b6b13df799253438c6876a25a9eacd9"
   end
 
   keg_only :versioned_formula
 
   depends_on "go" => :build
+  depends_on "pkg-config" => :build
+  depends_on "rust" => :build
+
+  # NOTE: The version here is specified in the go.mod of influxdb.
+  # If you're upgrading to a newer influxdb version, check to see if this needs
+  # to be upgraded too.
+  resource "pkg-config-wrapper" do
+    url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.11.tar.gz"
+    sha256 "52b22c151163dfb051fd44e7d103fc4cde6ae8ff852ffc13adeef19d21c36682"
+  end
 
   def install
+    # Set up the influxdata pkg-config wrapper
+    resource("pkg-config-wrapper").stage do
+      system "go", "build", *std_go_args(output: buildpath/"bootstrap/pkg-config")
+    end
+    ENV.prepend_path "PATH", buildpath/"bootstrap"
+
     ldflags = "-s -w -X main.version=#{version}"
 
-    %w[influxd influx influx_stress influx_inspect].each do |f|
+    %w[influxd influx influx_tools influx_inspect].each do |f|
       system "go", "build", *std_go_args(output: bin/f, ldflags: ldflags), "./cmd/#{f}"
     end
 

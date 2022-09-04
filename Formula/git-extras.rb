@@ -1,13 +1,14 @@
 class GitExtras < Formula
   desc "Small git utilities"
   homepage "https://github.com/tj/git-extras"
-  url "https://github.com/tj/git-extras/archive/6.3.0.tar.gz"
-  sha256 "8a218a0c8e10036d5ba14f26b70f994b0d11166b02ef3fed71c593cef026ec3d"
+  url "https://github.com/tj/git-extras/archive/6.4.0.tar.gz"
+  sha256 "d8943c0caab43e70c23890816a9775844d33261c40d5be03c1e012c276b1aa63"
   license "MIT"
   head "https://github.com/tj/git-extras.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "e6d445a34c00d43c1a4804b4b93c34af758c968983779a0781a9ae7bdd0c1882"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "139de676324d68edf3e958adb4806ef20d9a3d4e7f80588b8d21e5b1ff1feb56"
   end
 
   on_linux do
@@ -16,6 +17,9 @@ class GitExtras < Formula
 
   conflicts_with "git-utils",
     because: "both install a `git-pull-request` script"
+
+  conflicts_with "git-sync",
+    because: "both install a `git-sync` binary"
 
   def install
     system "make", "PREFIX=#{prefix}", "INSTALL_VIA=brew", "install"

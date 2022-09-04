@@ -1,9 +1,10 @@
 class Nagios < Formula
   desc "Network monitoring and management system"
   homepage "https://www.nagios.org/"
-  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.4.6/nagios-4.4.6.tar.gz"
-  sha256 "ab0d5a52caf01e6f4dcd84252c4eb5df5a24f90bb7f951f03875eef54f5ab0f4"
+  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.4.7/nagios-4.4.7.tar.gz"
+  sha256 "6429d93cc7db688bc529519a020cad648dc55b5eff7e258994f21c83fbf16c4d"
   license "GPL-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,18 +12,20 @@ class Nagios < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 arm64_monterey: "2b77251a1b5c81fb004289653d2638bc4b48204969ae564da6aba1b1d7934ef4"
-    sha256 arm64_big_sur:  "1ed969491c110280e2a679170c7848d78b15eb9a06bcef27a3fef551aad06b9c"
-    sha256 monterey:       "452a9ca237648ee83cace7f6eb1ba098b8bd6d3ccb927301908edb975945d82c"
-    sha256 big_sur:        "6472fe7ecf390a6e320619c07c646177667b5f9fc1b142385b24fa07c6577d81"
-    sha256 catalina:       "f8e2718a8f2c5bc9041085a9ee8a79f3496330ed1f896cfcc66b84a3de4f08c8"
-    sha256 mojave:         "f74727cd114d3afb3b413391e2f34703b243292232de3e1344db43ab6259c7d8"
+    sha256 arm64_monterey: "f129414f6baa43479019c88b0efcc9000fe774ee28d6516c6ebd0f5cedec5b8c"
+    sha256 arm64_big_sur:  "46b24f0161ce9b73425fd8e96704b162d60e8cc128805ed85069dbd2c397ba96"
+    sha256 monterey:       "09326aea33e587a7d5f46f78b7f773ae76e5cd02071ba6a4ab309d2b76d91b4a"
+    sha256 big_sur:        "5f0d5c561f17014252b5d1cfd3df48e409045618d05443eef83cde1a3cf2eade"
+    sha256 catalina:       "49cb65b966dbc3988b0509596818bd22fa066e9f931a7b09579e6246eb26d23f"
+    sha256 x86_64_linux:   "3ef3a37c3d7421022f1edfa6f36d447354c1008034b7ef5b71ff84a0c3a1b418"
   end
 
   depends_on "gd"
   depends_on "libpng"
   depends_on "nagios-plugins"
+  depends_on "openssl@1.1"
+
+  uses_from_macos "unzip"
 
   def nagios_sbin
     prefix/"cgi-bin"
@@ -49,22 +52,24 @@ class Nagios < Formula
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sbindir=#{nagios_sbin}",
-                          "--sysconfdir=#{nagios_etc}",
-                          "--localstatedir=#{nagios_var}",
-                          "--datadir=#{htdocs}",
-                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
-                          "--with-cgiurl=/nagios/cgi-bin",
-                          "--with-htmurl=/nagios",
-                          "--with-nagios-user=#{user}",
-                          "--with-nagios-group='#{group}'",
-                          "--with-command-user=#{user}",
-                          "--with-command-group=_www",
-                          "--with-httpd-conf=#{share}",
-                          "--disable-libtool"
+    args = [
+      "--sbindir=#{nagios_sbin}",
+      "--sysconfdir=#{nagios_etc}",
+      "--localstatedir=#{nagios_var}",
+      "--datadir=#{htdocs}",
+      "--libexecdir=#{HOMEBREW_PREFIX}/sbin", # Plugin dir
+      "--with-cgiurl=/nagios/cgi-bin",
+      "--with-htmurl=/nagios",
+      "--with-nagios-user=#{user}",
+      "--with-nagios-group='#{group}'",
+      "--with-command-user=#{user}",
+      "--with-httpd-conf=#{share}",
+      "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
+      "--disable-libtool",
+    ]
+    args << "--with-command-group=_www" if OS.mac?
+
+    system "./configure", *std_configure_args, *args
     system "make", "all"
     system "make", "install"
 

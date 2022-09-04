@@ -1,9 +1,8 @@
 class BoostMpi < Formula
   desc "C++ library for C++/MPI interoperability"
   homepage "https://www.boost.org/"
-  # Please add to synced_versions_formulae.json once version synced with boost
-  url "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2"
-  sha256 "f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41"
+  url "https://boostorg.jfrog.io/artifactory/main/release/1.79.0/source/boost_1_79_0.tar.bz2"
+  sha256 "475d589d51a7f8b3ba2ba4eda022b170e562ca3b760ee922c146b6c65856ef39"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git", branch: "master"
 
@@ -12,13 +11,12 @@ class BoostMpi < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "416ef0b362beb9bd330074bdf9d0dfc65a306360ee0fc2867eea3f73620381cb"
-    sha256                               arm64_big_sur:  "8289fe7bb5a684360ab11462bf4312024a620854714ce02d6553e32274e5bfeb"
-    sha256                               monterey:       "4f8cc86632acebee2041d9e03772d4eff34ee3b195fd83b7b83afce577b8029f"
-    sha256                               big_sur:        "76544350ace536b0af831854f3ce18a5c101155a132001685bcfa3ea411bbb94"
-    sha256                               catalina:       "d3e1dfd88b6d683581efb1c0d732076eaa634d42d6e8d3de05ebec949f512740"
-    sha256                               mojave:         "fc0b30274d5d1eaf5f66b7c733e8c516ddfc864beddc0932eb6ee3ddd2457e6c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "925c67fecdd80283070e6483972dfb0b81cdae28f6a404c46e640bb95ee13a54"
+    sha256                               arm64_monterey: "ed3d8d5cea4a54672520a1dc9beacc074119a73475c969ef70258c216bb6ceb3"
+    sha256                               arm64_big_sur:  "2d427265f242cccd7ecc9c9b360c51f176759b378e0a26bd51b6e483062096cc"
+    sha256                               monterey:       "786e0870dfb10b3dfad8a9c2b943861c926c94571382f88409c3a62397bf0f1f"
+    sha256                               big_sur:        "7d0d29c8d9029fde12bf7a990738fb098923b20a56fff772382009c630fa16e3"
+    sha256                               catalina:       "504d653c471eb7f6ca848aa3d7659f9c52789fca3cdd21955858fb429e24005e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec093b68364ee498acd5f80d7e23b6b516a36d823f188fe554a3aeb36c704c0c"
   end
 
   # Test with cmake to avoid issues like:
@@ -110,7 +108,7 @@ class BoostMpi < Formula
             "-lboost_mpi-mt",
             "-lboost_serialization"]
 
-    on_linux do
+    if OS.linux?
       args << "-Wl,-rpath,#{lib}"
       args << "-Wl,-rpath,#{boost.lib}"
     end

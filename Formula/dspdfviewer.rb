@@ -4,15 +4,16 @@ class Dspdfviewer < Formula
   url "https://github.com/dannyedel/dspdfviewer/archive/v1.15.1.tar.gz"
   sha256 "c5b6f8c93d732e65a27810286d49a4b1c6f777d725e26a207b14f6b792307b03"
   license "GPL-2.0-or-later"
-  revision 11
+  revision 14
   head "https://github.com/dannyedel/dspdfviewer.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d3d3383fcb214390beda2e696d2b01ffe97705352ac7486aeae9398f829fe832"
-    sha256 cellar: :any,                 arm64_big_sur:  "906f49e56185764e6bd001cdf165d34a288449d2c7da470d7be578b63d736f59"
-    sha256 cellar: :any,                 big_sur:        "af329c28bb3455247fdd2d3048d75fbbd0b685d97251c4c80acad5c3e1c30404"
-    sha256 cellar: :any,                 catalina:       "afeebf5d866baa9e1c57005c44a359a5b5f409259a296765b4b9234eb80f96fa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5ea0adb9cfd4fa87f6c653bd8fc6c9b29820a8971e8e18f56a121d2e99e0501"
+    sha256 cellar: :any,                 arm64_monterey: "00e271e02d46e1d1378e88ee1b332a6bb4bf9a36990ea0c7cb27a9650bc39f95"
+    sha256 cellar: :any,                 arm64_big_sur:  "7421f2e247a714e2545c230c1d9b47e7908f44dc50d20de953e2ee545f86edfd"
+    sha256 cellar: :any,                 monterey:       "f17cfd6dfdb3c63bef04a2fade88b46b9f0321937138e080d1255f30f17da6ef"
+    sha256 cellar: :any,                 big_sur:        "a395d0fc80209d2f00e5b54d197442cb789c6aafb7b38ee96ed0ee685be5c5b6"
+    sha256 cellar: :any,                 catalina:       "b44d2f06611d9f4e33b0af5ab2ea4f375445f2b92f67e484bb57029cfc053a49"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "949d272617dea22608b31f67977f640aef4c804cf0039c8443b07934f7daa228"
   end
 
   depends_on "cmake" => :build
@@ -24,7 +25,7 @@ class Dspdfviewer < Formula
   depends_on "freetype"
   depends_on "gettext"
   depends_on "glib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openjpeg"
@@ -38,13 +39,12 @@ class Dspdfviewer < Formula
   fails_with gcc: "5"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args,
-                            "-DRunDualScreenTests=OFF",
-                            "-DUsePrerenderedPDF=ON",
-                            "-DUseQtFive=ON"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DRunDualScreenTests=OFF",
+                    "-DUsePrerenderedPDF=ON",
+                    "-DUseQtFive=ON"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

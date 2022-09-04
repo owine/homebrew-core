@@ -3,18 +3,18 @@ require "language/node"
 class Eleventy < Formula
   desc "Simpler static site generator"
   homepage "https://www.11ty.dev"
-  url "https://registry.npmjs.org/@11ty/eleventy/-/eleventy-1.0.0.tgz"
-  sha256 "8a8ef9d2166ba490066cff47f1b78ef1649daa0daa3ab294ea768bccda9bb3a3"
+  url "https://registry.npmjs.org/@11ty/eleventy/-/eleventy-1.0.2.tgz"
+  sha256 "536144e7b38e1b27d44c23c611c4e7ab0442963879f3fa4c1acfe766696728f8"
   license "MIT"
   head "https://github.com/11ty/eleventy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d910e459aa16ce26c593d1fd46655f746c9450abdd0e76c958e0c8a41ed29648"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d910e459aa16ce26c593d1fd46655f746c9450abdd0e76c958e0c8a41ed29648"
-    sha256 cellar: :any_skip_relocation, monterey:       "eff8f3ac66694f2989ce1d5c39b3068145d294c11b1736592fad9d4f95e675da"
-    sha256 cellar: :any_skip_relocation, big_sur:        "eff8f3ac66694f2989ce1d5c39b3068145d294c11b1736592fad9d4f95e675da"
-    sha256 cellar: :any_skip_relocation, catalina:       "3195839078c4a82f005fa171efb8dd6ea53830b05096e8776d2b583fb8c33bfc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b239ff3de617a604fadf891ed1229065015e3096143c4b13d5b3f8596c0d7a4d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3964b8a92c0fe9b3c731c4588c6d553775d1c83cb67a943b0aa2819d61ea2509"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3964b8a92c0fe9b3c731c4588c6d553775d1c83cb67a943b0aa2819d61ea2509"
+    sha256 cellar: :any_skip_relocation, monterey:       "37efa77486af2fd8c2f60998b446545b35d5e4f7f60e13e657fccc9a195e5b5c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "37efa77486af2fd8c2f60998b446545b35d5e4f7f60e13e657fccc9a195e5b5c"
+    sha256 cellar: :any_skip_relocation, catalina:       "37efa77486af2fd8c2f60998b446545b35d5e4f7f60e13e657fccc9a195e5b5c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5a251c2696134b0376e1f3e3d15c061184b8f801b19c196171a2c4afdfe7a21"
   end
 
   depends_on "node"

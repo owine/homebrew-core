@@ -1,9 +1,10 @@
 class Rdkit < Formula
   desc "Open-source chemoinformatics library"
   homepage "https://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/Release_2021_09_4.tar.gz"
-  sha256 "ce192e85bbdc1dcf24d327197229099c8625ee20ef022fcbd980791fdbfc7203"
+  url "https://github.com/rdkit/rdkit/archive/Release_2022_03_5.tar.gz"
+  sha256 "38e6fb9f063b6132310f17e654f2c4350876f9164b0a17b49fe3df7d0555a744"
   license "BSD-3-Clause"
+  revision 2
   head "https://github.com/rdkit/rdkit.git", branch: "master"
 
   livecheck do
@@ -15,12 +16,12 @@ class Rdkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0643b5ec5228088d9fac1c202f15a188c4fa9f1ac6c197750c732f4c6ae37571"
-    sha256 cellar: :any,                 arm64_big_sur:  "8b6dcff4614ab1f8e5edf9e6c28c242897af3a33688dd2e4dff7b03ddfd0a1e1"
-    sha256 cellar: :any,                 monterey:       "fdc9dd876718d5009e9ea4aa62d90ca22d6ade4bd631d37b06a1b60a2c005cb7"
-    sha256 cellar: :any,                 big_sur:        "6a8cd3a35d9b1e9e5f20a41a6eccf5977defdc2759b9d7a2355ef8c52c756357"
-    sha256 cellar: :any,                 catalina:       "8b38b42a626ea841f29ddd1b52cc7c9ec134e8af0230e1b73ce30cd9f43c9e15"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9011c3ccbc72c16cf39f0dd0e2569a3ef01d2d9a36e56b5d246003e0eeddca63"
+    sha256 cellar: :any,                 arm64_monterey: "78475e78e4bf5bcbe98afe7dea77f0b93a44de5d1bdeeec028c08e3d7d302b72"
+    sha256 cellar: :any,                 arm64_big_sur:  "540f8d9291e17cd4c44b4d56bbac714e525812ac03dfd9cbbf01d73928a71088"
+    sha256 cellar: :any,                 monterey:       "1034abba3684d3b859717449e23e2bad586a7e9d076432d38f39cda3bba7bc09"
+    sha256 cellar: :any,                 big_sur:        "2f807f48039e21653b76a6b1374684ea30d1cf7df5fbb6d0f00eeaf18c4c3794"
+    sha256 cellar: :any,                 catalina:       "15d1d7ee27e43e5a24118bf8de8e67c217d708e00fceecb727198cb851b62877"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4285f2fdbb4613eba4dc8ea89887c5e25ead13fad79cf9e77242be8381db0f75"
   end
 
   depends_on "cmake" => :build
@@ -30,14 +31,17 @@ class Rdkit < Formula
   depends_on "eigen"
   depends_on "freetype"
   depends_on "numpy"
-  depends_on "postgresql"
+  depends_on "postgresql@14"
   depends_on "py3cairo"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
-  # Fix for Comic Neue md5 checksum change, remove with next release
-  patch do
-    url "https://github.com/rdkit/rdkit/commit/d05501c5db6f30b72b5d751e7100be165549ebdc.patch?full_index=true"
-    sha256 "06eb6f9f8479c9cc227948654c42e71892c4ae19878291cf3e108feb7a8edc7d"
+  def python
+    deps.map(&:to_formula)
+        .find { |f| f.name.match?(/^python@\d\.\d+$/) }
+  end
+
+  def postgresql
+    Formula["postgresql@14"]
   end
 
   def install
@@ -47,19 +51,24 @@ class Rdkit < Formula
     ENV.append "CXXFLAGS", "-Wno-parentheses -Wno-logical-op-parentheses -Wno-format"
 
     # Get Python location
-    python_executable = Formula["python@3.9"].opt_bin/"python3"
-    py3ver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
+    python_executable = python.opt_bin/"python3"
+    py3ver = Language::Python.major_minor_version python_executable
     py3prefix = if OS.mac?
-      Formula["python@3.9"].opt_frameworks/"Python.framework/Versions/#{py3ver}"
+      python.opt_frameworks/"Python.framework/Versions"/py3ver
     else
-      Formula["python@3.9"].opt_prefix
+      python.opt_prefix
     end
-    py3include = "#{py3prefix}/include/python#{py3ver}"
-    numpy_include = Formula["numpy"].opt_lib/"python#{py3ver}/site-packages/numpy/core/include"
+    py3include = py3prefix/"include/python#{py3ver}"
+    site_packages = Language::Python.site_packages(python_executable)
+    numpy_include = Formula["numpy"].opt_prefix/site_packages/"numpy/core/include"
+
+    pg_config = postgresql.opt_bin/"pg_config"
+    postgresql_lib = Utils.safe_popen_read(pg_config, "--pkglibdir").chomp
+    postgresql_include = Utils.safe_popen_read(pg_config, "--includedir-server").chomp
 
     # set -DMAEPARSER and COORDGEN_FORCE_BUILD=ON to avoid conflicts with some formulae i.e. open-babel
-    args = std_cmake_args + %W[
-      -DCMAKE_INSTALL_RPATH=#{opt_lib}
+    args = %W[
+      -DCMAKE_INSTALL_RPATH=#{lib}
       -DRDK_INSTALL_INTREE=OFF
       -DRDK_BUILD_SWIG_WRAPPERS=OFF
       -DRDK_BUILD_AVALON_SUPPORT=ON
@@ -77,13 +86,14 @@ class Rdkit < Formula
       -DPYTHON_INCLUDE_DIR=#{py3include}
       -DPYTHON_EXECUTABLE=#{python_executable}
       -DPYTHON_NUMPY_INCLUDE_PATH=#{numpy_include}
+      -DPostgreSQL_LIBRARY=#{postgresql_lib}
+      -DPostgreSQL_INCLUDE_DIR=#{postgresql_include}
     ]
 
-    system "cmake", ".", *args
-    system "make"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-    site_packages = "lib/python#{py3ver}/site-packages"
     (prefix/site_packages/"homebrew-rdkit.pth").write libexec/site_packages
   end
 
@@ -91,15 +101,15 @@ class Rdkit < Formula
     <<~EOS
       You may need to add RDBASE to your environment variables.
       For Bash, put something like this in your $HOME/.bashrc:
-        export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
+        export RDBASE=#{opt_share}/RDKit
     EOS
   end
 
   test do
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import rdkit"
+    system python.opt_bin/"python3", "-c", "import rdkit"
     (testpath/"test.py").write <<~EOS
       from rdkit import Chem ; print(Chem.MolToSmiles(Chem.MolFromSmiles('C1=CC=CN=C1')))
     EOS
-    assert_match "c1ccncc1", shell_output("#{Formula["python@3.9"].opt_bin}/python3 test.py 2>&1")
+    assert_match "c1ccncc1", shell_output("#{python.opt_bin}/python3 test.py 2>&1")
   end
 end

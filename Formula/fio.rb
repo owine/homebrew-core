@@ -1,17 +1,22 @@
 class Fio < Formula
   desc "I/O benchmark and stress test"
   homepage "https://github.com/axboe/fio"
-  url "https://github.com/axboe/fio/archive/fio-3.29.tar.gz"
-  sha256 "3ad22ee9c545afae914f399886e9637a43d1b3aa5dfcf6966ed83e633759acb7"
+  url "https://github.com/axboe/fio/archive/fio-3.32.tar.gz"
+  sha256 "409e459840912e68be487dbbda9a7a1b3f6ddf1478e3f456f278f957ce4f7b66"
   license "GPL-2.0-only"
 
+  livecheck do
+    url :stable
+    regex(/^fio[._-]v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a54298558d6ec284b0c386c805321908737dc18dcf7f863ea117eb96885e443c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c6acb5047002646b69bad67a43080def0c766ee3e0b43bc2ab93e7f4ab181cce"
-    sha256 cellar: :any_skip_relocation, monterey:       "16f60ea089a5ea940a2b98e564e37bf1a0dcdbbad3c3f826c4e2cabb387d0986"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5edec27c8f2bc586d4241dfc4d5a9ec4d1b614c09caba66ed0635553f5e0c45c"
-    sha256 cellar: :any_skip_relocation, catalina:       "11861fee3b424af0e5442b62d54e458b1039bd6ce3917b8ff4a61ea4396eef16"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3330391889dd52011905de2aac9ba77605fb9a96c97cd961959d3a1838e8638b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f0c022777c3de70e1054f6cd50e135c15799185fa522ceeee7efbf574c9849c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "32ad4359f19c1d9c067fc879215983096d3fbeb0ba2373a085afed072cf81fd1"
+    sha256 cellar: :any_skip_relocation, monterey:       "79cd5ed1fa485a0ed61c87b65c53f3b8f9b96e56fe60a13b1c52784606e0a679"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cc32a1ee88a4b745034be74ae1a1f555589a99ca65fdeb57fb28e41000b96433"
+    sha256 cellar: :any_skip_relocation, catalina:       "f2f24b2215efcb1bbf2604c21a4dde80813f82e69b87e1a9bbaf9adedd90e96d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5690deaa80f5cf2180d50d5e35a9b92ee60431b3f370639c7908fcbb5624150b"
   end
 
   uses_from_macos "zlib"

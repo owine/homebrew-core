@@ -1,18 +1,17 @@
 class Gotop < Formula
   desc "Terminal based graphical activity monitor inspired by gtop and vtop"
   homepage "https://github.com/xxxserxxx/gotop"
-  url "https://github.com/xxxserxxx/gotop/archive/v4.1.2.tar.gz"
-  sha256 "81518fecfdab4f4c25a4713e24d9c033ba8311bbd3e2c0435ba76349028356da"
+  url "https://github.com/xxxserxxx/gotop/archive/v4.1.4.tar.gz"
+  sha256 "9fe5eb25ee253e5679cd0dede0ec6e075d6782442bc3007bb9fea8c44e66b857"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d248bda92bbf8651da6d63c330604f7e3fd18e754455a4efc825ecff92debdfb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "47c9145672b69c861a48673a6cbf28e3464151d7fab27b20fe89c9ab6cc9c0a1"
-    sha256 cellar: :any_skip_relocation, monterey:       "434f0217bb8eba32e2168c5f8f91e9ca9e1628b6e92601a8204a45a045669973"
-    sha256 cellar: :any_skip_relocation, big_sur:        "efd1caec91fefb19d4954b99b1041d26637e7078b645a95c46831b62cb4b9883"
-    sha256 cellar: :any_skip_relocation, catalina:       "a7ddc70bd7959a66cef214cc166bd961d988d38be5c4f58a417da8411e0f73ed"
-    sha256 cellar: :any_skip_relocation, mojave:         "93f01869987239375db866d1560f0fa63284532404b481168b9718593dd01b19"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "75142f7d992b17f2789a29de44b697c63be74b5eb6605f56e65d912c5aadc9da"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e31c03674afecf694b8a81a7aa7e4b58380233cc1be6485c7217458eb54d0035"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a90066ac1768b3501a9cc3def21145171cfb9f902a380393b6bd5af512588c18"
+    sha256 cellar: :any_skip_relocation, monterey:       "9b37342aa125d059b04d0cbef2bf1a43b06254a20c9d482798fefd6f4405b9e7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6992fc66b85405c15f7f3cb2b189e6f101eedb8ab217e045826c7da387799bf3"
+    sha256 cellar: :any_skip_relocation, catalina:       "0afef67d52edc325041d1ee6e6b9b1533b61894537e1a4f71b4b43825d1b252f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c481add3eaa9d62b18b6e5d64959e3cdcd80178917ab8ba6f1768b821481032e"
   end
 
   depends_on "go" => :build
@@ -29,11 +28,11 @@ class Gotop < Formula
     assert_match version.to_s, shell_output("#{bin}/gotop --version").chomp
 
     system bin/"gotop", "--write-config"
-    on_macos do
-      assert_predicate testpath/"Library/Application Support/gotop/gotop.conf", :exist?
+    conf_path = if OS.mac?
+      "Library/Application Support/gotop/gotop.conf"
+    else
+      ".config/gotop/gotop.conf"
     end
-    on_linux do
-      assert_predicate testpath/".config/gotop/gotop.conf", :exist?
-    end
+    assert_predicate testpath/conf_path, :exist?
   end
 end

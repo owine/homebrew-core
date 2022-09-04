@@ -1,8 +1,8 @@
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "https://www.gegl.org/babl/"
-  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.88.tar.xz"
-  sha256 "4f0d7f4aaa0bb2e725f349adf7b351a957d9fb26d555d9895a7af816b4167039"
+  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.96.tar.xz"
+  sha256 "33673fe459a983f411245a49f81fd7f1966af1ea8eca9b095a940c542b8545f6"
   license "LGPL-3.0-or-later"
   # Use GitHub instead of GNOME's git. The latter is unreliable.
   head "https://github.com/GNOME/babl.git", branch: "master"
@@ -13,12 +13,12 @@ class Babl < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "a00ab8fc3289e795384974ddbfc26d43631f2e3bc5c5440031835842f6c3aa99"
-    sha256 monterey:      "fce2f8b126bee4b3fd597f8a36afb7e98577542f8209fe12909faefb5224e7a7"
-    sha256 big_sur:       "f2e800564684938cfca18fc994eebcb3a2373f7362047513ca1a24f16c1937b0"
-    sha256 catalina:      "33616239de78a0b3918cbb825913edd26ea49d2dbd0550a79ed7441052acb0a3"
-    sha256 mojave:        "54e1710cab528ac2fd32300a1aa9577e1eb71ceae931792c356d2e5e582b2eaa"
-    sha256 x86_64_linux:  "85379477d14b40b5972b729060678e5e91d2c13323c27c7f197434cc0650486d"
+    sha256                               arm64_monterey: "64c8b2c66d553f2b0de3e8daf1a42ca9801b3ee25a07a1c19a9fc27f6c28b913"
+    sha256                               arm64_big_sur:  "4a7ffd11316c9c16c594a10bda037db29c5dedb9b5bb6110a05fe4f95e4c89fe"
+    sha256                               monterey:       "75a5d52d2d35b7cbf9d64d1265c423dcc067cd64943b1f6f7228c6bf8e005770"
+    sha256                               big_sur:        "968dcf8b7dc248ddf031bf18e6df7f4c0928415ce9ab80bfa64dac476b1005cd"
+    sha256                               catalina:       "271e7ae1cac571441212d26cf2e0f7498e9dfb6990a5f22da569ba7d74835bdb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c92381d3869a38879f1a95351a9ae5e880d9813ac4a237f532879decd23ad70b"
   end
 
   depends_on "glib" => :build # for gobject-introspection

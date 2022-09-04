@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war/2.332/jenkins.war"
-  sha256 "d3bacf4ef0be984e7bea690077bd3afd36f9933d0b62ce29b5e8afcdc0692dbe"
+  url "https://get.jenkins.io/war/2.366/jenkins.war"
+  sha256 "b003b8f36279c1ae5e9735971251e13004b4329afbe4802696e5bbda26d66d7a"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Jenkins < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "a7dfa47e6c5885eb4094b7b907e0207f6465936ce2c24dc6a60542f44018cc75"
+    sha256 cellar: :any_skip_relocation, all: "dd5c46f2fb673efd34d024fb09f78e982f6391eefec6d2d2d0df59798303c20f"
   end
 
   head do
@@ -19,17 +19,19 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk@17"
 
   def install
     if build.head?
       system "mvn", "clean", "install", "-pl", "war", "-am", "-DskipTests"
     else
-      system "#{Formula["openjdk@11"].opt_bin}/jar", "xvf", "jenkins.war"
+      system "#{Formula["openjdk@17"].opt_bin}/jar", "xvf", "jenkins.war"
     end
     libexec.install Dir["**/jenkins.war", "**/cli-#{version}.jar"]
-    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "11"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "11"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins", java_version: "17"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-cli", java_version: "17"
+
+    (var/"log/jenkins").mkpath
   end
 
   def caveats
@@ -39,8 +41,10 @@ class Jenkins < Formula
   end
 
   service do
-    run [Formula["openjdk@11"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
-         "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
+    run [opt_bin/"jenkins", "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
+    keep_alive true
+    log_path var/"log/jenkins/output.log"
+    error_log_path var/"log/jenkins/error.log"
   end
 
   test do

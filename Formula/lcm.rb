@@ -4,17 +4,16 @@ class Lcm < Formula
   url "https://github.com/lcm-proj/lcm/releases/download/v1.4.0/lcm-1.4.0.zip"
   sha256 "e249d7be0b8da35df8931899c4a332231aedaeb43238741ae66dc9baf4c3d186"
   license "LGPL-2.1"
-  revision 6
+  revision 7
   head "https://github.com/lcm-proj/lcm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6f663f930c725a6e01f5186aa3b73ad6f8a247673d5dca58921f3c49dc4992ab"
-    sha256 cellar: :any,                 arm64_big_sur:  "a0a53217477597ebd7afe6afcb10f732831af2914ebba6434d90a543ddd09aeb"
-    sha256 cellar: :any,                 monterey:       "b871f2e30a9ee82cd0830f0db5340f006d7603a15da2982f7df806a66fccddfb"
-    sha256 cellar: :any,                 big_sur:        "8ae12270c1b2ba9c0c02b22a32bb96326a4694aee2e0c65e694d71ef7e1a4c05"
-    sha256 cellar: :any,                 catalina:       "13a51b7c5ca3ffa82d366ae898ab98dcafa725af2a6f8319bcbf16225b0dba4f"
-    sha256 cellar: :any,                 mojave:         "437bc1978078c4ad00696efb00cf4add0afa7666c1e8b7a8b6080974bed3eae4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f395b8d2bc8dac7f0c332ef8a4aac62b3d9851a00c84820076addef775c29b9"
+    sha256 cellar: :any,                 arm64_monterey: "a9fd491e4ac81b5ac1d6e53f4c878c0e99ae93e1ef35a1fb1db57a4c215fa961"
+    sha256 cellar: :any,                 arm64_big_sur:  "900f60952dde555d041ffcd3ed4cb531e7f444de49f0ea394530c40c691d2a10"
+    sha256 cellar: :any,                 monterey:       "cf6d8a33a2a4e9759453f0d83d8f70f94d15871a093fa2689414f7385ade3d5d"
+    sha256 cellar: :any,                 big_sur:        "07b9ccb0e05db6969b1dad98dbda75df66851a34a84157bd7c4f487b8a07439c"
+    sha256 cellar: :any,                 catalina:       "ed606aa227cf0de039cf27e070fd76273242fcc2bda96f8705a75dcb73194676"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "32cedab1ef9208cdd44df820032e093b533d11cd9eb3391c7dde04b25a4a8d95"
   end
 
   depends_on "cmake" => :build
@@ -22,21 +21,21 @@ class Lcm < Formula
   depends_on "glib"
   depends_on "lua"
   depends_on "openjdk"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   def install
+    # Adding RPATH in #{lib}/lua/X.Y/lcm.so and some #{bin}/*.
     args = std_cmake_args + %W[
+      -DCMAKE_INSTALL_RPATH=#{lib}
       -DLCM_ENABLE_EXAMPLES=OFF
       -DLCM_ENABLE_TESTS=OFF
       -DLCM_JAVA_TARGET_VERSION=8
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
+      -DPYTHON_EXECUTABLE=#{which("python3")}
     ]
 
-    mkdir "build" do
-      system "cmake", *args, ".."
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

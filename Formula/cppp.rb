@@ -1,8 +1,9 @@
 class Cppp < Formula
   desc "Partial Preprocessor for C"
   homepage "https://www.muppetlabs.com/~breadbox/software/cppp.html"
-  url "https://www.muppetlabs.com/~breadbox/pub/software/cppp-2.6.tar.gz"
-  sha256 "d42cd410882c3b660c77122b232f96c209026fe0a38d819c391307761e651935"
+  url "https://www.muppetlabs.com/~breadbox/pub/software/cppp-2.9.tar.gz"
+  sha256 "76a95b46c3e36d55c0a98175c0aa72b17b219e68062c2c2c26f971e749951c07"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :homepage
@@ -10,17 +11,12 @@ class Cppp < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9097e3035495a68bb2b930bf518926a897a23d68bf33b78e09db92741444f2c5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "24b206e97713f4f12168a2c1a29fe546b931e2da5b72b8ed050170522b1fabf5"
-    sha256 cellar: :any_skip_relocation, monterey:       "f0e48235f9462b6163c19354aae7a45780855163f603a552236e07bedd946845"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e4e6c9586586b0c2d014cf83cd3cf0e1434f2643667900b0dfd4cb194f4f5b1c"
-    sha256 cellar: :any_skip_relocation, catalina:       "29ce2b3314eaecc5873039675e85efb132a5ebfa9aac743d1b327b60f66c1122"
-    sha256 cellar: :any_skip_relocation, mojave:         "cee25209e4a2ef97d118eac091fa7d5cb6c4ba91329bd713b7ae998e92aaf3c3"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "93bc70ed7bfe05cf901c8cb8400253c0bce2d245cbb5f47698e8c81c81ed6a85"
-    sha256 cellar: :any_skip_relocation, sierra:         "af58094ee1d80d6d09163b42755d827aa5b8be15b636a6ad087b334978ad2e38"
-    sha256 cellar: :any_skip_relocation, el_capitan:     "3bb773301b97402f783e506f3ccc339d7363df6e292d255d6b3209e5be8d1c1a"
-    sha256 cellar: :any_skip_relocation, yosemite:       "7c18c1844a89ca3a0ee7084b06c908de2288378eaeac09c7872b0eae97129fc3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "506ed1937e454dfd18842feaa90e2873eacad66b4920cfae8cba78f5b323f874"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d1926109416735a823a7ab9a534be30f4c5a64f9cc72d36b52e125c70f8d28d3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "32559caedf75a13cad737826acd6d83b2d7e8cc69c5ecc18bdaecb37856d5a26"
+    sha256 cellar: :any_skip_relocation, monterey:       "f815f392d7b8ec92a327c2d543bf962a70cae5f1f6991e1e4d695ee25c1fecb8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "549a5a56c7173307a1fe50415ac029d31ffa80d4aba09bca2c387dff8b6fd71e"
+    sha256 cellar: :any_skip_relocation, catalina:       "539d3f0e5376e354018c7d91eb458194fc2654785af7075bb646584618493f9d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "afb41f54440bb5ee1dc17adb0729f4577dbe156e2c63548becd5d0cc5abd2691"
   end
 
   def install

@@ -1,15 +1,12 @@
 class Questdb < Formula
   desc "Time Series Database"
   homepage "https://questdb.io"
-  url "https://github.com/questdb/questdb/releases/download/6.2/questdb-6.2-no-jre-bin.tar.gz"
-  sha256 "33eef97f93c80157b0e836795c47f4a3ee5c40a614fbc12f0c0988b5e51644ef"
+  url "https://github.com/questdb/questdb/releases/download/6.5/questdb-6.5-no-jre-bin.tar.gz"
+  sha256 "a3cdc050ce178d0373d853d00952d8ec2d21ef952ea4d97281d96223b90c1b9a"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f50e5dc6c93076c623791c4db32ee62cc33b57966b2b3eabd97ff31bb3f2c903"
-    sha256 cellar: :any_skip_relocation, big_sur:       "2a5cc758ff7ab9098d459ea1aab1ee04c1f942613162f1fdb12652ec16530678"
-    sha256 cellar: :any_skip_relocation, catalina:      "2a5cc758ff7ab9098d459ea1aab1ee04c1f942613162f1fdb12652ec16530678"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f50e5dc6c93076c623791c4db32ee62cc33b57966b2b3eabd97ff31bb3f2c903"
+    sha256 cellar: :any_skip_relocation, all: "0044cec5ac1652a665fe16543aee1d9fafb1cc792e5ba23403bea0173ea7bd24"
   end
 
   depends_on "openjdk@11"
@@ -18,48 +15,15 @@ class Questdb < Formula
     rm_rf "questdb.exe"
     libexec.install Dir["*"]
     (bin/"questdb").write_env_script libexec/"questdb.sh", Language::Java.overridable_java_home_env("11")
+    inreplace libexec/"questdb.sh", "/usr/local/var/questdb", var/"questdb"
   end
 
-  plist_options manual: "questdb start"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <dict>
-            <key>SuccessfulExit</key>
-            <false/>
-          </dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/questdb</string>
-            <string>start</string>
-            <string>-d</string>
-            <string>var/"questdb"</string>
-            <string>-n</string>
-            <string>-f</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}/questdb</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/questdb.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/questdb.log</string>
-          <key>SoftResourceLimits</key>
-          <dict>
-            <key>NumberOfFiles</key>
-            <integer>1024</integer>
-          </dict>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"questdb", "start", "-d", var/"questdb", "-n", "-f"]
+    keep_alive successful_exit: false
+    error_log_path var/"log/questdb.log"
+    log_path var/"log/questdb.log"
+    working_dir var/"questdb"
   end
 
   test do

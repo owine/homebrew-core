@@ -1,9 +1,10 @@
 class Chafa < Formula
   desc "Versatile and fast Unicode/ASCII/ANSI graphics renderer"
   homepage "https://hpjansson.org/chafa/"
-  url "https://hpjansson.org/chafa/releases/chafa-1.8.0.tar.xz"
-  sha256 "21ff652d836ba207098c40c459652b2f1de6c8a64fbffc62e7c6319ced32286b"
+  url "https://hpjansson.org/chafa/releases/chafa-1.12.3.tar.xz"
+  sha256 "2456a0b6c1150e25b64cd6a92810d59bed3f061f8b86f91aba5a77bc7cc76cfa"
   license "LGPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://hpjansson.org/chafa/releases/?C=M&O=D"
@@ -11,37 +12,34 @@ class Chafa < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "2b99c6720548b49bf464446eb2a88feb723022f67a48628e17f6f64e6d65f1ed"
-    sha256 cellar: :any,                 arm64_big_sur:  "4664b6326ef88f1cb9a333f44e3efae718dd36c0b9022fd4f13f94c75aa000b8"
-    sha256 cellar: :any,                 monterey:       "da5f1e3983bd385ddc9159bf654bd8db34138fa3072d68ca03761b5b01b1e0a7"
-    sha256 cellar: :any,                 big_sur:        "9c435dd20ac686e44a6d0bade2aeb1fc38aab2f8581abcd52edd24fcd481df52"
-    sha256 cellar: :any,                 catalina:       "f9d29df82aafb93d30039a25a7fff50eda674fea0df040690aa5e9367be6d07a"
-    sha256 cellar: :any,                 mojave:         "59b934180ef0f7bde637fe66f433d0a1bf7f18a0787bb2ea433225c2dffc62fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab71c2288640e08cd267cbf92bb5bd126a7cf30147561891188cfc2f4a6b431d"
+    sha256 cellar: :any,                 arm64_monterey: "662ec93df5f776536f7ae038ab4e9b5e7b42fc2dfb697d9f271f0a0cbc2e913e"
+    sha256 cellar: :any,                 arm64_big_sur:  "a414cb89b09c05ae6049dbfd2ead73c48afa09e629e74e3a026b7b598adfbc86"
+    sha256 cellar: :any,                 monterey:       "5de514b36b5ca3e73d742b9d9a80188d5469f5cf6c1b427ab079f08504052df9"
+    sha256 cellar: :any,                 big_sur:        "3010b72f0b60642e49daf7c4ab1a0e9acff843938444f18c6da753001b5fe7c8"
+    sha256 cellar: :any,                 catalina:       "c7dff97197a4bbaaf1a279b2b23c7fe7098d64096e2cdaee2b4c44dc7ddcea0b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d31620cdaed205fe14af6a67f0454304e870af8ca99d912950a84a37dda2c062"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "freetype"
   depends_on "glib"
-  depends_on "imagemagick"
-
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
+  depends_on "jpeg-turbo"
+  depends_on "librsvg"
+  depends_on "libtiff"
+  depends_on "webp"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", *std_configure_args,
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+                          "--without-imagemagick" # deprecated in 1.12.0 and planned for removal
     system "make", "install"
     man1.install "docs/chafa.1"
   end
 
   test do
     output = shell_output("#{bin}/chafa #{test_fixtures("test.png")}")
-    assert_equal 4, output.lines.count
+    assert_equal 2, output.lines.count
+    output = shell_output("#{bin}/chafa --version")
+    assert_match(/Loaders:.* JPEG.* SVG.* TIFF.* WebP/, output)
   end
 end

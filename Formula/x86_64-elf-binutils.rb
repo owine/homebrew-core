@@ -1,23 +1,22 @@
 class X8664ElfBinutils < Formula
   desc "GNU Binutils for x86_64-elf cross development"
   homepage "https://www.gnu.org/software/binutils/"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
-  sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+  sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   license "GPL-3.0-or-later"
-  revision 1
 
   livecheck do
     formula "binutils"
   end
 
   bottle do
-    sha256 arm64_monterey: "e2b52bc2a30d1f122cd507e6871b78f11184bdd3901bd2a63542b89cb7f92dd4"
-    sha256 arm64_big_sur:  "2fcc7c012e83de82cfdcf2ec7e85422cebb1729a49e5cb0aeec067b9f0f9f204"
-    sha256 monterey:       "565f5c0a2f5bdc98f05de4a67d0ea00d001d1d1eb2558dc42b61a0d434476c1e"
-    sha256 big_sur:        "b4f920096a5671531df12d37641b6d1080a0fdcb670075a8a574fdfc16024e95"
-    sha256 catalina:       "8ad3dc59de911df54f04db679b11e4fabc905dc4da3d01fb2a20ffa8532fdc34"
-    sha256 x86_64_linux:   "b205d585e76879c684ab13f623d2c5d43f2f99e8383738d1d107f00227327e41"
+    sha256 arm64_monterey: "eefe767e1d8a366b16f89c976825568e19e0965da3f3721672ef8391242acfe7"
+    sha256 arm64_big_sur:  "875ed5414b3fe9aff66a53bc2fcf61e456d9ecb7cc5307cb2c4dd46b4b03d423"
+    sha256 monterey:       "3293e496ede109f8052ea76ce461c670b85b4675e6b27c6c394071915ea69323"
+    sha256 big_sur:        "47da0e5bee1e895671c003662d563f8940082376c5ada8f3dc76e0a8c79ef7da"
+    sha256 catalina:       "fee28befc1cb766febab4905bfe64d3c1a8b2273e0161abe25ee68cbf5306ca6"
+    sha256 x86_64_linux:   "9ebf98d717a55e400447bebcf98d6143e8c8f8fcd8affd3912fdc04cbb85547d"
   end
 
   uses_from_macos "texinfo"

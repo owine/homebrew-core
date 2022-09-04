@@ -2,23 +2,23 @@ class Mmctl < Formula
   desc "Remote CLI tool for Mattermost server"
   homepage "https://github.com/mattermost/mmctl"
   url "https://github.com/mattermost/mmctl.git",
-      tag:      "v6.2.1",
-      revision: "8cedc5f3a9ef5e18d6da248bef6b5d576674cf16"
+      tag:      "v7.2.0",
+      revision: "9e6121b94efac5f6a0dfa74ec707a01c3e1f6ceb"
   license "Apache-2.0"
   head "https://github.com/mattermost/mmctl.git", branch: "master"
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a1194acb3c5be0384b5cb1c2e0cbf37ccd2efaed98d0b4720b4baadd70bfae8e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "accec2d33981741829462cab55fdd5b32de83fba784cdb79ef5ea0581836c223"
-    sha256 cellar: :any_skip_relocation, monterey:       "f16b981809cb5f2c7ab06b9727cb8790cc427747c6df0714583a53b4cf6d9aae"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8f0866a67a2229164629ca8cf8e790d5e3810e4d05cd9efbc8969827758bbe3a"
-    sha256 cellar: :any_skip_relocation, catalina:       "6c9bb75ead7ed7bb117d89eca0af51c9144a466159514d383e8811d3b606beb8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "878436336bbfb975e136e5d280742b549fdec6130cf86bb5e2d7c39688453812"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "739fb5aaf8f539f24121fc6f4c62b5559dd420e60b9b2faaf51643b0fe82d64b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c0553bfa3d6fa73319bd5606d89840e2fad2342c2ea5f4e12c457ceae93467be"
+    sha256 cellar: :any_skip_relocation, monterey:       "96c2817aa40cfe7b4e47a02bed72df748178ade837c9430dee5d5fe112838d57"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1df2a8eee2e76e2d1e587bbe659f85cbe35fb41cf880208edb37fe03803396b8"
+    sha256 cellar: :any_skip_relocation, catalina:       "20950a639f1ac93a6409e25ced035e379a7d3a8bc2ac8e0d4479d3f5cba0dd80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a539ef0c35e590fe1411d7a0bf4adc4ac1dda9f4e53ac745514c202a865701c"
   end
 
   depends_on "go" => :build
@@ -28,10 +28,7 @@ class Mmctl < Formula
     system "go", "build", *std_go_args(ldflags: ldflags), "-mod=vendor"
 
     # Install shell completions
-    output = Utils.safe_popen_read(bin/"mmctl", "completion", "bash")
-    (bash_completion/"mmctl").write output
-    output = Utils.safe_popen_read(bin/"mmctl", "completion", "zsh")
-    (zsh_completion/"_mmctl").write output
+    generate_completions_from_executable(bin/"mmctl", "completion", shells: [:bash, :zsh])
   end
 
   test do

@@ -1,9 +1,10 @@
 class Libxmlsec1 < Formula
   desc "XML security library"
   homepage "https://www.aleksey.com/xmlsec/"
-  url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.33.tar.gz"
-  sha256 "26041d35a20a245ed5a2fb9ee075f10825664d274220cb5190340fa87a4d0931"
+  url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.34.tar.gz"
+  sha256 "52ced4943f35bd7d0818a38298c1528ca4ac8a54440fd71134a07d2d1370a262"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://www.aleksey.com/xmlsec/download/"
@@ -11,12 +12,12 @@ class Libxmlsec1 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "dec6fd5829e865122d129980ef2ed3744ca8bbf5bb8e20aeccbb7ca39a0ba6d5"
-    sha256 cellar: :any,                 arm64_big_sur:  "5f7287fd477e8c9db54ca60d3ba0baccbaaa8f1223c69b468c7c3f5cea51901c"
-    sha256 cellar: :any,                 monterey:       "f95fc9af05605a1746f83322b2772e6623a560184814971473f124da8c21e3fe"
-    sha256 cellar: :any,                 big_sur:        "fe86e0105c779a17c87ff23e9d676097f01bd6c29c0e8034e523bfa502c7f02f"
-    sha256 cellar: :any,                 catalina:       "12f5f73d58175419bf06ff8d0b93da1f47638a279659609e2e2afe29f1061d3a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f9db3f53634ffdbcc8234968e3bce2c42a32f731625506777ac1831f43735df"
+    sha256 cellar: :any,                 arm64_monterey: "024bc7d0c29d6538082c6c028cbd05333a114020c43068c51587ac8c826bbbac"
+    sha256 cellar: :any,                 arm64_big_sur:  "1f7fe144276fccca532e1cf53d25f02186c994ae49fae45400b5a8e6654abe1c"
+    sha256 cellar: :any,                 monterey:       "bc772fda0f897167a0203c54dcc7a1c212a4b31562bd07dec9597383582b729b"
+    sha256 cellar: :any,                 big_sur:        "a808516e71f10edefe72faa80fce47215cffb2117d6370808c05576f84cdfd1b"
+    sha256 cellar: :any,                 catalina:       "7f2a722846ebdff6e443d769ba2793f05a001c47b0bbaf2d4f527270444cd21e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa29289e159f700e07f38d7af68b7bf5832393c65716a2c0303f63e6f86738f3"
   end
 
   depends_on "pkg-config" => :build
@@ -24,6 +25,7 @@ class Libxmlsec1 < Formula
   depends_on "libgcrypt"
   depends_on "libxml2"
   depends_on "openssl@1.1"
+  uses_from_macos "libxslt"
 
   on_macos do
     depends_on xcode: :build
@@ -43,6 +45,10 @@ class Libxmlsec1 < Formula
             "--prefix=#{prefix}",
             "--disable-crypto-dl",
             "--disable-apps-crypto-dl",
+            "--with-nss=no",
+            "--with-nspr=no",
+            "--enable-mscrypto=no",
+            "--enable-mscng=no",
             "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}"]
 
     system "./configure", *args

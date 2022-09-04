@@ -1,18 +1,18 @@
 class GetIplayer < Formula
   desc "Utility for downloading TV and radio programmes from BBC iPlayer"
   homepage "https://github.com/get-iplayer/get_iplayer"
-  url "https://github.com/get-iplayer/get_iplayer/archive/v3.28.tar.gz"
-  sha256 "8ba1e398001609c5893604ea6aac6058c833b54ed00ef150a14fa1cb094b0df3"
+  url "https://github.com/get-iplayer/get_iplayer/archive/v3.30.tar.gz"
+  sha256 "05a39d5447eecfc2f95a616bf8d4dcf59ca3b3a0ecda1f82882401e6d74e286c"
   license "GPL-3.0-or-later"
   head "https://github.com/get-iplayer/get_iplayer.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa82c21dcb46edf6c7a027ed1c6d8aba29c8dcce6ae079683b75893e44b225af"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1665b3c06fdb20f64e65dfc3b5797d57ee5c5d5389cebb491028ebfac53e2441"
-    sha256 cellar: :any_skip_relocation, monterey:       "07b328ee6ea86ca846f1263e80f0ce7ec9482c67b485ecd92c920862f4bc083e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a2cb3e9aade0602d13ad367fdc4d383944a2b880a725000d0ea3a493caeea9e6"
-    sha256 cellar: :any_skip_relocation, catalina:       "78274c735f7eb288d87b38ad1a2a5c2cdc09ed174daab435a7d7bc294ad95b0c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a5e1a033517fd5e0d503a04caaa38d204f11b4afac7e57a839007ba1365d54a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7641b6219cf7905e2b17af0d44e2e660e3ba5f5b42f041d7516a307015cb82c9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fc27b8a1fc4fe3936c9b807c87d2adb9979688448df2a4d285523bf6cb5cc84d"
+    sha256 cellar: :any_skip_relocation, monterey:       "c3a9acbdf16c9a0d28e325fb323bdbc3f5e50e63b642390480abf3e82605bef5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6b81e930f416bd55566ef52e82781dd4b81110c2e77eede7af954e0d3e0bff74"
+    sha256 cellar: :any_skip_relocation, catalina:       "f95dd64c2cba1c267843c7c9c3d690aae855fd8c3c3330829e2d89899747317c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3490243036ef4ba6022800e9de25ecaef822bfb63e9d65f7d7de06ad954b1a1"
   end
 
   depends_on "atomicparsley"

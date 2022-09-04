@@ -1,22 +1,25 @@
 class OsmiumTool < Formula
   desc "Libosmium-based command-line tool for processing OpenStreetMap data"
   homepage "https://osmcode.org/osmium-tool/"
-  url "https://github.com/osmcode/osmium-tool/archive/v1.13.2.tar.gz"
-  sha256 "a6516087bfe1f6c881c9087b448ee8965b7d1730e29e4e8e982cd2ef8c4f8d98"
+  url "https://github.com/osmcode/osmium-tool/archive/v1.14.0.tar.gz"
+  sha256 "67765fe6b612e791aab276af601dd12410b70486946e983753f6b0442f915233"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "a1e85864e81239d90e4e0592fcd1fe7eab4118d06f34e4b6ea4560fb9ec66294"
-    sha256 cellar: :any, arm64_big_sur:  "bb643b8ff8b55a149f0fb6b57c1abd347fdca943a6a8d44baf34cc123bf47b9a"
-    sha256 cellar: :any, monterey:       "ae1f3ea8a20597ec99ba4e43d46de8d45c0416dac1fed9464e111a5e6c1d307a"
-    sha256 cellar: :any, big_sur:        "589eb5fd205fe081a5fa470f44628a186c1ac0c9d6546d7aa02308ad32bd83f8"
-    sha256 cellar: :any, catalina:       "3c8ed5d3feb01942592c9ecbc6e32e5be0fbcce61411e75c7240f0d2d6ff2446"
-    sha256 cellar: :any, mojave:         "0c1d2dcf31540f5a0218d9413dc7b990d3dd9e21d5d261a3ff617365cec6d0ed"
+    sha256 cellar: :any,                 arm64_monterey: "a822b931250081419f53ad441a89076a64411e5971e091387a92476860204806"
+    sha256 cellar: :any,                 arm64_big_sur:  "9dd563705ceb2f2837d4f5df511e5b3d13cf1409968b1fdcae991ef0a381e6e2"
+    sha256 cellar: :any,                 monterey:       "c10c02bea8013843e94222ae833e64b2ea61a4287d60e386b8c1a560baf978b2"
+    sha256 cellar: :any,                 big_sur:        "bd7ed40d240f593ddeab17dbaceb9f06b8d14f870a3e3f07872228a56d7622fc"
+    sha256 cellar: :any,                 catalina:       "5b67d83929194c424ff1929a3e4a019607409ac650a04bd97d9a7e58f169d0d4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "28c587bd9003d6b08adbf08ae8cb15548184f1b1995032542166fce7d213c2d5"
   end
 
   depends_on "cmake" => :build
   depends_on "libosmium" => :build
+  depends_on "pandoc" => :build
   depends_on "boost"
+  depends_on "lz4"
 
   uses_from_macos "expat"
 

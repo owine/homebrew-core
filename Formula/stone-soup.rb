@@ -1,8 +1,10 @@
 class StoneSoup < Formula
+  include Language::Python::Virtualenv
+
   desc "Dungeon Crawl Stone Soup: a roguelike game"
   homepage "https://crawl.develz.org/"
-  url "https://github.com/crawl/crawl/archive/0.27.1.tar.gz"
-  sha256 "062f1285852fced23ecb2f272ad132467e12e7e251e02aaa84f37280b55ba63e"
+  url "https://github.com/crawl/crawl/archive/0.29.0.tar.gz"
+  sha256 "4b32d3c3a07fe969cc1e9d12430b4c143c36e92746b3715ccdb8416720fdc59f"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +13,12 @@ class StoneSoup < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "ac083b40432b38b3a0df7d35b15e3af9b53a41a6113806dd18ce6b075316923e"
-    sha256 arm64_big_sur:  "28a5163e873774752907af82fc0dcdbfd74a2331762d80bd6c061510819fb6d1"
-    sha256 monterey:       "7d20dd85eb1ecb488e5f241bc700d5b569154fd804642e86a4662a35b8834ed3"
-    sha256 big_sur:        "e2572a4c65ce87835e6759d7c545b33b0468f85dfd0eff73ac05b00344a799f9"
-    sha256 catalina:       "2c1a00f2bd5c458d426ae7c79f39d7058d13c98bddca6b904b068a8f8ec0c926"
+    sha256 arm64_monterey: "5f29bd14d6ea825b6ed20307640820829ae92443dcf127f0f22f911a90254871"
+    sha256 arm64_big_sur:  "8fdf7354f3124a44f11ead904a85e8d4a6d4c6c4cf0919506949ad63566eedcc"
+    sha256 monterey:       "70ce72d4751274fff9c71066b913c4f187cfdd035653edbd165743e8527e75da"
+    sha256 big_sur:        "9082d248ff5392a5d361cd640b89be892a1d9671eb9a6f6763c8e101f76d4387"
+    sha256 catalina:       "9ec9dda231c396e32294e6bccf6b6a28d65a4709e952caade7c9beae72c34a35"
+    sha256 x86_64_linux:   "f969df6fa0bd2a5ac6282e1b81e977c0494acbd1c830a7f6e7c2deadba4df9c8"
   end
 
   depends_on "pkg-config" => :build
@@ -25,9 +27,15 @@ class StoneSoup < Formula
   depends_on "pcre"
   depends_on "sqlite"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
-    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
+    url "https://files.pythonhosted.org/packages/36/2b/61d51a2c4f25ef062ae3f74576b01638bebad5e045f747ff12643df63844/PyYAML-6.0.tar.gz"
+    sha256 "68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"
   end
 
   def install
@@ -36,9 +44,8 @@ class StoneSoup < Formula
     xy = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", buildpath/"vendor/lib/python#{xy}/site-packages"
 
-    resource("PyYAML").stage do
-      system "python3", *Language::Python.setup_install_args(buildpath/"vendor")
-    end
+    venv = virtualenv_create(buildpath/"vendor", "python3")
+    venv.pip_install resource("PyYAML")
 
     cd "crawl-ref/source" do
       File.write("util/release_ver", version.to_s)
@@ -58,6 +65,13 @@ class StoneSoup < Formula
         USE_PCRE=y
       ]
 
+      unless OS.mac?
+        args += %W[
+          CFLAGS=-I#{Formula["pcre"].opt_include}
+          LDFLAGS=-ldl
+        ]
+      end
+
       # FSF GCC doesn't support the -rdynamic flag
       args << "NO_RDYNAMIC=y" unless ENV.compiler == :clang
 
@@ -67,12 +81,18 @@ class StoneSoup < Formula
       #
       # On 10.9, stone-soup will try to use xcrun and fail due to an empty
       # DEVELOPER_DIR
-      devdir = MacOS::Xcode.prefix.to_s
-      devdir += "/" unless MacOS::Xcode.installed?
+      if OS.mac?
+        devdir = MacOS::Xcode.prefix.to_s
+        devdir += "/" unless MacOS::Xcode.installed?
 
-      system "make", "install",
-        "DEVELOPER_DIR=#{devdir}", "SDKROOT=#{MacOS.sdk_path}",
-        "SDK_VER=#{MacOS.version}", *args
+        args += %W[
+          DEVELOPER_DIR=#{devdir}
+          SDKROOT=#{MacOS.sdk_path}
+          SDK_VER=#{MacOS.version}
+        ]
+      end
+
+      system "make", "install", *args
     end
   end
 

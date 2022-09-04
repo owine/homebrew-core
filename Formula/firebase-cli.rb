@@ -3,18 +3,18 @@ require "language/node"
 class FirebaseCli < Formula
   desc "Firebase command-line tools"
   homepage "https://firebase.google.com/docs/cli/"
-  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-10.1.2.tgz"
-  sha256 "d0ecbf310f79d8e1ca0ccc27c2f39ef6fcd3d588399b7982b0d6429bd4956328"
+  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-11.8.0.tgz"
+  sha256 "7c6da191fcbd6c3216dcdc7c034589e381dbf0a0aeb6802546921e06420c8062"
   license "MIT"
   head "https://github.com/firebase/firebase-tools.git", branch: "master"
 
   bottle do
-    sha256                               arm64_monterey: "0dfd169f923040e09f11738129086a395225d9d102bed92439d4309d133101ec"
-    sha256                               arm64_big_sur:  "96ad934140969fec5dc7e1c6bf332119dbc83893fec6c18d57e4988f87df8c29"
-    sha256 cellar: :any_skip_relocation, monterey:       "36294631dc99d03bf16db134cc6b45350e2ba1c2df87342e12328e55865a6a81"
-    sha256 cellar: :any_skip_relocation, big_sur:        "36294631dc99d03bf16db134cc6b45350e2ba1c2df87342e12328e55865a6a81"
-    sha256 cellar: :any_skip_relocation, catalina:       "36294631dc99d03bf16db134cc6b45350e2ba1c2df87342e12328e55865a6a81"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82a7a0337df9cc0ddb51a17e788755f29e1d8bd247182838f0cf0abb143b5a9a"
+    sha256                               arm64_monterey: "54a98b3b73e7ab6338bdd7354a8b1f8566831e7e777166a0890a8b902a83dc54"
+    sha256                               arm64_big_sur:  "88a66074e1ca71314aa1e707e98ffea2e02cfc2134cc37112ed85f8306c92fd2"
+    sha256 cellar: :any_skip_relocation, monterey:       "f36dcf745f0f074269cad15406fa0e077824ef54d63a2d739ed3ba8e69e7199f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f36dcf745f0f074269cad15406fa0e077824ef54d63a2d739ed3ba8e69e7199f"
+    sha256 cellar: :any_skip_relocation, catalina:       "f36dcf745f0f074269cad15406fa0e077824ef54d63a2d739ed3ba8e69e7199f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9735ee7a4340e09ba5cbe131a84b0f516cffc1b1832a4a35b74a7acb7870ef17"
   end
 
   depends_on "node"

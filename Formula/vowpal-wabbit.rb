@@ -1,31 +1,28 @@
 class VowpalWabbit < Formula
   desc "Online learning algorithm"
   homepage "https://github.com/VowpalWabbit/vowpal_wabbit"
-  # pull from git tag to get submodules
-  url "https://github.com/VowpalWabbit/vowpal_wabbit.git",
-      tag:      "8.11.0",
-      revision: "96ed8316de4391b77f4f29af69f885552a644769"
+  url "https://github.com/VowpalWabbit/vowpal_wabbit/archive/9.3.0.tar.gz"
+  sha256 "e7ffda2782bb2f0bdf8235db3e9655c71e005d762cab0fa19d260fe672c6104b"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/VowpalWabbit/vowpal_wabbit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "12d34acaa90b6dad0f9424623131ab9cc17afb22ac4ca3c2cfc78cd3bb87f444"
-    sha256 cellar: :any,                 arm64_big_sur:  "b409d89003bcdf98e7ed731a30ebb197e06f151b75ac4f6f3906572a431eeb1f"
-    sha256 cellar: :any,                 monterey:       "76f0db5043b1538fd89d46feb993a874859a438d59f2ea9725bc7dc4551fbe10"
-    sha256 cellar: :any,                 big_sur:        "aa088ed972a626863ef2535ce3f2929ddaf7d5e64d8a7944cbff8d7d03714804"
-    sha256 cellar: :any,                 catalina:       "6340e02d379e0381d079cf8b5c6ae64bce24fbd6d808a0d5ecc0734d08094893"
-    sha256 cellar: :any,                 mojave:         "d9bcb3816f6e0cb53dad0ceb692fcd44c277471f500ea443ef4af25f733e2e48"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c906f6f596bbc7e075ab1e192458dddf0bc5370d315d93e5d7f02aedbd36bbb2"
+    sha256 cellar: :any,                 arm64_monterey: "241fe74a777038f526574f77b5ee4831bf99887754ac64d8b94ff72d84fcb794"
+    sha256 cellar: :any,                 arm64_big_sur:  "906cb60ce5345580bbaa4fe7d1f6cd2c6e00c0fe61c0765a86a1da60350d737c"
+    sha256 cellar: :any,                 monterey:       "723111b1d9b0612aae4a0c767af1724818b3263f2e25cc14dfbff94f6b5fb961"
+    sha256 cellar: :any,                 big_sur:        "fe623957af3531a96cbccbafc90fae4e6cf8c6e261f14b1e7fcbc16a03e54b42"
+    sha256 cellar: :any,                 catalina:       "0e86f538866d89810a1bc4eb02ee92d5e805d0fdd9afa21c2d9d6c6428725029"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23a0d63e513a43b45f38d6a87f13c409af3ac74108fff1e86aa44d1799db3dfe"
   end
 
   depends_on "cmake" => :build
-  depends_on "flatbuffers" => :build
   depends_on "rapidjson" => :build
   depends_on "spdlog" => :build
   depends_on "boost"
+  depends_on "eigen"
   depends_on "fmt"
-  depends_on "zlib"
+  uses_from_macos "zlib"
 
   def install
     ENV.cxx11
@@ -34,18 +31,21 @@ class VowpalWabbit < Formula
     # The following should be equivalent, while supporting Homebrew's standard args.
     mkdir "build" do
       system "cmake", "..", *std_cmake_args,
-                            "-DBUILD_TESTS=OFF",
+                            "-DBUILD_TESTING=OFF",
                             "-DRAPIDJSON_SYS_DEP=ON",
                             "-DFMT_SYS_DEP=ON",
                             "-DSPDLOG_SYS_DEP=ON",
-                            "-DBUILD_FLATBUFFERS=ON"
+                            "-DVW_BOOST_MATH_SYS_DEP=On",
+                            "-DVW_INSTALL=On"
       system "make", "install"
     end
     bin.install Dir["utl/*"]
     rm bin/"active_interactor.py"
     rm bin/"vw-validate.html"
-    rm bin/"clang-format"
+    rm bin/"clang-format.sh"
+    rm bin/"release_blog_post_template.md"
     rm_r bin/"flatbuffer"
+    rm_r bin/"dump_options"
   end
 
   test do

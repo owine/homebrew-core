@@ -1,8 +1,8 @@
 class Ooniprobe < Formula
   desc "Network interference detection tool"
   homepage "https://ooni.org/"
-  url "https://github.com/ooni/probe-cli/archive/v3.13.0.tar.gz"
-  sha256 "a055aed8c2d0d898b7cdb843cf247cf3b593c8ac7045103c08b3088b7d4d1737"
+  url "https://github.com/ooni/probe-cli/archive/v3.15.3.tar.gz"
+  sha256 "40ca23d3a08e91ff72c95e835eb59d8922bf7424464782b16d2704e8d630eecb"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,23 +11,29 @@ class Ooniprobe < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "207b5687cc32f010d5f6f55e2b95f69e086fb28a2825078bbbfd4861bfc09c61"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d5d36efcb051f08355c23b62c0a244cd67e706b8674302903a908c428a2ac6d5"
-    sha256 cellar: :any_skip_relocation, monterey:       "e6fc0c3d3350eea9206523e06283e6842989d63cbd865d80610c1e1a3c7867d8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7125b855b7a0edeb91597e8b0aa525a5ccde50c6ac0bd2c23b5671b898b12699"
-    sha256 cellar: :any_skip_relocation, catalina:       "0c57f460123364905bbfa22a88943bc7566e318c26298847d3925664a67a5196"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8321538ff21f1692b8b9f569476ba61dc76feda24bc05a9adab72a9f2a77c177"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "91e244e01cc4850ad773e3033a4f9987bba84143d2a8bbbde0d62ef83a5036ee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "821d942cebe6cbfbef339372a556dd195c9434f2e9e67334def2b6f82a814bd6"
+    sha256 cellar: :any_skip_relocation, monterey:       "7669bdfde84b81c6dabe09e4a5d4103745825a4a0ca50e7d5e0358c452951cb5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e9e36214d183d23038020bbc0ba4e824fb331da8437d57eba6650e4325f5d819"
+    sha256 cellar: :any_skip_relocation, catalina:       "17a11635a06fcff13c3e43722a0ddc37a9cd488b237d3ad8e13d506402d87b91"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a56081097f07522f166118bf95f8e270ecd2fb7295470deab5a08e8666cde081"
   end
 
-  depends_on "go" => :build
+  # Required lucas-clemente/quic-go >= 0.28
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
+  depends_on "tor"
 
   def install
-    system "go", "run", "./internal/cmd/getresources"
     system "go", "build", *std_go_args, "-ldflags", "-s -w", "./cmd/ooniprobe"
     (var/"ooniprobe").mkpath
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/ooniprobe version")
+    # failed to sufficiently increase receive buffer size (was: 208 kiB, wanted: 2048 kiB, got: 416 kiB).
+    return if OS.linux?
+
     (testpath/"config.json").write <<~EOS
       {
         "_version": 3,

@@ -2,9 +2,9 @@ class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "https://www.libressl.org/"
   # Please ensure when updating version the release is from stable branch.
-  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.4.2.tar.gz"
-  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.4.2.tar.gz"
-  sha256 "cb82ca7d547336917352fbd23db2fc483c6c44d35157b32780214ec74197b3ce"
+  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.5.3.tar.gz"
+  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.5.3.tar.gz"
+  sha256 "3ab5e5eaef69ce20c6b170ee64d785b42235f48f2e62b095fca5d7b6672b8b28"
   license "OpenSSL"
 
   livecheck do
@@ -13,12 +13,12 @@ class Libressl < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "932d4139fd7c519e637555dcd7646ce074410dfe819cf1e959582e92e9d2629b"
-    sha256 arm64_big_sur:  "0b41497bd24cafddac59ad896f3bd0651f809368ec7a273a9a587c7be25c66ec"
-    sha256 monterey:       "99dcff0a05aa91c512cc84634da127314e18965a5415cfc5bf89cfac2d11f525"
-    sha256 big_sur:        "ab9076500642384eb5af15e8e89e5a2c08c0cbd61286cf7d53770d777995a6cd"
-    sha256 catalina:       "4fbe195f7dd1c0456912892a6dd2f91a3e53601b3f26a8352bbf58951d92eee1"
-    sha256 x86_64_linux:   "2a795ad39e27b921e4afd4e9a2e65cd04ddb86ba49193eaf8826349ab3c4e9e1"
+    sha256 arm64_monterey: "69c8b3bd77a93b7d66c10547d7513989422d59eff4f51d52b5bc4df5be7c6527"
+    sha256 arm64_big_sur:  "a7e45093051a0a7961d88caa88002864eac2d00b1eca53cc75cf35c471d46680"
+    sha256 monterey:       "183d6b2c20714d89aea7522bdf0cdedab4490a11f8f56671f155362f3231d98b"
+    sha256 big_sur:        "9afd1be45a3f183c8b2ac2fe5ed5c8defc3fd9a5ef8b4e2db9ab2d7122f29692"
+    sha256 catalina:       "ed9f90222d3d7ea6382bedc140bcaee1242080afcff3a7bf38b17083c929dd0e"
+    sha256 x86_64_linux:   "187419900c62a0673ef001737a8ccd8b3a336077faa093593e2d305cfb141148"
   end
 
   head do
@@ -47,7 +47,6 @@ class Libressl < Formula
     system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
-    system "make", "check"
     system "make", "install"
   end
 

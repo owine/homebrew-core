@@ -2,18 +2,18 @@ class Regula < Formula
   desc "Checks infrastructure as code templates using Open Policy Agent/Rego"
   homepage "https://regula.dev/"
   url "https://github.com/fugue/regula.git",
-      tag:      "v2.4.0",
-      revision: "b66c18f7ab22ac8317c5a1508837b154375e39b8"
+      tag:      "v2.9.1",
+      revision: "b46cb8745cf9c50de1d89d8c196c6b11401d2c78"
   license "Apache-2.0"
   head "https://github.com/fugue/regula.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ff52d01b868231fc73c918433637d27b541a82ab4edb637c897efd01f2496c37"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c9d51c686388c28636d47fb0325cb4f848b435dba0ecd4e594be8a44c1f6e994"
-    sha256 cellar: :any_skip_relocation, monterey:       "fe56caa576ac6037fde345cb0ad267cf5787145b698369664fa4f1091e95c28c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3f7dcad209e547ae1561a6403803465b95ce8f57e88aab567cc332224b38c0de"
-    sha256 cellar: :any_skip_relocation, catalina:       "443f537b1240f86a8ed718fee5c1d10aca0c62b2246cb6609067055bf0c9081b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48815019477feabb29f159c6b62cea1f287a92c920550693cccef3ebfe5908d8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c93dfb33e51d1dc517922649778ce442a0803e707babaef8b0d31654a134c93c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2a5173af76c35839829f988649d68a3d6a3106227d80891c282bd85842e0e743"
+    sha256 cellar: :any_skip_relocation, monterey:       "851dcbe5d267c09b1b64d2464e0bbd761ab5a24b6f8bb230b8e70611f2f4af31"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4d2fcea9ea5a34b78be9400d9929178c75fb7207da4b32dff2a4ebe3392ec813"
+    sha256 cellar: :any_skip_relocation, catalina:       "f4e40bc48603ff64b46183b96c719ef5a5d02c21f4f5f52435f19ba27ae3d12a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad0de2fc459acefe703b91374169422679129b10627791618764b52ae3f283d6"
   end
 
   depends_on "go" => :build
@@ -21,18 +21,13 @@ class Regula < Formula
   def install
     ldflags = %W[
       -s -w
-      -X github.com/fugue/regula/pkg/version.Version=#{version}
-      -X github.com/fugue/regula/pkg/version.GitCommit=#{Utils.git_short_head}
+      -X github.com/fugue/regula/v2/pkg/version.Version=#{version}
+      -X github.com/fugue/regula/v2/pkg/version.GitCommit=#{Utils.git_short_head}
     ].join(" ")
 
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    bash_output = Utils.safe_popen_read(bin/"regula", "completion", "bash")
-    (bash_completion/"regula").write bash_output
-    zsh_output = Utils.safe_popen_read(bin/"regula", "completion", "zsh")
-    (zsh_completion/"_regula").write zsh_output
-    fish_output = Utils.safe_popen_read(bin/"regula", "completion", "fish")
-    (fish_completion/"regula.fish").write fish_output
+    generate_completions_from_executable(bin/"regula", "completion")
   end
 
   test do
@@ -49,7 +44,7 @@ class Regula < Formula
       }
     EOS
 
-    assert_match "Found 8 problems", shell_output(bin/"regula run infra", 1)
+    assert_match "Found 10 problems", shell_output(bin/"regula run infra", 1)
 
     assert_match version.to_s, shell_output(bin/"regula version")
   end

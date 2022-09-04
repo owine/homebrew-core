@@ -1,26 +1,31 @@
 class Opensearch < Formula
   desc "Open source distributed and RESTful search engine"
   homepage "https://github.com/opensearch-project/OpenSearch"
-  url "https://github.com/opensearch-project/OpenSearch/archive/1.2.4.tar.gz"
-  sha256 "d4d2483bcaa6c0397fc40dcb66ef6ef0f77b17a3f0e318590914a4563c36b076"
+  url "https://github.com/opensearch-project/OpenSearch/archive/2.2.1.tar.gz"
+  sha256 "17899f43b2c40a2c28c94a1e7884f0768bc89620376748bf7388f1fdc68d636c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "6018dd7491405ca252d1a2ca72a077990d0efb8057d656199c432f5c78b95e49"
-    sha256 cellar: :any_skip_relocation, catalina:     "859c3140be49c6ed70d1e9f39e8459cbecbdd7bb6f92983f47f9abff931996f7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "676d21142a860442b4c5c12f50b22aaa7e34c72df5e59ef437d6bb01a2c35c83"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e5bfaffcd349852c551613cd1c9bf3d8fdd6cdfc1adbd988a1380f383f64e024"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e5bfaffcd349852c551613cd1c9bf3d8fdd6cdfc1adbd988a1380f383f64e024"
+    sha256 cellar: :any_skip_relocation, monterey:       "660bbd3dce42c9a6661d32b5d88c02ff02cb36f2836524ac8a0b41a1179a42cf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "660bbd3dce42c9a6661d32b5d88c02ff02cb36f2836524ac8a0b41a1179a42cf"
+    sha256 cellar: :any_skip_relocation, catalina:       "660bbd3dce42c9a6661d32b5d88c02ff02cb36f2836524ac8a0b41a1179a42cf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78ace5a92e0c5b5560ecfc5e3b8876b3114041a78a4e061cd1b500ea6647076a"
   end
 
-  depends_on "gradle@6" => :build
+  depends_on "gradle" => :build
   depends_on "openjdk"
 
   def install
-    system "gradle", ":distribution:archives:no-jdk-darwin-tar:assemble"
+    platform = OS.kernel_name.downcase
+    platform += "-arm64" if Hardware::CPU.arm?
+    system "gradle", "-Dbuild.snapshot=false", ":distribution:archives:no-jdk-#{platform}-tar:assemble"
 
     mkdir "tar" do
       # Extract the package to the tar directory
       system "tar", "--strip-components=1", "-xf",
-        Dir["../distribution/archives/no-jdk-darwin-tar/build/distributions/opensearch-*.tar.gz"].first
+        Dir["../distribution/archives/no-jdk-#{platform}-tar/build/distributions/opensearch-*.tar.gz"].first
 
       # Install into package directory
       libexec.install "bin", "lib", "modules"
@@ -89,10 +94,10 @@ class Opensearch < Formula
     (testpath/"logs").mkdir
     fork do
       exec bin/"opensearch", "-Ehttp.port=#{port}",
-                                "-Epath.data=#{testpath}/data",
-                                "-Epath.logs=#{testpath}/logs"
+                             "-Epath.data=#{testpath}/data",
+                             "-Epath.logs=#{testpath}/logs"
     end
-    sleep 20
+    sleep 60
     output = shell_output("curl -s -XGET localhost:#{port}/")
     assert_equal "opensearch", JSON.parse(output)["version"]["distribution"]
 

@@ -1,18 +1,18 @@
 class Qemu < Formula
   desc "Emulator for x86 and PowerPC"
   homepage "https://www.qemu.org/"
-  url "https://download.qemu.org/qemu-6.2.0.tar.xz"
-  sha256 "68e15d8e45ac56326e0b9a4afa8b49a3dfe8aba3488221d098c84698bca65b45"
+  url "https://download.qemu.org/qemu-7.1.0.tar.xz"
+  sha256 "a0634e536bded57cf38ec8a751adb124b89c776fe0846f21ab6c6728f1cbbbe6"
   license "GPL-2.0-only"
   head "https://git.qemu.org/git/qemu.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "57ffc7f97cbd053121f7767f08c2386beac29ef8efa7f93398d347b24d979621"
-    sha256 arm64_big_sur:  "4550d24a0d2e6a708bdce2364087cb684b8655e18b8426fa6ef4d5dae8f68279"
-    sha256 monterey:       "b543588b7415090b74759097084dd2104139f4a8e778204cc3bce2b280603c32"
-    sha256 big_sur:        "8f1b83d17955d66e6df076a1d0abd4a00fdf91d23a0644d696a5937e1e64d156"
-    sha256 catalina:       "16455455bed508272b6de05d7f75c9d26b1e7bed3349f1fd56d361a3bc601616"
-    sha256 x86_64_linux:   "93904b6e664abd95780e085c21eee15312b3bd56f742fbbfa1ccb03ec6762003"
+    sha256 arm64_monterey: "b9af282dc776751e62391225414e77f164c52744ebade912e7be7a1efaaa971e"
+    sha256 arm64_big_sur:  "67f95e7c1a19d80f53479eb6b16241c3d65ed4374877ff3f55d676df7862398c"
+    sha256 monterey:       "8a20d8639910e53abe3b46c0974c9b8f853c9abf16def541a1af1c8390a7681d"
+    sha256 big_sur:        "9038c9d5cec38e95c960f7ab8079a4e636866feeadf97820322bad49a4e542d5"
+    sha256 catalina:       "1ab6f01635437ccf0645306032879152d0cc5f343f887ed459bde79fc8e26015"
+    sha256 x86_64_linux:   "e1b9d06314d58ce5a87b92170807cec8805a9e596a4ad4bdbaac997d571d8fa3"
   end
 
   depends_on "libtool" => :build
@@ -22,7 +22,7 @@ class Qemu < Formula
 
   depends_on "glib"
   depends_on "gnutls"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libslirp"
   depends_on "libssh"
@@ -33,16 +33,20 @@ class Qemu < Formula
   depends_on "pixman"
   depends_on "snappy"
   depends_on "vde"
+  depends_on "zstd"
 
   on_linux do
+    depends_on "attr"
     depends_on "gcc"
+    depends_on "gtk+3"
+    depends_on "libcap-ng"
   end
 
   fails_with gcc: "5"
 
   # 820KB floppy disk image file of FreeDOS 1.2, used to test QEMU
   resource "homebrew-test-image" do
-    url "https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.2/FD12FLOPPY.zip"
+    url "https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.2/official/FD12FLOPPY.zip"
     sha256 "81237c7b42dc0ffc8b32a2f5734e3480a3f9a470c50c14a9c4576a2561a35807"
   end
 
@@ -59,10 +63,15 @@ class Qemu < Formula
       --enable-libssh
       --enable-slirp=system
       --enable-vde
+      --enable-virtfs
+      --enable-zstd
       --extra-cflags=-DNCURSES_WIDECHAR=1
       --disable-sdl
-      --disable-gtk
     ]
+
+    # Please remove this line when the CI gets updated to a recent version of Ubuntu(kernel version >= 4.9)
+    args << "--disable-linux-user"
+
     # Sharing Samba directories in QEMU requires the samba.org smbd which is
     # incompatible with the macOS-provided version. This will lead to
     # silent runtime failures, so we set it to a Homebrew path in order to
@@ -70,7 +79,11 @@ class Qemu < Formula
     # Samba installations from external taps.
     args << "--smbd=#{HOMEBREW_PREFIX}/sbin/samba-dot-org-smbd"
 
-    args << "--enable-cocoa" if OS.mac?
+    args += if OS.mac?
+      ["--disable-gtk", "--enable-cocoa"]
+    else
+      ["--enable-gtk"]
+    end
 
     system "./configure", *args
     system "make", "V=1", "install"

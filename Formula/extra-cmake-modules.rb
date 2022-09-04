@@ -1,8 +1,8 @@
 class ExtraCmakeModules < Formula
   desc "Extra modules and scripts for CMake"
   homepage "https://api.kde.org/frameworks/extra-cmake-modules/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.90/extra-cmake-modules-5.90.0.tar.xz"
-  sha256 "f3007c3ceca56249292cf340a38518589a55a4afcf27e166ab63c5ac8ffabcb0"
+  url "https://download.kde.org/stable/frameworks/5.97/extra-cmake-modules-5.97.0.tar.xz"
+  sha256 "9ed235f3dad82ba67dc61eeab12536b6d5936c036d32d7e7d2f38a17b9efc50a"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "MIT"]
   head "https://invent.kde.org/frameworks/extra-cmake-modules.git", branch: "master"
 
@@ -14,11 +14,12 @@ class ExtraCmakeModules < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "88981817a313d8f2ceedd1237f00fa04729c3ef8e022fc615649162b0b7194f3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d25a15c111e8289715e54f734edaa57267e3e44e1ff40ab065ba1017c9c61281"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d54a322b7bce9a92cb0eddafef4247aceaf7680b486079d133c96400d38e29dd"
-    sha256 cellar: :any_skip_relocation, catalina:       "d54a322b7bce9a92cb0eddafef4247aceaf7680b486079d133c96400d38e29dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "683ca9b3521dfb0db9b303e71c1303d99465153463f8decbc59544fbaf4f4d2c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e21d9ccf1b497cf4f18cff4f53382d259c656e6ef9265d841647bb993a8c66a9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e43dbf1c1f051195396ceac755a853adca88f91ffdd0970b986e2a565fec93d"
+    sha256 cellar: :any_skip_relocation, monterey:       "87e1f1f4cf996234a7c4c82638c77707a8dc0527a947e47a971aa4af4fec3c28"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3fc859d4178ec6485f11f8c83c00be2c86dca2b3072b4203cf78d9c070bd3375"
+    sha256 cellar: :any_skip_relocation, catalina:       "3fc859d4178ec6485f11f8c83c00be2c86dca2b3072b4203cf78d9c070bd3375"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5c6c50985e6a84557702b0e04dfcfd42a5ec4b70eae62ec4798cea1c138e948"
   end
 
   depends_on "cmake" => [:build, :test]

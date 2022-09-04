@@ -1,20 +1,21 @@
 class Mist < Formula
-  desc "Mac command-line tool that automatically downloads macOS Installers / Firmwares"
-  homepage "https://github.com/ninxsoft/Mist"
-  url "https://github.com/ninxsoft/Mist/archive/refs/tags/v1.6.1.tar.gz"
-  sha256 "0b1ec7fed7bbafb3221656376bf69407fe602ad4cdb938089d8cf7c585112394"
+  desc "Mac command-line tool that automatically downloads macOS Firmwares / Installers"
+  homepage "https://github.com/ninxsoft/mist-cli"
+  url "https://github.com/ninxsoft/mist-cli/archive/refs/tags/v1.8.tar.gz"
+  sha256 "a5d21721b74c9f506ba0d84683c12f2e706621451e7718d3a1ce0797e1ca64a5"
   license "MIT"
-  head "https://github.com/ninxsoft/Mist.git", branch: "main"
+  head "https://github.com/ninxsoft/mist-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "35375786bef6d615bdcb87cb580f18dd0e3825a48eb297b6e18e8a4de0b4c25a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ffcafe421bb04ffa7b4509ae724f900d11a894891e27252398cc198ad330aa89"
-    sha256 cellar: :any_skip_relocation, monterey:       "a385b61b7c5db3f570ad7f004d63fe16e87f8d9e19b5cf12c648f10cdb544f18"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ab75aa8de44adc4fd72be7d70feb92eced0603238c209d0461c25e2341b1cb4e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8214125ac548a63db1c1ea0b59c0b315b15ca8497809d6e1d5587d3c18ac3919"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2de8592da1c11ff5d2dd5a6b9c78caca53641d481f4ee642aa11277be3d2d519"
+    sha256 cellar: :any_skip_relocation, monterey:       "359271650bdc927599b8a19a78b97392cd352e8c415defd4eec4f0de0a0ad5a4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "117db2644b9547c56bd56adfde3d8285ee7c3fa8391dcd3d5b493574d3c29c16"
   end
 
   # Mist requires Swift 5.5
   depends_on xcode: ["13.1", :build]
+  depends_on :macos
   uses_from_macos "swift"
 
   def install
@@ -28,7 +29,7 @@ class Mist < Formula
 
     # check we can export the output list
     out = testpath/"out.json"
-    shell_output("#{bin}/mist list --quiet --export #{out} --output-type json").strip
+    system bin/"mist", "list", "firmware", "--quiet", "--export=#{out}", "--output-type=json"
     assert_predicate out, :exist?
 
     # check that it's parseable JSON in the format we expect

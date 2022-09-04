@@ -1,8 +1,8 @@
 class Alluxio < Formula
   desc "Open Source Memory Speed Virtual Distributed Storage"
   homepage "https://www.alluxio.io/"
-  url "https://downloads.alluxio.io/downloads/files/2.7.2/alluxio-2.7.2-bin.tar.gz"
-  sha256 "e428acfe0704cc68801ae2aa7b7ba920a0e35af9dded66b280649fc1d280a3d4"
+  url "https://downloads.alluxio.io/downloads/files/2.8.1/alluxio-2.8.1-bin.tar.gz"
+  sha256 "5cf36642b3c810e697378461dacea82b9a5b88dd49e4fca3895e490fc4846d63"
   license "Apache-2.0"
 
   livecheck do
@@ -11,9 +11,12 @@ class Alluxio < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9a50ee2f9a8b7a486fddf67f61b03f19783855ab13eb193b972f7f9c5b4f72d4"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d2c73e41d28cbd794ea51c286987641e796eac18de2124745eeb25ca3862f244"
-    sha256 cellar: :any_skip_relocation, catalina:      "d2c73e41d28cbd794ea51c286987641e796eac18de2124745eeb25ca3862f244"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7ab0727c7081dd1db69d14d83aa0074d00ba7c5166cf11a213ebac08d843323d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7ab0727c7081dd1db69d14d83aa0074d00ba7c5166cf11a213ebac08d843323d"
+    sha256 cellar: :any_skip_relocation, monterey:       "841697122a0ff55545e065ba3ded610ae839bacdc80fb95f6cf77adb34b331a5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "841697122a0ff55545e065ba3ded610ae839bacdc80fb95f6cf77adb34b331a5"
+    sha256 cellar: :any_skip_relocation, catalina:       "841697122a0ff55545e065ba3ded610ae839bacdc80fb95f6cf77adb34b331a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7ab0727c7081dd1db69d14d83aa0074d00ba7c5166cf11a213ebac08d843323d"
   end
 
   # Alluxio requires Java 8 or Java 11
@@ -57,7 +60,8 @@ class Alluxio < Formula
     assert_match "ValidateConf - Validating configuration.", output
 
     output = shell_output("#{bin}/alluxio clearCache 2>&1", 1)
-    assert_match "drop_caches: No such file or directory", output
+    expected_output = OS.mac? ? "drop_caches: No such file or directory" : "drop_caches: Read-only file system"
+    assert_match expected_output, output
 
     assert_match version.to_s, shell_output("#{bin}/alluxio version")
   end

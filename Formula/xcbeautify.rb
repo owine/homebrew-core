@@ -1,21 +1,24 @@
 class Xcbeautify < Formula
   desc "Little beautifier tool for xcodebuild"
-  homepage "https://github.com/thii/xcbeautify"
-  url "https://github.com/thii/xcbeautify.git",
-      tag:      "0.11.0",
-      revision: "b14660cc03d96889d2144265fbca471ea0076e40"
+  homepage "https://github.com/tuist/xcbeautify"
+  url "https://github.com/tuist/xcbeautify.git",
+      tag:      "0.13.0",
+      revision: "a3f5db18e7218a3817031b1b8227b1cb5704cb93"
   license "MIT"
-  head "https://github.com/thii/xcbeautify.git", branch: "master"
+  head "https://github.com/tuist/xcbeautify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec62fced4d116c8b4243402dbcfacc0c55106548dcd5754ecaa153ae4e7f5f3c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "774f214053e2809df03d256a60adf441b1d804294c17b320e3e55892930374e5"
-    sha256 cellar: :any_skip_relocation, monterey:       "8b9ab90db834447f0d9ead155e57f3356fa8620df4d41531bafa30660d4d4ad2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f98c10e854d03ffba33f8bedd513479a95a01949618f57535fbfe0a12be4d3e0"
-    sha256 cellar: :any_skip_relocation, catalina:       "757f21867e62e7f856ee8d6e2082e13e4a8762be2c81e3abe123994cee6ea45c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "68ad1f6b9862d756a3ff9ba893b09ecb8f7b6572ce0d8f82cf64cad6736b3932"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "388db60d60c9a11545d0b4a558aeb4d8e0202b4d5b2f03e250959449e2a803b0"
+    sha256 cellar: :any_skip_relocation, monterey:       "54971517fc3bdc96deef9509ccf6ec8e1715e5fb571d58616dbf3f877ae6afb3"
+    sha256 cellar: :any_skip_relocation, big_sur:        "67465b77816c0254a88c79555e63ad964e0b53d9455f22f9ef36d68cbfd6738d"
+    sha256 cellar: :any_skip_relocation, catalina:       "63b7eaada4012033b5bbd0cce21b03691e446283faa5770a2b5ba9da3e383bdc"
+    sha256                               x86_64_linux:   "602e001f5c1660034c0e4688ad7ac30293cfab880f932849f186c563c45b589e"
   end
 
   depends_on xcode: ["11.4", :build]
+
+  uses_from_macos "swift"
 
   def install
     system "swift", "build", "--disable-sandbox", "--configuration", "release"

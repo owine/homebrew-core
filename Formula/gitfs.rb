@@ -6,11 +6,11 @@ class Gitfs < Formula
   url "https://github.com/presslabs/gitfs/archive/0.5.2.tar.gz"
   sha256 "921e24311e3b8ea3a5448d698a11a747618ee8dd62d5d43a85801de0b111cbf3"
   license "Apache-2.0"
-  revision 8
+  revision 10
   head "https://github.com/presslabs/gitfs.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "5ac737aa93de2901de21b51cf1938665df9d1d8b2b21e514e2ff209d6249ed2a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1ac6487bbdd1000763469c43e998a72f9bc64c7e0704b99067aad84d003d32d1"
   end
 
   depends_on "libgit2"
@@ -48,15 +48,8 @@ class Gitfs < Formula
   end
 
   resource "pygit2" do
-    url "https://files.pythonhosted.org/packages/6b/23/a8c5b726a58282fe2cadcc63faaddd4be147c3c8e0bd38b233114adf98fd/pygit2-1.6.1.tar.gz"
-    sha256 "c3303776f774d3e0115c1c4f6e1fc35470d15f113a7ae9401a0b90acfa1661ac"
-
-    # libgit2 1.3 support
-    # https://github.com/libgit2/pygit2/pull/1089
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/54d3a0d1f241fdd4e9229312ced0d8da85d964b1/pygit2/libgit2-1.3.0.patch"
-      sha256 "4d501c09d6642d50d89a1a4d691980e3a4a2ebcb6de7b45d22cce16a451b9839"
-    end
+    url "https://files.pythonhosted.org/packages/e7/8a/e52a1c8b9878e9d9743089393f8289bb9c8a81eaab722df22df46a38b9e9/pygit2-1.10.0.tar.gz"
+    sha256 "7c751eee88c731b922e4e487ee287e2e40906b2bd32d0bfd2105947f63e867de"
   end
 
   resource "six" do
@@ -97,8 +90,8 @@ class Gitfs < Formula
   end
 
   test do
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
+    python = "python3.9"
+    ENV.prepend_create_path "PYTHONPATH", libexec/Language::Python.site_packages(python)
 
     (testpath/"test.py").write <<~EOS
       import gitfs
@@ -106,7 +99,7 @@ class Gitfs < Formula
       pygit2.init_repository('testing/.git', True)
     EOS
 
-    system Formula["python@3.9"].opt_bin/"python3", "test.py"
+    system python, "test.py"
     assert_predicate testpath/"testing/.git/config", :exist?
     cd "testing" do
       system "git", "remote", "add", "homebrew", "https://github.com/Homebrew/homebrew-core.git"

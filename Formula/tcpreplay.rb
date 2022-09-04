@@ -1,19 +1,17 @@
 class Tcpreplay < Formula
   desc "Replay saved tcpdump files at arbitrary speeds"
   homepage "https://tcpreplay.appneta.com/"
-  url "https://github.com/appneta/tcpreplay/releases/download/v4.3.4/tcpreplay-4.3.4.tar.gz"
-  sha256 "ee065310806c22e2fd36f014e1ebb331b98a7ec4db958e91c3d9cbda0640d92c"
+  url "https://github.com/appneta/tcpreplay/releases/download/v4.4.2/tcpreplay-4.4.2.tar.gz"
+  sha256 "5b272cd83b67d6288a234ea15f89ecd93b4fadda65eddc44e7b5fcb2f395b615"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "BSD-4-Clause", "GPL-3.0-or-later", "ISC"]
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bbfff741e443b06465748f494eb4fa2147e06860cd986c349ff907130e2b8a1f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4ff671547bf0a9b988a01d6af0ed8c387b62c79097a6915aadc50af2d11c330b"
-    sha256 cellar: :any,                 monterey:       "aaf944f4924fc025530933d1d815fceee0277e91a630a4d61bd1cf807acc395c"
-    sha256 cellar: :any,                 big_sur:        "55ffb5347204c187b5151181efef39586b052340e8dc40635809fc8eb36ed0e6"
-    sha256 cellar: :any,                 catalina:       "2268f0760672a512de278ea4c686b976e75589bb374663c1b9ecbf49ada784ca"
-    sha256 cellar: :any,                 mojave:         "7724d4f1f79cd07a77b430e63e541486d8f666785215dfd898ba54ff2aa35186"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "12598cf97924b496cfc7558b4b74e6c26a9334e89bbf2fb8ec497ea2ab8a509f"
+    sha256 cellar: :any,                 arm64_monterey: "ccbd67b7234176de48278515298a50ae17510c820950763b0e27a971d6080460"
+    sha256 cellar: :any,                 arm64_big_sur:  "4bd03e1afa4b5528244fc212b17d21ed15bf0267284ce3f6d5cf7c5520c02484"
+    sha256 cellar: :any,                 monterey:       "8d7c52940e75b1ae73e8e018627ccf944fd33d65393e9e8fbe2528c950335450"
+    sha256 cellar: :any,                 big_sur:        "fe94278be5d54b8584156256b5181aeaaa464d353ad6dea909db2ed57d0d67f5"
+    sha256 cellar: :any,                 catalina:       "44f5dbde556a34f20bfce3446fcf5167ee6f70099ad7504c82c91a3fe13ade10"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fdd15a5a256855f14c08bd9c24f8158d2783cd85bb515240af9a2c4c9d37dd74"
   end
 
   depends_on "autoconf" => :build
@@ -30,27 +28,17 @@ class Tcpreplay < Formula
       --disable-silent-rules
       --prefix=#{prefix}
       --enable-dynamic-link
+      --with-libdnet=#{Formula["libdnet"].opt_prefix}
     ]
 
     args << if OS.mac?
       ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
-
-      # The SDK is currently found using `xcrun --sdk macosx<V>` starting with
-      # input `--with-macosx-sdk=<V>` and then going from older 10.8 onward.
-      # On ARM, for Big Sur 11.4 the correct SDK is 11.3 (as of 2021-07-11);
-      # however, the logic picks 10.15, which causes configure failure.
-      # As a workaround, we remove all 10.x versions from SDK detection logic.
-      #
-      # Check in next release if the workaround can be removed.
-      # Upstream issue: https://github.com/appneta/tcpreplay/issues/668
-      inreplace "configure.ac", /(\$with_macosx_sdk\s+)(?:10\.\d+\s+)+/, "\\1" if Hardware::CPU.arm?
 
       "--with-macosx-sdk=#{MacOS.version}"
     else
       "--with-libpcap=#{Formula["libpcap"].opt_prefix}"
     end
 
-    system "./autogen.sh"
     system "./configure", *args
 
     system "make", "install"

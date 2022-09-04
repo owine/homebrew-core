@@ -2,8 +2,8 @@ class Arkade < Formula
   desc "Open Source Kubernetes Marketplace"
   homepage "https://blog.alexellis.io/kubernetes-marketplace-two-year-update/"
   url "https://github.com/alexellis/arkade.git",
-      tag:      "0.8.12",
-      revision: "fda8a74d6a8ee80f135cdd6474ed2fdcb1ed3bcc"
+      tag:      "0.8.39",
+      revision: "2e76c2c3681a3796b03483c3c04fb2ebcba0fa3e"
   license "MIT"
 
   livecheck do
@@ -12,12 +12,12 @@ class Arkade < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "78ffbb8bdc72b0ab92f5100e841a693c71fdaf7ff18b726c18aa37c12addfc82"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "903dfb939042af9121395267dd58f539a6f3d4293a7c62f25eaf7d70da977eac"
-    sha256 cellar: :any_skip_relocation, monterey:       "40762da65ad2ecb2a7c25ab63b0aff8c506d6b29f3fb88ddd63823334369bf0e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "18b4b98751c6ce41d0073d4dcdd9fc6875cb44a942174d25083df099cae69acb"
-    sha256 cellar: :any_skip_relocation, catalina:       "373d87d266a29b3afd83c8679209a9ef688956a2a7738876e70aa99e989dd7bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c94fc6ec5d049d0399e2274b898b0e26e6447178d692743f00806c0f7a67645"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f4a689064a5580410280bf5a04b62bd228db47f607733c44457c070a4b86df4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e45e7dd8800d8fff151e501020632b2dff30f32cef7cef83b06e56b67127d672"
+    sha256 cellar: :any_skip_relocation, monterey:       "673828d8ec45eee1029626793d5b38268842019e182c7ab878b0a5998a98f014"
+    sha256 cellar: :any_skip_relocation, big_sur:        "701309d8439ff74f41a63451e79fd801e065cd9b0c5e67e92d4051f59ea6488e"
+    sha256 cellar: :any_skip_relocation, catalina:       "a482b53fd426c16051c069cdd3f5539744bf5727efe9121138619def90fac2bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5a5b504c81a0800023c97de6c86382de48803808a0f7910cc023dfd00f82caa"
   end
 
   depends_on "go" => :build
@@ -32,11 +32,9 @@ class Arkade < Formula
 
     bin.install_symlink "arkade" => "ark"
 
-    (zsh_completion/"_arkade").write Utils.safe_popen_read(bin/"arkade", "completion", "zsh")
-    (bash_completion/"arkade").write Utils.safe_popen_read(bin/"arkade", "completion", "bash")
-    (fish_completion/"arkade.fish").write Utils.safe_popen_read(bin/"arkade", "completion", "fish")
+    generate_completions_from_executable(bin/"arkade", "completion")
     # make zsh completion also work for `ark` symlink
-    inreplace zsh_completion/"_arkade", "#compdef _arkade arkade", "#compdef _arkade arkade ark=arkade"
+    inreplace zsh_completion/"_arkade", "#compdef arkade", "#compdef arkade ark=arkade"
   end
 
   test do

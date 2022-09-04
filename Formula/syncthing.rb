@@ -1,8 +1,8 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing/archive/v1.18.6.tar.gz"
-  sha256 "b27911d4c804063b13e9474848953c2c6709218603739b5f09a7f88a69eca88f"
+  url "https://github.com/syncthing/syncthing/archive/v1.20.4.tar.gz"
+  sha256 "0a2a26188d30bcb92a14c7f795790df9f44157118248dc4c9faca42967ce7ce7"
   license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git", branch: "main"
 
@@ -12,15 +12,17 @@ class Syncthing < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e3c916770e66ff9b7276f64e06cc736a03bdfa8b2d2a001847d3c9d5da3dcde3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "46245d158b4f9eefe2846d56f1a8f93947a48dfeb1c71e1a9affe30be9d49cd9"
-    sha256 cellar: :any_skip_relocation, monterey:       "80cbca98f3fbed4f7e1ffceaf2c1727d4ae9f75fe72530e8dcb7a011ab6aa564"
-    sha256 cellar: :any_skip_relocation, big_sur:        "98c1e871859733a15559a916e9b23ababdec814292347ad3d1ad3ec16bf26bf0"
-    sha256 cellar: :any_skip_relocation, catalina:       "daa7228081c7cd2ec62e97ff74d36559d81e1ce00fa33d82151569619024e1ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "33f3f4769ba3eebf8e1791e1e6dd91c83a0c50cec454d0b0782f32dfa04fd007"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "512527c4eb635452e44a85cbafa093cc5c3cb8deae606bbadbd13fc397150630"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1062ee9674092d10855e2a03adf652b7aae8faf6760eaf9fe9afc5c68dff4d91"
+    sha256 cellar: :any_skip_relocation, monterey:       "6db73b805403841df911d4dce174dac918317cd2b3587f5a2ca258c55a201a60"
+    sha256 cellar: :any_skip_relocation, big_sur:        "404ae295a0062ab7bcf4bca131fc75b3a4bd489956f57c4bb168cbd1663bafff"
+    sha256 cellar: :any_skip_relocation, catalina:       "5e254b3d32fb04be512ae031e398ba899cb23ece7c4b524ba19fcb834c9fe55d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13d8b93233ba1ed97f2c5e0c66d3915ff3c736573c2a9fc80db81a40fe1d427e"
   end
 
-  depends_on "go" => :build
+  # Required lucas-clemente/quic-go >= 0.28
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
   def install
     build_version = build.head? ? "v0.0.0-#{version}" : "v#{version}"

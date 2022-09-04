@@ -1,8 +1,8 @@
 class IpinfoCli < Formula
   desc "Official CLI for the IPinfo IP Address API"
   homepage "https://ipinfo.io/"
-  url "https://github.com/ipinfo/cli/archive/ipinfo-2.7.0.tar.gz"
-  sha256 "a111d1d9180e65ed52eefce59b63b851420df9548b8aaba8742e0a30136c3219"
+  url "https://github.com/ipinfo/cli/archive/ipinfo-2.9.0.tar.gz"
+  sha256 "299b853300a81a6dd2c3c22bf335917368b799c2108a354cd8be4ad269753adc"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class IpinfoCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c638228a2813bfcc19801c6a60e496f07c5a81ee34778a62bbfe18062e356d80"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c125aedec8f6c463b050915752850a5d15b252ab82172d0218d4ee28b8f4a6ab"
-    sha256 cellar: :any_skip_relocation, monterey:       "4ea446ae2609603adcc1fa9d269426caf532bcc7ab0b5aab3bf947f29d292c15"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1026f638c931c73168aea6f5204379be692396fb1581b4bdf795fd92dcc6cc47"
-    sha256 cellar: :any_skip_relocation, catalina:       "fbec01b67843e3e19db72c4a62d57b3227c8b3aaa71a626a7b2a34f4712385fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f4199bb0e83f72182953bd2bf21da497091c293b4bfaa720d2b3e4e50c6ecd9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "389a8aa89033d3da4ddb6523e0ff0a14293517f39e0383b1141155e6ce40bb66"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dacffa8138fb7493c03b49cb102b0212161200e20ee4c275d99cdf48c7ca95ed"
+    sha256 cellar: :any_skip_relocation, monterey:       "4c163910bf2faeaa45481ac4c66a3de1c930ccfa0b35ad8e2396e32f684dd0e0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1a04ef8842eee1a6dd348b4cbe4e78366040267d6c941a3b1325c078e6a6eb87"
+    sha256 cellar: :any_skip_relocation, catalina:       "a93c6dc922bc76f820914e627493dd7c76d38de196f23839ed4ee341a1832f70"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8205b64ef2260e492b68bedacd639c3f57dcf45444461bc5df3f3f12163f446"
   end
 
   depends_on "go" => :build

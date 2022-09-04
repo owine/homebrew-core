@@ -1,8 +1,8 @@
 class VespaCli < Formula
   desc "Command-line tool for Vespa.ai"
   homepage "https://vespa.ai"
-  url "https://github.com/vespa-engine/vespa/archive/v7.528.38.tar.gz"
-  sha256 "f74a389711c4203e64a2cd6849c4a36bccd75f625021428d14a6af9364f6b729"
+  url "https://github.com/vespa-engine/vespa/archive/v8.45.22.tar.gz"
+  sha256 "6d2abd31b3e2d5ef3b81120689a4c05a170875e6413478ed6b9dfcf4251c2f78"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,12 @@ class VespaCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "049304abd643d826e21ca2393e4411e89245bc3b1eb0b497ed30445bf50f1012"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bd10c4d6aa73bc7340469afa9a0bc9798495bcf925432d3c5486bacc7b71cb80"
-    sha256 cellar: :any_skip_relocation, monterey:       "51bd23d9608e8d44674b0f5839397c396b9e812d1e80c1fbbf8649960da5b5da"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b25437e12a459f2b7738e4c0882b05f7286a3fff1e28df090c3b0934c652dc8d"
-    sha256 cellar: :any_skip_relocation, catalina:       "c529d34128e75d97c09b4181b0cca81cc9f3d4442b641b3faabb1e7e0c69004f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "619233435cd9b2922aa42b255ec6f7a8bc349006421820ddf8e238cc63fded49"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "880b00e5ac1aed8f25126fd5a6cdd9bd7b51f00f42b68f6d790c60889832a1f9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d8862d6bc57958a2161b375c890ca0ac7f15560c447b9116f9dfb1003aa37863"
+    sha256 cellar: :any_skip_relocation, monterey:       "b068779d1653cb3715a26d021cba6838dc10f9ee0e0517c0435b0823184576ca"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9c555d717f84de6d02f4f721a1a6568947922c78b5d8e33a23f4f520ac07a18b"
+    sha256 cellar: :any_skip_relocation, catalina:       "e88df20c041c73c2a1bf3ae20b0effca548f40e3a4c6816c9a597af1ae86e211"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa1650bb9cb08eb072cec333a8b9b447dca005bffa899d846020d796c918792e"
   end
 
   depends_on "go" => :build
@@ -29,9 +29,7 @@ class VespaCli < Formula
       end
       bin.install "bin/vespa"
       man1.install Dir["share/man/man1/vespa*.1"]
-      (bash_completion/"vespa").write Utils.safe_popen_read(bin/"vespa", "completion", "bash")
-      (fish_completion/"vespa.fish").write Utils.safe_popen_read(bin/"vespa", "completion", "fish")
-      (zsh_completion/"_vespa").write Utils.safe_popen_read(bin/"vespa", "completion", "zsh")
+      generate_completions_from_executable(bin/"vespa", "completion", base_name: "vespa")
     end
   end
 

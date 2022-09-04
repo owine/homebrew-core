@@ -15,7 +15,7 @@ class Inlets < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "fc3dc0b39ea492fd4d00bef8ff4b5019567eb1e5fda0db6e7d7b276f46de4b4a"
   end
 
-  deprecate! date: "2021-07-11", because: :repo_archived
+  disable! date: "2022-05-08", because: :repo_removed
 
   depends_on "go" => :build
 
@@ -71,10 +71,9 @@ class Inlets < Formula
     EOS
 
     mock_upstream_server_pid = fork do
-      on_macos do
+      if OS.mac?
         exec "ruby mock_upstream_server.rb"
-      end
-      on_linux do
+      elsif OS.linux?
         exec "#{Formula["ruby"].opt_bin}/ruby mock_upstream_server.rb"
       end
     end

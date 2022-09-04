@@ -1,9 +1,9 @@
 class Fastme < Formula
   desc "Accurate and fast distance-based phylogeny inference program"
   homepage "http://www.atgc-montpellier.fr/fastme/"
-  url "https://gite.lirmm.fr/atgc/FastME/raw/v2.1.6.1/tarball/fastme-2.1.6.1.tar.gz"
-  sha256 "ac05853bc246ccb3d88b8bc075709a82cfe096331b0f4682b639f37df2b30974"
-  revision 3
+  url "https://gite.lirmm.fr/atgc/FastME/raw/v2.1.6.3/tarball/fastme-2.1.6.3.tar.gz"
+  sha256 "09a23ea94e23c0821ab75f426b410ec701dac47da841943587443a25b2b85030"
+  revision 1
 
   livecheck do
     url "https://gite.lirmm.fr/atgc/FastME.git"
@@ -11,13 +11,12 @@ class Fastme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6e0fd9ad8eee1ab92cb0e5a0046d7b1467a31d3d146240bb57f0c0d14b46d0bd"
-    sha256                               arm64_big_sur:  "a63f7a94429ad21604091dbec3fa347d83c81f335a0e112e3a601975c26593f3"
-    sha256 cellar: :any,                 monterey:       "586078e0500477eb8e7c1cfaaa3a660a059ba86f5e87a3c0bfd35753ae02a933"
-    sha256 cellar: :any,                 big_sur:        "57efef94306e3b9dcbaa2b91289951b545b4ae49cdfe14fb444903e145485a49"
-    sha256 cellar: :any,                 catalina:       "0024bfdb601cd133d2d7a544fa04bb8ad6650f846eba08310a7d69458432d591"
-    sha256 cellar: :any,                 mojave:         "a685f1feb457d32b6df4444edec59913957347ae5bb3e3374ffedf334d07b210"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cbe637bb7191480a174baa1ad2cce6d15d68f6d1f68b807b6d16b0b7c670b4e9"
+    sha256 cellar: :any,                 arm64_monterey: "e7530d4c95fba744512d6855a3c7fe472530274842a0e32b36fef471b5e36905"
+    sha256 cellar: :any,                 arm64_big_sur:  "52c11335206aa05d8be9dc67fb4b13bd2fffa40d0bf6cefcb68ac11e29a42864"
+    sha256 cellar: :any,                 monterey:       "fb8ceaba186e055830afb68ecab9a13d1da3e067a6d3043fcddcd193c4a72026"
+    sha256 cellar: :any,                 big_sur:        "6e2d00da0651530516a3e2ed929325f70af957e4d54ca522ca6601df256170bd"
+    sha256 cellar: :any,                 catalina:       "7554de7489c8f3c360b8ab09641f48e66638d1b8472dddbede8c017a1552cb25"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b4189a84d30c562933f974b932eccadd0d18115bdafa12241f0207ddd5c2d7d"
   end
 
   on_macos do

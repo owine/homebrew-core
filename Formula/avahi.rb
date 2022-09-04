@@ -4,10 +4,10 @@ class Avahi < Formula
   url "https://github.com/lathiat/avahi/archive/v0.8.tar.gz"
   sha256 "c15e750ef7c6df595fb5f2ce10cac0fee2353649600e6919ad08ae8871e4945f"
   license "LGPL-2.1-or-later"
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 x86_64_linux: "bcd10354c4c18f283268b681b80f33262163d4d12ff4ccd55361c19b1b2005cf"
+    sha256 x86_64_linux: "81bf418f84a33bff333ec46728bfd2780e6935560b173527a25946bc11db1617"
   end
 
   depends_on "autoconf" => :build
@@ -19,15 +19,14 @@ class Avahi < Formula
   depends_on "pkg-config" => [:build, :test]
   depends_on "xmltoman" => :build
   depends_on "dbus"
+  depends_on "gdbm"
   depends_on "glib"
   depends_on "libdaemon"
   depends_on :linux
 
   def install
-    system "./bootstrap.sh", "--disable-debug",
-                             "--disable-dependency-tracking",
+    system "./bootstrap.sh", *std_configure_args,
                              "--disable-silent-rules",
-                             "--prefix=#{prefix}",
                              "--sysconfdir=#{prefix}/etc",
                              "--localstatedir=#{prefix}/var",
                              "--disable-mono",
@@ -38,9 +37,13 @@ class Avahi < Formula
                              "--disable-gtk",
                              "--disable-gtk3",
                              "--disable-libevent",
+                             "--enable-compat-libdns_sd",
                              "--with-distro=none",
                              "--with-systemdsystemunitdir=no"
     system "make", "install"
+
+    # mDNSResponder compatibility
+    ln_s include/"avahi-compat-libdns_sd/dns_sd.h", include/"dns_sd.h"
   end
 
   test do

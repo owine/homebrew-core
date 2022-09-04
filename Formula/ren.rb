@@ -3,6 +3,7 @@ class Ren < Formula
   homepage "https://pdb.finkproject.org/pdb/package.php/ren"
   url "https://www.ibiblio.org/pub/Linux/utils/file/ren-1.0.tar.gz"
   sha256 "6ccf51b473f07b2f463430015f2e956b63b1d9e1d8493a51f4ebd70f8a8136c9"
+  license :public_domain
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f6b10a80274e2cd7b78b8bbf90e8132511c321ec104bd9418b89814fa6dd2a4e"
@@ -14,7 +15,6 @@ class Ren < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "7cf1fe07fb7a4cd0e6171f65a8fda8187973c879b8853e416c39282527f1c0ef"
     sha256 cellar: :any_skip_relocation, sierra:         "bf3e11211d6884d8969fc99ccf8a42b3132dc48bd3100492a442eb5a41fdbd88"
     sha256 cellar: :any_skip_relocation, el_capitan:     "966876dfcc9f36c4bc3d1358a9a8500c79d9324ebd8697033571146f1e482685"
-    sha256 cellar: :any_skip_relocation, yosemite:       "e8ca6bb656f8daca43c6ce446dfff66625fabdedda81604745f0960b419e422a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "355528c07f8022b72a8f20419d97004040f5348e60596f84ab9f3ab461cbb13f"
   end
 

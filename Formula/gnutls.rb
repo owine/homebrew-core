@@ -1,29 +1,25 @@
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
   homepage "https://gnutls.org/"
-  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.16.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.6/gnutls-3.6.16.tar.xz"
-  sha256 "1b79b381ac283d8b054368b335c408fedcb9b7144e0c07f531e3537d4328f3b3"
+  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.7.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.7.tar.xz"
+  sha256 "be9143d0d58eab64dba9b77114aaafac529b6c0d7e81de6bdf1c9b59027d2106"
   license all_of: ["LGPL-2.1-or-later", "GPL-3.0-only"]
-  revision 1
 
   livecheck do
-    url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/"
-    regex(/href=.*?gnutls[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://www.gnutls.org/news.html"
+    regex(/>\s*GnuTLS\s*v?(\d+(?:\.\d+)+)\s*</i)
   end
 
   bottle do
-    sha256 arm64_monterey: "9c493190ccb3a9e805389c5b87003407a4bb808df54f307b830e66206987b9c4"
-    sha256 arm64_big_sur:  "e1ec9389285dca7c52c0346cdd5112a2bfacfd31b1958d0267408573f1fb5ed0"
-    sha256 monterey:       "c38aebba46bca205f64c7f3990938d39f563ca27fbcaff0b9cabcd6d8683a96d"
-    sha256 big_sur:        "f165f3c8e4ecac781e269e08c39f8af457d1d634ee21f0d8edb2ca6d1808f03a"
-    sha256 catalina:       "464f68e7e6f9c7698f921e3b8e23bd2302681041bb98c5f58c0be90833b4f48f"
-    sha256 mojave:         "ea18603d9f6337b7e9a77bec91124102a7a4680ab8358f1ee8d17023223816ed"
-    sha256 x86_64_linux:   "41e3d22d3117829ab83d8d06625732bda5bcc68b362f29318a777b4d884443cb"
+    sha256 arm64_monterey: "9f30799c00efb30c52d864bc865c3d4f7bb3ab5bb707101b67572c962cc6f224"
+    sha256 arm64_big_sur:  "96e743b74e73bf743db62000c3631b0b58c081e1399a7521239572f0f48da9ce"
+    sha256 monterey:       "c7ae049c2b46d81d7e8f861137d3a21e0268b1dd23932cba62ed25b72860668b"
+    sha256 big_sur:        "143c717cc4cf0d4c9c8ad05c93610023b9092b035de982aa3003530a2204a44c"
+    sha256 catalina:       "93d54df117440e3467d57198340e15a3ef7cf7807a7cb3386a84e34f0624dbfe"
+    sha256 x86_64_linux:   "7c8d8948ac53ee9c67931e011b312fd30c9414c70a7065ff1de7e5e30e105366"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "ca-certificates"
   depends_on "gmp"
@@ -35,15 +31,7 @@ class Gnutls < Formula
   depends_on "p11-kit"
   depends_on "unbound"
 
-  on_linux do
-    depends_on "autogen"
-  end
-
   def install
-    # Fix build with Xcode 12
-    # https://gitlab.com/gnutls/gnutls/-/issues/1116
-    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
-
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
@@ -59,9 +47,7 @@ class Gnutls < Formula
     ]
 
     system "./configure", *args
-    # Adding LDFLAGS= to allow the build on Catalina 10.15.4
-    # See https://gitlab.com/gnutls/gnutls/-/issues/966
-    system "make", "LDFLAGS=", "install"
+    system "make", "install"
 
     # certtool shadows the macOS certtool utility
     mv bin/"certtool", bin/"gnutls-certtool"

@@ -1,24 +1,27 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch/"
-  url "https://root.cern.ch/download/root_v6.24.06.source.tar.gz"
-  sha256 "907f69f4baca1e4f30eeb4979598ca7599b6aa803ca046e80e25b6bbaa0ef522"
+  url "https://root.cern.ch/download/root_v6.26.06.source.tar.gz"
+  sha256 "b1f73c976a580a5c56c8c8a0152582a1dfc560b4dd80e1b7545237b65e6c89cb"
   license "LGPL-2.1-or-later"
-  revision 2
+  revision 1
   head "https://github.com/root-project/root.git", branch: "master"
 
   livecheck do
-    url "https://root.cern.ch/download/"
-    regex(/href=.*?root[._-]v?(\d+(?:\.\d*[02468])+)\.source\.t/i)
+    url "https://root.cern/install/all_releases/"
+    regex(%r{Release\s+v?(\d+(?:[./]\d*[02468])+)[ >]}i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map { |match| match[0].tr("/", ".") }
+    end
   end
 
   bottle do
-    sha256 arm64_monterey: "4486615e37da793dea1ff7fa73416988dd11d6597aed6f14eeeb8fe18d6cf88a"
-    sha256 arm64_big_sur:  "486e5d4cc0857645d1a4198e7e3e06e4a78acc71d11b7c2c7877e4315c14298f"
-    sha256 monterey:       "24199045f6de3ce88197a82a02e02428a624305f9c44fdc5786d579ebe94dd3e"
-    sha256 big_sur:        "761ba42f4e215b1908b9d9fa7d0a6409001d8464d93fe4abdae943591c9b53c1"
-    sha256 catalina:       "3da0ffd885eaabc9e22459917e62e755eb2d907f3f76f530bba214b00016085a"
-    sha256 x86_64_linux:   "5a2ea4436a286f7e869c072a0cb570d399de2b254050187fb8c1a0a3ee9d7c3f"
+    sha256 arm64_monterey: "3342f160ffce464e80c476495c3db713d51e0e7fe1741b6ec4a8dfc102206fe8"
+    sha256 arm64_big_sur:  "d70d636539b03c091233a81a74f3de23b0e9ed0d6fd7f8ee97e9df6b5c779393"
+    sha256 monterey:       "9604024d36babeaa07f5805c18b5fc65086ed2b2accbed28969a85fdbf8f7ee7"
+    sha256 big_sur:        "6bfc729920596fe19e0be9effa4e4bc68872299a5f88e0ba7696dcb032db7fcc"
+    sha256 catalina:       "f02a6372941aad78aaeebb41e3ddbf0551f09ea579a0cb411c6bca83f586a339"
+    sha256 x86_64_linux:   "23f78dc32e443689bbbe0ead39dab2825575772bb3a8dedc4df4fe2240aabb33"
   end
 
   depends_on "cmake" => :build
@@ -26,17 +29,19 @@ class Root < Formula
   depends_on "cfitsio"
   depends_on "davix"
   depends_on "fftw"
+  depends_on "freetype"
   depends_on "gcc" # for gfortran
   depends_on "gl2ps"
   depends_on "glew"
   depends_on "graphviz"
   depends_on "gsl"
   depends_on "lz4"
+  depends_on "mysql-client"
   depends_on "numpy" # for tmva
   depends_on "openblas"
   depends_on "openssl@1.1"
   depends_on "pcre"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "sqlite"
   depends_on "tbb"
   depends_on :xcode
@@ -44,6 +49,7 @@ class Root < Formula
   depends_on "xz" # for LZMA
   depends_on "zstd"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
@@ -54,8 +60,12 @@ class Root < Formula
 
   skip_clean "bin"
 
+  fails_with gcc: "5"
+
   def install
-    ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/root" if OS.linux?
+    python = Formula["python@3.10"].opt_bin/"python3.10"
+
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/root"
 
     inreplace "cmake/modules/SearchInstalledSoftware.cmake" do |s|
       # Enforce secure downloads of vendored dependencies. These are
@@ -68,9 +78,10 @@ class Root < Formula
     args = std_cmake_args + %W[
       -DCLING_CXX_PATH=clang++
       -DCMAKE_INSTALL_ELISPDIR=#{elisp}
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
+      -DPYTHON_EXECUTABLE=#{python}
+      -DCMAKE_CXX_STANDARD=17
       -Dbuiltin_cfitsio=OFF
-      -Dbuiltin_freetype=ON
+      -Dbuiltin_freetype=OFF
       -Dbuiltin_glew=OFF
       -Ddavix=ON
       -Dfftw3=ON
@@ -81,7 +92,7 @@ class Root < Formula
       -Dimt=ON
       -Dmathmore=ON
       -Dminuit2=ON
-      -Dmysql=OFF
+      -Dmysql=ON
       -Dpgsql=OFF
       -Dpyroot=ON
       -Droofit=ON
@@ -91,26 +102,19 @@ class Root < Formula
       -GNinja
     ]
 
-    cxx_version = (MacOS.version < :mojave) ? 14 : 17
-    args << "-DCMAKE_CXX_STANDARD=#{cxx_version}"
-
-    # Homebrew now sets CMAKE_INSTALL_LIBDIR to /lib, which is incorrect
-    # for ROOT with gnuinstall, so we set it back here.
-    args << "-DCMAKE_INSTALL_LIBDIR=lib/root"
-
     # Workaround the shim directory being embedded into the output
     inreplace "build/unix/compiledata.sh", "`type -path $CXX`", ENV.cxx
 
-    mkdir "builddir" do
-      system "cmake", "..", *args
-      system "ninja", "install"
+    # Homebrew now sets CMAKE_INSTALL_LIBDIR to /lib, which is incorrect
+    # for ROOT with gnuinstall, so we set it back here.
+    system "cmake", "-S", ".", "-B", "builddir", *args, *std_cmake_args(install_libdir: "lib/root")
+    system "cmake", "--build", "builddir"
+    system "cmake", "--install", "builddir"
 
-      chmod 0755, Dir[bin/"*.*sh"]
+    chmod 0755, bin.glob("*.*sh")
 
-      version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-      pth_contents = "import site; site.addsitedir('#{lib}/root')\n"
-      (prefix/"lib/python#{version}/site-packages/homebrew-root.pth").write pth_contents
-    end
+    pth_contents = "import site; site.addsitedir('#{lib}/root')\n"
+    (prefix/Language::Python.site_packages(python)/"homebrew-root.pth").write pth_contents
   end
 
   def caveats
@@ -154,11 +158,11 @@ class Root < Formula
       }
     EOS
     flags = %w[cflags libs ldflags].map { |f| "$(root-config --#{f})" }
-    flags << "-Wl,-rpath,#{lib}/root" if OS.linux?
+    flags << "-Wl,-rpath,#{lib}/root"
     shell_output("$(root-config --cxx) test.cpp #{flags.join(" ")}")
     assert_equal "Hello, world!\n", shell_output("./a.out")
 
     # Test Python module
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import ROOT; ROOT.gSystem.LoadAllLibraries()"
+    system Formula["python@3.10"].opt_bin/"python3.10", "-c", "import ROOT; ROOT.gSystem.LoadAllLibraries()"
   end
 end

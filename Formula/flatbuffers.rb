@@ -1,8 +1,8 @@
 class Flatbuffers < Formula
   desc "Serialization library for C++, supporting Java, C#, and Go"
   homepage "https://google.github.io/flatbuffers"
-  url "https://github.com/google/flatbuffers/archive/v2.0.5.tar.gz"
-  sha256 "b01e97c988c429e164c5c7df9e87c80007ca87f593c0d73733ba536ddcbc8f98"
+  url "https://github.com/google/flatbuffers/archive/v2.0.8.tar.gz"
+  sha256 "f97965a727d26386afaefff950badef2db3ab6af9afe23ed6d94bfb65f95f37e"
   license "Apache-2.0"
   head "https://github.com/google/flatbuffers.git", branch: "master"
 
@@ -12,20 +12,26 @@ class Flatbuffers < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f355a5549cf028d9fd0df696bfc16680be7837b30e809113fd35f8fabf129f81"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "09ebfe4c000192534f0a91f1aa5a25975315c040590bbd36fd22c8ea92db3732"
-    sha256 cellar: :any_skip_relocation, monterey:       "84eaa16ae8f1d2399e2feb1c2599e4494d00fd1dfaf52e379d5c852e45142507"
-    sha256 cellar: :any_skip_relocation, big_sur:        "41031bbb5ad0412bc8d837e2e09f24506cd3c5a78dc43a9932c6a9d1d66e67b9"
-    sha256 cellar: :any_skip_relocation, catalina:       "53e9e6c3912b2fe2dc2e41efb7631f0ecf51a16184648d209efc1aa3bc1a65a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d530fd61f53dd077534c310d7472f24fbb5a87ba6825cf9e868ca6f8e3f661bf"
+    sha256 cellar: :any,                 arm64_monterey: "cbe115fdd3ad2a51b390049dd29c9cfe0ca1fde327ff4cdc1e695920f4ca26dc"
+    sha256 cellar: :any,                 arm64_big_sur:  "400cd4e592180a130953391370c6401996b046fd502d9674b0cc3a9b4b7a2988"
+    sha256 cellar: :any,                 monterey:       "85bc64d4481927fe45ae9be89bc6b7bfa3119a73473589fc7dacd6805257b8f8"
+    sha256 cellar: :any,                 big_sur:        "c49ad3a0896e13aee915da94fff43492c166c2037d4b638ae236ce83e9e4dfbe"
+    sha256 cellar: :any,                 catalina:       "1bc32cb31d07c392a63bbb5be4a3b8d4fbba7ea52b9df6564051fda444e00324"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56a447e4f79cd3b75db0692f3b3082a841d35be1d5c82c326f30631ff22cdeaf"
   end
 
   depends_on "cmake" => :build
   depends_on "python@3.10" => :build
 
+  conflicts_with "osrm-backend", because: "both install flatbuffers headers"
+
   def install
-    system "cmake", "-G", "Unix Makefiles", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DFLATBUFFERS_BUILD_SHAREDLIB=ON",
+                    "-DFLATBUFFERS_BUILD_TESTS=OFF",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

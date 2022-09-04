@@ -16,6 +16,9 @@ concurrency:
   group: "tests-${{ github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+permissions:
+  contents: read
+
 jobs:
   tap_syntax:
     if: github.repository == 'Homebrew/homebrew-core'
@@ -40,6 +43,8 @@ jobs:
         id: formulae-detect
 
   setup_tests:
+    permissions:
+      pull-requests: read
     if: github.event_name == 'pull_request' && github.repository == 'Homebrew/homebrew-core'
     runs-on: ubuntu-latest
     needs: tap_syntax
@@ -49,17 +54,20 @@ jobs:
       fail-fast: ${{ steps.check-labels.outputs.fail-fast }}
       test-dependents: ${{ steps.check-labels.outputs.test-dependents }}
       timeout-minutes: ${{ steps.check-labels.outputs.timeout-minutes }}
-      container: ${{ steps.check-labels.outputs.container }}
       test-bot-formulae-args: ${{ steps.check-labels.outputs.test-bot-formulae-args }}
       test-bot-dependents-args: ${{ steps.check-labels.outputs.test-bot-dependents-args }}
     steps:
       - name: Check for CI labels
         id: check-labels
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
+        env:
+          TESTING_FORMULAE: ${{needs.tap_syntax.outputs.testing_formulae}}
+          ADDED_FORMULAE: ${{needs.tap_syntax.outputs.added_formulae}}
+          DELETED_FORMULAE: ${{needs.tap_syntax.outputs.deleted_formulae}}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data: { labels: labels } } = await github.pulls.get({
+            const { data: { labels: labels } } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.issue.number
@@ -96,6 +104,7 @@ jobs:
               core.setOutput('test-dependents', 'true')
             }
 
+            const maximum_long_pr_count = 2
             if (label_names.includes('CI-long-timeout')) {
               const labelCountQuery = `query($owner:String!, $name:String!, $label:String!) {
                 repository(owner:$owner, name:$name) {
@@ -119,7 +128,6 @@ jobs:
                 long_pr_count = 0
                 core.warning('CI-long-timeout label count query failed. Assuming no long PRs.')
               }
-              const maximum_long_pr_count = 2
               if (long_pr_count > maximum_long_pr_count) {
                 core.setFailed(`Too many pull requests (${long_pr_count}) with the long-timeout label!`)
                 core.error(`Only ${maximum_long_pr_count} pull requests at a time can use this label.`)
@@ -129,27 +137,23 @@ jobs:
               core.setOutput('timeout-minutes', '4320')
             } else {
               console.log('No CI-long-timeout label found. Setting short GitHub Actions timeout.')
-              core.setOutput('timeout-minutes', '60')
-            }
+              core.setOutput('timeout-minutes', '90')
 
-            const container = {}
-            if (label_names.includes('CI-linux-wheezy')) {
-              console.log('CI-linux-wheezy label found. Using Linux Debian 7 (Wheezy) container.')
-              container.image = 'homebrew/debian7:latest'
-            } else {
-              console.log('No CI-linux-wheezy label found. Using default Homebrew (Ubuntu 16.04) container.')
-              container.image = 'ghcr.io/homebrew/ubuntu16.04:master'
+              if (label_names.includes('long build')) {
+                core.setFailed('PR requires the CI-long-timeout label but it is not set!')
+                core.error('If the longer timeout is not required, remove the "long build" label.')
+                core.error('Otherwise, add the "CI-long-timeout" label.')
+                core.error(`No more than ${maximum_long_pr_count} PRs at a time may use "CI-long-timeout".`)
+              }
             }
-            container.options = '--user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED'
-            core.setOutput('container', JSON.stringify(container))
 
             const test_bot_formulae_args = ["--only-formulae", "--junit", "--only-json-tab", "--skip-dependents"]
-            test_bot_formulae_args.push('--testing-formulae=${{needs.tap_syntax.outputs.testing_formulae}}')
-            test_bot_formulae_args.push('--added-formulae=${{needs.tap_syntax.outputs.added_formulae}}')
-            test_bot_formulae_args.push('--deleted-formulae=${{needs.tap_syntax.outputs.deleted_formulae}}')
+            test_bot_formulae_args.push(`--testing-formulae="${process.env.TESTING_FORMULAE}"`)
+            test_bot_formulae_args.push(`--added-formulae="${process.env.ADDED_FORMULAE}"`)
+            test_bot_formulae_args.push(`--deleted-formulae="${process.env.DELETED_FORMULAE}"`)
 
             const test_bot_dependents_args = ["--only-formulae-dependents", "--junit"]
-            test_bot_dependents_args.push('--testing-formulae=${{needs.tap_syntax.outputs.testing_formulae}}')
+            test_bot_dependents_args.push(`--testing-formulae="${process.env.TESTING_FORMULAE}"`)
 
             if (label_names.includes('CI-test-bot-fail-fast')) {
               console.log('CI-test-bot-fail-fast label found. Passing --fail-fast to brew test-bot.')
@@ -183,17 +187,20 @@ jobs:
       matrix:
         include:
           - runner: '12-arm64'
-          - runner: '12'
+          - runner: '12-${{github.run_id}}-${{github.run_attempt}}'
           - runner: '11-arm64'
-          - runner: '11'
-          - runner: '10.15'
+          - runner: '11-${{github.run_id}}-${{github.run_attempt}}'
+          - runner: '10.15-${{github.run_id}}-${{github.run_attempt}}'
           - runner: ${{needs.setup_tests.outputs.linux-runner}}
-            container: ${{fromJson(needs.setup_tests.outputs.container)}}
+            container:
+              image: ghcr.io/homebrew/ubuntu16.04:master
+              options: --user=linuxbrew -e GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED
             workdir: /github/home
+            timeout: 4320
       fail-fast: ${{fromJson(needs.setup_tests.outputs.fail-fast)}}
     runs-on: ${{matrix.runner}}
     container: ${{matrix.container}}
-    timeout-minutes: ${{ (matrix.runner == 'ubuntu-latest' && 360) || fromJson(needs.setup_tests.outputs.timeout-minutes) }}
+    timeout-minutes: ${{ matrix.timeout || fromJson(needs.setup_tests.outputs.timeout-minutes) }}
     defaults:
       run:
         shell: /bin/bash -e {0}
@@ -206,8 +213,6 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
-          # TODO: remove the line below once set in the runner .env file
-          echo 'GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED=1' >> $GITHUB_ENV
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -224,37 +229,46 @@ jobs:
           cd bottles
           brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
 
-      - name: Failures summary for brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
+      - name: Failures summary for brew test-bot --only-formulae
         if: always()
-        run: |
-          touch bottles/steps_output.txt
-          cat bottles/steps_output.txt
-          rm bottles/steps_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/steps_output.txt
+          step_name: 'Build summary on ${{ matrix.runner }}'
+
+      - name: Output brew linkage result
+        if: always()
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/linkage_output.txt
+          step_name: '`brew linkage` output on ${{ matrix.runner }}'
+          collapse: 'true'
+
+      - name: Output brew bottle result
+        if: always()
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/bottle_output.txt
+          step_name: '`brew bottle` output on ${{ matrix.runner }}'
+          collapse: 'true'
 
       - name: Run brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
-        if: ${{fromJson(needs.setup_tests.outputs.test-dependents)}}
+        if: ${{(success() || failure()) && fromJson(needs.setup_tests.outputs.test-dependents)}}
         run: |
           cd bottles
           brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
 
       - name: Failures summary for brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
         if: ${{always() && fromJson(needs.setup_tests.outputs.test-dependents) == true}}
-        run: |
-          touch bottles/steps_output.txt
-          cat bottles/steps_output.txt
-          rm bottles/steps_output.txt
-
-      - name: Output brew linkage result
-        if: always()
-        run: |
-          cat bottles/linkage_output.txt
-          rm bottles/linkage_output.txt
-
-      - name: Output brew bottle result
-        if: always()
-        run: |
-          cat bottles/bottle_output.txt
-          rm bottles/bottle_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/steps_output.txt
+          step_name: 'Dependent summary on ${{ matrix.runner }}'
+          collapse: 'true'
 
       - name: Upload logs
         if: always()

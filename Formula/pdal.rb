@@ -1,8 +1,8 @@
 class Pdal < Formula
   desc "Point data abstraction library"
   homepage "https://www.pdal.io/"
-  url "https://github.com/PDAL/PDAL/releases/download/2.3.0/PDAL-2.3.0-src.tar.gz"
-  sha256 "5b0b92258874ef722b5027054d64c8b318b524e7a9b2b250d0330d76e19b8618"
+  url "https://github.com/PDAL/PDAL/releases/download/2.4.3/PDAL-2.4.3-src.tar.gz"
+  sha256 "abac604c6dcafdcd8a36a7d00982be966f7da00c37d89db2785637643e963e4c"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/PDAL/PDAL.git", branch: "master"
@@ -19,10 +19,12 @@ class Pdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "6c2e9fbd5a016f570d86d99cd9c0dcbee73874839f2ac9901727d792e4c0c7ce"
-    sha256 arm64_big_sur:  "e3e2a0a482d9127663cb55c9eec4ed08b92a9ecdd1e99369e373eeed6bd42d90"
-    sha256 big_sur:        "da4aa1ad9ad2a01463689dc1fe634505763c2aca6f73900d89e3f9c4b22f6640"
-    sha256 catalina:       "1ca1144f13120d8e77ee4ea0f460e8a87e00aa2487aefb823edf73df04d4e089"
+    sha256                               arm64_monterey: "9c1c9ed099f4d4d3d6e568e3aeeeb6b782961efe8e6f1eaff0d4fd191a701370"
+    sha256                               arm64_big_sur:  "9dec68d14c25a0988c046a3a45a46a833c61418f12876ae182fdcaf35d78a643"
+    sha256                               monterey:       "ed1a9e84ad79ab1ea15087e3b1786afa81fa5714480e7d33945d7727a92a9af9"
+    sha256                               big_sur:        "1ee3f4714addecbb9f515386df4b22460776941b230235513ae17784915abb1d"
+    sha256                               catalina:       "6a75d3c7357f7e71ee03bdb077060bf5415d9d976a43b952f10b5ae5fa71bb68"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7257a3eb8a20b527f9e357f63f9cd1f203722e86055debf5bc8e6d31d2883942"
   end
 
   depends_on "cmake" => :build
@@ -30,9 +32,15 @@ class Pdal < Formula
   depends_on "gdal"
   depends_on "hdf5"
   depends_on "laszip"
+  depends_on "libpq"
   depends_on "numpy"
   depends_on "pcl"
-  depends_on "postgresql"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5" # gdal is compiled with GCC
 
   def install
     system "cmake", ".", *std_cmake_args,

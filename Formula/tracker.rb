@@ -1,10 +1,9 @@
 class Tracker < Formula
   desc "Library and daemon that is an efficient search engine and triplestore"
   homepage "https://gnome.pages.gitlab.gnome.org/tracker/"
-  url "https://download.gnome.org/sources/tracker/3.1/tracker-3.1.2.tar.xz"
-  sha256 "da368962665d587bb2e4f164d75919a81dacb35c7d4cfae6f93a94c60f60ec8f"
+  url "https://download.gnome.org/sources/tracker/3.3/tracker-3.3.3.tar.xz"
+  sha256 "4094f704e338f2247fa6b94633279cfd07f7e952bb24627128fab78edb242464"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
-  revision 1
 
   # Tracker doesn't follow GNOME's "even-numbered minor is stable" version scheme.
   livecheck do
@@ -13,34 +12,44 @@ class Tracker < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_big_sur: "82ae29dda588ea5ada4ff491d3c8f1bf48e8c26045ccee50dcc1760b591c2ed5"
-    sha256 monterey:      "a2c5115435a203f579b167e26f89b45b5cca4687a4ddce15b8f1110834d9b98c"
-    sha256 big_sur:       "9ad0f16018c66088bf4e8e3a90223ed83c725028c0804669233cbada926b3072"
-    sha256 catalina:      "7361eef0000031ab96819b884fa8a2adaf33f6f2c3d00001f33895a0c7640af6"
+    sha256 arm64_monterey: "6fdc874ca4d7ba1cb5dc70189abaffca2d271af82a055d4abf508c92b36075b9"
+    sha256 arm64_big_sur:  "7694015ff438042af43562c3b627d36d46daad08a562821580689ddceba64720"
+    sha256 monterey:       "a44b1f68b4f49a66c1bba32aee01871416fe5fbe8e918123c1815dd327885b16"
+    sha256 big_sur:        "97e6406e74ae5402f696e5594a340d3025c9f84355927ad7674a9a4c61da07f4"
+    sha256 catalina:       "bb509104ac064d2d851631832b99907011961e194ed02a4a2064f567dd0228f5"
+    sha256 x86_64_linux:   "078bc7915aa99d11b0c0b191d76a203fea0ce77a53a5dbb136a3d24e134fac7f"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => [:build, :test]
+  depends_on "pygobject3" => :build
   depends_on "vala" => :build
   depends_on "dbus"
+  depends_on "glib"
+  depends_on "icu4c"
   depends_on "json-glib"
-  depends_on "libsoup@2"
-  uses_from_macos "icu4c"
+  depends_on "libsoup"
+  depends_on "sqlite"
+
+  uses_from_macos "python" => :build, since: :catalina
+  uses_from_macos "libxml2"
 
   def install
     args = std_meson_args + %w[
       -Dman=false
       -Ddocs=false
       -Dsystemd_user_services=false
+      -Dtests=false
+      -Dsoup=soup3
     ]
 
     ENV["DESTDIR"] = "/"
     mkdir "build" do
       system "meson", *args, ".."
-      system "ninja", "-v"
+      # Disable parallel build due to error: 'libtracker-sparql/tracker-sparql-enum-types.h' file not found
+      system "ninja", "-v", "-j1"
       system "ninja", "install", "-v"
     end
   end
@@ -55,13 +64,13 @@ class Tracker < Formula
 
       gint main(gint argc, gchar *argv[]) {
         g_autoptr(GError) error = NULL;
-        g_autoptr(GFile) store, ontology;
+        g_autoptr(GFile) ontology;
         g_autoptr(TrackerSparqlConnection) connection;
         g_autoptr(TrackerSparqlCursor) cursor;
         int i = 0;
 
         ontology = tracker_sparql_get_ontology_nepomuk();
-        connection = tracker_sparql_connection_new(0, store, ontology, NULL, &error);
+        connection = tracker_sparql_connection_new(0, NULL, ontology, NULL, &error);
 
         if (error) {
           g_critical("Error: %s", error->message);
@@ -92,19 +101,8 @@ class Tracker < Formula
         return 0;
       }
     EOS
-    glib = Formula["glib"]
-    flags = %W[
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -I#{include}/tracker-3.0
-      -D_REENTRANT
-      -L#{glib.opt_lib}
-      -L#{lib}
-      -ltracker-sparql-3.0
-      -lgio-2.0
-      -lglib-2.0
-      -lgobject-2.0
-    ]
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig" if OS.mac?
+    flags = shell_output("pkg-config --cflags --libs tracker-sparql-3.0").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

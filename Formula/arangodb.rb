@@ -1,35 +1,49 @@
 class Arangodb < Formula
   desc "Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.8.5.tar.bz2"
-  sha256 "445c1406ed5f2afd83611c96bc9ca6b02b8fc0d30fc408cfac7e68fb853200ab"
+  url "https://download.arangodb.com/Source/ArangoDB-3.9.2.tar.bz2"
+  sha256 "35ac1678b91c0cc448454ef3a76637682d095328570674a5765ae5d060c5721b"
   license "Apache-2.0"
   head "https://github.com/arangodb/arangodb.git", branch: "devel"
 
   livecheck do
     url "https://www.arangodb.com/download-major/source/"
-    regex(/href=.*?ArangoDB[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?ArangoDB[._-]v?(\d+(?:\.\d+)+)(-\d+)?\.t/i)
   end
 
   bottle do
-    sha256 big_sur:  "c78984aa7df0d0ac63a21abb09b35e7a7bbedf71470ed18763d6d37456d5d42c"
-    sha256 catalina: "dcb1a9fa421a2acb7187e52903494af17399405d5b6dcb6df207174a89aea538"
+    sha256 monterey:     "6ce88863c3d64b6e0f80157b81ccada705ba6a364ee8ff827e46f63df16b3b10"
+    sha256 big_sur:      "e38065e33bd2ee3eee533bcde177f1ce0c3dfd7c8857f678fe73d4e2e8fcec75"
+    sha256 catalina:     "5420623e77cc3c4dd8c272a791ce8d102d46fdceeea983104f2443a6b2cb95c8"
+    sha256 x86_64_linux: "8c311faac036bab8fc2acee10adf136275ccbf5c976795fadae2b08adaefffaf"
   end
 
   depends_on "ccache" => :build
   depends_on "cmake" => :build
-  depends_on "go@1.13" => :build
-  depends_on "python@3.9" => :build
+  depends_on "go@1.17" => :build
+  depends_on "python@3.10" => :build
   depends_on macos: :mojave
   depends_on "openssl@1.1"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   # the ArangoStarter is in a separate github repository;
   # it is used to easily start single server and clusters
   # with a unified CLI
   resource "starter" do
     url "https://github.com/arangodb-helper/arangodb.git",
-        tag:      "0.15.3",
-        revision: "814f8be9e5cc613a63ac1dc161b879ccb7ec23e0"
+        tag:      "0.15.4",
+        revision: "ed743d2293efd763309f3ba0a1ba6fb68ac4a41a"
+  end
+
+  # Fix compilation with Apple clang 13.1.6, remove in next release
+  patch do
+    url "https://github.com/arangodb/arangodb/commit/fd43fbc27.patch?full_index=1"
+    sha256 "0298670362e04ec0870f6b7032dff83bfcdf9a04f2fa4763ce5186d4e10a3abb"
   end
 
   def install
@@ -38,7 +52,6 @@ class Arangodb < Formula
     resource("starter").stage do
       ENV["GO111MODULE"] = "on"
       ENV["DOCKERCLI"] = ""
-      system "make", "deps"
       ldflags = %W[
         -s -w
         -X main.projectVersion=#{resource("starter").version}
@@ -47,29 +60,26 @@ class Arangodb < Formula
       system "go", "build", *std_go_args(ldflags: ldflags), "github.com/arangodb-helper/arangodb"
     end
 
-    mkdir "build" do
-      openssl = Formula["openssl@1.1"]
-      args = std_cmake_args + %W[
-        -DHOMEBREW=ON
-        -DCMAKE_BUILD_TYPE=RelWithDebInfo
-        -DUSE_MAINTAINER_MODE=Off
-        -DUSE_JEMALLOC=Off
-        -DCMAKE_SKIP_RPATH=On
-        -DOPENSSL_USE_STATIC_LIBS=On
-        -DCMAKE_LIBRARY_PATH=#{openssl.opt_lib}
-        -DOPENSSL_ROOT_DIR=#{openssl.opt_lib}
-        -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
-        -DTARGET_ARCHITECTURE=nehalem
-        -DUSE_CATCH_TESTS=Off
-        -DUSE_GOOGLE_TESTS=Off
-        -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
-      ]
+    openssl = Formula["openssl@1.1"]
+    args = std_cmake_args + %W[
+      -DHOMEBREW=ON
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      -DUSE_MAINTAINER_MODE=Off
+      -DUSE_JEMALLOC=Off
+      -DCMAKE_LIBRARY_PATH=#{openssl.opt_lib}
+      -DOPENSSL_ROOT_DIR=#{openssl.opt_lib}
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
+      -DUSE_CATCH_TESTS=Off
+      -DUSE_GOOGLE_TESTS=Off
+      -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
+    ]
+    args << "-DTARGET_ARCHITECTURE=nehalem" if build.bottle? && Hardware::CPU.intel?
 
-      ENV["V8_CXXFLAGS"] = "-O3 -g -fno-delete-null-pointer-checks" if ENV.compiler == "gcc-6"
+    ENV["V8_CXXFLAGS"] = "-O3 -g -fno-delete-null-pointer-checks" if ENV.compiler == "gcc-6"
 
-      system "cmake", "..", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def post_install

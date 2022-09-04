@@ -1,8 +1,8 @@
 class Libnotify < Formula
   desc "Library that sends desktop notifications to a notification daemon"
   homepage "https://gitlab.gnome.org/GNOME/libnotify"
-  url "https://download.gnome.org/sources/libnotify/0.7/libnotify-0.7.9.tar.xz"
-  sha256 "66c0517ed16df7af258e83208faaf5069727dfd66995c4bbc51c16954d674761"
+  url "https://download.gnome.org/sources/libnotify/0.8/libnotify-0.8.1.tar.xz"
+  sha256 "d033e6d4d6ccbf46a436c31628a4b661b36dca1f5d4174fe0173e274f4e62557"
   license "LGPL-2.1-or-later"
 
   # libnotify uses GNOME's "even-numbered minor is stable" version scheme but
@@ -14,14 +14,12 @@ class Libnotify < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "050ec9423bfe7bfaef51c4f173692d55758a9e52a6df70dff96a667e3ed4bc75"
-    sha256 cellar: :any, arm64_big_sur:  "49e795c1869eb3f544ef5710861ec3ef0f829f6b8db64b3c44722025e2c4ba97"
-    sha256 cellar: :any, monterey:       "6c4586e332260bdf0db438be5ec2194d9831aaef30a53ce661352bb05f361ee4"
-    sha256 cellar: :any, big_sur:        "415ef3754d6910255fc161e352b0b5a7006efe3aa5684fbf8abeb98514358562"
-    sha256 cellar: :any, catalina:       "367a8d51cb565452392b9bc92c753ca641c23f91fc4ff93fb6166b63f2beafda"
-    sha256 cellar: :any, mojave:         "e6d5a6a87f885bf421e6a70c9cef1c6aaf89db46a98216af6c06754246a8f896"
-    sha256 cellar: :any, high_sierra:    "0560e601843a3e42a4823904dd5534212efd823292444a9588f1cf99ea8bc8f5"
-    sha256               x86_64_linux:   "3be2be401ff1fda07663fdeaf8929ca12b92fa136acfedc2a273b1abcd9438bd"
+    sha256 cellar: :any, arm64_monterey: "e74a881d6b7bab835785508958289242fb39098e807bad857c29e98c9bf25616"
+    sha256 cellar: :any, arm64_big_sur:  "430b006a29d0db68781f2b3cc36699f98b6589b4760732fe51cbce8876fccaa3"
+    sha256 cellar: :any, monterey:       "ded8ffdb381fd27fa6407c444f80511d174d51fef350b0cd94eb95acbf1cbc72"
+    sha256 cellar: :any, big_sur:        "7b91ad58427f7fd234d867f831001083d7c8dd93e1e1a9b87b947890dd478a85"
+    sha256 cellar: :any, catalina:       "48063c7f852ad9cd72d927e8749055b01c7c86c75ecd5b7bf7323418df359a94"
+    sha256               x86_64_linux:   "5dfeef9cc3d400f64182826d287b76c8c6f4969e51293e75914c34711a918561"
   end
 
   depends_on "docbook-xsl" => :build

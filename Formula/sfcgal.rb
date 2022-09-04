@@ -4,14 +4,15 @@ class Sfcgal < Formula
   url "https://gitlab.com/Oslandia/SFCGAL/-/archive/v1.4.1/SFCGAL-v1.4.1.tar.gz"
   sha256 "1800c8a26241588f11cddcf433049e9b9aea902e923414d2ecef33a3295626c3"
   license "LGPL-2.0-or-later"
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4e5830b19bfb9193625b1cc8149d2f678b873134b9edfcdffcc73b5545a6d04b"
-    sha256 cellar: :any,                 arm64_big_sur:  "24af7d6e9dae322da56ec1cb51c429b972a41e6a297956f6baf607e3fa6af836"
-    sha256 cellar: :any,                 monterey:       "3c83e7b2aed9400f9d48c7e43e1ed2f095eba9fda57628c1101ef43e1b670a86"
-    sha256 cellar: :any,                 big_sur:        "0066a1386a0b985a98b7e06f42d7aa43d227d4e9bc234aff3a6b36056ea956e2"
-    sha256 cellar: :any,                 catalina:       "39dd3c723b7d47a807f1fffa6c1de053d7091ac15e2180341588c2c94ff247f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "efd13dbab941fee7f795c1fc7ae62299158c2325df7d1d83c8858b14985677de"
+    sha256 cellar: :any,                 arm64_monterey: "f833b030cc55538c801f0b569c36f9b7b5303de882a5f46c8478a4b27550fd9c"
+    sha256 cellar: :any,                 arm64_big_sur:  "04ff2155b259479a1f3e3b31fcb6881062ea29c18e955279f525bca5b4509b7d"
+    sha256 cellar: :any,                 monterey:       "14083513643fe64312a098842a3fc3e8c8f9ee3fb923307e73792d14d634d66b"
+    sha256 cellar: :any,                 big_sur:        "0c96f4ff9ef0df19ed37ea0845e2d2ee212aefb880027595fe5d678c4a384fe5"
+    sha256 cellar: :any,                 catalina:       "79611e06698fc3e7ffcebba3f228f66937eb66420e75514d1d72274b580f4b5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fb92b0564f3f78f081ad9880e68a9dae1e2963ff5884f9039dddaa9145a3e4d"
   end
 
   depends_on "cmake" => :build
@@ -20,9 +21,17 @@ class Sfcgal < Formula
   depends_on "gmp"
   depends_on "mpfr"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  # error: array must be initialized with a brace-enclosed initializer
+  fails_with gcc: "5"
+
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

@@ -1,9 +1,10 @@
 class Gmsh < Formula
   desc "3D finite element grid generator with CAD engine"
   homepage "https://gmsh.info/"
-  url "https://gmsh.info/src/gmsh-4.9.3-source.tgz"
-  sha256 "9e06751e9fef59ba5ba8e6feded164d725d7e9bc63e1cb327b083cbc7a993adb"
+  url "https://gmsh.info/src/gmsh-4.10.5-source.tgz"
+  sha256 "cc030c5aee65e7d58f850b8b6f55a68945c89bc871f94e1239279f5a210fc4ea"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://gitlab.onelab.info/gmsh/gmsh.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,12 @@ class Gmsh < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "17f4f32b17f3b0336f74f2fa86f5276ace4b0afb7b84e509836ff47f72188ff3"
-    sha256 cellar: :any,                 arm64_big_sur:  "6ca22d722f78238c30b5521b350ed60691d6ac8765d83cfabe45ca43e5f56ea9"
-    sha256 cellar: :any,                 monterey:       "676413ef23ae0a544a5a526bb4296aa14ff7ddc805526f6b75607bd4b7f6271e"
-    sha256 cellar: :any,                 big_sur:        "68107a309bd102ca33867b07f715dde2ea30e961fe83406bdfb2a8ec9665e1ef"
-    sha256 cellar: :any,                 catalina:       "f19bd77bd94525ba0c0f7d2b05c415b99779bec59ee147f5ca2f763c89881f48"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a943e7b41a9c95b3d42b7a31cc47aed783cb8cd4f3c5cc0904a9a69115ae20c"
+    sha256 cellar: :any,                 arm64_monterey: "528c06c7c091279763a0a09f8c79293220afbabb3515d6656b2d6a69ff53a2cc"
+    sha256 cellar: :any,                 arm64_big_sur:  "be4ba8e4010fa3d160e69e03de221c6f6bc83120e04e9f8a2a5a7ab22ac70aa9"
+    sha256 cellar: :any,                 monterey:       "b7ecbe2f3ca865091ad1660f9a462e4ad12d62087363a851f27bbe512ce0fb8f"
+    sha256 cellar: :any,                 big_sur:        "492627f27886d3a836c89adb31abe5ed21e165a0ee56d6210969fe0cd4bae1ac"
+    sha256 cellar: :any,                 catalina:       "437ff76145413adea95620a1e9006ec7b79db873dd531f84438ff024d14d24a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9e8b9a1f979daa8b01a99bd11d757b593903904609e8628ef7ee329fb9b8791"
   end
 
   depends_on "cmake" => :build
@@ -28,31 +29,25 @@ class Gmsh < Formula
   depends_on "opencascade"
 
   def install
-    args = std_cmake_args + %W[
-      -DENABLE_OS_SPECIFIC_INSTALL=0
-      -DGMSH_BIN=#{bin}
-      -DGMSH_LIB=#{lib}
-      -DGMSH_DOC=#{pkgshare}/gmsh
-      -DGMSH_MAN=#{man}
-      -DENABLE_BUILD_LIB=ON
-      -DENABLE_BUILD_SHARED=ON
-      -DENABLE_NATIVE_FILE_CHOOSER=ON
-      -DENABLE_PETSC=OFF
-      -DENABLE_SLEPC=OFF
-      -DENABLE_OCC=ON
-    ]
-
     ENV["CASROOT"] = Formula["opencascade"].opt_prefix
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DENABLE_OS_SPECIFIC_INSTALL=0",
+                    "-DGMSH_BIN=#{bin}",
+                    "-DGMSH_LIB=#{lib}",
+                    "-DGMSH_DOC=#{pkgshare}/gmsh",
+                    "-DGMSH_MAN=#{man}",
+                    "-DENABLE_BUILD_LIB=ON",
+                    "-DENABLE_BUILD_SHARED=ON",
+                    "-DENABLE_NATIVE_FILE_CHOOSER=ON",
+                    "-DENABLE_PETSC=OFF",
+                    "-DENABLE_SLEPC=OFF",
+                    "-DENABLE_OCC=ON"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-      # Move onelab.py into libexec instead of bin
-      mkdir_p libexec
-      mv bin/"onelab.py", libexec
-    end
+    # Move onelab.py into libexec instead of bin
+    libexec.install bin/"onelab.py"
   end
 
   test do

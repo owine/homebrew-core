@@ -3,24 +3,30 @@ class Lensfun < Formula
 
   desc "Remove defects from digital images"
   homepage "https://lensfun.github.io/"
-  url "https://downloads.sourceforge.net/project/lensfun/0.3.95/lensfun-0.3.95.tar.gz"
-  sha256 "82c29c833c1604c48ca3ab8a35e86b7189b8effac1b1476095c0529afb702808"
+  url "https://github.com/lensfun/lensfun/archive/refs/tags/v0.3.3.tar.gz"
+  sha256 "57ba5a0377f24948972339e18be946af12eda22b7c707eb0ddd26586370f6765"
   license all_of: [
     "LGPL-3.0-only",
     "GPL-3.0-only",
     "CC-BY-3.0",
     :public_domain,
   ]
-  revision 4
+  revision 1
+  version_scheme 1
+  head "https://github.com/lensfun/lensfun.git", branch: "master"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
-    sha256 arm64_monterey: "530ebafb7cb54daaa3095f543ba8f05e331fd8a36265fbb2cfbe482e5822a223"
-    sha256 arm64_big_sur:  "976711172998eae467ddaba1feb590e0229cc0b41f11ac58e1db2d833a57c99c"
-    sha256 monterey:       "08fec3eeb7b95d1c468b2525e2b92a7df9c34f1b6c7f4003d2c0cdaeb72f983f"
-    sha256 big_sur:        "48cd331c4214979daa6c122e2b776000af76208cb051562e27f4cef4f3aa3b93"
-    sha256 catalina:       "b0d8cdbcf20af0b1d577626e04643687955030785f57911e9d0a708a7ef95997"
-    sha256 mojave:         "526b6752883c94e7e2807fa06e6803e9dc45060189be102be5ed79c24b187af6"
-    sha256 x86_64_linux:   "d5758ba26c4bb2d4134bc733a302a30b6534f7b5e64dbd25ec519c39f5234c7a"
+    sha256 arm64_monterey: "9486d22108299332ec92369f4e7338111a744f214c52ebb384db654ff7379699"
+    sha256 arm64_big_sur:  "98cfcaef6655bb8a9a67b1a9feaca1eba526f3b8ce46e35f40449f43902844cc"
+    sha256 monterey:       "1545b2a59105bb4906394498c6e21c2b4d1398d2a3301c6fc58c3106ccb37bae"
+    sha256 big_sur:        "07e1c1cca921506244057b958860353249aa676fd36d7bfc66d20da2d3281851"
+    sha256 catalina:       "1130d39462b5b1957109a78b93c31e3f1618860f37270c71e51213173193d2b8"
+    sha256 x86_64_linux:   "35c9b93d5196c8cd249b00ab7a7ad8347cb72ad57326fd4753f8fce01aaa55f2"
   end
 
   depends_on "cmake" => :build
@@ -28,17 +34,20 @@ class Lensfun < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "libpng"
-  depends_on "python@3.9"
-
-  # This patch can be removed when new Lensfun release (v0.3.96) is available.
-  patch do
-    url "https://github.com/lensfun/lensfun/commit/de954c952929316ea2ad0f6f1e336d9d8164ace0.patch?full_index=1"
-    sha256 "67f0d2f33160bb1ab2b4d1e0465ad5967dbd8f8e3ba1d231b5534ec641014e3b"
-  end
+  depends_on "python@3.10"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    # setuptools>=60 prefers its own bundled distutils, which breaks the installation
+    ENV["SETUPTOOLS_USE_DISTUTILS"] = "stdlib"
+
+    # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
+    # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.
+    site_packages = prefix/Language::Python.site_packages("python3")
+    inreplace "apps/CMakeLists.txt", "${SETUP_PY} install ", "\\0 --install-lib=#{site_packages} "
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     rewrite_shebang detected_python_shebang,
       bin/"lensfun-add-adapter", bin/"lensfun-convert-lcp", bin/"lensfun-update-data"

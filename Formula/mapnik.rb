@@ -1,11 +1,20 @@
 class Mapnik < Formula
   desc "Toolkit for developing mapping applications"
   homepage "https://mapnik.org/"
-  url "https://github.com/mapnik/mapnik/releases/download/v3.1.0/mapnik-v3.1.0.tar.bz2"
-  sha256 "43d76182d2a975212b4ad11524c74e577576c11039fdab5286b828397d8e6261"
   license "LGPL-2.1-or-later"
-  revision 5
+  revision 12
   head "https://github.com/mapnik/mapnik.git", branch: "master"
+
+  stable do
+    url "https://github.com/mapnik/mapnik/releases/download/v3.1.0/mapnik-v3.1.0.tar.bz2"
+    sha256 "43d76182d2a975212b4ad11524c74e577576c11039fdab5286b828397d8e6261"
+
+    # Allow Makefile to use PYTHON set in the environment. Remove in the next release.
+    patch do
+      url "https://github.com/mapnik/mapnik/commit/a53c90172c664d29cd877302de9790a6ee9b5330.patch?full_index=1"
+      sha256 "9e0e06fd64d16b9fbe59d72402e805c94335397385ab57c49a6b468b9cc5a39c"
+    end
+  end
 
   livecheck do
     url :stable
@@ -13,12 +22,12 @@ class Mapnik < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5821727e6bd5b456ad80ba0d1dd8feea6b42de7af942fccb0279f0a24e23c003"
-    sha256 cellar: :any,                 arm64_big_sur:  "f969998d9b693da26699705c691d75b4cab8fa22b091d56a47e3ef92688fd8e0"
-    sha256 cellar: :any,                 monterey:       "bd44d13a5e833ea36ae35e16bb56e9bf4e90134b5565fa1bd6adc13a1e1187cf"
-    sha256 cellar: :any,                 big_sur:        "9234f5235b6586f049f18a8812f676262009811b0c32eb14171901dbd64ec4b5"
-    sha256 cellar: :any,                 catalina:       "2840371dd8a84e29fe883e616c937962b32b1bf34066c13fa6ada13bd75cda3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "08332dc59b66ceb70a6ff51a7d72826a3a28b109ee9eea0d69513fb4b38a7924"
+    sha256 cellar: :any,                 arm64_monterey: "70c54685e9c338ec1c6d59f4e211246c2a46740a8e787489ed00be96308df0a5"
+    sha256 cellar: :any,                 arm64_big_sur:  "66b393d6f0bc4a86761b71cd9116241cbc20f180cdf3f37f5ee324d5525ae785"
+    sha256 cellar: :any,                 monterey:       "c65411cd5d745660d7cf66fa268ae7b38b40528743a1492225819d4d9fe1eff5"
+    sha256 cellar: :any,                 big_sur:        "162d97f4a0d7f8a60a4e7e189e93ae95e6ff97c875b61d1d2f3d94be0b4df2de"
+    sha256 cellar: :any,                 catalina:       "8bb8a2c261c895f6e578add13551948667de359a0960a2493f65c0298d6b25df"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10e9692b15bfbc7cc6e4eddebe2d9e50f88b28f91ca1508ae3a1af259ec5f9a5"
   end
 
   depends_on "pkg-config" => :build
@@ -29,31 +38,26 @@ class Mapnik < Formula
   depends_on "gdal"
   depends_on "harfbuzz"
   depends_on "icu4c"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
+  depends_on "libpq"
   depends_on "libtiff"
-  depends_on "postgresql"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "webp"
 
   def install
     ENV.cxx11
-
-    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
+    ENV["PYTHON"] = "python3.9"
 
     # Work around "error: no member named 'signbit' in the global namespace"
     # encountered when trying to detect boost regex in configure
     ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
 
-    # Use Proj 6.0.0 compatibility headers
-    # https://github.com/mapnik/mapnik/issues/4036
-    ENV.append_to_cflags "-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H"
-
     boost = Formula["boost"].opt_prefix
     freetype = Formula["freetype"].opt_prefix
     harfbuzz = Formula["harfbuzz"].opt_prefix
     icu = Formula["icu4c"].opt_prefix
-    jpeg = Formula["jpeg"].opt_prefix
+    jpeg = Formula["jpeg-turbo"].opt_prefix
     libpng = Formula["libpng"].opt_prefix
     libtiff = Formula["libtiff"].opt_prefix
     proj = Formula["proj"].opt_prefix
@@ -77,7 +81,7 @@ class Mapnik < Formula
       JPEG_INCLUDES=#{jpeg}/include
       JPEG_LIBS=#{jpeg}/lib
       NIK2IMG=False
-      PG_CONFIG=#{Formula["postgresql"].opt_bin}/pg_config
+      PG_CONFIG=#{Formula["libpq"].opt_bin}/pg_config
       PNG_INCLUDES=#{libpng}/include
       PNG_LIBS=#{libpng}/lib
       PROJ_INCLUDES=#{proj}/include
@@ -87,8 +91,6 @@ class Mapnik < Formula
       WEBP_INCLUDES=#{webp}/include
       WEBP_LIBS=#{webp}/lib
     ]
-
-    inreplace "Makefile", "PYTHON = python", "PYTHON = python3"
 
     system "./configure", *args
     system "make"

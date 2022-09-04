@@ -2,6 +2,7 @@ class Upscaledb < Formula
   desc "Database for embedded devices"
   homepage "https://upscaledb.com/"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/cruppstahl/upscaledb.git", branch: "master"
 
   stable do
@@ -21,10 +22,10 @@ class Upscaledb < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:     "a0fd351d906363c321b21832fe00324df1c1cdd7aa1bb44c64075b1710aca916"
-    sha256 cellar: :any, catalina:    "b507da019b3c2491594d7ad127e980d098f80f78f044e00b4f07a3f3cdd9b795"
-    sha256 cellar: :any, mojave:      "85e1468d77fa72b7cfc4e039877018648b79e8eb7006e63263fbdd44978f043a"
-    sha256 cellar: :any, high_sierra: "9e15c86df38e916f08ba95254fe675e60b250b7e8e72e9dd9e07a6ff226dd092"
+    sha256 cellar: :any,                 monterey:     "693a8a0ad4e8298847d25bb2ef348a39249f3c05cc9ccf578e7b7db57db0c8c3"
+    sha256 cellar: :any,                 big_sur:      "b6b0005cf98da8d3ecc3f762782d9129634023e53fd3303febf4e1bc145486d3"
+    sha256 cellar: :any,                 catalina:     "5731bf62beee7d010c92d841d69b93620865a5c048e0a6b52cd60a1e906d46c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "17ba39ba89047d56cdab9a056cd541e2916447f8f3527bc22fae77354467d075"
   end
 
   depends_on "autoconf" => :build
@@ -51,11 +52,32 @@ class Upscaledb < Formula
     system "make", "install"
 
     pkgshare.install "samples"
+
+    unless OS.mac?
+      shim_reference_files = %w[
+        db1
+        db2
+        db3
+        db4
+        db5
+        db6
+        env1
+        env2
+        env3
+        uqi1
+        uqi2
+        Makefile
+      ]
+
+      shim_reference_files.each do |file|
+        inreplace pkgshare/"samples"/file, Superenv.shims_path, ""
+      end
+    end
   end
 
   test do
-    system ENV.cc, "-I#{include}", "-L#{lib}", "-lupscaledb",
-           pkgshare/"samples/db1.c", "-o", "test"
+    system ENV.cc, pkgshare/"samples/db1.c", "-I#{include}",
+           "-L#{lib}", "-lupscaledb", "-o", "test"
     system "./test"
   end
 end

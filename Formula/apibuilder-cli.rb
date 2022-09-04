@@ -1,13 +1,15 @@
 class ApibuilderCli < Formula
   desc "Command-line interface to generate clients for api builder"
   homepage "https://www.apibuilder.io"
-  url "https://github.com/apicollective/apibuilder-cli/archive/0.1.41.tar.gz"
-  sha256 "aa85d456f22400c2c37fda026febd732f8cb8aaad40f660929d277035a5c9ce4"
+  url "https://github.com/apicollective/apibuilder-cli/archive/0.1.43.tar.gz"
+  sha256 "69c8c100ba9d56e83c146b5338c2a68c189fc6d1ca2eb184f357a84091224077"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "53513c0623771a5d5fe3de708e2b89f99f930de4502d40612f317e51d0703e55"
+    sha256 cellar: :any_skip_relocation, all: "928a2a30b122f17f8d1c297b5440c8a7b58755aa3da21e0f98f34600171486c4"
   end
+
+  uses_from_macos "ruby"
 
   def install
     system "./install.sh", prefix

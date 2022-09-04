@@ -1,9 +1,10 @@
 class GstPluginsUgly < Formula
   desc "Library for constructing graphs of media-handling components"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.18.5.tar.xz"
-  sha256 "df32803e98f8a9979373fa2ca7e05e62f977b1097576d3a80619d9f5c69f66d9"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.20.3.tar.xz"
+  sha256 "8caa20789a09c304b49cf563d33cca9421b1875b84fcc187e4a385fa01d6aefd"
   license "LGPL-2.0-or-later"
+  revision 1
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-ugly.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,12 @@ class GstPluginsUgly < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "17d964846b2e566aef42536dfd1656e142b932d3f012ea35a12fc21caaf706eb"
-    sha256 arm64_big_sur:  "1eb49d0508fea6b8b6cfc79320851f4218c58c965caa84fb3acb772d599dbb5e"
-    sha256 monterey:       "a0a8716e0f2852b9801e491ce9358368aca40db23930d2469449af54ab25214e"
-    sha256 big_sur:        "4d4929eddbc0d179821e23b1d464ba6b5e9016f8bfdc46d508fea492aa2d17c1"
-    sha256 catalina:       "61c6247e61ea354c16b781fee374c907012f2ad11640ee4de99cbb15f5fb6c9f"
-    sha256 x86_64_linux:   "dc83215500215a27139c960d14f91428aff6dd1f58fb687e770ad48372f8209b"
+    sha256 arm64_monterey: "67eac319f32b17de132ae2f3b9e87d64087aed757455405be80f749d56b0244d"
+    sha256 arm64_big_sur:  "1985275d5911536e5690f0d8d0a3343706df8dabe5940d92b70abb7c1903b4e9"
+    sha256 monterey:       "df08cbde7e2cb994c58ee40f067e0b468942ef82a5cf6111bd40a5039da09e9e"
+    sha256 big_sur:        "a5f3b672a2337ecba14e384e3a2711a1167dc30bbc8e811ff810c6f5c65e48d3"
+    sha256 catalina:       "552b9feec549e978950f21280b5a1a5ed974d843b1d4c64bcacffed21f5fbfd4"
+    sha256 x86_64_linux:   "a7fad973d69eb1e7978a3d269d1f60b8cb0874f9bda1be8f149ea3ae5424d810"
   end
 
   depends_on "meson" => :build
@@ -26,25 +27,23 @@ class GstPluginsUgly < Formula
   depends_on "flac"
   depends_on "gettext"
   depends_on "gst-plugins-base"
-  depends_on "jpeg"
-  depends_on "libmms"
+  depends_on "jpeg-turbo"
   depends_on "libshout"
   depends_on "libvorbis"
   depends_on "pango"
   depends_on "theora"
   depends_on "x264"
 
-  def install
-    args = std_meson_args + %w[
-      -Damrnb=disabled
-      -Damrwbdec=disabled
-    ]
+  uses_from_macos "python" => :build, since: :catalina
 
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+  def install
+    # Plugins with GPL-licensed dependencies: x264
+    system "meson", *std_meson_args, "build",
+                    "-Dgpl=enabled",
+                    "-Damrnb=disabled",
+                    "-Damrwbdec=disabled"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
   end
 
   test do

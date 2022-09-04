@@ -3,30 +3,36 @@ require "language/node"
 class Chronograf < Formula
   desc "Open source monitoring and visualization UI for the TICK stack"
   homepage "https://docs.influxdata.com/chronograf/latest/"
-  url "https://github.com/influxdata/chronograf/archive/1.9.3.tar.gz"
-  sha256 "10db16bb6959356c4fabe6229a500d3183436f401a3c15a5377bc7434fe489d3"
+  url "https://github.com/influxdata/chronograf/archive/1.10.0.tar.gz"
+  sha256 "4c9ec541a77314b11f23f2eff1394568ea9180f1f3cc3f098cb3e7977dbfd7a5"
   license "AGPL-3.0-or-later"
   head "https://github.com/influxdata/chronograf.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab69cb68e4b4030eb2e745f61ea7e12395acfa022972f47d703b9b7be57d3bd6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "88dbfa8ec052d2e709738815fde6071ecca9636c2f88ff28aeebd1ffa494fa1f"
-    sha256 cellar: :any_skip_relocation, monterey:       "72874b39bf45019aa2dc5978d1547ebb5f68e95a39bcf33ecd0baef1974c901f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f8786d16d900600eddd3642e91193b7abb8fc0437885e489e645368c6b93598f"
-    sha256 cellar: :any_skip_relocation, catalina:       "7ae8967d39df93b8317ae898a2c94a6fcd5047ddfbadd6be60cab61865eaa906"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e60c6cbad7cf26be81a3ecf4e67d76860cd0dc51e313ec7b0a84a9f0cca1866e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f36ad1c8bccee48018a89ba866c95e82c6924a7ddd65b625c0e815bfc9add575"
+    sha256 cellar: :any_skip_relocation, monterey:       "c7cb92de2c6cfa35963ba9b236f9770be2f3e7c7c34217ed66410a01ce4321d6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "67f7d0341b169a14d77ed62616bb6b933772637a891a2eeac370cf5944f634a1"
+    sha256 cellar: :any_skip_relocation, catalina:       "6f13cf0d008d4d2b395e19a85aa419c1a7e4c46d624db2ec3776abb2d201506d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fadc331abb4ddfacc2e23c46f9e74782cd31e52019fe9d606c814fe430794473"
   end
 
   depends_on "go" => :build
   depends_on "go-bindata" => :build
-  # Switch to `node` when chronograf updates dependency node-sass>=6.0.0
-  depends_on "node@14" => :build
+  depends_on "node" => :build
   depends_on "yarn" => :build
   depends_on "influxdb"
   depends_on "kapacitor"
 
-  def install
-    Language::Node.setup_npm_environment
+  on_monterey :or_newer do
+    depends_on "python@3.10" => :build
+  end
 
+  def install
+    # Work around older version of gyp-mac-tool: env: python: No such file or directory
+    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin" if MacOS.version >= :monterey
+
+    Language::Node.setup_npm_environment
     system "make", "dep"
     system "make", ".jssrc"
     system "make", "chronograf"

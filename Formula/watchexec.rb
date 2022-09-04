@@ -1,9 +1,10 @@
 class Watchexec < Formula
   desc "Execute commands when watched files change"
   homepage "https://github.com/watchexec/watchexec"
-  url "https://github.com/watchexec/watchexec/archive/cli-v1.18.4.tar.gz"
-  sha256 "7d4f285fa3bfd48452532516cb11fca26aa57bfedf772b45262defef0fcf1aa6"
+  url "https://github.com/watchexec/watchexec/archive/cli-v1.20.5.tar.gz"
+  sha256 "2bc04c7ecf58d34a48c3eeea54a76b7e621717cb93305497bea2f6399dd119c6"
   license "Apache-2.0"
+  head "https://github.com/watchexec/watchexec.git", branch: "main"
 
   livecheck do
     url :stable
@@ -11,12 +12,12 @@ class Watchexec < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "de04e69d76b03fc09ea65cb23a8778ca8c200dcc3dadab9b44708d9b36287859"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "276b32066671693a123fe1995d1b6a05826a589620bce069d4791a9ff0ad876b"
-    sha256 cellar: :any_skip_relocation, monterey:       "0619255ff0d4be3b7ef87506b4f8d5258fb8bebb1fe01ffdea3fc012df324ac7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8acfeb8d2c6105cbadec7fc6db946b49f333368131159492f9cc54cb9fbb762b"
-    sha256 cellar: :any_skip_relocation, catalina:       "9d1da702bca6f06e5f7bfb525090af817736c84d4c284cf91ae61b1c3aaf8b8c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5d5a2911549eaa4949b8608dffdd5ded7f0ebdc235b3e0de43a5c595dc1d573"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ead924f6614bde30ec7a1a9a9e4eadb121791681f0a9f227a5523f2caf4f0cf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "64de9842574f1d8fe3c32e259caccf90f68623142e4446436609bce2fef50de9"
+    sha256 cellar: :any_skip_relocation, monterey:       "ce03eeffd0cd2d9a581b6b734f2312621fff73424a9889a8a1ea445cf0bcc70f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5f0ce1fb90239b7aba8828889837b8c82dd2252605767a2edc9faf86d872754f"
+    sha256 cellar: :any_skip_relocation, catalina:       "023b6cadf43434f17bcbf475f2fea18de9d0630612e2bfc9a9394b546d961194"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "525f05db4694fd23d4b68ef6c8f3d9f245ea217af6ed448ed0060818c7f5bdbe"
   end
 
   depends_on "rust" => :build
@@ -24,9 +25,7 @@ class Watchexec < Formula
   uses_from_macos "zlib"
 
   def install
-    cd "cli" do
-      system "cargo", "install", *std_cargo_args
-    end
+    system "cargo", "install", *std_cargo_args(path: "crates/cli")
     man1.install "doc/watchexec.1"
   end
 

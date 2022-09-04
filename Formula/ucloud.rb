@@ -1,20 +1,21 @@
 class Ucloud < Formula
   desc "Official tool for managing UCloud services"
   homepage "https://www.ucloud.cn"
-  url "https://github.com/ucloud/ucloud-cli/archive/0.1.37.tar.gz"
-  sha256 "91c8153854b102dcd671c58976e35b056b3ed32258a6daea3755c8cb35aed742"
+  url "https://github.com/ucloud/ucloud-cli/archive/v0.1.40.tar.gz"
+  sha256 "fb6cdd5e7291a0439d9ec5cc5403cbfa1b504fa92c576ba7acdfb2d561d92b40"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "99d77eefb237043ab551e21c7bc5c4d8290987e92b2b06c5ede39d6a6946358d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3104755ba0d6f6c6ece54041f351b5626a1b6eab413f02ba1d6f7910ad145ca3"
-    sha256 cellar: :any_skip_relocation, monterey:       "d3e402a2646997e17c4b585d898a05f8341a58753f16546b9c4bf7ad717bbda7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e17891249c6853edd5e48bdb01417815944a593c2549fec53cb90797ed020878"
-    sha256 cellar: :any_skip_relocation, catalina:       "360540194c9c3f46ecd1a7fbdb659908123afcc3fa44d093cd641a6e87282ff8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e5326dd1f207ab2ac02a00c06d8231ec5895735a595d543fe3a670a2c93854e3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fe13e3873b5238b391eff28a723b78d7efba937e6e12c7775dbde1a978f8a2df"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "be739c5a28212b1d3b38ed7703d9429b3918c1827b26abd02ab2c4e311bd60d3"
+    sha256 cellar: :any_skip_relocation, monterey:       "c453634ad09c1ebdc8525b9b2e82668af044b8c619880b72adb5fc7b89940297"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e0695c00458fc3e849b77947782a191effc3c7933d67c9ebefc4d2bbad5290d5"
+    sha256 cellar: :any_skip_relocation, catalina:       "41da7a34c266e528be198b7798dd94c92354f80e37bf6dc8bf3d4bd14e8d8e59"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80e2fbdc7a7b717b71d2704fa7ab24b769449304091d8e00aa3b48fc4a22b920"
   end
 
-  depends_on "go" => :build
+  # Bump to 1.18 on the next release, if possible.
+  depends_on "go@1.17" => :build
 
   def install
     dir = buildpath/"src/github.com/ucloud/ucloud-cli"

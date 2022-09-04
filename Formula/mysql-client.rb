@@ -1,8 +1,8 @@
 class MysqlClient < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.28.tar.gz"
-  sha256 "6dd0303998e70066d36905bd8fef1c01228ea182dbfbabc6c22ebacdbf8b5941"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.30.tar.gz"
+  sha256 "c331ac7a68099a2116097acbb14fd331423d486fe47ce0e346925111b44df69c"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
 
   livecheck do
@@ -10,12 +10,12 @@ class MysqlClient < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8564876235a72f8e8d695bfef6a004b6240250acbbc364e6504837c944576ff8"
-    sha256 arm64_big_sur:  "e2322749d2d3137cebacbd73d0b5fa3ad6caaeb76be86ab9fa84bdc41851dbd2"
-    sha256 monterey:       "fc037da725fac5450fd5246b0ba2854c963ca90f1b1ebff34f111dc4bcc41a80"
-    sha256 big_sur:        "2a4de24361f2b52fd8cf4f8e3cdaefffaa09643df4253098515cb82fcf2c452d"
-    sha256 catalina:       "06e005e2cf6377a9f28b295f201bec9d52d9c7a9631d84f1d788145687611898"
-    sha256 x86_64_linux:   "03e040526cc6ec6ac2320f9445b63b4d0f6094889d080a696a2560d7b6548f19"
+    sha256 arm64_monterey: "abccc4fa9808274f5bd66a1b9d02eabc114340738f2b1425eaff658365dddf47"
+    sha256 arm64_big_sur:  "2a7d242c0bd023dd331ac079cc467e7d3f77477b78ab5110cdae68cb7aab17f3"
+    sha256 monterey:       "a8b71724eb655a359756740ca25c755efd927700396935ca641c89de3822187b"
+    sha256 big_sur:        "d9bf8ae6fb0548ee9bb981a88a3f09b9a3efffebc63ab14303979811cb59fee4"
+    sha256 catalina:       "2ff83a77f27bf45216c66002dac0e7da45d11626099324f381ff49b2f323992a"
+    sha256 x86_64_linux:   "6b0ae42f32c53f05cdf52c4fd1db04177e5a693dc748b8083d813a7eaf2a5875"
   end
 
   keg_only "it conflicts with mysql (which contains client libraries)"
@@ -27,10 +27,10 @@ class MysqlClient < Formula
   # GCC is not supported either, so exclude for El Capitan.
   depends_on macos: :sierra if DevelopmentTools.clang_build_version < 900
   depends_on "openssl@1.1"
+  depends_on "zlib" # Zlib 1.2.12+
   depends_on "zstd"
 
   uses_from_macos "libedit"
-  uses_from_macos "zlib"
 
   on_linux do
     depends_on "gcc"
@@ -60,22 +60,6 @@ class MysqlClient < Formula
       -DWITH_UNIT_TESTS=OFF
       -DWITHOUT_SERVER=ON
     ]
-
-    # Their CMake macros check for `pkg-config` only on Linux and FreeBSD,
-    # so let's set `MY_PKG_CONFIG_EXECUTABLE` and `PKG_CONFIG_*` to make
-    # sure `pkg-config` is found and used.
-    if OS.mac?
-      args += %W[
-        -DMY_PKG_CONFIG_EXECUTABLE=pkg-config
-        -DPKG_CONFIG_FOUND=TRUE
-        -DPKG_CONFIG_VERSION_STRING=#{Formula["pkg-config"].version}
-        -DPKG_CONFIG_EXECUTABLE=#{Formula["pkg-config"].opt_bin}/pkg-config
-      ]
-
-      if ENV["HOMEBREW_SDKROOT"].present?
-        args << "-DPKG_CONFIG_ARGN=--define-variable=homebrew_sdkroot=#{ENV["HOMEBREW_SDKROOT"]}"
-      end
-    end
 
     system "cmake", ".", *std_cmake_args, *args
     system "make", "install"

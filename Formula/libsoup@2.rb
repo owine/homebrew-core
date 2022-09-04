@@ -1,17 +1,18 @@
 class LibsoupAT2 < Formula
   desc "HTTP client/server library for GNOME"
   homepage "https://wiki.gnome.org/Projects/libsoup"
-  url "https://download.gnome.org/sources/libsoup/2.74/libsoup-2.74.1.tar.xz"
-  sha256 "dc27a3b8fa30bc8ff950b5a75958757d2242e3e51e4e2d9c4e623ef75f793bf8"
+  url "https://download.gnome.org/sources/libsoup/2.74/libsoup-2.74.2.tar.xz"
+  sha256 "f0a427656e5fe19e1df71c107e88dfa1b2e673c25c547b7823b6018b40d01159"
   license "LGPL-2.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "b2c190abf51f79ced1d8d8eda2a5db31a5aefd9314c617db794d186cf52f16bf"
-    sha256 arm64_big_sur:  "65d616e5576bba08deb1eff22b926d7d35fb7209e92266078f28bf21caa150c7"
-    sha256 monterey:       "f34c69d8b128305d2e4956bac273011c093987c7168cb73ab1e6bb825e3f7451"
-    sha256 big_sur:        "19a9b6667489787eccde03fee2cc88ed85d65164da35d22c23774a518ffb8459"
-    sha256 catalina:       "0debe8befca52517e4eaa1c9d14cdf70f534d2dc06ab67738263b6e0e3593df5"
-    sha256 x86_64_linux:   "bd41af9c5e451ccda79c5f24bde318f2e370b53b86bebe6a59dd62abfac2e07c"
+    sha256 arm64_monterey: "c83d1b06c461f1052dca33dbb4611de3255629a01f6841cea10c879b33de062a"
+    sha256 arm64_big_sur:  "1beb7bcd38a32eb0392edf2c4512282dd70545a00522abceb18f27e8c4ad0ca1"
+    sha256 monterey:       "c45af2b51eefcef87380bd327d068113d862d8ea3468798143229e4a6ffaf066"
+    sha256 big_sur:        "c5b6becbd8d56922f462b27d995abdfb3c0e0bf40a5f90ad2dbaf8fbcf342f60"
+    sha256 catalina:       "a197f1b5e2b63ac86c26398cd4a01c60e5ff6c467fcfd4e64462c5c7d37186e2"
+    sha256 x86_64_linux:   "de39b19dac0d2b9ef080286d5402ab4d8d950d21765b19ebc4888276843c9009"
   end
 
   keg_only :versioned_formula
@@ -20,6 +21,7 @@ class LibsoupAT2 < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.10" => :build
   depends_on "vala" => :build
   depends_on "glib-networking"
   depends_on "gnutls"
@@ -27,6 +29,7 @@ class LibsoupAT2 < Formula
 
   uses_from_macos "krb5"
   uses_from_macos "libxml2"
+  uses_from_macos "sqlite"
 
   def install
     mkdir "build" do

@@ -5,7 +5,7 @@ class Nwchem < Formula
   version "7.0.2"
   sha256 "d9d19d87e70abf43d61b2d34e60c293371af60d14df4a6333bf40ea63f6dc8ce"
   license "ECL-2.0"
-  revision 2
+  revision 3
 
   livecheck do
     url "https://github.com/nwchemgit/nwchem.git"
@@ -13,9 +13,12 @@ class Nwchem < Formula
   end
 
   bottle do
-    sha256 cellar: :any, monterey: "bf4b2dfa17eb48b600343b6488980fd8ef988cd20bab9ad67b7e5abd82c0f076"
-    sha256 cellar: :any, big_sur:  "e652f67d76cad24fc36ca61c54fec440692c493217d857604f180244e647ebab"
-    sha256 cellar: :any, catalina: "c94e9afb94a3c8f8ab43bf4ffad7d1004ddd696dc56f68dfb3624023c44c0190"
+    sha256                               arm64_monterey: "b4b262343bb2b678facc095654f787c6963f8ff8a20a8727093e10efa13e6047"
+    sha256                               arm64_big_sur:  "decb7b643ef4ffd44491e4b1d60c0b3df718a479b68458358a9a37fdb28667d3"
+    sha256 cellar: :any,                 monterey:       "ecb6487a0bc0ac99a2d092efadc98d0739b0cf8fe1e6e498e690a2acee6a9aca"
+    sha256 cellar: :any,                 big_sur:        "16df077bcd74a4fd905d04cdcbea7260a1428100e5013683d7eefd0e1ba40950"
+    sha256 cellar: :any,                 catalina:       "a61a616252a0eed0803906342e9a029036d61fcfd2ed74dc0cd821fa46a6b8de"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fcf7c222de7248364da410571123cdf2cbe1384e529f1ed4243fe2fb79a61179"
   end
 
   depends_on "gcc" # for gfortran
@@ -23,6 +26,8 @@ class Nwchem < Formula
   depends_on "openblas"
   depends_on "python@3.10"
   depends_on "scalapack"
+
+  uses_from_macos "libxcrypt"
 
   # patches for compatibility with python@3.10
   # https://github.com/nwchemgit/nwchem/issues/271
@@ -34,6 +39,12 @@ class Nwchem < Formula
   patch do
     url "https://github.com/nwchemgit/nwchem/commit/cd0496c6bdd58cf2f1004e32cb39499a14c4c677.patch?full_index=1"
     sha256 "1ff3fdacdebb0f812f6f14c423053a12f2389b0208b8809f3ab401b066866ffc"
+  end
+
+  # patch for compatibility with ARM
+  patch do
+    url "https://github.com/nwchemgit/nwchem/commit/2a14c04f.patch?full_index=1"
+    sha256 "3a14bb5312861948a468a02a0a079a730e8d9db98d2f2758076f9cd649a6fc04"
   end
 
   def install
@@ -63,10 +74,11 @@ class Nwchem < Formula
       ENV["BLAS_SIZE"] = "4"
       ENV["SCALAPACK"] = "-L#{Formula["scalapack"].opt_prefix}/lib -lscalapack"
       ENV["USE_64TO32"] = "y"
+      os = OS.mac? ? "MACX64" : "LINUX64"
       system "make", "nwchem_config", "NWCHEM_MODULES=all python"
-      system "make", "NWCHEM_TARGET=MACX64", "USE_MPI=Y"
+      system "make", "NWCHEM_TARGET=#{os}", "USE_MPI=Y"
 
-      bin.install "../bin/MACX64/nwchem"
+      bin.install "../bin/#{os}/nwchem"
       pkgshare.install "basis/libraries"
       pkgshare.install "nwpw/libraryps"
       pkgshare.install Dir["data/*"]
@@ -77,7 +89,7 @@ class Nwchem < Formula
     cp_r pkgshare/"QA", testpath
     cd "QA" do
       ENV["NWCHEM_TOP"] = pkgshare
-      ENV["NWCHEM_TARGET"] = "MACX64"
+      ENV["NWCHEM_TARGET"] = OS.mac? ? "MACX64" : "LINUX64"
       ENV["NWCHEM_EXECUTABLE"] = "#{bin}/nwchem"
       system "./runtests.mpi.unix", "procs", "0", "dft_he2+", "pyqa3", "prop_mep_gcube", "pspw", "tddft_h2o", "tce_n2"
     end

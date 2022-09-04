@@ -4,21 +4,21 @@ class Mlpack < Formula
   url "https://mlpack.org/files/mlpack-3.4.2.tar.gz"
   sha256 "9e5c4af5c276c86a0dcc553289f6fe7b1b340d61c1e59844b53da0debedbb171"
   license all_of: ["BSD-3-Clause", "MPL-2.0", "BSL-1.0", "MIT"]
-  revision 3
-
-  livecheck do
-    url "https://mlpack.org/files/"
-    regex(/href=.*?mlpack[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  revision 7
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b86eda106cf46fffbd81a652741f0e5fd3d1053544e7c24d271113cd15dc0314"
-    sha256 cellar: :any,                 arm64_big_sur:  "826d26c907780f6b8edc30180c6f6ae0885811534dec61bdbcfda3b7d75a42f2"
-    sha256 cellar: :any,                 monterey:       "52734fada761dd4a6bb15b6c38999bb5c79ce89606d89dbf6c515d320040efa7"
-    sha256 cellar: :any,                 big_sur:        "5aa83e0eb31c4355e128e5d7185710cbefe9ec4afcbe32e38229815428a58817"
-    sha256 cellar: :any,                 catalina:       "c6024d74fc22e20c8075c05501864e998cb36b5cb4c8f1d133ea82166c0e0b95"
-    sha256 cellar: :any,                 mojave:         "3445bbce49bef30c1818523cdf044ad15c9638d960002185144c6d71578e3600"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ecad09f96c51721fd59dc7d0f10c146e79176234af215a3b4965565bf61605fe"
+    sha256 cellar: :any,                 arm64_monterey: "277afc1ab6337583a9bb281adbeddd3be707f30e7c4398d868b858bb46ac10b8"
+    sha256 cellar: :any,                 arm64_big_sur:  "8bf7bf1352f47de1d1a10a09aae695ece8959e2a3c0e6558aaac236c92ccebba"
+    sha256 cellar: :any,                 monterey:       "7c67d680d0ebb915526c99baa908d292b60bc9e57d616ebc5ebca80f96798d4e"
+    sha256 cellar: :any,                 big_sur:        "cdeb478bbaaaa1414ea8d5641423316f08b5aa5ce81e82708076769c60b0cb0b"
+    sha256 cellar: :any,                 catalina:       "45aaf8a7a5e7943b1e1b981918e406810da90f96a8ca1e3fa9df88160ec2092d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "08873aab2d2241ca041ab707c2b48a900b42af7db2af9f802573be675b412e79"
+  end
+
+  head do
+    url "https://github.com/mlpack/mlpack.git", branch: "master"
+
+    depends_on "cereal"
   end
 
   depends_on "cmake" => :build

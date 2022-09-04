@@ -3,17 +3,17 @@ require "language/node"
 class Cdktf < Formula
   desc "Cloud Development Kit for Terraform"
   homepage "https://github.com/hashicorp/terraform-cdk"
-  url "https://registry.npmjs.org/cdktf-cli/-/cdktf-cli-0.9.0.tgz"
-  sha256 "9a6f8752bade501a8c33e397b9208e7b53e6825fe1a6f7f2d4895c8135e0515c"
+  url "https://registry.npmjs.org/cdktf-cli/-/cdktf-cli-0.12.2.tgz"
+  sha256 "9b2e97c530a32d5523f95220b111d8aa44c93926d94595b8feae0d8f75883d83"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "436d3c64391b95ccc8e55eb378a5f88877220ef644a9f9da68334065da97b4c6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "436d3c64391b95ccc8e55eb378a5f88877220ef644a9f9da68334065da97b4c6"
-    sha256 cellar: :any_skip_relocation, monterey:       "a9bcf6f0277ed44f506b56bd584bce5b03208579af5adb49de3b380891ad9fd9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a9bcf6f0277ed44f506b56bd584bce5b03208579af5adb49de3b380891ad9fd9"
-    sha256 cellar: :any_skip_relocation, catalina:       "a9bcf6f0277ed44f506b56bd584bce5b03208579af5adb49de3b380891ad9fd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "436d3c64391b95ccc8e55eb378a5f88877220ef644a9f9da68334065da97b4c6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ba5b8e53e095c31190d725d5b1bfc8292d6f73da31da893bd257e6fc71747d45"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ba5b8e53e095c31190d725d5b1bfc8292d6f73da31da893bd257e6fc71747d45"
+    sha256 cellar: :any_skip_relocation, monterey:       "fdbd0f7977ae59674f14a6a427cd3bb35b3678034ae0ea687ddf06d2cc49f58d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fdbd0f7977ae59674f14a6a427cd3bb35b3678034ae0ea687ddf06d2cc49f58d"
+    sha256 cellar: :any_skip_relocation, catalina:       "fdbd0f7977ae59674f14a6a427cd3bb35b3678034ae0ea687ddf06d2cc49f58d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba5b8e53e095c31190d725d5b1bfc8292d6f73da31da893bd257e6fc71747d45"
   end
 
   depends_on "node"
@@ -22,6 +22,9 @@ class Cdktf < Formula
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
     bin.install_symlink Dir["#{libexec}/bin/*"]
+
+    generate_completions_from_executable(libexec/"bin/cdktf", "completion",
+                                         shells: [:bash, :zsh], shell_parameter_format: :none)
   end
 
   test do

@@ -2,18 +2,18 @@ class K9s < Formula
   desc "Kubernetes CLI To Manage Your Clusters In Style!"
   homepage "https://k9scli.io/"
   url "https://github.com/derailed/k9s.git",
-      tag:      "v0.25.18",
-      revision: "6085039f83cd5e8528c898cc1538f5b3287ce117"
+      tag:      "v0.26.3",
+      revision: "0893f13b3ca6b563dd0c38fdebaefdb8be594825"
   license "Apache-2.0"
   head "https://github.com/derailed/k9s.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fabed8c642a6242e1e169b774f450c3a1206efdbd4b8dba6927ff73db8c65135"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4073ea13ff799d8ee9beaf78f32050895b4f67eee630ca2c1e91188e8e373f9f"
-    sha256 cellar: :any_skip_relocation, monterey:       "c869f9a76bb60f92bb3cdd11dabfa239381def0bd117b5395c7a9c70bcca9e5e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f341e0a3c66071e280207a46716a2b354f784a253539960d4335118ba4328537"
-    sha256 cellar: :any_skip_relocation, catalina:       "424a41b797240daee6ba710c63c52d062b47a9b987a566bb5e63e17b6a6a7cbd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "300598cf8c533553ecef66565215384980b9cf8187e66cca4ca8cecdca4f8fb4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4ec2e9e2a43a66b4bb40edcd6c09a03a7e74c1c1917f8e84e7efa2aa038a4027"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c241e1954a515692265e178ed505a7403ad7e420baf0cdd3867c2643c2746643"
+    sha256 cellar: :any_skip_relocation, monterey:       "facb0994e6e532599a57a6dc2a38ff09d5c6f359cf6b1bbdb6e1372b19f76a99"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c218720dadeaef28d1dee43b3ec21fa99c88e6e41344ef769251969dd3df4520"
+    sha256 cellar: :any_skip_relocation, catalina:       "2c85cab4766018eb0ff301a4c1ede711b254187c03cb2c3b2bbf410d6494e29f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e0675e4568f2562cf857c9cbea965bd6931c473405024051ca7b2e04a4a9ed6"
   end
 
   depends_on "go" => :build
@@ -26,14 +26,7 @@ class K9s < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    bash_output = Utils.safe_popen_read(bin/"k9s", "completion", "bash")
-    (bash_completion/"k9s").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"k9s", "completion", "zsh")
-    (zsh_completion/"_k9s").write zsh_output
-
-    fish_output = Utils.safe_popen_read(bin/"k9s", "completion", "fish")
-    (fish_completion/"k9s.fish").write fish_output
+    generate_completions_from_executable(bin/"k9s", "completion")
   end
 
   test do

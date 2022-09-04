@@ -3,21 +3,22 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      tag:      "v0.1.16535",
-      revision: "5010eb70441d98a589c05c5bbbd368f794b00881"
+      tag:      "v0.1.20856",
+      revision: "991bd2aae331cf5668175acc77c7c8fb8e49accb"
   license "MIT"
   head "https://github.com/CircleCI-Public/circleci-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d850cfeaaf14a322eb960f80419626dda042ffd37de84f401bb54c5506bf24d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ddd0670a68ef4212157ac99807673351e2a53fb5a5503670d947d700e1748121"
-    sha256 cellar: :any_skip_relocation, monterey:       "5eebeb9490e501fc09af148926e17db78c035d4c0dd6355057635648830ed628"
-    sha256 cellar: :any_skip_relocation, big_sur:        "605494b2df8264780c99c880721146ad7adf1c0dc27a782eceb701d1333d3e8e"
-    sha256 cellar: :any_skip_relocation, catalina:       "f70d0dc2a9b4d487d6f8ad68cb0c4d394c15be87b0877a64b257c237109b3464"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "94c9cf37962aa30ff89bced6cd35de50c3482009297137cefd3f4b7206560f0a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce173dbc2ee334b4348477616b1242e2d0d63105229d901abe1d7ab40d3fb679"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "292e7454b4e9aa82fe1f1d571c837514a9cd10921d663868aefb6b008fbee4ed"
+    sha256 cellar: :any_skip_relocation, monterey:       "265ba252f3be7a76095836bdc7fbe4c71605a4241894d60adadfc67bb8fbcd8f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "87f1f4f8b807b3a836535b4b0d88797ff91cfce280f72e41022b10320422d857"
+    sha256 cellar: :any_skip_relocation, catalina:       "ef25c84b7e8a17cffc23b2e9b2ee327e97c0d5cbbcf5fad2e0b0e8f36ef6c40e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8e51198ecb97394fbdeee99b83b63abba4edb64abc6c7dde101e94c5229465b"
   end
 
-  depends_on "go" => :build
+  # Bump to 1.18 when the x/sys dependency is updated upstream.
+  depends_on "go@1.17" => :build
   depends_on "packr" => :build
 
   def install
@@ -31,11 +32,8 @@ class Circleci < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    output = Utils.safe_popen_read("#{bin}/circleci", "--skip-update-check", "completion", "bash")
-    (bash_completion/"circleck").write output
-
-    output = Utils.safe_popen_read("#{bin}/circleci", "--skip-update-check", "completion", "zsh")
-    (zsh_completion/"_circleci").write output
+    generate_completions_from_executable(bin/"circleci", "--skip-update-check", "completion",
+                                        shells: [:bash, :zsh])
   end
 
   test do

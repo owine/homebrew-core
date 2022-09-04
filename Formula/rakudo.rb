@@ -1,19 +1,31 @@
 class Rakudo < Formula
-  desc "Perl 6 compiler targeting MoarVM"
+  desc "Mature, production-ready implementation of the Raku language"
   homepage "https://rakudo.org"
-  url "https://github.com/rakudo/rakudo/releases/download/2021.12/rakudo-2021.12.tar.gz"
-  sha256 "7f53d2c7138d13ab01692d5bd7dbc28f3f29ed86bd96d5280856f55a1ab05406"
+  url "https://github.com/rakudo/rakudo/releases/download/2022.07/rakudo-2022.07.tar.gz"
+  sha256 "7a3bc9d654e1d2792a055b4faf116ef36d141f6b6adde7aa70317705f26090ad"
   license "Artistic-2.0"
 
-  bottle do
-    sha256 arm64_monterey: "d6bcf0a4b6241126ce1ad92b31db45bb2cf369f02ee5d01270b25630ba9a49cf"
-    sha256 arm64_big_sur:  "5d72bbc60d07c5293d3bb501d1fb7545dbc7a6062b9b14b7ba1970bfe8c29a3d"
-    sha256 monterey:       "cc6fa15bbbd34301192fa1a704e82b73c754c470d465118e1fade02990e8cbd9"
-    sha256 big_sur:        "6af9ca3fd8c12616229fa2b0182bb1daeffb3911eceb003c8e9a6a4626fc0740"
-    sha256 catalina:       "12ff83a06c6f87b7f12cd69117f05e52fff92e0935b5ea1cab3c6abb190d939c"
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+    sha256 arm64_monterey: "9209114652da54019d080e0c1f2fb773ad95c4ac201a4ed74892a2eceb503bdd"
+    sha256 arm64_big_sur:  "7ad8b2b69048b935e49f21257092ca3d9e2a72208fc6c28fdf1739403aacbc34"
+    sha256 monterey:       "490c3585c6f88f113937b96b06037156ff5cbd697102ced69bb93230f85d4902"
+    sha256 big_sur:        "4f1c1c5834ef59c5fca756fd3ec9fdc39cc30890a1addf010f232b38b74ff4b7"
+    sha256 catalina:       "8a58e5439699eb059f898a6f732eb3a0b1514c06403fbca475f447b707a175be"
+    sha256 x86_64_linux:   "3c67fcea8f4b4b3b8800d6c7379535206da9ae2e8810f1507a61a94fde205166"
+  end
+
+  depends_on "libtommath"
+  depends_on "libuv"
   depends_on "nqp"
+  depends_on "zstd"
+
+  uses_from_macos "perl" => :build
+  uses_from_macos "libffi"
 
   conflicts_with "rakudo-star"
 
@@ -24,11 +36,11 @@ class Rakudo < Formula
                    "--with-nqp=#{Formula["nqp"].bin}/nqp"
     system "make"
     system "make", "install"
-    bin.install "tools/install-dist.p6" => "perl6-install-dist"
+    bin.install "tools/install-dist.raku" => "raku-install-dist"
   end
 
   test do
-    out = shell_output("#{bin}/perl6 -e 'loop (my $i = 0; $i < 10; $i++) { print $i }'")
+    out = shell_output("#{bin}/raku -e 'loop (my $i = 0; $i < 10; $i++) { print $i }'")
     assert_equal "0123456789", out
   end
 end

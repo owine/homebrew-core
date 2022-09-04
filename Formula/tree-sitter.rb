@@ -3,18 +3,18 @@ require "language/node"
 class TreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/v0.20.4.tar.gz"
-  sha256 "979ad0b36eb90975baf0c65d155d106276cac08afb1c2fe0ad54d4b7d498ce39"
+  url "https://github.com/tree-sitter/tree-sitter/archive/v0.20.7.tar.gz"
+  sha256 "b355e968ec2d0241bbd96748e00a9038f83968f85d822ecb9940cbe4c42e182e"
   license "MIT"
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5dd02d0ee49c9fcc300d1fd5c3eb001acbbeb3ad7aca8c9d9ae7e480f181e31c"
-    sha256 cellar: :any,                 arm64_big_sur:  "07ada407cc0dcbbecc7a74e186a41daf5b6e69a0689b6f49b15e50c47e12ebc2"
-    sha256 cellar: :any,                 monterey:       "c92942aa105c4cace674a429eed93b940fa079536b18d8fcfd722346a257095f"
-    sha256 cellar: :any,                 big_sur:        "a4f79e68a590f163703217d98eebdfe9af4fa3f002e23347a03e34f332b2efd0"
-    sha256 cellar: :any,                 catalina:       "9ad214206cea385d1c2b99239d071d58f1c6e345e44fa63a051b0d9dafffd944"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4aff3b0e216a90fa1fa82dffe6eb1ba7e8f904407fc605e089ddb99a5e5ff62"
+    sha256 cellar: :any,                 arm64_monterey: "ed7732dfb93b41a1a9dec118f119903214b2733059a4666b4811a8c0b4995fb6"
+    sha256 cellar: :any,                 arm64_big_sur:  "1ca16211e94d5a9c72785bf1206141c18c10836027a8e7e58961809fb1e10141"
+    sha256 cellar: :any,                 monterey:       "c863b441b7df332c195dd7be16c67108d2bffab77cb6b5d336c59b77d2ac28b0"
+    sha256 cellar: :any,                 big_sur:        "49fc36d28fb16ab79081fd579585be955473a4c196971385b8425cb928fd8959"
+    sha256 cellar: :any,                 catalina:       "84744c0f0ac2af90eb3929ffedcd3284906da54186d923f3449e98cf53aea8d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3a9847f8198c9fc9b3da2b65a37e397a1eabaf549f0f7cb93a18a47a6fa0254c"
   end
 
   depends_on "emscripten" => [:build, :test]

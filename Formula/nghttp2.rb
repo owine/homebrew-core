@@ -1,18 +1,18 @@
 class Nghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.46.0/nghttp2-1.46.0.tar.gz"
-  sha256 "4b6d11c85f2638531d1327fe1ed28c1e386144e8841176c04153ed32a4878208"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.49.0/nghttp2-1.49.0.tar.gz"
+  mirror "http://fresh-center.net/linux/www/nghttp2-1.49.0.tar.gz"
+  sha256 "14dd5654e369227afebfba5198793a1788a0af9d30cddb19af3ec275d110a7a6"
   license "MIT"
 
   bottle do
-    sha256 arm64_monterey: "dd713ae5e09d42b3565b0948fd710e340231f97c9125d3aaa3aac69b11648140"
-    sha256 arm64_big_sur:  "d460789e9fd34f91aa1e9e4ca1b7f19a1d404bfe5a2436137da377316efbea93"
-    sha256 monterey:       "a4c091e6343a0153b4ea4223d8a5f22f598a2cd874ae0080b605e812bce9f131"
-    sha256 big_sur:        "da456fbcfd7be04c28fe0882f7ba187db2c584ccc3eabc5ab631ac8278513984"
-    sha256 catalina:       "e667dd7d98de20e202058c50faf84645e1379bb60b55a49a8cd7eee6b4adfcc9"
-    sha256 mojave:         "961ca4a0fb74c72bd1e184351aa375c60df79410acd0a1f8930e23584c9e6b86"
-    sha256 x86_64_linux:   "690725dd14f28ac675bc901d789a5d17474c00a4914012a4b67e63027af6004f"
+    sha256 arm64_monterey: "f6d8130a9f5625f68f6da8b1fd128b8560c410662177dd1eafd0e0887cb45377"
+    sha256 arm64_big_sur:  "4d409aa9554e5e0cade07c4d2dec42b77ae992dc2b33af6aaa60788ea3200b32"
+    sha256 monterey:       "f47eebd19f84268259673d7469835a4850e3168d1c9b3aaade7f4245c7c376d4"
+    sha256 big_sur:        "c74c2c8f5f93b2ebf0ccb60a16501bbc91f387d1f2debd1faf440fb9416efafc"
+    sha256 catalina:       "eedbc417e89dba315bc6e854b8d315967aaf7d509b5060d21f039c9c8d5a068f"
+    sha256 x86_64_linux:   "576e2e477778c8c60a30c0a66d0decf3d79446af450693244f22ea1400534c8e"
   end
 
   head do
@@ -33,11 +33,11 @@ class Nghttp2 < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
-  on_linux do
-    # Fix: shrpx_api_downstream_connection.cc:57:3: error:
-    # array must be initialized with a brace-enclosed initializer
-    # https://github.com/nghttp2/nghttp2/pull/1269
-    patch do
+  # Fix: shrpx_api_downstream_connection.cc:57:3: error:
+  # array must be initialized with a brace-enclosed initializer
+  # https://github.com/nghttp2/nghttp2/pull/1269
+  patch do
+    on_linux do
       url "https://github.com/nghttp2/nghttp2/commit/829258e7038fe7eff849677f1ccaeca3e704eb67.patch?full_index=1"
       sha256 "c4bcf5cf73d5305fc479206676027533bb06d4ff2840eb672f6265ba3239031e"
     end

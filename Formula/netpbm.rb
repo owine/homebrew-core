@@ -3,8 +3,8 @@ class Netpbm < Formula
   homepage "https://netpbm.sourceforge.io/"
   # Maintainers: Look at https://sourceforge.net/p/netpbm/code/HEAD/tree/
   # for stable versions and matching revisions.
-  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: "4259"
-  version "10.86.30"
+  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: "4365"
+  version "10.86.34"
   license "GPL-3.0-or-later"
   version_scheme 1
   head "https://svn.code.sf.net/p/netpbm/code/trunk"
@@ -16,16 +16,16 @@ class Netpbm < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "240231b04c7e5313ec09348bbace41f42f60c830db87e9c58de9b81161183b24"
-    sha256 cellar: :any,                 arm64_big_sur:  "2162ffeedbab83e8881a5a7a37cd3c23d180620c5133585d563bd75f158ca641"
-    sha256 cellar: :any,                 monterey:       "24ad598a420d4351496dc9721c3f5d6e0aa29208ba084bf18247263419f61c68"
-    sha256 cellar: :any,                 big_sur:        "7db324c629d80aaa8d66d39a05859aea348489266182bc7ef7346982744acec5"
-    sha256 cellar: :any,                 catalina:       "1b45efa29b3651583c544163aec57ca0a1464293cdb3706dbd4900b55d6551bd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4398f1911d5860d094b04984865d5090ca950314e757109d2d7a5f3738b8c9b1"
+    sha256 arm64_monterey: "8bf3b9fc4d9ebf4bf94d6eb8d24101ea5b603bc2d637f2c0580e343bf9241ef8"
+    sha256 arm64_big_sur:  "438ea4c47818e4f842863ef08cdcd6b66aa5760bd4278001697f70e52ce3698a"
+    sha256 monterey:       "0db6b3939e1d1582f5d1f2d6c773ce59608a0d1f447eddede14c152ae284f0b4"
+    sha256 big_sur:        "357f2471d61280edaad05bc2dbf455791e6e956c191f0706796d3ecdd261a49d"
+    sha256 catalina:       "8a1ad15323e118eb77d4c561d8a848ca9dfdc5a60ab467f1dcc6360694defe1f"
+    sha256 x86_64_linux:   "e5519cec5331aa00d1fe5a3e3ed34d2dffcdcb3a79229eefb2042880ca577302"
   end
 
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 
@@ -36,10 +36,6 @@ class Netpbm < Formula
   conflicts_with "jbigkit", because: "both install `pbm.5` and `pgm.5` files"
 
   def install
-    # Fix file not found errors for /usr/lib/system/libsystem_symptoms.dylib and
-    # /usr/lib/system/libsystem_darwin.dylib on 10.11 and 10.12, respectively
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
-
     cp "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
@@ -49,7 +45,8 @@ class Netpbm < Formula
       s.change_make_var! "PNGLIB", "-lpng"
       s.change_make_var! "ZLIB", "-lz"
       s.change_make_var! "JASPERLIB", "-ljasper"
-      s.change_make_var! "JASPERHDR_DIR", "#{Formula["jasper"].opt_include}/jasper"
+      s.change_make_var! "JASPERHDR_DIR", Formula["jasper"].opt_include/"jasper"
+      s.gsub! "/usr/local/netpbm/rgb.txt", prefix/"misc/rgb.txt"
 
       if OS.mac?
         s.change_make_var! "CFLAGS_SHLIB", "-fno-common"
@@ -73,7 +70,7 @@ class Netpbm < Formula
       end
 
       prefix.install %w[bin include lib misc]
-      lib.install Dir["staticlink/*.a"], Dir["sharedlink/#{shared_library("*")}"]
+      lib.install buildpath.glob("staticlink/*.a"), buildpath.glob("sharedlink/#{shared_library("*")}")
       (lib/"pkgconfig").install "pkgconfig_template" => "netpbm.pc"
     end
   end
@@ -81,7 +78,34 @@ class Netpbm < Formula
   test do
     fwrite = shell_output("#{bin}/pngtopam #{test_fixtures("test.png")} -alphapam")
     (testpath/"test.pam").write fwrite
-    system "#{bin}/pamdice", "test.pam", "-outstem", testpath/"testing"
-    assert_predicate testpath/"testing_0_0.", :exist?
+    system bin/"pamdice", "test.pam", "-outstem", testpath/"testing"
+    assert_predicate testpath/"testing_0_0.pam", :exist?
+    (testpath/"test.xpm").write <<~EOS
+      /* XPM */
+      static char * favicon_xpm[] = {
+      "16 16 4 1",
+      " 	c white",
+      ".	c blue",
+      "X	c black",
+      "o	c red",
+      "                ",
+      "                ",
+      "                ",
+      "                ",
+      "  ....    ....  ",
+      " .    .  .    . ",
+      ".  ..  ..  ..  .",
+      "  .  . .. .  .  ",
+      " .   XXXXXX   . ",
+      " .   XXXXXX   . ",
+      "oooooooooooooooo",
+      "oooooooooooooooo",
+      "oooooooooooooooo",
+      "oooooooooooooooo",
+      "XXXXXXXXXXXXXXXX",
+      "XXXXXXXXXXXXXXXX"};
+    EOS
+    ppmout = shell_output("#{bin}/xpmtoppm test.xpm")
+    refute_predicate ppmout, :empty?
   end
 end

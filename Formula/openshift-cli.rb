@@ -6,34 +6,26 @@ class OpenshiftCli < Formula
 
   stable do
     url "https://github.com/openshift/oc.git",
-        tag:      "openshift-clients-4.6.0-202006250705.p0",
-        revision: "51011e4849252c723b520643d27d3fa164d28c61"
-    version "4.6.0"
-
-    # Add Makefile target to build arm64 binary
-    # Upstream PR: https://github.com/openshift/oc/pull/889
-    patch :DATA
+        tag:      "openshift-clients-4.12.0-202208031327",
+        revision: "3c85519af6c4979c02ebb1886f45b366bbccbf55"
   end
 
   livecheck do
     url :stable
-    regex(/^openshift-clients[._-](\d+(?:\.\d+)+)(?:[._-]p?\d+)?$/i)
+    regex(/^openshift-clients[._-](\d+(?:\.\d+)+(?:[._-]p?\d+)?)$/i)
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b1dd03d660dd23ec473ec2277e29f1d373220630544de94dae14eb70f69a350b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2782211e3255bb03ccf0b26f59d7ff859ca0324d45fb76b264cf44a16f3077ad"
-    sha256 cellar: :any_skip_relocation, monterey:       "40e611652049dd41c3146947bd6f16185074b727fd969caa1e5494a0b9440f23"
-    sha256 cellar: :any_skip_relocation, big_sur:        "870e98712efe5ea045356be3f36525c39e7cdef6239f68ec8c5957d750ae7022"
-    sha256 cellar: :any_skip_relocation, catalina:       "f7a8fafdad3e268d2f8579c0c1500e4b1f45d247159986e0d3eed88f14672ea5"
-    sha256 cellar: :any_skip_relocation, mojave:         "59b89010cda9ee308ff728704dccd919be1a12f3a1ea3454cf3f31e9c900d273"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9aa2fe20e8fb4212f2ee01ea32ff1cfa255e1c5135f50ce27658b699de97ea49"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0014adf50d782523d19caf3277f86b72a3d75aa5e98a6cc143214c6f3e8919c8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a904e24d03b473663b6c47cd459e3e91f4bd78fcde7c08f8ffdd6dd7333a0fe9"
+    sha256 cellar: :any_skip_relocation, monterey:       "ebb452458353b75d29726d7650f59a0eb24edc60574e7a87269658ee958083dc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "54738cd33c03203ab673f43b70202252fce2b9cd63d9be1f2d720c85addc8947"
+    sha256 cellar: :any_skip_relocation, catalina:       "8cb6b4c75b9a4d73bbfabdc2d8c58c6e91fcf648aac76e3967708a82e5d3949b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7bd6d5061ac5ba80ae76957c4ce1283654c78e9fb248e067928b46d2f25870c"
   end
 
   depends_on "coreutils" => :build
-  depends_on "go" => :build
-  depends_on "heimdal" => :build
+  depends_on "go@1.18" => :build
   depends_on "socat"
 
   uses_from_macos "krb5"
@@ -68,20 +60,3 @@ class OpenshiftCli < Formula
     assert_match "foo", context_output
   end
 end
-
-__END__
-diff --git a/Makefile b/Makefile
-index 940a90415..a3584fbc9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -88,6 +88,10 @@ cross-build-darwin-amd64:
- 	+@GOOS=darwin GOARCH=amd64 $(MAKE) --no-print-directory build GO_BUILD_PACKAGES:=./cmd/oc GO_BUILD_FLAGS:="$(GO_BUILD_FLAGS_DARWIN)" GO_BUILD_BINDIR:=$(CROSS_BUILD_BINDIR)/darwin_amd64
- .PHONY: cross-build-darwin-amd64
-
-+cross-build-darwin-arm64:
-+	+@GOOS=darwin GOARCH=arm64 $(MAKE) --no-print-directory build GO_BUILD_PACKAGES:=./cmd/oc GO_BUILD_FLAGS:="$(GO_BUILD_FLAGS_DARWIN)" GO_BUILD_BINDIR:=$(CROSS_BUILD_BINDIR)/darwin_arm64
-+.PHONY: cross-build-darwin-arm64
-+
- cross-build-windows-amd64:
- 	+@GOOS=windows GOARCH=amd64 $(MAKE) --no-print-directory build GO_BUILD_PACKAGES:=./cmd/oc GO_BUILD_FLAGS:="$(GO_BUILD_FLAGS_WINDOWS)" GO_BUILD_BINDIR:=$(CROSS_BUILD_BINDIR)/windows_amd64
- .PHONY: cross-build-windows-amd64

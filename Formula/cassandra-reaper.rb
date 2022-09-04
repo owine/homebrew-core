@@ -1,36 +1,38 @@
 class CassandraReaper < Formula
   desc "Management interface for Cassandra"
   homepage "https://cassandra-reaper.io/"
-  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.1.0/cassandra-reaper-3.1.0-release.tar.gz"
-  sha256 "2e0d816a3b3659411be169a245b5e0a1e64c50c1aecaa3b1d33537be4649f297"
+  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.2.0/cassandra-reaper-3.2.0-release.tar.gz"
+  sha256 "2f39b0bacd1298147c03ccb9289bb8cbfa1eaa36bb1d0e5ac7e1785afd7706fd"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "033a478cada5d4122b9d901933c04dff244766217b4011c54e903e698c8f30ed"
-    sha256 cellar: :any_skip_relocation, catalina:     "033a478cada5d4122b9d901933c04dff244766217b4011c54e903e698c8f30ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1332882726428c2293357e513c45fa9be9572dfefdebccaac29323b099e6f870"
+    sha256 cellar: :any_skip_relocation, all: "6988ca940a0e163014ed4c1f083aa0c2b0817593dc8b6fcf43b0edbe3a0a40ec"
   end
 
-  depends_on "openjdk@8"
+  depends_on "openjdk@11"
 
   def install
-    inreplace "bin/cassandra-reaper", "/usr/share", prefix
+    inreplace Dir["resource/*.yaml"], " /var/log", " #{var}/log"
+    inreplace "bin/cassandra-reaper", "/usr/local/share", share
+    inreplace "bin/cassandra-reaper", "/usr/local/etc", etc
+
+    libexec.install "bin/cassandra-reaper"
     prefix.install "bin"
     etc.install "resource" => "cassandra-reaper"
     share.install "server/target" => "cassandra-reaper"
-    inreplace Dir[etc/"cassandra-reaper/*.yaml"], " /var/log", " #{var}/log"
+
+    (bin/"cassandra-reaper").write_env_script libexec/"cassandra-reaper",
+      Language::Java.overridable_java_home_env("11")
   end
 
   service do
     run opt_bin/"cassandra-reaper"
-    environment_variables JAVA_HOME: Formula["openjdk@8"].opt_prefix
     keep_alive true
     error_log_path var/"log/cassandra-reaper/service.err"
     log_path var/"log/cassandra-reaper/service.log"
   end
 
   test do
-    ENV["JAVA_HOME"] = Formula["openjdk@8"].opt_prefix
     cp etc/"cassandra-reaper/cassandra-reaper.yaml", testpath
     port = free_port
     inreplace "cassandra-reaper.yaml" do |s|

@@ -1,18 +1,17 @@
 class Hcloud < Formula
   desc "Command-line interface for Hetzner Cloud"
   homepage "https://github.com/hetznercloud/cli"
-  url "https://github.com/hetznercloud/cli/archive/v1.29.0.tar.gz"
-  sha256 "ea8b08702f7285d5e886fc8797287ac05747eb66ad1d77d041725f9cf6c88893"
+  url "https://github.com/hetznercloud/cli/archive/v1.30.3.tar.gz"
+  sha256 "3e5d1fa240c5d0ea46d209c66c315095f6daa884a9424e2a69b5dc312dafe4d6"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "65e73b6d461b64a512f5d72f9bfb5d71abbee2f915038eadbfde03683c56e714"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "896b6d8f451206911d9919ff92c415371e0b47624ed33e0fff7681a858fafca9"
-    sha256 cellar: :any_skip_relocation, monterey:       "86953a27658cd605bd63a61b6a41868827cb5de0b3ba638e94728473c31a1579"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f992dcc13506c5af3f54387b5d2ecce4678b04b6f95cd7d59742e60011b5981b"
-    sha256 cellar: :any_skip_relocation, catalina:       "50f6f109eed783337f403da4399bcf54fe3ba23c1dcd8728454f467227ee4843"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5441f014a6f352e26d4023fb730e481fe5131a15f0017d64465798c21bfc4152"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9194ec5aa7efcfc2f1f68e9ef28c57143dde8f221b6fcd3af7c38c4dc0bda83c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e31e8e6cd55554c22b47aab40a5a8a3d6e3a81a4d7a45b806490edfeed18fd1"
+    sha256 cellar: :any_skip_relocation, monterey:       "17ada31333d51d1eea1399c755354c2a102b1017219712b36fc6c4dad2551d9b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "245a194cb5f5fd094091b0a17aaf05963bccc55b2e97602f538877c4ac5ed2b6"
+    sha256 cellar: :any_skip_relocation, catalina:       "e65ba85bbb302a03535ee99f61633d8585b76ec9221a55b6fde484c078cc3b30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0fae453cb61f091b1721c0713caa673faf54eb86a0a2aaea8338c6878165d55b"
   end
 
   depends_on "go" => :build
@@ -21,12 +20,7 @@ class Hcloud < Formula
     ldflags = "-s -w -X github.com/hetznercloud/cli/internal/version.Version=v#{version}"
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/hcloud"
 
-    output = Utils.safe_popen_read(bin/"hcloud", "completion", "bash")
-    (bash_completion/"hcloud").write output
-    output = Utils.safe_popen_read(bin/"hcloud", "completion", "zsh")
-    (zsh_completion/"_hcloud").write output
-    output = Utils.safe_popen_read(bin/"hcloud", "completion", "fish")
-    (fish_completion/"hcloud.fish").write output
+    generate_completions_from_executable(bin/"hcloud", "completion")
   end
 
   test do

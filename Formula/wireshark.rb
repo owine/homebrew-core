@@ -1,9 +1,9 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-3.6.1.tar.xz"
-  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-3.6.1.tar.xz"
-  sha256 "0434eda8fb6bf88e2b42a67eb5d1de254a67d505bec3bb51fee9d7cad7925a38"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-3.6.7.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-3.6.7.tar.xz"
+  sha256 "cce10a35caa2f79b73d3e6e4dc5388dd47d216114a550fdeb06ae78da0edb7c5"
   license "GPL-2.0-or-later"
   head "https://gitlab.com/wireshark/wireshark.git", branch: "master"
 
@@ -13,10 +13,12 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "32103c0332c83ca9bf7f08dee7b1e3b6f968e4115f558e97d885a2ade82ad436"
-    sha256 big_sur:       "6abcef3a580024ecc00c17e48dff034edaac4adc9268bea3499ae16fda8e2f8d"
-    sha256 catalina:      "16b85299e672698026ab83ae955b16614b2c0112fbbe1b2677eab21d27e83f48"
-    sha256 x86_64_linux:  "148d3d263686946eb19df6dbae4085b5a110d6282662ced9556ac6d9d8636c8c"
+    sha256 arm64_monterey: "2af55f85377ba3bf6e10dc4173cc8c55785c4f2c37c65430606692a9add0d4a6"
+    sha256 arm64_big_sur:  "4eb76a02dbd3b155b205a8f8e16409fa83d0bb606d08d2914c81cfb769125c44"
+    sha256 monterey:       "ced94ed71232b873f0807d994184b09764f2e51e147ffb62f4240ab128f0c3fb"
+    sha256 big_sur:        "8718d561354155c1d49bf9c601fbb6788c461bb1fc933305e87e05d9ff2379b7"
+    sha256 catalina:       "812521a69760692ec3142f959f8f275d8a0fc34132b8305ea30a859505e05c17"
+    sha256 x86_64_linux:   "3bfef710231b69378c6b9f6f64e41a051a6b250560286b90c0eac53768dfe892"
   end
 
   depends_on "cmake" => :build
@@ -32,6 +34,7 @@ class Wireshark < Formula
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "python" => :build
 
   def install
     args = std_cmake_args + %W[
@@ -42,7 +45,7 @@ class Wireshark < Formula
       -DENABLE_PORTAUDIO=OFF
       -DENABLE_LUA=ON
       -DLUA_INCLUDE_DIR=#{Formula["lua"].opt_include}/lua
-      -DLUA_LIBRARY=#{Formula["lua"].opt_lib}/liblua.dylib
+      -DLUA_LIBRARY=#{Formula["lua"].opt_lib/shared_library("liblua")}
       -DCARES_INCLUDE_DIR=#{Formula["c-ares"].opt_include}
       -DGCRYPT_INCLUDE_DIR=#{Formula["libgcrypt"].opt_include}
       -DGNUTLS_INCLUDE_DIR=#{Formula["gnutls"].opt_include}

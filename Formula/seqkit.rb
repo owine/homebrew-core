@@ -1,18 +1,18 @@
 class Seqkit < Formula
   desc "Cross-platform and ultrafast toolkit for FASTA/Q file manipulation in Golang"
   homepage "https://bioinf.shenwei.me/seqkit"
-  url "https://github.com/shenwei356/seqkit/archive/v2.1.0.tar.gz"
-  sha256 "99041d8c56e7a5e346e852cc8061cf828ee14b5f550b2f263e6031e99491c536"
+  url "https://github.com/shenwei356/seqkit/archive/v2.3.0.tar.gz"
+  sha256 "2691a2cdd83d51a447016f35206f7e47e429bbbf6b10b35c13cbdf993769578c"
   license "MIT"
   head "https://github.com/shenwei356/seqkit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c89a2abce52fe88ae43fdd5a6bb7029c499650fed71a88a8423dbb401351734"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6a18b67f654caf6f9177e004e0b22db570bc4e157ba8feb0d94c287df2875268"
-    sha256 cellar: :any_skip_relocation, monterey:       "44df9a540e423d15437fe39c3b65377a6ed3961b94678ba09bbe5ac6ba7a180a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bb8bf5408c4c2457061b08c3156c78d0327966b33f746525e65636b81fbd8d7b"
-    sha256 cellar: :any_skip_relocation, catalina:       "c36a35635fef319c1f63f792764a2bcecce3d2a00f1d66ba2bcb1b97c2f71c18"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "419e6f1a7d61d28140f84fe99fa2e033ac182a5b0f658ecb7ea953f2d34129e0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f57cbd62bbef0a0192b22fe821388169e4d66ab926a586241e2f3cb8913e117d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0d8852c1400079f7869a90e65a96afd846658febb841392174400a3761f9c6d7"
+    sha256 cellar: :any_skip_relocation, monterey:       "f448b6b365d9819acc7f90d8c5e5ae3663279d03669600a6dec1203820746d4e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "55611359dea6f44503232815fcad360246610c038e255f7b6113030173db9067"
+    sha256 cellar: :any_skip_relocation, catalina:       "a0117784a961caeb392ad6ea3b3cbeca41f8b358f499e250f3ef35c3bc0bc494"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5913e6bf676b8c66bfc148eccb37cc227c07c6b7b6b592f5171826bbfb5b2cfb"
   end
 
   depends_on "go" => :build

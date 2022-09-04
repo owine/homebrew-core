@@ -2,8 +2,8 @@ class KubernetesCli < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      tag:      "v1.23.3",
-      revision: "816c97ab8cff8a1c72eccca1026f7820e93e0d25"
+      tag:      "v1.25.0",
+      revision: "a866cbe2e5bbaa01cfd5e969aa3e033f3282a8a2"
   license "Apache-2.0"
   head "https://github.com/kubernetes/kubernetes.git", branch: "master"
 
@@ -13,12 +13,12 @@ class KubernetesCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5534ea2c6eb9aebc6c5412e5502a8d5100b30672d3e0f203cddb3d0d6558b8ad"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ff00e95508639baad685f8090e5f55ece4b404c5379c815f1218e1df8a5bcd11"
-    sha256 cellar: :any_skip_relocation, monterey:       "a36387677eacf9f5c1d0e321e305b54c8f11d04b4efcf6f1db97802b507ea3a1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fe5d07b4bd541bdb0aadfa628ffa6086f779674dfda8bf3e48fdeef24e55fc57"
-    sha256 cellar: :any_skip_relocation, catalina:       "3725fb170e0caa33a78cd2e6ada1f8482ae5bdf894c742007b0c3be71dc07508"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f61d19797f24b0bf90620f2a4bc10577e023d629d4958c18dc993bf4f94d8dba"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e104c25f4825c7f1f46c1c14fb541189626097aa25b1a3a0f2470a37c88c26c4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f1ff9b35a01e5a5bb6d92dcb2eafa8dee937a6aa88caed5b9ecf1564e87db256"
+    sha256 cellar: :any_skip_relocation, monterey:       "66707c7abfc745712344fdf74246f0ab8d2e7478a3f33747bf6ee4042960a47a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "24700eceace8adf3c51ced67d5604d274431a884a61a1b9843452b5552de4ea3"
+    sha256 cellar: :any_skip_relocation, catalina:       "588bc829f91178204413ccfe6d86e9e5b8d6840b646881410564fef6ff174d74"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5330e4a49228d3aa670f59bca6a9e8ce61468d61077d7d17a2eb25071f68a2ba"
   end
 
   depends_on "bash" => :build
@@ -40,17 +40,7 @@ class KubernetesCli < Formula
     system "make", "WHAT=cmd/kubectl"
     bin.install "_output/bin/kubectl"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"kubectl", "completion", "bash")
-    (bash_completion/"kubectl").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"kubectl", "completion", "zsh")
-    (zsh_completion/"_kubectl").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"kubectl", "completion", "fish")
-    (fish_completion/"kubectl.fish").write output
+    generate_completions_from_executable(bin/"kubectl", "completion", base_name: "kubectl")
 
     # Install man pages
     # Leave this step for the end as this dirties the git tree

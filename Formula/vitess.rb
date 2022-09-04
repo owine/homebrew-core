@@ -1,24 +1,27 @@
 class Vitess < Formula
   desc "Database clustering system for horizontal scaling of MySQL"
   homepage "https://vitess.io"
-  url "https://github.com/vitessio/vitess/archive/v12.0.3.tar.gz"
-  sha256 "f517a013fec7751a7da43ca2a11a4827d75ba1fbafd310bb10b9b3066549df60"
+  url "https://github.com/vitessio/vitess/archive/v14.0.2.tar.gz"
+  sha256 "a29eb7cab925e2121a93d65748e3022c3e3093267f85110e34b0f8de9fa11b8e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7408c0c135fd24477d0372bea43bd800a6f3c556fb793bcb1144153467ca37a0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bdd83add8df585cb7b35773a885a9932b9125ee1639027a4b54c45286efd565f"
-    sha256 cellar: :any_skip_relocation, monterey:       "8a9fe9b58b840eb1c9c956869338b249f5c6ed724b6a46b1eed6aec46c4c1951"
-    sha256 cellar: :any_skip_relocation, big_sur:        "48c2e3bf47e6b8db640cec9f67d8849edfc835100aed51120d560f0d861ec95d"
-    sha256 cellar: :any_skip_relocation, catalina:       "a1b76a95ff2e7660e1cc896ffbe0057df245a0ec95c2d05357a9f648820ede9a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "861bafece13fc35de445b82638f94bab9c00c4694ea5f7dbfe80504fe0c89639"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0941341f66d3a6080acec1ae051ba41a23eff2920d0b5ea28613010f7944fb3c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e42569bda5970732c90ca421f54dbff1fd0566f62f604c518fdb0c9aa0db9969"
+    sha256 cellar: :any_skip_relocation, monterey:       "874b8f51b421951bed01a7285aafc483dd13d2871cb92a0b96993c2cffe5b294"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7cf46a0e20c4f013a4bf4901da4e3c80ccc596cf9f038cdd1e2cb3ec32a81494"
+    sha256 cellar: :any_skip_relocation, catalina:       "6af3734265dac7fd2ec6b9968a83040a20a393ae2952886628695ad1e5401c1f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "61d5ae2c2119d207909bdbbecd04daa992418764fb08db9263e422b689e9a7ae"
   end
 
-  depends_on "go" => :build
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
   depends_on "etcd"
 
   def install
-    system "make", "install-local", "PREFIX=#{prefix}", "VTROOT=#{buildpath}"
+    # -buildvcs=false needed for build to succeed on Go 1.18.
+    # It can be removed when this is no longer the case.
+    system "make", "install-local", "PREFIX=#{prefix}", "VTROOT=#{buildpath}", "VT_EXTRA_BUILD_FLAGS=-buildvcs=false"
     pkgshare.install "examples"
   end
 

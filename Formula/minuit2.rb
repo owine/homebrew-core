@@ -1,26 +1,44 @@
 class Minuit2 < Formula
   desc "Physics analysis tool for function minimization"
-  homepage "https://seal.web.cern.ch/seal/snapshot/work-packages/mathlibs/minuit/"
-  url "https://www.cern.ch/mathlibs/sw/5_34_14/Minuit2/Minuit2-5.34.14.tar.gz"
-  sha256 "2ca9a283bbc315064c0a322bc4cb74c7e8fd51f9494f7856e5159d0a0aa8c356"
+  homepage "https://root.cern.ch/doc/master/md_math_minuit2_doc_Minuit2.html"
+  url "https://root.cern.ch/download/root_v6.26.06.source.tar.gz"
+  sha256 "b1f73c976a580a5c56c8c8a0152582a1dfc560b4dd80e1b7545237b65e6c89cb"
+  license "LGPL-2.1-or-later"
+  head "https://github.com/root-project/root.git", branch: "master"
 
-  bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_big_sur: "28baba24aef52eff45f8411d04bbdfa795dcbd9cc4c9d9c71f9eb71213b60ddd"
-    sha256 cellar: :any, big_sur:       "92436bedd07967e01f4b230599680a6fc8220c43d6ee377aca4e7d824aa4eae6"
-    sha256 cellar: :any, catalina:      "94d14435083239aeca25cc36037c4c1445d7327c9e28f216dfdbcb3be16525ec"
-    sha256 cellar: :any, mojave:        "19ea9f2a3b94afe2902e02a71281d85268c5e63c46c9df822d9ac138211f6cc5"
-    sha256 cellar: :any, high_sierra:   "61b38bc01bf0744908bfda8e610ca39f7f07b4e2d6ecd1239cb0de82521ae375"
-    sha256 cellar: :any, sierra:        "00867c4037d0110f2adf23a623aa918a95c9345be197ecdc0a9aa0d9da9f04e0"
-    sha256 cellar: :any, el_capitan:    "7457852262758583daca3f23ac3e6fa312fe0a3fd84f0b20da2081967124a0fc"
-    sha256 cellar: :any, yosemite:      "32ff2d05e0a85b28513789e1f625e654f2141b80202f506ad0f7721caab95ddd"
+  livecheck do
+    formula "root"
   end
 
+  bottle do
+    sha256 cellar: :any,                 arm64_monterey: "6e205879629a898f1a797da87058b2cd7f727b5a5f21742af6227c74542977c0"
+    sha256 cellar: :any,                 arm64_big_sur:  "937bc1d4b5613eadde5eb9b8706509ac46fba4b213df914b3a34f0b9645f9e8a"
+    sha256 cellar: :any,                 monterey:       "4738710f5a36f8c52c56650f6a7f6b5ed9470ad9d9fa8f1a5aaf2c9292bcb269"
+    sha256 cellar: :any,                 big_sur:        "d5d4d4ce8c56607be1a02cbb2703d396cda084c04cef18be6cd6665364478ab4"
+    sha256 cellar: :any,                 catalina:       "13bf91dd19a6a1a2eb4a291cca8cc07e00b79fca07896216f15e09b2ae90a0e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b5ea379da72fbca8dc6af5079d08dcdec09879a14abb0f1a52b6a9a1cd293f1"
+  end
+
+  depends_on "cmake" => :build
+
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--with-pic",
-                          "--disable-openmp",
-                          "--prefix=#{prefix}"
-    system "make", "install"
+    system "cmake", "-S", "math/minuit2", "-B", "build/shared", *std_cmake_args,
+                    "-Dminuit2_standalone=ON", "-DBUILD_SHARED_LIBS=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}"
+    system "cmake", "--build", "build/shared"
+    system "cmake", "--install", "build/shared"
+
+    system "cmake", "-S", "math/minuit2", "-B", "build/static", *std_cmake_args,
+                    "-Dminuit2_standalone=ON", "-DBUILD_SHARED_LIBS=OFF"
+    system "cmake", "--build", "build/static"
+    lib.install Dir["build/static/lib/libMinuit2*.a"]
+
+    pkgshare.install "math/minuit2/test/MnTutorial"
+  end
+
+  test do
+    cp Dir[pkgshare/"MnTutorial/{Quad1FMain.cxx,Quad1F.h}"], testpath
+    system ENV.cxx, "-std=c++11", "Quad1FMain.cxx", "-o", "test", "-I#{include}/Minuit2", "-L#{lib}", "-lMinuit2"
+    assert_match "par0: -8.26907e-11 -1 1", shell_output("./test")
   end
 end

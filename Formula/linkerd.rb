@@ -2,8 +2,8 @@ class Linkerd < Formula
   desc "Command-line utility to interact with linkerd"
   homepage "https://linkerd.io"
   url "https://github.com/linkerd/linkerd2.git",
-      tag:      "stable-2.11.1",
-      revision: "43fc40f545b47bd86c6800bf3895745f15902e72"
+      tag:      "stable-2.12.0",
+      revision: "0bd3f732e68b9bc0345b801ca541fad36a8dd824"
   license "Apache-2.0"
 
   livecheck do
@@ -12,13 +12,12 @@ class Linkerd < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "448be45d3fbe74211bddf2fd1d984bdbbba31c21ba3b77b3f268a7e3af59caee"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2b43a17a2d62b7ba887a8eef7eeb9a2470c24c6517e086cdc09a0afd606816a2"
-    sha256 cellar: :any_skip_relocation, monterey:       "8b7528e2fc919d5e6ee175fdf0a156f961d9d3d3e6461ee3550e2693df244d22"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b111cee3a6b809627d8bf5d523a16204cb7e0e6d8805dd61b170f01aef8772d8"
-    sha256 cellar: :any_skip_relocation, catalina:       "9382106631b7f7a2a337a9031611d6a34a0a45dacda9456d832aaf18c02ae45a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "809a13456f459acb6e75778e11d181bf0c1d374218a6d632454a058730aaad84"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b8e5dfe2e143f21fc5215f2e0f13f256ac7650bf91cd93ebc50a2d4f7e3d380e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3559d9295ee5a3ed1511e0844cf4ab3f8083b5e3b8acb4912c3ce578404305bc"
+    sha256 cellar: :any_skip_relocation, monterey:       "10122413c6c4630f84cf2172714efc7bea20fd4e95cddab3393495a99da3e935"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b565d1a74392e36bee0d87b9a3b294146ae81d24d7e3cecb7ee9f74be3a82076"
+    sha256 cellar: :any_skip_relocation, catalina:       "44bc8d80ea6026f05547cd16c695fe3febc66204eaa9821125a0bed8f6457dfa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01a60324e1189844470383f1ffb9417e2241696c7d52af10f6473286d04134d5"
   end
 
   depends_on "go" => :build
@@ -30,17 +29,7 @@ class Linkerd < Formula
     bin.install Dir["target/cli/*/linkerd"]
     prefix.install_metafiles
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"linkerd", "completion", "bash")
-    (bash_completion/"linkerd").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"linkerd", "completion", "zsh")
-    (zsh_completion/"_linkerd").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"linkerd", "completion", "fish")
-    (fish_completion/"linkerd.fish").write output
+    generate_completions_from_executable(bin/"linkerd", "completion")
   end
 
   test do

@@ -23,8 +23,8 @@ class Otf2bdf < Formula
 
   depends_on "freetype"
 
-  on_linux do
-    resource "test-font" do
+  resource "test-font" do
+    on_linux do
       url "https://raw.githubusercontent.com/paddykontschak/finder/master/fonts/LucidaGrande.ttc"
       sha256 "e188b3f32f5b2d15dbf01e9b4480fed899605e287516d7c0de6809d8e7368934"
     end
@@ -43,10 +43,9 @@ class Otf2bdf < Formula
   end
 
   test do
-    on_macos do
+    if OS.mac?
       assert_match "MacRoman", shell_output("#{bin}/otf2bdf -et /System/Library/Fonts/LucidaGrande.ttc")
-    end
-    on_linux do
+    else
       resource("test-font").stage do
         assert_match "MacRoman", shell_output("#{bin}/otf2bdf -et LucidaGrande.ttc")
       end

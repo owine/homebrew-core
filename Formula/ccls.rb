@@ -1,19 +1,18 @@
 class Ccls < Formula
   desc "C/C++/ObjC language server"
   homepage "https://github.com/MaskRay/ccls"
-  url "https://github.com/MaskRay/ccls/archive/0.20210330.tar.gz"
-  sha256 "28c228f49dfc0f23cb5d581b7de35792648f32c39f4ca35f68ff8c9cb5ce56c2"
+  url "https://github.com/MaskRay/ccls/archive/0.20220729.tar.gz"
+  sha256 "af19be36597c2a38b526ce7138c72a64c7fb63827830c4cff92256151fc7a6f4"
   license "Apache-2.0"
-  revision 3
   head "https://github.com/MaskRay/ccls.git", branch: "master"
 
   bottle do
-    sha256                               arm64_monterey: "03499df1d40fa8aaea919f454c3ec0442369d7a07700239c19680ac859cc17da"
-    sha256                               arm64_big_sur:  "5623cc1d2854b8dca70cf5024788fb7a108473b8880fe0167b149d669cde3a11"
-    sha256                               monterey:       "36aab56bea2955b39d76264fccbec0c2b39e1e4543bf1c0207a17889d13b9d1f"
-    sha256                               big_sur:        "9d3f9519a20be9a3f5a0f2d39175a10255f51ae55a77a9e45c2b83b19581d3ab"
-    sha256                               catalina:       "730f87ef22eab330699cf415afbf41b632a685465cb6693330a21a1756479c11"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23803b8edd700c197effc22a1aa4a640b2aa14e2e478cb0abc2d9c59b6a19470"
+    sha256                               arm64_monterey: "b8c13816cd75809e6ea41113e55f37c547aeba195c648c47af3863921ac85115"
+    sha256                               arm64_big_sur:  "11204e506ee765088067057072547cb7b190fb466ff719d8a1de0fd0b4116a7f"
+    sha256                               monterey:       "a6eecb14e3e58561d8e4d76049624d31df4ea00921ba77116d0dc5e100caf5a9"
+    sha256                               big_sur:        "c48483f72436fd6e4b1a8c3928b436bd48047e396540ce47de06914554b5b064"
+    sha256                               catalina:       "338d1b8848c2a3b380e65551a1a5f38da4c9eb8d8f6968fdef694daf529023e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1da50c69833e7af97b6ebf40b1b6a1d45ba1577b3a80baede95990ed8270488"
   end
 
   depends_on "cmake" => :build
@@ -27,11 +26,18 @@ class Ccls < Formula
 
   fails_with gcc: "5"
 
+  def llvm
+    deps.reject { |d| d.build? || d.test? }
+        .map(&:to_formula)
+        .find { |f| f.name.match?(/^llvm(@\d+)?$/) }
+  end
+
   def install
-    resource_dir = Utils.safe_popen_read(Formula["llvm"].bin/"clang", "-print-resource-dir").chomp
-    resource_dir.gsub! Formula["llvm"].prefix.realpath, Formula["llvm"].opt_prefix
-    system "cmake", *std_cmake_args, "-DCLANG_RESOURCE_DIR=#{resource_dir}"
-    system "make", "install"
+    resource_dir = Utils.safe_popen_read(llvm.opt_bin/"clang", "-print-resource-dir").chomp
+    resource_dir.gsub! llvm.prefix.realpath, llvm.opt_prefix
+    system "cmake", "-S", ".", "-B", "build", "-DCLANG_RESOURCE_DIR=#{resource_dir}", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

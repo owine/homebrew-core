@@ -2,18 +2,18 @@ class Helm < Formula
   desc "Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/helm/helm.git",
-      tag:      "v3.8.0",
-      revision: "d14138609b01886f544b2025f5000351c9eb092e"
+      tag:      "v3.9.4",
+      revision: "dbc6d8e20fe1d58d50e6ed30f09a04a77e4c68db"
   license "Apache-2.0"
   head "https://github.com/helm/helm.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5d5e2864787a464e0a1d723cc5cf7b5bd274505da6610e5f05fff8c1de97b62b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a265288e1c4708c095e96b7379c46a292d34fd4a9698a63d04e807daeb5566a9"
-    sha256 cellar: :any_skip_relocation, monterey:       "32f1bae52edd37b8c8609c6319194079ed0c180f7beb46edbee8e5eabcf2f03f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a5f3b5eaf39f5c7484b68b1fa9bac2f475f48ae73ffbf622388a25890a98aa71"
-    sha256 cellar: :any_skip_relocation, catalina:       "69fb22df8c40f82f9828fcfa5f7b1315290e76c0d3e1aeb63d9e326c90388cd2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "008258f793afcc50b8d9c0542bcd4ce716d63197931fdcf456567eee546b81da"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "01a042f197753d9126f920cffb5292bab41b172d8ce4d04bde8ffdb0904c75f7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "59ee669d6ac2848c93454675c0d622accd57e0d49f6e829381d436a22460229d"
+    sha256 cellar: :any_skip_relocation, monterey:       "2e4345e4e2225f9862283efc39fbf71848f796feae622ea1d6130c553c35b403"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ae77f436010a20e0e955c8ecacfeda9f486f950b9ef839ccd12d10a3edfbc6f4"
+    sha256 cellar: :any_skip_relocation, catalina:       "aadfbf3143e6b9912c0587a551cf2d77f516dfe8f36c814476a28535f03f9bd8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffb49c294b70f83c4156ed922b6862c9754affafdbdfef03fc948c4abd7dff67"
   end
 
   depends_on "go" => :build
@@ -30,14 +30,7 @@ class Helm < Formula
       man1.install Dir["*"]
     end
 
-    output = Utils.safe_popen_read(bin/"helm", "completion", "bash")
-    (bash_completion/"helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "zsh")
-    (zsh_completion/"_helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "fish")
-    (fish_completion/"helm.fish").write output
+    generate_completions_from_executable(bin/"helm", "completion")
   end
 
   test do

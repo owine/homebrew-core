@@ -2,19 +2,19 @@ class Graphviz < Formula
   desc "Graph visualization software from AT&T and Bell Labs"
   homepage "https://www.graphviz.org/"
   url "https://gitlab.com/graphviz/graphviz.git",
-      tag:      "2.50.0",
-      revision: "ca43e4c6a217650447e2928c2e9cb493c73ebd7d"
+      tag:      "5.0.1",
+      revision: "c53b650011e0ea6bbba867ebb0d040c6fd0f7ab7"
   license "EPL-1.0"
   version_scheme 1
   head "https://gitlab.com/graphviz/graphviz.git", branch: "main"
 
   bottle do
-    sha256 arm64_monterey: "63196085bc578e617fe22196d25dd88b8b261ceaf72243ed858ad2364dc0b515"
-    sha256 arm64_big_sur:  "437ed6697432b7b5c9b6e4d4e90b5c77ccc35a2e22546463a328425bf7fe9600"
-    sha256 monterey:       "3b342e85783dbdc6265f671add55d1293552f673efc293f58fc19b0a4bace1c5"
-    sha256 big_sur:        "528774acbc0e94a60c616773771d6ae73830e66f8e6adf7bf888c67947f04902"
-    sha256 catalina:       "633d24b7cd2b20b5483f441fd8d7b90d0aaad4574add6ff7d740876a2236fdee"
-    sha256 x86_64_linux:   "ad4ba705aa70bfe3dbd607e929e0fb9af02c81104ccd482869acedce8bb0a96a"
+    sha256 arm64_monterey: "9c7fa7c146b903db3d61f23320b461e5ebb1c64590eca29caeda99c9766864b1"
+    sha256 arm64_big_sur:  "398966c6f4c0ee00236532567482292c71b261ae820fbfac3304cb572a95e63e"
+    sha256 monterey:       "c6f6d6a97bafca5939cf9075ad5ec883ed1b5227ca168bac9d3d5f558187120d"
+    sha256 big_sur:        "7103b1c7b8457ac91672a1925ea875642345ad77e6c594e8547c0c156226d425"
+    sha256 catalina:       "de2aa3caed0cd29ef43fd8863b28a28e96355b0b975bade684ec980f94f3c220"
+    sha256 x86_64_linux:   "da5e1687a04031d5ed0d1f9ee19d52101c0ad14f0275b2600e3325782c353d38"
   end
 
   depends_on "autoconf" => :build
@@ -29,6 +29,7 @@ class Graphviz < Formula
   depends_on "pango"
 
   uses_from_macos "flex" => :build
+  uses_from_macos "python" => :build
 
   on_linux do
     depends_on "byacc" => :build

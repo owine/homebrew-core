@@ -1,9 +1,10 @@
 class Angband < Formula
   desc "Dungeon exploration game"
   homepage "https://angband.github.io/angband/"
-  url "https://github.com/angband/angband/releases/download/4.2.3/Angband-4.2.3.tar.gz"
-  sha256 "833c4f8cff2aee61ad015f9346fceaa4a8c739fe2dbe5bd1acd580c91818e6bb"
+  url "https://github.com/angband/angband/releases/download/4.2.4/Angband-4.2.4.tar.gz"
+  sha256 "a07c78c1dd05e48ddbe4d8ef5d1880fcdeab55fd05f1336d9cba5dd110b15ff3"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/angband/angband.git", branch: "master"
 
   livecheck do
@@ -12,30 +13,46 @@ class Angband < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "0012d8a153dcf3036a9eab9314fb048031e0113209318aa919a6114edfaafdc8"
-    sha256 arm64_big_sur:  "ab6002b750047f4c544b8427a2f021395b75ab7f9f93c26fc0f3625b758f5842"
-    sha256 monterey:       "119541b0dec51b0e8f6dbb01b5d00b2f202921477154411adb4265cb5fbc2c10"
-    sha256 big_sur:        "3f6aee791649219ab05f70d1c9170e09137d23ee31fcfdd3862c242dd2165771"
-    sha256 catalina:       "c983b2033647d198120ae6295302f812fc7f35fc5d43e4bb430ff63f1fd89c31"
-    sha256 mojave:         "6eb8682054143520fbf931cac520aa8b1c3e8776db5d8e13c374698563fba23e"
-    sha256 x86_64_linux:   "c846da0bf2b065f0867cf114896938c321c5a86de031dfd0ec7bd94913425ac0"
+    sha256 arm64_monterey: "b9e8cf65e54b880cee6c5d1a0813a7dd2feb38913ac652ad858e125feedff281"
+    sha256 arm64_big_sur:  "33e848319750163d7ce2f2b8ea4a7b71ea5232597f7f18fa65797d0457510d6e"
+    sha256 monterey:       "8b0fadd166bea74a197f979712ff806c2e88a9f8968a4b886c72aa41e84d53e9"
+    sha256 big_sur:        "15ce407b3c208768e41a9845cbb2250d476e293e9c749a7a1e997d73e0ddcaa5"
+    sha256 catalina:       "cfdb08365d8239c8609d22b234bca681bbca6a91f68db9c771a2664e5e1d6229"
+    sha256 x86_64_linux:   "be5f345f715dec51d3fcaa0c8d408355768f6386f7579913f65f1b3726bdf376"
   end
 
+  uses_from_macos "expect" => :test
+  uses_from_macos "ncurses"
+
   def install
-    ENV["NCURSES_CONFIG"] = "#{MacOS.sdk_path}/usr/bin/ncurses5.4-config"
-    system "./configure", "--prefix=#{prefix}",
-                          "--bindir=#{bin}",
-                          "--libdir=#{libexec}",
-                          "--enable-curses",
-                          "--disable-ncursestest",
-                          "--disable-sdltest",
-                          "--disable-x11",
-                          "--with-ncurses-prefix=#{MacOS.sdk_path}/usr"
+    ENV["NCURSES_CONFIG"] = "#{MacOS.sdk_path}/usr/bin/ncurses5.4-config" if OS.mac?
+    args = %W[
+      --prefix=#{prefix}
+      --bindir=#{bin}
+      --libdir=#{libexec}
+      --enable-curses
+      --disable-ncursestest
+      --disable-sdltest
+      --disable-x11
+    ]
+    args << "--with-ncurses-prefix=#{MacOS.sdk_path}/usr" if OS.mac?
+    system "./configure", *args
     system "make"
     system "make", "install"
   end
 
   test do
-    system bin/"angband", "--help"
+    script = (testpath/"script.exp")
+    script.write <<~EOS
+      #!/usr/bin/expect -f
+      set timeout 10
+      spawn angband
+      sleep 2
+      send -- "\x18"
+      sleep 2
+      send -- "\x18"
+      expect eof
+    EOS
+    system "expect", "-f", "script.exp"
   end
 end

@@ -1,18 +1,19 @@
 class Sslscan < Formula
   desc "Test SSL/TLS enabled services to discover supported cipher suites"
   homepage "https://github.com/rbsec/sslscan"
-  url "https://github.com/rbsec/sslscan/archive/2.0.11.tar.gz"
-  sha256 "74bdf97c834b961afb342cae1ea32067af0e05f58239979d0f2d3fab82acae1c"
-  license "GPL-3.0-or-later"
+  url "https://github.com/rbsec/sslscan/archive/2.0.15.tar.gz"
+  sha256 "0986ac647098b877f24c863c261bfb7cf545a41fd1120047337dfc44812c69a0"
+  license "GPL-3.0-or-later" => { with: "openvpn-openssl-exception" }
   head "https://github.com/rbsec/sslscan.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2ecbb60436191aad650902454485db6acc05491beee19e662774230c9c37095d"
-    sha256 cellar: :any,                 arm64_big_sur:  "31bff322be81a06bda1274655c6eb391f345cb2ac7af9b0a2a8af8d123524cfe"
-    sha256 cellar: :any,                 monterey:       "d7c2bf23ced03d7b5030dc8abb271aba5488f921146192e9a101a75c16bba94c"
-    sha256 cellar: :any,                 big_sur:        "01fb6a36a458d700191261620813796c67da729c7b02f96573a5fc3de8a61ac9"
-    sha256 cellar: :any,                 catalina:       "e71b9ce743ab9cce21ebaad1e2bf3f494273f87dd2f2261d963f7cf9a2912fd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6121ef0e9a9fa6d5c854ffed359d87bc12dbf7af05cee72489d5c9acd93e4a78"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "eb8f8ad40b64c81597429af23975a0139e5a694298b07d9490953b99b18dde47"
+    sha256 cellar: :any,                 arm64_big_sur:  "adb5286beba7c576529052e28b772307356a6e3810bba69b28293d25af2a7d20"
+    sha256 cellar: :any,                 monterey:       "1caaf3acce4bc823da5447ac2b7ebdaf0187e342ce517dee0031952703466ea8"
+    sha256 cellar: :any,                 big_sur:        "b528f5d73f4b397ce34b045b5f1afba9d443a34e7793b0d5f5e6af71dfe564df"
+    sha256 cellar: :any,                 catalina:       "81a1b69fa2b4059b214d3b3489a4383b3e6a169f712c2cdbe28752ba97a15b8e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "944b95bab55036638b1ef17d1acd7613f6ba7357b080f777ead8e7d9b3d0ee64"
   end
 
   depends_on "openssl@1.1"
@@ -26,12 +27,12 @@ class Sslscan < Formula
     inreplace "Makefile", "static: openssl/libcrypto.a",
                           "static: #{Formula["openssl@1.1"].opt_lib}/#{shared_library("libcrypto")}"
 
-    system "make", "static"
+    system "make"
     system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
-    assert_match "static", shell_output("#{bin}/sslscan --version")
+    assert_match version.to_s, shell_output("#{bin}/sslscan --version")
     system "#{bin}/sslscan", "google.com"
   end
 end

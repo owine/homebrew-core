@@ -1,8 +1,8 @@
 class Tfenv < Formula
   desc "Terraform version manager inspired by rbenv"
   homepage "https://github.com/tfutils/tfenv"
-  url "https://github.com/tfutils/tfenv/archive/v2.2.2.tar.gz"
-  sha256 "ac7f74d8a0151e36a539ceae1460b320ec7b98b360dbd7799dc7cdbdf8c06ded"
+  url "https://github.com/tfutils/tfenv/archive/v3.0.0.tar.gz"
+  sha256 "463132e45a211fa3faf85e62fdfaa9bb746343ff1954ccbad91cae743df3b648"
   license "MIT"
   head "https://github.com/tfutils/tfenv.git", branch: "master"
 
@@ -12,10 +12,14 @@ class Tfenv < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "bbf7732d73d27dd91579c827b60a55674515a96e1755f2bbf842e78e01c9afc0"
+    sha256 cellar: :any_skip_relocation, all: "4905c2390b0254348be44da1c4a05b3d8bf4d8704b94d16b739d64fd4709784b"
   end
 
   uses_from_macos "unzip"
+
+  on_macos do
+    depends_on "grep"
+  end
 
   conflicts_with "terraform", because: "tfenv symlinks terraform binaries"
 
@@ -25,5 +29,8 @@ class Tfenv < Formula
 
   test do
     assert_match "0.10.0", shell_output("#{bin}/tfenv list-remote")
+    with_env(TFENV_TERRAFORM_VERSION: "0.10.0", TF_AUTO_INSTALL: "false") do
+      assert_equal "0.10.0", shell_output("#{bin}/tfenv version-name").strip
+    end
   end
 end

@@ -1,51 +1,65 @@
 class Binutils < Formula
   desc "GNU binary tools for native development"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
-  sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+  sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   license all_of: ["GPL-2.0-or-later", "GPL-3.0-or-later", "LGPL-2.0-or-later", "LGPL-3.0-only"]
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "189bea0bf26bbde02e13aa60e16cb7f4fb33c6dc601029393c4c39ee415e5a0a"
-    sha256 arm64_big_sur:  "2bf192cb717e8e107e61899218d8d25db92d8c07d164b2dea9c50a3d41b0dca9"
-    sha256 monterey:       "feca3b1dbaf91e243e47d261411977909b68b2d54d7e5b1b93c9150a7bc698ad"
-    sha256 big_sur:        "9757e5cac1e7fd0046d02671d31f608e57c2398a2d3a0042518707a5fe6fb30c"
-    sha256 catalina:       "0c90a75475fc973066ace915f8f58f83bf5009181e42c9c8140dc72453d53d0f"
-    sha256 mojave:         "58bf91ff243d080224bd9f7170307788d4319ccdd96d17e7afbf0f326a639f97"
-    sha256 x86_64_linux:   "7dcdd47b180a4dfcc838fa0a047f6fbfac0cd37bd867170ac026e6b8ae93af5d"
+    sha256                               arm64_monterey: "758ad6292041c3c53918b9177f30a5a15acfb3868cbc51d79dc51fcc5a661a4c"
+    sha256                               arm64_big_sur:  "93b1cfd89c43d8822fd6f78d4a573425891193e46de5cb3b86658db4f8f868dd"
+    sha256                               monterey:       "2ec016569ad18525d8f0598f2f6d42e4fb8b0e02178484acc3e885b381789a9b"
+    sha256                               big_sur:        "8842e0decbce5fe9718f492648730163ac9aa0cca4ccd08ec700ef95d0e07761"
+    sha256                               catalina:       "17e7dbd79aeaa50547888612f741c427a682fb269f6796345abd01710b89abcf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "efa7497e2ea56d9b68ce41363cdc1a41cad032b3ae2fa2cbe819459011651809"
   end
 
   keg_only :shadowed_by_macos, "Apple's CLT provides the same tools"
 
+  uses_from_macos "bison" => :build
   uses_from_macos "zlib"
 
+  link_overwrite "bin/gold"
+  link_overwrite "bin/ld.gold"
+  link_overwrite "bin/dwp"
+
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--enable-deterministic-archives",
-                          "--prefix=#{prefix}",
-                          "--infodir=#{info}",
-                          "--mandir=#{man}",
-                          "--disable-werror",
-                          "--enable-interwork",
-                          "--enable-multilib",
-                          "--enable-64-bit-bfd",
-                          "--enable-gold",
-                          "--enable-plugins",
-                          "--enable-targets=all",
-                          "--with-system-zlib",
-                          "--disable-nls"
-    system "make"
-    system "make", "install"
-    bin.install_symlink "ld.gold" => "gold"
+    # Workaround https://sourceware.org/bugzilla/show_bug.cgi?id=28909
+    touch "gas/doc/.dirstamp", mtime: Time.utc(2022, 1, 1)
+    make_args = OS.mac? ? [] : ["MAKEINFO=true"] # for gprofng
+
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--enable-deterministic-archives",
+      "--prefix=#{prefix}",
+      "--infodir=#{info}",
+      "--mandir=#{man}",
+      "--disable-werror",
+      "--enable-interwork",
+      "--enable-multilib",
+      "--enable-64-bit-bfd",
+      "--enable-gold",
+      "--enable-plugins",
+      "--enable-targets=all",
+      "--with-system-zlib",
+      "--disable-nls",
+    ]
+    system "./configure", *args
+    system "make", *make_args
+    system "make", "install", *make_args
+
     if OS.mac?
       Dir["#{bin}/*"].each do |f|
         bin.install_symlink f => "g" + File.basename(f)
       end
     else
+      bin.install_symlink "ld.gold" => "gold"
       # Reduce the size of the bottle.
-      system "strip", *Dir[bin/"*", lib/"*.a"]
+      bin_files = bin.children.select(&:elf?)
+      system "strip", *bin_files, *lib.glob("*.a")
     end
   end
 

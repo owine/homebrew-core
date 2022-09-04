@@ -1,24 +1,24 @@
 class Netcdf < Formula
   desc "Libraries and data formats for array-oriented scientific data"
-  homepage "https://www.unidata.ucar.edu/software/netcdf"
+  homepage "https://www.unidata.ucar.edu/software/netcdf/"
   url "https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.8.1.tar.gz"
   sha256 "bc018cc30d5da402622bf76462480664c6668b55eb16ba205a0dfb8647161dd0"
   license "BSD-3-Clause"
+  revision 3
   head "https://github.com/Unidata/netcdf-c.git", branch: "main"
 
   livecheck do
-    url "https://www.unidata.ucar.edu/downloads/netcdf/"
-    regex(/href=.*?netcdf-c[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url :stable
+    regex(/^(?:netcdf[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "8c6ca44dcb0e5facd13480985ac6a52fa62ac5a768c9481e741da3f5b5251e54"
-    sha256 cellar: :any,                 arm64_big_sur:  "ceef5e39659e5ff4588c56106bda44a5a323146667494d2ffc3774157e59fcaa"
-    sha256 cellar: :any,                 monterey:       "586356169c5558dd2565dc6961afb059153f9f673c6dddfb568b64fab2ee2e56"
-    sha256 cellar: :any,                 big_sur:        "2eb8a909218b74d6912cab5fa71da9e5be96e63c4429ddbd3ad6e4db137f12f8"
-    sha256 cellar: :any,                 catalina:       "2a6b950057dd40e4dee39245943c92ea7bc5d8141b1f70a8946d240a348cbf9e"
-    sha256 cellar: :any,                 mojave:         "c5e18d95f19286dc7d7dd3e44f1c040a64cb1741fd50978bc3a1a6048ac70c66"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13c5137aecff35c67461d420ff046cdaa49f27a2458e338a5c405448251ec7d0"
+    sha256 cellar: :any,                 arm64_monterey: "989cd4b642ae611c7a8f38dc63ff960bb99578343fc9116b7317194ba3714d7c"
+    sha256 cellar: :any,                 arm64_big_sur:  "5ac668a4450be27d2654db0a2fd9b14e0dd54914ba58064135e120280039dec9"
+    sha256 cellar: :any,                 monterey:       "a46f8045fed47d3517e49bb733988b692786fb39d8af34d6df0bedbf91aab28c"
+    sha256 cellar: :any,                 big_sur:        "9bbcfb0a745b315f5d2257954d6fe01aa762c443d1beea9b31fb4d3a393e22bd"
+    sha256 cellar: :any,                 catalina:       "ad29058ab5888e916f7fc1e38ef0a288be94dd3c3341a17e9649c9ea419219aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c1a5c7443e14632b2eedaf496230799d9e5a2d82f552fe6a6a59153987592015"
   end
 
   depends_on "cmake" => :build
@@ -28,7 +28,7 @@ class Netcdf < Formula
   uses_from_macos "curl"
 
   resource "cxx" do
-    url "https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.3.1.tar.gz"
+    url "https://downloads.unidata.ucar.edu/netcdf-cxx/4.3.1/netcdf-cxx4-4.3.1.tar.gz"
     mirror "https://www.gfd-dennou.org/arch/netcdf/unidata-mirror/netcdf-cxx4-4.3.1.tar.gz"
     sha256 "6a1189a181eed043b5859e15d5c080c30d0e107406fbb212c8fb9814e90f3445"
   end
@@ -47,7 +47,6 @@ class Netcdf < Formula
 
     mkdir "build" do
       args = common_args.dup
-      args << "-DNC_EXTRA_DEPS=-lmpi" if Tab.for_name("hdf5").with? "mpi"
       args << "-DENABLE_TESTS=OFF" << "-DENABLE_NETCDF_4=ON" << "-DENABLE_DOXYGEN=OFF"
 
       # Extra CMake flags for compatibility with hdf5 1.12
@@ -105,15 +104,7 @@ class Netcdf < Formula
       lib/"libnetcdf.settings", lib/"libnetcdf-cxx.settings"
     ], Superenv.shims_path/ENV.cc, ENV.cc
 
-    if OS.linux?
-      inreplace bin/"ncxx4-config", Superenv.shims_path/ENV.cxx, ENV.cxx
-    else
-      # SIP causes system Python not to play nicely with @rpath
-      libnetcdf = (lib/"libnetcdf.dylib").readlink
-      macho = MachO.open("#{lib}/libnetcdf-cxx4.dylib")
-      macho.change_dylib("@rpath/#{libnetcdf}", "#{lib}/#{libnetcdf}")
-      macho.write!
-    end
+    inreplace bin/"ncxx4-config", Superenv.shims_path/ENV.cxx, ENV.cxx if OS.linux?
   end
 
   test do

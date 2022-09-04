@@ -1,17 +1,17 @@
 class Goawk < Formula
   desc "POSIX-compliant AWK interpreter written in Go"
   homepage "https://benhoyt.com/writings/goawk/"
-  url "https://github.com/benhoyt/goawk/archive/refs/tags/v1.14.0.tar.gz"
-  sha256 "090748b5f9cf5a539e22963ae9e34a0edb782e10cbde06b60570fffe795fc212"
+  url "https://github.com/benhoyt/goawk/archive/refs/tags/v1.20.0.tar.gz"
+  sha256 "c24ef4a9b1c0b416c1aeb786368b36736617c60cfd1f4e871798f5abb2a18e0b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c6955fa775064e5aff420c98d918b06d5cb98b38b092b2f186dc02f5f8e6983"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c6955fa775064e5aff420c98d918b06d5cb98b38b092b2f186dc02f5f8e6983"
-    sha256 cellar: :any_skip_relocation, monterey:       "48dff0da3afb423d03d477ff2c7ac122efb6ed81a30ad6806c44634dceae57bc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "48dff0da3afb423d03d477ff2c7ac122efb6ed81a30ad6806c44634dceae57bc"
-    sha256 cellar: :any_skip_relocation, catalina:       "48dff0da3afb423d03d477ff2c7ac122efb6ed81a30ad6806c44634dceae57bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6132eaf879f24bf5c0c83d01cc6aced6751ec571a9927950540b11cb821372c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5bd91be1777a87389d5d9f2850ee3bceaae8f0906a6884cd0ff5733f46cc33cb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5bd91be1777a87389d5d9f2850ee3bceaae8f0906a6884cd0ff5733f46cc33cb"
+    sha256 cellar: :any_skip_relocation, monterey:       "9d48a5cc2914124050be0ade5d8841b0e18e90d189bc7ac122b5810a93b5e3c9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9d48a5cc2914124050be0ade5d8841b0e18e90d189bc7ac122b5810a93b5e3c9"
+    sha256 cellar: :any_skip_relocation, catalina:       "9d48a5cc2914124050be0ade5d8841b0e18e90d189bc7ac122b5810a93b5e3c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "352376c7bf732d44be40afb5db178dc95697eea7e949511e0d30a6df304ec58f"
   end
 
   depends_on "go" => :build

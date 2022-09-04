@@ -1,9 +1,9 @@
 class Re2 < Formula
   desc "Alternative to backtracking PCRE-style regular expression engines"
   homepage "https://github.com/google/re2"
-  url "https://github.com/google/re2/archive/2021-11-01.tar.gz"
-  version "20211101"
-  sha256 "8c45f7fba029ab41f2a7e6545058d9eec94eef97ce70df58e92d85cfc08b4669"
+  url "https://github.com/google/re2/archive/2022-06-01.tar.gz"
+  version "20220601"
+  sha256 "f89c61410a072e5cbcf8c27e3a778da7d6fd2f2b5b1445cd4f4508bee946ab0f"
   license "BSD-3-Clause"
   head "https://github.com/google/re2.git", branch: "main"
 
@@ -19,12 +19,12 @@ class Re2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "411d3fd746a54b73c5cfbf4554197d3529a6bc5d74db706edc2973bceb32ea47"
-    sha256 cellar: :any,                 arm64_big_sur:  "debe0b67ea263d4e1cfcb7a7a85a4d70e5db4bee54971daca718c8245b435cfd"
-    sha256 cellar: :any,                 monterey:       "e3750181b190e53efdc2fd2c1f3f6199d0648e993f2c8e7f3de618b8417a228f"
-    sha256 cellar: :any,                 big_sur:        "ee81d89700feecc8ab081c65aa0e6317ae1b580e33736687e10f2a0f8fa6b788"
-    sha256 cellar: :any,                 catalina:       "d3e0fa175a17e9a9b9e624113eb41b44a579829be8d6736e9ae14fb466493ef5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5f77942403dca071176d50096e88737a548d1c9e5c90df19202c26aa05c7e2a6"
+    sha256 cellar: :any,                 arm64_monterey: "5364a5325131113abec97c05282f85c29572094ac0ad2cbce9571e1dffd8fda1"
+    sha256 cellar: :any,                 arm64_big_sur:  "3d60ddeca55c3d3e629bf2edbf5cfa0b0eeaaf61360b2b9adbde91979c2595ba"
+    sha256 cellar: :any,                 monterey:       "568670d04b9bc92a07f6db624acda793834ad1c8bcb2f120386df77d7bd6385c"
+    sha256 cellar: :any,                 big_sur:        "e52a5ade3edeaf1d62170e1f4b43a4e73b71178d0e5f91300a4e29442905e7bd"
+    sha256 cellar: :any,                 catalina:       "2ca1a5a803d348e1487da767936165a12224b65940de3927e83ccd81c90ed443"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f6532af8d10af84905b47b7e1fe9db19ae6b2ec9c17bca8c659137f66c56a8a"
   end
 
   depends_on "cmake" => :build

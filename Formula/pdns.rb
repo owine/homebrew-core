@@ -1,8 +1,8 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.6.0.tar.bz2"
-  sha256 "b9effb7968a7badbb91eea431c73346482a67592684d84660edd8b7528cc1325"
+  url "https://downloads.powerdns.com/releases/pdns-4.6.3.tar.bz2"
+  sha256 "acd06b89ca01d1adf61b906604614f0e1d77a1e94eeecade8ff5d53a16db7389"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Pdns < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "689b5b7873869c5cb3b1fac746552f7b77e2294b8a63b708b52bc04a3de0eee5"
-    sha256 arm64_big_sur:  "9bf2eab288fb7ffa0f9b625110a88b71249d513f0e7462814dbcfb619f762a71"
-    sha256 monterey:       "69c257f5b8da96ffd5cd8be410db4c4cab4121895c6add4aa18b0bdf2b4ca239"
-    sha256 big_sur:        "1348e019298751d9eff1e233ec3a4542a9aa075b290a466d31818458ee94d3b6"
-    sha256 catalina:       "88b5bd486cc787675be0dd85a99e4b0ff20ba6e0471d47317bacce3860759595"
-    sha256 x86_64_linux:   "a752a23dd132efb7b5ddf85175dd9cd71452a443dc7ebfb4140f919f0d8d059f"
+    sha256 arm64_monterey: "d89a331fc94f766564241fa2ea69af52ef1eb435ae72d2cceb4e2f86b58c8465"
+    sha256 arm64_big_sur:  "72f70dd315d1f34fa08812de1553be73b40f7d3d973ee59e546c404e8bb13cdc"
+    sha256 monterey:       "d1987783f1a072bacaff49f5b949ceaf9d3b679420bcc6f7aa071b4b00298e97"
+    sha256 big_sur:        "30fea789a78aa1dfafc4a0668d17555744356e179fe860357434a2baf3de1b48"
+    sha256 catalina:       "f26aa1bb33df99cb16a62106f537e57eb6fc6a2743ab0ea2ca1e15236fc541d2"
+    sha256 x86_64_linux:   "4cae4548c14ac6bb2b9226280c552f51b63ce5da3b469dca02ec9f6f6e4a6a25"
   end
 
   head do

@@ -1,9 +1,9 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://varnish-cache.org/_downloads/varnish-7.0.2.tgz"
-  mirror "https://fossies.org/linux/www/varnish-7.0.2.tgz"
-  sha256 "524a495a6ad2bf5b7e4092b0907ed1d283dd270af426efa82b70714c630c3f61"
+  url "https://varnish-cache.org/_downloads/varnish-7.1.1.tgz"
+  mirror "https://fossies.org/linux/www/varnish-7.1.1.tgz"
+  sha256 "2cafbe2590e7d58a7bac8ad99be92e440fe4d38ada6816dd8836f22fa513a190"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,12 +12,12 @@ class Varnish < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c059ba08e596b84b66524b675d338724ddbeb9d05d91415646e3e6ce0493131f"
-    sha256 arm64_big_sur:  "642303e8955d340044802c6706d19eb5cb9f958cd0362238e4638b6e9f9b02e3"
-    sha256 monterey:       "f2551a4b59adbfad5bfb90738819d2461e344ff8ee136507a96fe375b6eff976"
-    sha256 big_sur:        "ae409b80f09e9be344b52b583568a71bafc0b8f4d49e40d8bfbc674d24b4686f"
-    sha256 catalina:       "e5b2da263487ce4b42193e60ddce6738b36b248d7fd4748c2e9a4cf074f70a3e"
-    sha256 x86_64_linux:   "f12c80427d0ff61dd9c9b10b96fd68d14bd60c373ebf3c2d0ecc6b3783d02849"
+    sha256 arm64_monterey: "5edc877c4ed912bc08cc79b66f17b587407effba4b17b7e7eb2f347272c08682"
+    sha256 arm64_big_sur:  "751c56a3f50dcd998902fccc4685d549a9f3739dd932ab363cbca72187ab34e8"
+    sha256 monterey:       "f6df33e1ef99b43b81b1f493cae8d5985cdca535100a2d5c77c5f27c4ad0b9ea"
+    sha256 big_sur:        "293dd22ec28bd709e48e172cbef81691f802a44dde59bb7c3b4494bbb5634c5d"
+    sha256 catalina:       "928cc7340cee64eee3f4ef4cb9cfa9cd8e19b46c52107543fee8b85d3a5ae739"
+    sha256 x86_64_linux:   "e6f876136cf35e802d2e7ce792ad8d9ba6fd10c44af552dd6f569116ee820140"
   end
 
   depends_on "docutils" => :build
@@ -31,7 +31,7 @@ class Varnish < Formula
   uses_from_macos "ncurses"
 
   def install
-    ENV["PYTHON"] = Formula["python@3.10"].opt_bin/"python3"
+    ENV["PYTHON"] = Formula["python@3.10"].opt_bin/"python3.10"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

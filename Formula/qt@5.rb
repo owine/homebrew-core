@@ -3,66 +3,114 @@
 class QtAT5 < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  mirror "https://mirrors.dotsrc.org/qtproject/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/qt/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  sha256 "3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240"
+  url "https://download.qt.io/official_releases/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz"
+  mirror "https://mirrors.dotsrc.org/qtproject/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/qt/archive/qt/5.15/5.15.5/single/qt-everywhere-opensource-src-5.15.5.tar.xz"
+  sha256 "5a97827bdf9fd515f43bc7651defaf64fecb7a55e051c79b8f80510d0e990f06"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "36d6beacddb74f9a9a8a58a70903739a20ce8de1105aac3ec211e39881759885"
-    sha256 cellar: :any,                 arm64_big_sur:  "79d1822773a193d84cb2426364681dd3d1f1659fd07566665474f941ab61c879"
-    sha256 cellar: :any,                 big_sur:        "e7e33b94237ae8e1893443eaa1dae6750c5cbd27030cb15409438357362f4123"
-    sha256 cellar: :any,                 catalina:       "ead09d3345cf3c4088f73d585c0e40615e89848ce060d8313d1173d8d189b54f"
-    sha256 cellar: :any,                 mojave:         "8eb2fbfaa0e32dc3e97966ebec4712bbf5f12f7eb0bb7c54e3a33a3a8c034a38"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "430b8d663f0e54938a12d91e185fbb8586d69d939f0fd4e50f1eb5c396bf3797"
+    sha256 cellar: :any,                 arm64_monterey: "e37b064c7fe7fc1d0c3a5be70de69211be80fc3ca72d6823e888244ed595f92d"
+    sha256 cellar: :any,                 arm64_big_sur:  "ead12a6fa247706a09548308910b9c67462e3eee7d87b889510f1f228c3c3c63"
+    sha256 cellar: :any,                 monterey:       "5f3b5cd894343416acb2b8596beb4dc63d0ec8728c20a7b07d774de1c4b50615"
+    sha256 cellar: :any,                 big_sur:        "b7aa1ee4202791fa12420802ffdf0367b0e8037ff0024c6cbfc1e9bbfda236fe"
+    sha256 cellar: :any,                 catalina:       "11784f01c72fbd560aa147f85ab6fd942cd8fca74da6f74ff75685c319352d2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c08655ba3a8c3a039b3550a87716004d44730a8dcdd6fad9ca5d608ef5e5ed7e"
   end
 
   keg_only :versioned_formula
 
+  depends_on "node"       => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.10" => :build
   depends_on xcode: :build
+  depends_on "freetype"
+  depends_on "glib"
+  depends_on "jpeg-turbo"
+  depends_on "libpng"
   depends_on macos: :sierra
+  depends_on "pcre2"
+  depends_on "webp"
 
   uses_from_macos "gperf" => :build
   uses_from_macos "bison"
   uses_from_macos "flex"
+  uses_from_macos "krb5"
+  uses_from_macos "libxslt"
   uses_from_macos "sqlite"
 
   on_linux do
+    depends_on "alsa-lib"
     depends_on "at-spi2-core"
     depends_on "fontconfig"
     depends_on "gcc"
-    depends_on "glib"
+    depends_on "harfbuzz"
     depends_on "icu4c"
-    depends_on "libproxy"
-    depends_on "libxkbcommon"
-    depends_on "libice"
-    depends_on "libsm"
-    depends_on "libxcomposite"
     depends_on "libdrm"
+    depends_on "libevent"
+    depends_on "libice"
+    depends_on "libproxy"
+    depends_on "libsm"
+    depends_on "libvpx"
+    depends_on "libxcomposite"
+    depends_on "libxkbcommon"
+    depends_on "libxkbfile"
+    depends_on "libxrandr"
+    depends_on "libxtst"
     depends_on "mesa"
+    depends_on "minizip"
+    depends_on "nss"
+    depends_on "opus"
     depends_on "pulseaudio"
-    depends_on "python@3.9"
+    depends_on "re2"
     depends_on "sdl2"
+    depends_on "snappy"
     depends_on "systemd"
+    depends_on "wayland"
     depends_on "xcb-util"
     depends_on "xcb-util-image"
     depends_on "xcb-util-keysyms"
     depends_on "xcb-util-renderutil"
     depends_on "xcb-util-wm"
     depends_on "zstd"
-    depends_on "wayland"
   end
 
   fails_with gcc: "5"
 
-  # Find SDK for 11.x macOS
-  # Upstreamed, remove when Qt updates Chromium
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/92d4cf/qt/5.15.2.diff"
-    sha256 "fa99c7ffb8a510d140c02694a11e6c321930f43797dbf2fe8f2476680db4c2b2"
+  resource "qtwebengine" do
+    url "https://code.qt.io/qt/qtwebengine.git",
+        tag:      "v5.15.10-lts",
+        revision: "c7e716ef1ffd63a8ab1f4dbf879230849eb3b505"
+
+    # Add Python 3 support to qt-webengine-chromium.
+    # Submitted upstream here: https://codereview.qt-project.org/c/qt/qtwebengine-chromium/+/416534
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/7ae178a617d1e0eceb742557e63721af949bd28a/qt5/qt5-webengine-chromium-python3.patch?full_index=1"
+      sha256 "a93aa8ef83f0cf54f820daf5668574cc24cf818fb9589af2100b363356eb6b49"
+      directory "src/3rdparty"
+    end
+
+    # Add Python 3 support to qt-webengine.
+    # Submitted upstream here: https://codereview.qt-project.org/c/qt/qtwebengine/+/416535
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/a6f16c6daea3b5a1f7bc9f175d1645922c131563/qt5/qt5-webengine-python3.patch?full_index=1"
+      sha256 "398c996cb5b606695ac93645143df39e23fa67e768b09e0da6dbd37342a43f32"
+    end
+
+    # Fix build of qt-webengine-chromium with newer GCC.
+    # Submitted upstream here: https://codereview.qt-project.org/c/qt/qtwebengine-chromium/+/416598
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/a6f16c6daea3b5a1f7bc9f175d1645922c131563/qt5/qt5-webengine-gcc12.patch?full_index=1"
+      sha256 "cf9be3ffcc3b3cd9450b1ff13535ff7d76284f73173412d097a6ab487463a379"
+      directory "src/3rdparty"
+    end
+  end
+
+  # Update catapult to a revision that supports Python 3.
+  resource "catapult" do
+    url "https://chromium.googlesource.com/catapult.git",
+    revision: "5eedfe23148a234211ba477f76fc2ea2e8529189"
   end
 
   # Backport of https://code.qt.io/cgit/qt/qtbase.git/commit/src/plugins/platforms/cocoa?id=dece6f5840463ae2ddf927d65eb1b3680e34a547
@@ -72,29 +120,22 @@ class QtAT5 < Formula
 
   # Fix build for GCC 11
   patch do
-    url "https://invent.kde.org/qt/qt/qtbase/commit/8252ef5fc6d043004ddf7085e1c1fe1bf2ca39f7.patch"
-    sha256 "8ab742b991ed5c43e8da4b1ce1982fd38fe611aaac3d57ee37728b59932b518a"
+    url "https://invent.kde.org/qt/qt/qtbase/commit/ccc0f5cd016eb17e4ff0db03ffed76ad32c8894d.patch"
+    sha256 "ad97b5dbb13875f95a6d9ffc1ecf89956f8249771a4e485bd5ddcbe0c8ba54e8"
     directory "qtbase"
   end
 
   # Fix build for GCC 11
   patch do
-    url "https://invent.kde.org/qt/qt/qtbase/commit/cb2da673f53815a5cfe15f50df49b98032429f9e.patch"
-    sha256 "33304570431c0dd3becc22f3f0911ccfc781a1ce6c7926c3acb08278cd2e60c3"
-    directory "qtbase"
-  end
-
-  # Fix build for GCC 11
-  patch do
-    url "https://invent.kde.org/qt/qt/qtdeclarative/commit/4f08a2da5b0da675cf6a75683a43a106f5a1e7b8.patch"
-    sha256 "193c2e159eccc0592b7092b1e9ff31ad9556b38462d70633e507822f75d4d24a"
+    url "https://invent.kde.org/qt/qt/qtdeclarative/commit/8da88589929a1d82103c8bbfa80210f3c1af3714.patch"
+    sha256 "9faedb41c80f23d4776f0be64f796415abd00ef722a318b3f7c1311a8f82e66d"
     directory "qtdeclarative"
   end
 
   # Patch for qmake on ARM
   # https://codereview.qt-project.org/c/qt/qtbase/+/327649
-  if Hardware::CPU.arm?
-    patch do
+  patch do
+    on_arm do
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/9dc732/qt/qt-split-arch.patch"
       sha256 "36915fde68093af9a147d76f88a4e205b789eec38c0c6f422c21ae1e576d45c0"
       directory "qtbase"
@@ -102,47 +143,73 @@ class QtAT5 < Formula
   end
 
   def install
+    rm_r "qtwebengine"
+
+    resource("qtwebengine").stage(buildpath/"qtwebengine")
+
+    rm_r "qtwebengine/src/3rdparty/chromium/third_party/catapult"
+
+    resource("catapult").stage(buildpath/"qtwebengine/src/3rdparty/chromium/third_party/catapult")
+
+    # FIXME: GN requires clang in clangBasePath/bin
+    inreplace "qtwebengine/src/3rdparty/chromium/build/toolchain/mac/BUILD.gn",
+       'rebase_path("$clang_base_path/bin/", root_build_dir)', '""'
+
     args = %W[
       -verbose
       -prefix #{prefix}
       -release
       -opensource -confirm-license
-      -qt-libpng
-      -qt-libjpeg
-      -qt-freetype
-      -qt-pcre
       -nomake examples
       -nomake tests
       -pkg-config
       -dbus-runtime
+      -proprietary-codecs
+      -system-freetype
+      -system-libjpeg
+      -system-libpng
+      -system-pcre
+      -system-zlib
     ]
 
     if OS.mac?
       args << "-no-rpath"
-      args << "-system-zlib"
-      if Hardware::CPU.arm?
-        # Temporarily fixes for Apple Silicon
-        args << "-skip" << "qtwebengine" << "-no-assimp"
-      else
-        # Should be reenabled unconditionally once it is fixed on Apple Silicon
-        args << "-proprietary-codecs"
-      end
+      args << "-no-assimp" if Hardware::CPU.arm?
     else
       args << "-R#{lib}"
       # https://bugreports.qt.io/browse/QTBUG-71564
       args << "-no-avx2"
       args << "-no-avx512"
-      args << "-qt-zlib"
-      # https://bugreports.qt.io/browse/QTBUG-60163
-      # https://codereview.qt-project.org/c/qt/qtwebengine/+/191880
-      args += %w[-skip qtwebengine]
       args << "-no-sql-mysql"
+
+      # Use additional system libraries on Linux.
+      # Currently we have to use vendored ffmpeg because the chromium copy adds a symbol not
+      # provided by the brewed version.
+      # See here for an explanation of why upstream ffmpeg does not want to add this:
+      # https://www.mail-archive.com/ffmpeg-devel@ffmpeg.org/msg124998.html
+      # On macOS chromium will always use bundled copies and the webengine_*
+      # arguments are ignored.
+      args += %w[
+        -system-harfbuzz
+        -webengine-alsa
+        -webengine-icu
+        -webengine-kerberos
+        -webengine-opus
+        -webengine-pulseaudio
+        -webengine-webp
+      ]
 
       # Change default mkspec for qmake on Linux to use brewed GCC
       inreplace "qtbase/mkspecs/common/g++-base.conf", "$${CROSS_COMPILE}gcc", ENV.cc
       inreplace "qtbase/mkspecs/common/g++-base.conf", "$${CROSS_COMPILE}g++", ENV.cxx
+
+      # Homebrew-specific workaround to ignore spurious linker warnings on Linux.
+      inreplace "qtwebengine/src/3rdparty/chromium/build/config/compiler/BUILD.gn",
+               "fatal_linker_warnings = true",
+               "fatal_linker_warnings = false"
     end
 
+    ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
     system "./configure", *args
 
     # Remove reference to shims directory
@@ -169,22 +236,17 @@ class QtAT5 < Formula
     # of both Designer and Linguist as that relies on Assistant being in `bin`.)
     libexec.mkpath
     Pathname.glob("#{bin}/*.app") { |app| mv app, libexec }
+
+    # Fix find_package call using QtWebEngine version to find other Qt5 modules.
+    inreplace Dir[lib/"cmake/Qt5WebEngine*/*Config.cmake"],
+              " #{resource("qtwebengine").version} ", " #{version} "
   end
 
   def caveats
-    s = <<~EOS
+    <<~EOS
       We agreed to the Qt open source license for you.
       If this is unacceptable you should uninstall.
     EOS
-
-    if Hardware::CPU.arm?
-      s += <<~EOS
-
-        This version of Qt on Apple Silicon does not include QtWebEngine
-      EOS
-    end
-
-    s
   end
 
   test do

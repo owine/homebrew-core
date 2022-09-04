@@ -1,9 +1,10 @@
 class Wxwidgets < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "https://www.wxwidgets.org"
-  url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2"
-  sha256 "d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224"
+  url "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.0/wxWidgets-3.2.0.tar.bz2"
+  sha256 "356e9b55f1ae3d58ae1fed61478e9b754d46b820913e3bfbc971c50377c1903a"
   license "wxWindows"
+  revision 1
   head "https://github.com/wxWidgets/wxWidgets.git", branch: "master"
 
   livecheck do
@@ -12,16 +13,15 @@ class Wxwidgets < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "64286e7122dfb5fb4a2ff013f2a9ef10595f404d036908ca6279c2821f02cf43"
-    sha256 cellar: :any,                 arm64_big_sur:  "00b2086f68be587c6ee848954845a81e1e4bda964dc4a8b8ec117d6acb54c833"
-    sha256 cellar: :any,                 monterey:       "ee0ae69ee883fe648eec49b00c39780e1ccecf11dd8b1e1fd58ef01c92b08f03"
-    sha256 cellar: :any,                 big_sur:        "b75599c4bb938ce01b3ddcce13c8cea3d7f329db85a1a63672eca1266621e857"
-    sha256 cellar: :any,                 catalina:       "a9de66ca781fe633b958a0a7745b47fecd4ffb3fc9d7302757b057ded6c88e22"
-    sha256 cellar: :any,                 mojave:         "974046c7307cca6cb5eec6ef6b06c57817f42782ef1cfa03ff1f4bb4a97190bd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f20b0033ce08592ade30d821da88010582c6107e7269e112ab3bbd48ec887f66"
+    sha256 cellar: :any,                 arm64_monterey: "f82e5102e00d063b2147b4fd19671dc54933038cd0f6036eeeaad462856a00da"
+    sha256 cellar: :any,                 arm64_big_sur:  "d22754feb51491069e60d590292fa4e52663030c950ef930eb179706bedec72d"
+    sha256 cellar: :any,                 monterey:       "378d100c3066938cfd47f2b33508dc72061b57aba8bebcdff2e2c1884b72ba6d"
+    sha256 cellar: :any,                 big_sur:        "54f03e7ef16ced680b6e8eeccc5fd077669af9ab8d1e020c165274f036bc94cb"
+    sha256 cellar: :any,                 catalina:       "8fa5b3a5b42f734c036d2b5d6750513a9ad71a9b2dc6729fe39a1e14140b9688"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17ed6f286f589cfdba01bb3e39296b4c7a51197834cd3307399e98555292f6f8"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 
@@ -70,10 +70,10 @@ class Wxwidgets < Formula
     # this ensures that Python software trying to locate wxpython headers
     # using wx-config can find both wxwidgets and wxpython headers,
     # which are linked to the same place
-    inreplace "#{bin}/wx-config", prefix, HOMEBREW_PREFIX
+    inreplace bin/"wx-config", prefix, HOMEBREW_PREFIX
 
     # For consistency with the versioned wxwidgets formulae
-    bin.install_symlink "#{bin}/wx-config" => "wx-config-#{version.major_minor}"
+    bin.install_symlink bin/"wx-config" => "wx-config-#{version.major_minor}"
     (share/"wx"/version.major_minor).install share/"aclocal", share/"bakefile"
   end
 

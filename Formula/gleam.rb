@@ -1,21 +1,22 @@
 class Gleam < Formula
   desc "✨ A statically typed language for the Erlang VM"
   homepage "https://gleam.run"
-  url "https://github.com/gleam-lang/gleam/archive/v0.19.0.tar.gz"
-  sha256 "4aeadce8a4ecb56f4c66190b8cc97702f7dfccf2bb4b9ffe18b2de2317f55d84"
+  url "https://github.com/gleam-lang/gleam/archive/v0.22.1.tar.gz"
+  sha256 "99f885f706e6410f7857bed04c3599867f6f3d5fed304dfeab17488b49bf73a7"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b81fa3e68d36ed8b5464b576e9fe4f2b29936d36f7799b2e8c6851d4c010fee4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dbe137d4ffdda5baa1e532fb9bed7846d48955784dda64ba71fcb2a5bb6c2e78"
-    sha256 cellar: :any_skip_relocation, monterey:       "2979beb9f05c816ee2c56073d5f3968f3d231116bf791064dff7fbdfe76eaf9a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c2b447422ce6a2e8107507c90ffcda5586630652ad7698233fc4c9c4b28dfb9d"
-    sha256 cellar: :any_skip_relocation, catalina:       "43358f38198accc1ff0235bb2722481bf10cdc0682531d0b70970d3756356506"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "668f54b6186fda669d9dcfd47f6221ac8299e936ff2b3f446d092049a9759ff0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3ba8442554f7582d737829121ef96397214212f31c2b62b3de352b9d33de86d8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f9ff99bedcc22eac4c684599cef69e5bccc9b649bfed256a73c068c475344e67"
+    sha256 cellar: :any_skip_relocation, monterey:       "de4c1cf9ca5a644dd6873260faeaf815f0d86463f2e0c355f982944862807f0e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "19da8411c7e57db14af62eff4131621b9a0118edeffb7c3d57fc34f4caea7a2e"
+    sha256 cellar: :any_skip_relocation, catalina:       "b16efc6390fcf47ddf26286a95a76ff19ec6016ebf50617b1b29aca1cf38dd96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f295158e2f75d0257fbe58a661cdf4a5336117a50efd57f68fd7f7ce2af8057a"
   end
 
   depends_on "rust" => :build
   depends_on "erlang"
+  depends_on "rebar3"
 
   on_linux do
     depends_on "pkg-config" => :build

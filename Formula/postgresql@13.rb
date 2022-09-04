@@ -1,8 +1,8 @@
 class PostgresqlAT13 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.5/postgresql-13.5.tar.bz2"
-  sha256 "9b81067a55edbaabc418aacef457dd8477642827499560b00615a6ea6c13f6b3"
+  url "https://ftp.postgresql.org/pub/source/v13.8/postgresql-13.8.tar.bz2"
+  sha256 "73876fdd3a517087340458dca4ce15b8d2a4dbceb334c0441424551ae6c4cded"
   license "PostgreSQL"
   revision 1
 
@@ -12,19 +12,18 @@ class PostgresqlAT13 < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "a84101063f387e69e80296c938f34407a5502eb29281a5684da0ea6de37457eb"
-    sha256 arm64_big_sur:  "d553cc91c53081225420b7f02047e8ee8155679dfa86529d9a2f3fe13be92713"
-    sha256 monterey:       "09d77cc3b777078242e4430d4c23e88ec6a8e4953c7b4bdee397e6a1f7588f78"
-    sha256 big_sur:        "9df9951d736b0d2b66cd82c2b53129059b8608691c62ff9962054e8f6f18e915"
-    sha256 catalina:       "30466d4ea80f1ededb1bd64e788d64dcf0f2e6666bf69a26386115e33f9a1a7d"
-    sha256 x86_64_linux:   "cc971147a6aafb1f181171eebd82a2eb16428a986042f7425e855716303e5abe"
+    sha256 arm64_monterey: "0350d9c21ccd18f488710697d8ba93b4c09654a831bb0a37b090b9bf72b7ae84"
+    sha256 arm64_big_sur:  "00296ac7ed447755823f3071ce9830c2e05ea7c39f9258f38ce88f97544383e5"
+    sha256 monterey:       "7a4dc7e27ebc354d9dde9e8d28bc6a88fe0cd4a25b62da305f25227fef27a08c"
+    sha256 big_sur:        "343069d6dfe27f9b08cdaf27571363fc3eeac25b0d5e45b39ba97b17214abab5"
+    sha256 catalina:       "f2a9a20386144db9c5a02c93f40eb297eed7fab12329e7ca662ce50a7f2edaf4"
+    sha256 x86_64_linux:   "61dada4eb89e66cb77edf85ab02954b3fb1c35c74f88302d52e9bedb40f74431"
   end
 
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
-  deprecate! date: "2024-11-13", because: :unsupported
+  deprecate! date: "2025-11-13", because: :unsupported
 
   depends_on "pkg-config" => :build
   depends_on "icu4c"
@@ -129,10 +128,6 @@ class PostgresqlAT13 < Formula
     var/"postgres"
   end
 
-  def postgresql_formula_present?
-    Formula["postgresql"].any_version_installed?
-  end
-
   # Figure out what version of PostgreSQL the old data dir is
   # using
   def old_postgresql_datadir_version
@@ -144,36 +139,19 @@ class PostgresqlAT13 < Formula
     caveats = ""
 
     # Extract the version from the formula name
-    pg_formula_version = name.split("@", 2).last
+    pg_formula_version = version.major.to_s
     # ... and check it against the old data dir postgres version number
     # to see if we need to print a warning re: data dir
     if old_postgresql_datadir_version == pg_formula_version
-      caveats += if postgresql_formula_present?
-        # Both PostgreSQL and PostgreSQL@13 are installed
-        <<~EOS
-          Previous versions of this formula used the same data directory as
-          the regular PostgreSQL formula. This causes a conflict if you
-          try to use both at the same time.
+      caveats += <<~EOS
+        Previous versions of postgresql shared the same data directory.
 
-          In order to avoid this conflict, you should make sure that the
-          #{name} data directory is located at:
-            #{postgresql_datadir}
+        You can migrate to a versioned data directory by running:
+          mv -v "#{old_postgres_data_dir}" "#{postgresql_datadir}"
 
-        EOS
-      else
-        # Only PostgreSQL@13 is installed, not PostgreSQL
-        <<~EOS
-          Previous versions of #{name} used the same data directory as
-          the postgresql formula. This will cause a conflict if you
-          try to use both at the same time.
+        (Make sure PostgreSQL is stopped before executing this command)
 
-          You can migrate to a versioned data directory by running:
-            mv -v "#{old_postgres_data_dir}" "#{postgresql_datadir}"
-
-          (Make sure PostgreSQL is stopped before executing this command)
-
-        EOS
-      end
+      EOS
     end
 
     caveats += <<~EOS
@@ -187,10 +165,10 @@ class PostgresqlAT13 < Formula
   end
 
   service do
-    run [opt_bin/"postgres", "-D", var/"postgresql@13"]
+    run [opt_bin/"postgres", "-D", f.postgresql_datadir]
     keep_alive true
-    log_path var/"log/postgresql@13.log"
-    error_log_path var/"log/postgresql@13.log"
+    log_path f.postgresql_log_path
+    error_log_path f.postgresql_log_path
     working_dir HOMEBREW_PREFIX
   end
 

@@ -2,28 +2,26 @@ class Istioctl < Formula
   desc "Istio configuration command-line utility"
   homepage "https://istio.io/"
   url "https://github.com/istio/istio.git",
-      tag:      "1.12.2",
-      revision: "af0d66fd0aa363e9a7b0164f3a94ba36252fe60f"
+      tag:      "1.15.0",
+      revision: "e3364ab424b70ca8ee1ca76cb0b3afb73476aaac"
   license "Apache-2.0"
   head "https://github.com/istio/istio.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef1bb48ebfe4f758920564545a41de5fc75ef4cc86cc0d1e1c9620e56fe4e536"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ef1bb48ebfe4f758920564545a41de5fc75ef4cc86cc0d1e1c9620e56fe4e536"
-    sha256 cellar: :any_skip_relocation, monterey:       "c288cd0a2e944ef46e44e2b68479baf163cad3c689938c7fe3c373eeed8ea40e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c288cd0a2e944ef46e44e2b68479baf163cad3c689938c7fe3c373eeed8ea40e"
-    sha256 cellar: :any_skip_relocation, catalina:       "c288cd0a2e944ef46e44e2b68479baf163cad3c689938c7fe3c373eeed8ea40e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f6024a64484f0c67a29d6209e0c13e8b90d25924d5a85d19f4defdcd5b399080"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f6024a64484f0c67a29d6209e0c13e8b90d25924d5a85d19f4defdcd5b399080"
+    sha256 cellar: :any_skip_relocation, monterey:       "b4ca1cff5fc1f4373cffc38f905cb7ecb5f1049b1db0f5b9d0c2826b9967428e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b4ca1cff5fc1f4373cffc38f905cb7ecb5f1049b1db0f5b9d0c2826b9967428e"
+    sha256 cellar: :any_skip_relocation, catalina:       "b4ca1cff5fc1f4373cffc38f905cb7ecb5f1049b1db0f5b9d0c2826b9967428e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47be9623e692cec34eca7a781611efc551970062d38d5706b476ce997cda7850"
   end
 
-  depends_on "go" => :build
   depends_on "go-bindata" => :build
+  # Required lucas-clemente/quic-go >= 0.28
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
-  # Fix https://github.com/istio/istio/issues/35831
-  # remove in next release
-  patch do
-    url "https://github.com/istio/istio/commit/6d9c69f10431bca2ee2beefcfdeaad5e5f62071b.patch?full_index=1"
-    sha256 "47e175fc0ac5e34496c6c0858eefbc31e45073dad9683164f7a21c74dbaa6055"
-  end
+  uses_from_macos "curl" => :build
 
   def install
     ENV["VERSION"] = version.to_s
@@ -35,20 +33,12 @@ class Istioctl < Formula
     os = OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "amd64" : Hardware::CPU.arch.to_s
 
+    ENV.prepend_path "PATH", Formula["curl"].opt_bin if OS.linux?
+
     system "make", "istioctl"
     bin.install "out/#{os}_#{arch}/istioctl"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"istioctl", "completion", "bash")
-    (bash_completion/"istioctl").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"istioctl", "completion", "zsh")
-    (zsh_completion/"_istioctl").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"istioctl", "completion", "fish")
-    (fish_completion/"istioctl.fish").write output
+    generate_completions_from_executable(bin/"istioctl", "completion")
   end
 
   test do

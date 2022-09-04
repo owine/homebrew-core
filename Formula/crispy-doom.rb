@@ -1,19 +1,18 @@
 class CrispyDoom < Formula
   desc "Limit-removing enhanced-resolution Doom source port based on Chocolate Doom"
   homepage "https://github.com/fabiangreffrath/crispy-doom"
-  url "https://github.com/fabiangreffrath/crispy-doom/archive/crispy-doom-5.10.3.tar.gz"
-  sha256 "eef8dc26e8952b23717be3b20239fda4ee59842511328387766d1c8fe8252f6b"
+  url "https://github.com/fabiangreffrath/crispy-doom/archive/crispy-doom-5.12.0.tar.gz"
+  sha256 "d85d6e76aa949385458b7702e6fb594996745b94032ffb13e1790376eeecb462"
   license "GPL-2.0-only"
   head "https://github.com/fabiangreffrath/crispy-doom.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "06236817abc6d69fec168a719edafd7196908f1610359228bf74894fae7b86f7"
-    sha256 cellar: :any,                 arm64_big_sur:  "6d9000bd5ee7e800eecf8748c419ea4f8d42dc1e5c78ec5e49e91ab095e34895"
-    sha256 cellar: :any,                 monterey:       "ae6437bd7678cdfb5a4ac4f318126d1f089f9a74105efa267b008a2451bc7b5b"
-    sha256 cellar: :any,                 big_sur:        "cbd514df66ecb0eb170169ce1f099fedefafa17f79cdeb2dfe00120d7e2fa03a"
-    sha256 cellar: :any,                 catalina:       "07ab97bfe589f66a63007f32ab6f5a937aec221fb3528ab33259fc3c6652bb60"
-    sha256 cellar: :any,                 mojave:         "ae4f7e635129aa417d47826af76123678ae786c0889b4baad08c59b3c730c36a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef1289f3ed451a8f7c301f9e56446139d349e9664f4be42c0858d082e148f935"
+    sha256 cellar: :any,                 arm64_monterey: "8ef0f5533d93c92ad13fdb41baa49de8bb847d908b52ee7be13ab5ed5f4dbb1e"
+    sha256 cellar: :any,                 arm64_big_sur:  "de4ceb6cb891d1938bc8dc2c0af97067891a5712a00105ee7a79a165f1982df2"
+    sha256 cellar: :any,                 monterey:       "b0f2f38a431779e26c8ffda0fdee8b179a95268995cfefb78313a289062bdac8"
+    sha256 cellar: :any,                 big_sur:        "80edc55a3986279b94dc13247bd3a7d3786cc5b81190ab6415accd842cd42873"
+    sha256 cellar: :any,                 catalina:       "47f9599408b8f7bdfc0e4cb8083617c8a6f8aacd1d74287fca3d3d991148b5ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b8b3f24dc327f6cad5ed387a418a4eaa0a87e258c3dce384466175c8b1323d21"
   end
 
   depends_on "autoconf" => :build

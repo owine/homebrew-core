@@ -1,8 +1,8 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.28.tar.gz"
-  sha256 "6dd0303998e70066d36905bd8fef1c01228ea182dbfbabc6c22ebacdbf8b5941"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.30.tar.gz"
+  sha256 "c331ac7a68099a2116097acbb14fd331423d486fe47ce0e346925111b44df69c"
   license "GPL-2.0-only" => { with: "Universal-FOSS-exception-1.0" }
 
   livecheck do
@@ -11,12 +11,12 @@ class Mysql < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "5f6efe3a8985554faf3c5a2f74e1029971d7fbebb13922aae117cffd7bdeba58"
-    sha256 arm64_big_sur:  "e78bcb9a6be7a0a386c297a25f982435da3989a0adfd929c1c703d71da120822"
-    sha256 monterey:       "723dee93398d4790ba6f547fc7072afa328ac7e6bb50448c096af77bcbfa141c"
-    sha256 big_sur:        "fcd71d1bba2787a0e388c29eaf20d33611bb2d24c49ad0c9a0ac4d333111f33d"
-    sha256 catalina:       "07394d1ce62dabc5c59ec024e76b92dfce271d13dc6b92be4b17a6153a60929e"
-    sha256 x86_64_linux:   "c2509cef499a74def6de7c22af9f26c6a6291fb037c5e2c78c9ef1779d3d84aa"
+    sha256 arm64_monterey: "078d86da54cb87712d2d941c5faa7d7be29ae8c22bdbd92743425d872f2f198b"
+    sha256 arm64_big_sur:  "4ab222921e74b31f81310e981ac6b63e164f7a71df561e7ea802409b189d202a"
+    sha256 monterey:       "07e7117de00eb24eace602baeeea768b3579b2c2d10649cb7c32b82ff7ab22fd"
+    sha256 big_sur:        "884bc510cd10e0fd1b3dcd5500d4bc56a3dc81d6bb9d92b741789e393ca839db"
+    sha256 catalina:       "a85e24ef0836ad46de2d3ee755b7612cffb92d09056987c94b6fc7c780c69374"
+    sha256 x86_64_linux:   "30dd16248eb9744fad51a591d30b7e09f241e2dedeae972de7d29d5f06287942"
   end
 
   depends_on "cmake" => :build
@@ -27,18 +27,16 @@ class Mysql < Formula
   depends_on "lz4"
   depends_on "openssl@1.1"
   depends_on "protobuf"
+  depends_on "zlib" # Zlib 1.2.12+
   depends_on "zstd"
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
   uses_from_macos "libedit"
-  uses_from_macos "zlib"
 
   on_linux do
     depends_on "patchelf" => :build
     depends_on "gcc" # for C++17
-
-    ignore_missing_libraries "metadata_cache.so"
   end
 
   conflicts_with "mariadb", "percona-server",
@@ -89,22 +87,6 @@ class Mysql < Formula
       -DWITH_INNODB_MEMCACHED=ON
     ]
 
-    # Their CMake macros check for `pkg-config` only on Linux and FreeBSD,
-    # so let's set `MY_PKG_CONFIG_EXECUTABLE` and `PKG_CONFIG_*` to make
-    # sure `pkg-config` is found and used.
-    if OS.mac?
-      args += %W[
-        -DMY_PKG_CONFIG_EXECUTABLE=pkg-config
-        -DPKG_CONFIG_FOUND=TRUE
-        -DPKG_CONFIG_VERSION_STRING=#{Formula["pkg-config"].version}
-        -DPKG_CONFIG_EXECUTABLE=#{Formula["pkg-config"].opt_bin}/pkg-config
-      ]
-
-      if ENV["HOMEBREW_SDKROOT"].present?
-        args << "-DPKG_CONFIG_ARGN=--define-variable=homebrew_sdkroot=#{ENV["HOMEBREW_SDKROOT"]}"
-      end
-    end
-
     system "cmake", ".", *std_cmake_args, *args
     system "make"
     system "make", "install"
@@ -112,15 +94,6 @@ class Mysql < Formula
     (prefix/"mysql-test").cd do
       system "./mysql-test-run.pl", "status", "--vardir=#{Dir.mktmpdir}"
     end
-
-    # Remove libssl copies as the binaries use the keg anyway and they create problems for other applications
-    # Reported upstream at https://bugs.mysql.com/bug.php?id=103227
-    rm_rf lib/"libssl.dylib"
-    rm_rf lib/"libssl.1.1.dylib"
-    rm_rf lib/"libcrypto.1.1.dylib"
-    rm_rf lib/"libcrypto.dylib"
-    rm_rf lib/"plugin/libcrypto.1.1.dylib"
-    rm_rf lib/"plugin/libssl.1.1.dylib"
 
     # Remove the tests directory
     rm_rf prefix/"mysql-test"

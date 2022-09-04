@@ -1,8 +1,8 @@
 class Freeciv < Formula
   desc "Free and Open Source empire-building strategy game"
   homepage "http://freeciv.org"
-  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%202.6/2.6.6/freeciv-2.6.6.tar.bz2"
-  sha256 "7bcfe5dd3c081122e7cde7cdb24f57c3681d6a9667496faed207a91ac3165811"
+  url "https://downloads.sourceforge.net/project/freeciv/Freeciv%203.0/3.0.3/freeciv-3.0.3.tar.xz"
+  sha256 "13215adc96be9f2894d5f3a12c78b8ebb9ae06ecdab25fe6bb1794f6e6d2b61b"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Freeciv < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d0cd6013001decd5b74d1ac8d7bba8d6e070bb2c27ed8cce5a41622d13aef267"
-    sha256 arm64_big_sur:  "3cb7282942ed5e1c4b4d7e48cbb3ba57554f597cd77e4a55b57b002102e6c90f"
-    sha256 monterey:       "22fe64446282ce7df3f109ea14322c7f33e28dea831fea3a7e1d7df0cabfa986"
-    sha256 big_sur:        "09cb343f164c953f7c6c44e24fa706f35b64e21ff711a930a10e0c4336ad94bd"
-    sha256 catalina:       "c3a9840643191f575c69eff922381cd713a2e2a7249a05f752edd8e3a4ebf673"
-    sha256 x86_64_linux:   "b481371af3c4dcd5c8ab1a4894b4d2a85d2f4953e8c72de4f757fbb3b9887af8"
+    sha256 arm64_monterey: "f8d12505c2802dcd4fa998b8fc4253e45ccf1f806de0a348dd2c3819402078f0"
+    sha256 arm64_big_sur:  "ee35c20073befcc4fa65c28f9f1474bc37b23ba5df4cf74fb7861e6711c64973"
+    sha256 monterey:       "74a091193fe2f34c281fbcbbb2da6a465f47a6f1c44238342c5a1f9603471079"
+    sha256 big_sur:        "9210245fa3a30d9c01bc458f19a366ab8db86c5ffaec279ad1699196fa2eef1e"
+    sha256 catalina:       "68c8f1859f5939a013712005696feb3e83ad02d50c6d3c82ec742395893198cc"
+    sha256 x86_64_linux:   "6a737aa2d8f47b1f9c643be6c07934aea00b9facb9f01c6b25295fa55cacb4ee"
   end
 
   head do
@@ -43,6 +43,7 @@ class Freeciv < Formula
   depends_on "readline"
   depends_on "sdl2"
   depends_on "sdl2_mixer"
+  depends_on "sqlite" # try to change to uses_from_macos after python is not a dependency
 
   uses_from_macos "bzip2"
   uses_from_macos "curl"
@@ -79,7 +80,7 @@ class Freeciv < Formula
 
   test do
     system bin/"freeciv-manual"
-    assert_predicate testpath/"classic6.mediawiki", :exist?
+    assert_predicate testpath/"civ2civ36.mediawiki", :exist?
 
     fork do
       system bin/"freeciv-server", "-l", testpath/"test.log"

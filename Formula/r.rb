@@ -1,9 +1,10 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.1.2.tar.gz"
-  sha256 "2036225e9f7207d4ce097e54972aecdaa8b40d7d9911cd26491fac5a0fab38af"
+  url "https://cran.r-project.org/src/base/R-4/R-4.2.1.tar.gz"
+  sha256 "4d52db486d27848e54613d4ee977ad952ec08ce17807e1b525b10cd4436c643f"
   license "GPL-2.0-or-later"
+  revision 2
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
@@ -11,20 +12,20 @@ class R < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c33eb0da3cdf04dd64354db3a5995a3ca0066ddf7dfdde59ca0fb8ae97a9c9e1"
-    sha256 arm64_big_sur:  "b74a59f79af6c5d1ce9508437a8cb5a2e7856b2107c2cf812f25177716040d3b"
-    sha256 monterey:       "46663a15e9762deaad72e5fb347c85edebc836fc071f5bd21b1948d90a9311bc"
-    sha256 big_sur:        "caf365bbc3764de78a390765b3b9c353c09bb7a26c8dd951d1dd6d01bf1f2889"
-    sha256 catalina:       "4a68b7c06e4582ac3e97785e0dabfd031235614d5451c7acc54c7f6957411e62"
-    sha256 x86_64_linux:   "9de6d636b0372e196b5a827f9107533d9d31159deefec9d839bd941608b6f737"
+    rebuild 1
+    sha256 arm64_monterey: "08fc9805e886677b4e0541d25bbc68015a2ead9aa36c010a1fb497c2170083e7"
+    sha256 arm64_big_sur:  "249105acf739d38431f7ef30734c088c473147e09b5c621d38464c1ab90d908d"
+    sha256 monterey:       "f05ec76c9379def7c5f4d421a02187e1b8e502cf55b9495157198352c507bd11"
+    sha256 big_sur:        "2e953482043fac8db10397769116111ed7119837c62315eddb219c1122540547"
+    sha256 catalina:       "b545ae8ab4195f289ab3e1026632ba895f61d31c812791bb8cc6709c12385860"
+    sha256 x86_64_linux:   "26f5b7ee26e2f94c802ebe8e882b1bb04c17e8322e8f93cbbfac6a5d80ab6c24"
   end
 
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "gcc" # for gfortran
   depends_on "gettext"
-  depends_on "jpeg"
-  depends_on "libffi"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "openblas"
   depends_on "pcre2"
@@ -33,13 +34,15 @@ class R < Formula
   depends_on "xz"
 
   uses_from_macos "curl"
+  uses_from_macos "icu4c"
+  uses_from_macos "libffi", since: :catalina
 
   on_linux do
-    depends_on "pango"
     depends_on "libice"
+    depends_on "libtirpc"
     depends_on "libx11"
     depends_on "libxt"
-    depends_on "libtirpc"
+    depends_on "pango"
   end
 
   # needed to preserve executable permissions on files without shebangs
@@ -59,6 +62,10 @@ class R < Formula
       "--enable-R-shlib",
       "--disable-java",
       "--with-cairo",
+      # This isn't necessary to build R, but it's saved in Makeconf
+      # and helps CRAN packages find gfortran when Homebrew may not be
+      # in PATH (e.g. under RStudio, launched from Finder)
+      "FC=#{Formula["gcc"].opt_bin}/gfortran",
     ]
 
     if OS.mac?
@@ -134,8 +141,7 @@ class R < Formula
                      "Failed to install gss package"
 
     winsys = "[1] \"aqua\""
-    on_linux do
-      # Fails in Linux CI with: no DISPLAY variable so Tk is not available
+    if OS.linux?
       return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
       winsys = "[1] \"x11\""

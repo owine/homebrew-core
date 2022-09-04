@@ -1,18 +1,17 @@
 class Imgproxy < Formula
   desc "Fast and secure server for resizing and converting remote images"
   homepage "https://imgproxy.net"
-  url "https://github.com/imgproxy/imgproxy/archive/v3.2.1.tar.gz"
-  sha256 "a7cd3f01e678856dbed9dc5323175c6b37e6aacd508c1fbf306a439ba36ea0b7"
+  url "https://github.com/imgproxy/imgproxy/archive/v3.7.2.tar.gz"
+  sha256 "ee7d2425c84344255f1936a91f96163133fb6dacc9de438c8be58fb4e4ab3c8b"
   license "MIT"
   head "https://github.com/imgproxy/imgproxy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f436c08ab07a3137ed17341055dc51265a010e1a66fbd42e7794ab8b071e3189"
-    sha256 cellar: :any,                 arm64_big_sur:  "dd956d2c16172d844fc5d03339e9b4f8f1dc35ca76beb4374bfa23bc7f08b08b"
-    sha256 cellar: :any,                 monterey:       "e8d5dfdd3006a0ef2950932576556d41bf8cf4f34d4d26bf1cbb9a5e46ddb85d"
-    sha256 cellar: :any,                 big_sur:        "8a17873b1ebdceb7accd05eb38dd416b044d0bec341096da5f389ef22e92476b"
-    sha256 cellar: :any,                 catalina:       "291e224b85576f617ec5ee9dc7585e0902edf385ef73f97ef8941c81821921ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "120667ca3392ea1c882b3881cd19dc377c5f8ef110b0711fc0fe1f68a874429d"
+    sha256 cellar: :any, arm64_monterey: "3d50f21bfb26856bd154051da17f28571dbb206c34b69aded19965f4c1efc3c3"
+    sha256 cellar: :any, arm64_big_sur:  "3954b34f8f8495e043aaaf93a04ea4cd009467df1df60efabf3a57730fc8b08a"
+    sha256 cellar: :any, monterey:       "18ae223c477bc7ae41ff7ef556ec97f6aae9f8020cc5117a7ad517e24c8b4d6f"
+    sha256 cellar: :any, big_sur:        "2b048778844f3944ec199162c6ab74110a5ec477c3cccee6e1407aa5ae69b55e"
+    sha256 cellar: :any, catalina:       "667b858dcd1e96b030615852934fa5221a422f700bfcb123c96a96dffc6c16ae"
   end
 
   depends_on "go" => :build

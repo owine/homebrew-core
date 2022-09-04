@@ -1,10 +1,9 @@
 class TektoncdCli < Formula
   desc "CLI for interacting with TektonCD"
   homepage "https://github.com/tektoncd/cli"
-  url "https://github.com/tektoncd/cli/archive/v0.21.0.tar.gz"
-  sha256 "c6fed13ddd0cbb410230cf85749458a42b9cb8d56ad6ec48b44e70e26cce9062"
+  url "https://github.com/tektoncd/cli/archive/v0.26.0.tar.gz"
+  sha256 "6be12ab8e741bdaebfb1f8095ece38f117f884566be8ac9397eeb105d0c4906a"
   license "Apache-2.0"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,12 +11,12 @@ class TektoncdCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "576a8fbcd92ce3aeabaa04da22bff3c86d06fc657c9718c0f335fd149738c41a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0881c0e76a55091d22e195899959a54b63b6976446ec70e5286276ff55c5ad53"
-    sha256 cellar: :any_skip_relocation, monterey:       "20b643056326a5be719bc01d0b9e2aaf383e7047fb0c51dd8f50d8aec00bde9e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5c2b9eaaaa3ab5753a5bfa8a4c10debda5527f5770579c0fa4a68119f1e2334d"
-    sha256 cellar: :any_skip_relocation, catalina:       "4fd2242d4b05b626ab1792ef7c7edd2fbf68eb6879f80384ebeb56969266eb4f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3896c56db634577accc28d83a23e7bd8d0ade5d0bc7f4dc98c49fd9b8a872ce9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d1e957261fab70713f7ee24080865a7fd8b5b77a6c7f2a400186b82bc809d40c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "911bf4af0ac77c81b97c6220d85da151d8cd4adb9f5fda7a2299e0c66a455574"
+    sha256 cellar: :any_skip_relocation, monterey:       "69dfce4e130d0a776cebda96fe9b8b6eebce4151ec0f958c41f8dc4cb5e024f2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1ef91383ee4deb09adc7eaa3530dac0a8a6cc08c8d8e20ef64e8aa0b3fbecb61"
+    sha256 cellar: :any_skip_relocation, catalina:       "7eeedbb88b6a0cd7192421626325148b702a15e12cfaa2e6617f9c91d208cd11"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f02028301f67c8e4fae2c335c92f46ab72bd318b411548b61eda30985ac1fa29"
   end
 
   depends_on "go" => :build
@@ -26,12 +25,7 @@ class TektoncdCli < Formula
     system "make", "bin/tkn"
     bin.install "bin/tkn" => "tkn"
 
-    output = Utils.safe_popen_read(bin/"tkn", "completion", "bash")
-    (bash_completion/"tkn").write output
-    output = Utils.safe_popen_read(bin/"tkn", "completion", "zsh")
-    (zsh_completion/"_tkn").write output
-    output = Utils.safe_popen_read(bin/"tkn", "completion", "fish")
-    (fish_completion/"tkn.fish").write output
+    generate_completions_from_executable(bin/"tkn", "completion", base_name: "tkn")
   end
 
   test do

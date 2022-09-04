@@ -1,18 +1,18 @@
 class Maturin < Formula
   desc "Build and publish Rust crates as Python packages"
   homepage "https://github.com/PyO3/maturin"
-  url "https://github.com/PyO3/maturin/archive/refs/tags/v0.12.6.tar.gz"
-  sha256 "8642e6a64bd088930e666e930102db57b13bc652cc3498f5c2ddebd6359d059a"
-  license "MIT"
+  url "https://github.com/PyO3/maturin/archive/refs/tags/v0.13.2.tar.gz"
+  sha256 "22afa6d4367eed3225a8650604483f13c127df612cb4ed66e074244c2344c668"
+  license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/PyO3/maturin.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7e040bf19d1da5e5a2e399160ba11201765516efc4b52904eda87b03d3e73afe"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "903208bf7506f833d2af5179ba34e59826dae9605a250ec972f9e5302d3eb018"
-    sha256 cellar: :any_skip_relocation, monterey:       "f88708b83cdaaaf33260746051cc0f721338281fd2b940568a2ad90769c06716"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7aa2ac0649bf0051538c86f6cc997802a2e121a13092e6297f53a033e1e9c390"
-    sha256 cellar: :any_skip_relocation, catalina:       "eaeb61015b9c773c6ff1398e064b09eb3a3b15892aad45e6f55bf45b2d174860"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc17d20907ff5370a67d47d0ab58b9dbf32b2375820ca8a47970b14ab0d0c2a1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "128f517ca116316633aa4111ca1406bc07143696f4be6a31c464131a687ad5e9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fee6d0a06b6459c3cf167bda48467e28e15fbfb501c0b767421649b752cfc594"
+    sha256 cellar: :any_skip_relocation, monterey:       "cd2d6822f086c4053624f5d22e628fbf4fd04b69c6abc237f9c4ae2a1278eff1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "edaf3c29980eaeb4622dcd4484bf480f7d52a723ec595f5ab08dfa624475283a"
+    sha256 cellar: :any_skip_relocation, catalina:       "f344af2a8286e5f7caeaf61d3b3bc948e55358fb59ab036b10f111978ff11427"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec6da20c576a98ab04c6f35f14518cd1c5835beb5b1f4490174691f8c2ba5bf8"
   end
 
   depends_on "python@3.10" => :test
@@ -21,12 +21,7 @@ class Maturin < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    bash_output = Utils.safe_popen_read(bin/"maturin", "completions", "bash")
-    (bash_completion/"maturin").write bash_output
-    zsh_output = Utils.safe_popen_read(bin/"maturin", "completions", "zsh")
-    (zsh_completion/"_maturin").write zsh_output
-    fish_output = Utils.safe_popen_read(bin/"maturin", "completions", "fish")
-    (fish_completion/"maturin.fish").write fish_output
+    generate_completions_from_executable(bin/"maturin", "completions")
   end
 
   test do

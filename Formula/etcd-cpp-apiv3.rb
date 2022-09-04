@@ -1,18 +1,17 @@
 class EtcdCppApiv3 < Formula
   desc "C++ implementation for etcd's v3 client API, i.e., ETCDCTL_API=3"
   homepage "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3"
-  url "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3/archive/refs/tags/v0.2.3.tar.gz"
-  sha256 "f74607eebffce8391b5355ed7d12d46f6627f2882687cd0f5574c90b275f77fd"
+  url "https://github.com/etcd-cpp-apiv3/etcd-cpp-apiv3/archive/refs/tags/v0.2.7.tar.gz"
+  sha256 "78419784730e5b2a76570bfa2f361293342479be5348d29ac30c7f78786ba589"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "912ed22203f9e40473210c603a0c697dfdca8746300982268eb6aceeb9487d53"
-    sha256 cellar: :any,                 arm64_big_sur:  "96565558e1e7f0a1d0842ec0d9aa7799339ac3f565f8a3369d40af20d6b9dbf9"
-    sha256 cellar: :any,                 monterey:       "39ab054664f7b1422c5ef247d0dc8a853eee5341748cc0f22475ea528e7a9eb0"
-    sha256 cellar: :any,                 big_sur:        "612e1254ac4adbebe0c18078161a2643d3e8be934cb08ccd0f34b91df671d796"
-    sha256 cellar: :any,                 catalina:       "ec8257fd0e9cb81a3bbe109001a06abf438788a1e0b5f4f3078295bdff8e6d56"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d228f518262ecf2ea070da3933049a9857f0302979fd8eedbaa28cf35769562f"
+    sha256 cellar: :any,                 arm64_monterey: "5f30768c3cdd57101e8e9fb04d190ca08e1077a675e972696274813b902c2225"
+    sha256 cellar: :any,                 arm64_big_sur:  "b869ca5e1b8681af9e13af65b0be3ed04bbbd9af24144040528efd0102632647"
+    sha256 cellar: :any,                 monterey:       "9c8a981c14543edf0b2c6f3af864d6c33795b41478a9483013c09140c1876830"
+    sha256 cellar: :any,                 big_sur:        "bb279a0d1c4c498a7598bb472d0d61c3a575ae978c9df1b07d073cc5adfe58c7"
+    sha256 cellar: :any,                 catalina:       "5bee2a42a7b9f36a7a4372a76a478b6b290ac2cbee60fd986aed19fdb6156372"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6c836ee437d29c650703efbf243e7e553d417059d39bda9436f87bc399d8b769"
   end
 
   depends_on "cmake" => :build
@@ -85,13 +84,11 @@ class EtcdCppApiv3 < Formula
 
     # prepare etcd
     etcd_pid = fork do
-      on_macos do
-        if Hardware::CPU.arm?
-          # etcd isn't officially supported on arm64
-          # https://github.com/etcd-io/etcd/issues/10318
-          # https://github.com/etcd-io/etcd/issues/10677
-          ENV["ETCD_UNSUPPORTED_ARCH"]="arm64"
-        end
+      if OS.mac? && Hardware::CPU.arm?
+        # etcd isn't officially supported on arm64
+        # https://github.com/etcd-io/etcd/issues/10318
+        # https://github.com/etcd-io/etcd/issues/10677
+        ENV["ETCD_UNSUPPORTED_ARCH"]="arm64"
       end
 
       exec "#{Formula["etcd"].opt_prefix}/bin/etcd",

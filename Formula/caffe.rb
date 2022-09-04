@@ -4,7 +4,7 @@ class Caffe < Formula
   url "https://github.com/BVLC/caffe/archive/1.0.tar.gz"
   sha256 "71d3c9eb8a183150f965a465824d01fe82826c22505f7aa314f700ace03fa77f"
   license "BSD-2-Clause"
-  revision 34
+  revision 41
 
   livecheck do
     url :stable
@@ -12,11 +12,12 @@ class Caffe < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "e9a6b7d5319b06b9f804e86ed609663951e113455df8bd57a0f7300f8dab0335"
-    sha256 cellar: :any, arm64_big_sur:  "a2fab68055a79c1312b04b283d6034a206ec254d8daf0917e7ac62432d0c5d91"
-    sha256 cellar: :any, monterey:       "c657f6c2d50f44d7b8cc329a9b0280ceeaa801596247ba38d3cccbdeb2530d72"
-    sha256 cellar: :any, big_sur:        "90ebcb88034a191447fe98ae5990c3c7563141d1122b6b21d4acf5771cbacd92"
-    sha256 cellar: :any, catalina:       "d7381ec7e78e3a2e373715bf5c6627694521c2ad80f8e8dde421ef31d7f9c56f"
+    sha256 cellar: :any,                 arm64_monterey: "0b541442a6d65a4bd33be673e3e65600e03572d2a8ba7297ce591a45dff1a936"
+    sha256 cellar: :any,                 arm64_big_sur:  "6bd1fbd55fb47274ca9a00742ce531a6489be521a1a8e5854609470403881b98"
+    sha256 cellar: :any,                 monterey:       "005bad8638ff49a119722ab5eac1c570f07fd233653a6a2de2dac546a39fc994"
+    sha256 cellar: :any,                 big_sur:        "f3296808a8390757a22c4c6bff6581e8393b22cf9fead83b9027881d22b29f0d"
+    sha256 cellar: :any,                 catalina:       "19fd2287e31575e952b735c707a050bd94a8001ebe0471a51856d60ae0a0c348"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "105f09dd49c082b65850593f88c9c39dc6f0a3aee093b3d50a7a282a8aa3235e"
   end
 
   depends_on "cmake" => :build
@@ -25,13 +26,20 @@ class Caffe < Formula
   depends_on "glog"
   depends_on "hdf5"
   depends_on "leveldb"
+  depends_on "libaec"
   depends_on "lmdb"
   depends_on "opencv"
   depends_on "protobuf"
   depends_on "snappy"
-  depends_on "szip"
 
-  resource "test_model" do
+  on_linux do
+    depends_on "gcc"
+    depends_on "openblas"
+  end
+
+  fails_with gcc: "5" # opencv is compiled with GCC
+
+  resource "homebrew-test_model" do
     url "https://github.com/nandahkrishna/CaffeMNIST/archive/2483b0ba9b04728041f7d75a3b3cf428cb8edb12.tar.gz"
     sha256 "2d4683899e9de0949eaf89daeb09167591c060db2187383639c34d7cb5f46b31"
   end
@@ -53,7 +61,7 @@ class Caffe < Formula
   def install
     ENV.cxx11
 
-    args = std_cmake_args + %w[
+    args = %w[
       -DALLOW_LMDB_NOLOCK=OFF
       -DBUILD_SHARED_LIBS=ON
       -DBUILD_docs=OFF
@@ -67,17 +75,18 @@ class Caffe < Formula
       -DUSE_OPENCV=ON
       -DUSE_OPENMP=OFF
     ]
+    args << "-DBLAS=Open" if OS.linux?
 
-    system "cmake", ".", *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
     pkgshare.install "models"
   end
 
   test do
-    resource("test_model").stage do
-      system "#{bin}/caffe", "test",
-             "-model", "lenet_train_test.prototxt",
-             "-weights", "lenet_iter_10000.caffemodel"
+    resource("homebrew-test_model").stage do
+      system bin/"caffe", "test", "-model", "lenet_train_test.prototxt",
+                                  "-weights", "lenet_iter_10000.caffemodel"
     end
   end
 end

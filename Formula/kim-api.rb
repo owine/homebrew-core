@@ -1,10 +1,10 @@
 class KimApi < Formula
   desc "Knowledgebase of Interatomic Models (KIM) API"
   homepage "https://openkim.org"
-  url "https://s3.openkim.org/kim-api/kim-api-2.2.1.txz"
-  sha256 "1d5a12928f7e885ebe74759222091e48a7e46f77e98d9147e26638c955efbc8e"
+  url "https://s3.openkim.org/kim-api/kim-api-2.3.0.txz", using: :homebrew_curl
+  sha256 "93673bb8fbc0625791f2ee67915d1672793366d10cabc63e373196862c14f991"
   license "CDDL-1.0"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://openkim.org/kim-api/previous-versions/"
@@ -12,14 +12,12 @@ class KimApi < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "a749243959bbd89189fe9b83da1a9f992de0b8346d08dabe2172415abadc2ffd"
-    sha256 cellar: :any,                 arm64_big_sur:  "bc69df6522ce9a9f76399e03b78255ae82faedd70c5a8f3d4535de4d3f89f6a8"
-    sha256 cellar: :any,                 monterey:       "0efba513c8067de36eb7ae2b27c538380f8d323a87a63dc7432965ee83c777b6"
-    sha256 cellar: :any,                 big_sur:        "0324105634345be3ed3cb5f7bdd7d31379e84e5afdf966b3a699ad5355b8da49"
-    sha256 cellar: :any,                 catalina:       "2d3e050c3af7adb392213906db110f79bc6c637a68a77231bcd94ca201555f2e"
-    sha256 cellar: :any,                 mojave:         "34a1e8943c72ae99512a7069c08738f57f1b11e0adfb9a6ba5724ad953d06745"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "25cab6d99de536975418877447a40e436a884b16423056b06902f3aaf0884a61"
+    sha256 cellar: :any,                 arm64_monterey: "a18d11cf459f99ca0c0f8a1d08d3f6a2ea762a1ca029e282b77227cdd3f432a9"
+    sha256 cellar: :any,                 arm64_big_sur:  "c4d038b0db6fc374be824cfa325a775f8dd8556b406b69f8bce1cd51edab6ed5"
+    sha256 cellar: :any,                 monterey:       "bfd052878e3b8a58ea1c496cc5c13499056af16c9ccdcdb95fa69db2f28b2525"
+    sha256 cellar: :any,                 big_sur:        "f59251974403a7a5396aef8cd77cbe28d5a614fcadfa414c3d6a41de9e7863b1"
+    sha256 cellar: :any,                 catalina:       "a02ca35858e1449c7022ca563b87367b639bd2905e1a9476029a2d01ab51d503"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ee5ac6fe8da70f2734003c6348e8f094b354324bd7b6976e2ceaeb0d09c6ea1"
   end
 
   depends_on "cmake" => :build
@@ -29,10 +27,8 @@ class KimApi < Formula
   uses_from_macos "xz"
 
   def install
-    # change file(COPY) to configure_file() to avoid symlink issue; will be fixed in 2.2.2
-    inreplace "cmake/items-macros.cmake.in", /file\(COPY ([^ ]+) DESTINATION ([^ ]*)\)/,
-                                             "configure_file(\\1 \\2 COPYONLY)"
     args = std_cmake_args + [
+      "-DCMAKE_INSTALL_RPATH=#{rpath}",
       # adjust libexec dir
       "-DCMAKE_INSTALL_LIBEXECDIR=lib",
       # adjust directories for system collection

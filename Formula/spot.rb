@@ -1,8 +1,8 @@
 class Spot < Formula
   desc "Platform for LTL and ω-automata manipulation"
   homepage "https://spot.lrde.epita.fr/"
-  url "https://www.lrde.epita.fr/dload/spot/spot-2.10.3.tar.gz"
-  sha256 "897e95486173748f2b65eecbd99a234b7f6877f2186e868da7ace5671804019f"
+  url "https://www.lrde.epita.fr/dload/spot/spot-2.10.6.tar.gz"
+  sha256 "c588d1cb53ccea3e592f99402b14c2f4367b349ecef8e17b6d391df146bc8ba4"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Spot < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "31f33501ec68a60e443c48a01e24d27957c8eede7483cf6ae582a0052ea2fcf7"
-    sha256 cellar: :any,                 arm64_big_sur:  "3bfe65a7a78ea709b5f36420332c4d0857ab87fc0b52cd599cfe74197a336b02"
-    sha256 cellar: :any,                 monterey:       "45c706b5a3b800059aa66c677b5664e12af3044c27c5e68316aada66565e0fa5"
-    sha256 cellar: :any,                 big_sur:        "3028e50d36584f7e40f6e57c6df5eaf971b6b5524730301648e13bad1d6329ad"
-    sha256 cellar: :any,                 catalina:       "7331f205366f3221821cdebd625722ebe7f73d0778da36783aec74cac1d79262"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d8b6ccbaf08883bfb91405b541b525f96673395ff6724e4f4d2aea628e98763"
+    sha256 cellar: :any,                 arm64_monterey: "b1430858b8bb86bf381ce7ce6bdf2ad6353eca969ff76967e5f307ad9e21032c"
+    sha256 cellar: :any,                 arm64_big_sur:  "3446679a5ef8e565deff8aa7cb25b3da156056cd0e96f084e64a920cef428fce"
+    sha256 cellar: :any,                 monterey:       "bedb932f538883e9fad2d64dc00b5185ecc49d44ef99b88ab65d6d0951c76827"
+    sha256 cellar: :any,                 big_sur:        "62b1883615299ed12f9bda54f0b381ce5ffcc4badbc0ba0d8a59301f97d5e60d"
+    sha256 cellar: :any,                 catalina:       "06eefd56dca1c57ddaa883ec4f0985db4b48ee119befa0e18ef7fe67221040e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea1d2f111bd18c6b35d808273777d5b3f1c58adb29e5c9d943114f50e67e5440"
   end
 
   depends_on "python@3.10" => :build

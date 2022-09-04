@@ -1,11 +1,10 @@
 class Monkeysphere < Formula
   desc "Use the OpenPGP web of trust to verify ssh connections"
-  homepage "https://web.monkeysphere.info/"
+  homepage "https://tracker.debian.org/pkg/monkeysphere"
   url "https://deb.debian.org/debian/pool/main/m/monkeysphere/monkeysphere_0.44.orig.tar.gz"
   sha256 "6ac6979fa1a4a0332cbea39e408b9f981452d092ff2b14ed3549be94918707aa"
   license "GPL-3.0-or-later"
   revision 4
-  head "git://git.monkeysphere.info/monkeysphere"
 
   livecheck do
     url "https://deb.debian.org/debian/pool/main/m/monkeysphere/"
@@ -31,8 +30,8 @@ class Monkeysphere < Formula
 
   uses_from_macos "perl"
 
-  on_linux do
-    resource "Crypt::OpenSSL::Guess" do
+  resource "Crypt::OpenSSL::Guess" do
+    on_linux do
       url "https://cpan.metacpan.org/authors/id/A/AK/AKIYM/Crypt-OpenSSL-Guess-0.13.tar.gz"
       sha256 "87c1dd7f0f80fcd3d1396bce9fd9962e7791e748dc0584802f8d10cc9585e743"
     end

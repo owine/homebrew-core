@@ -1,8 +1,8 @@
 class LinkGrammar < Formula
   desc "Carnegie Mellon University's link grammar parser"
   homepage "https://www.abisource.com/projects/link-grammar/"
-  url "https://www.abisource.com/downloads/link-grammar/5.10.2/link-grammar-5.10.2.tar.gz"
-  sha256 "28cec752eaa0e3897ae961333b6927459f8b69fefe68c2aa5272983d7db869b6"
+  url "https://www.abisource.com/downloads/link-grammar/5.10.5/link-grammar-5.10.5.tar.gz"
+  sha256 "324710cd8132975ff9ccb53509732f7558473b1c19f17892000a3dedb8618aed"
   license "LGPL-2.1"
   head "https://github.com/opencog/link-grammar.git", branch: "master"
 
@@ -12,13 +12,12 @@ class LinkGrammar < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "2497cfab315f6c199b5a4d751d08354e3997b0ab7d2bf139b1f433765f26b877"
-    sha256 arm64_big_sur:  "58f608417bce28f09eb9af4ecaf696ef8dc81085c41b6d41e9226026000dd79b"
-    sha256 monterey:       "84b1c36c5cdfb1dbce496d3ea10c7182a6b1deb66369146088a9cf77fde7e2c4"
-    sha256 big_sur:        "45fd5772d8e9438a0d4a82055bea5b32ae0cb2ded6942ae455b6ceedf4042547"
-    sha256 catalina:       "690244f41acdcc0dc7821d0f3ca6d8453c82a8ba237f185bf18b3f79efa67791"
-    sha256 x86_64_linux:   "d183af52518aa19ed2e0628496fb925b0c355b3310a37997b83a7f281874c5ba"
+    sha256 arm64_monterey: "af874176981d4b426f5aac09d6c227cee400ae3e42a2dcbb82d14d9c1adb2b88"
+    sha256 arm64_big_sur:  "b3d69e260cf783896276b5dd4df44ec99bdbb8617835113fb964bc6aa095c135"
+    sha256 monterey:       "4d1dfc85da18f9f259cf98b1768a8b61401e6406becdc8009c7ba2c34847b655"
+    sha256 big_sur:        "b8e8d4df343f1748d15610eec2d14eed38bd50782d15771a9a202d18aeff629d"
+    sha256 catalina:       "ac89bfaab43b5318d0a51c19963e6896a732c0f1e6c3c916a636bd45843b7ca9"
+    sha256 x86_64_linux:   "335fa470f98865f3ffc91896a37230c077053ba3f347f58e87a9e5429261b8df"
   end
 
   depends_on "ant" => :build
@@ -29,6 +28,7 @@ class LinkGrammar < Formula
   depends_on "pkg-config" => :build
   depends_on "python@3.10" => :build
 
+  uses_from_macos "flex" => :build
   uses_from_macos "sqlite"
 
   def install

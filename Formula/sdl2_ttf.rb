@@ -1,17 +1,17 @@
 class Sdl2Ttf < Formula
   desc "Library for using TrueType fonts in SDL applications"
   homepage "https://github.com/libsdl-org/SDL_ttf"
-  url "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.0.18/SDL2_ttf-2.0.18.tar.gz"
-  sha256 "7234eb8883514e019e7747c703e4a774575b18d435c22a4a29d068cb768a2251"
+  url "https://github.com/libsdl-org/SDL_ttf/releases/download/release-2.20.1/SDL2_ttf-2.20.1.tar.gz"
+  sha256 "78cdad51f3cc3ada6932b1bb6e914b33798ab970a1e817763f22ddbfd97d0c57"
   license "Zlib"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "01abc453be483984acdcc80e8e9d3f1ce880a6b06344e8c96295e29935148458"
-    sha256 cellar: :any,                 arm64_big_sur:  "c3829e2aff4e9137a1f9dbb72f39aed6b097960c3fd204163ba3bce44f5e0e32"
-    sha256 cellar: :any,                 monterey:       "7672ccbe096152da61a813a2870887fef6076031679616e4ba42888007d88fc3"
-    sha256 cellar: :any,                 big_sur:        "93155231163ee6ebd5d7c36c859341629ce96abfb8d0ca00aa928e3b219128d9"
-    sha256 cellar: :any,                 catalina:       "f0aadd0fa8f1dedc706efac6e361dad6cae614413357e4ab3150a57bd766bb4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cf5e495a8ec43101ee5a4387710de8103caf1f24a8c09d52a27d245089de0ec4"
+    sha256 cellar: :any,                 arm64_monterey: "0717a73e3b400b75d4c95a1f041405d1e2a51d853084f4f4a2df509a0f5f66b4"
+    sha256 cellar: :any,                 arm64_big_sur:  "3c330912742dc8adec3f1c84d72cd0c6d2042e07668b4e0949dd19a48db93399"
+    sha256 cellar: :any,                 monterey:       "03664994cfddf5b0dc3c2e17882ac02d01e2f46f0c74b711cdaf8b850e97c721"
+    sha256 cellar: :any,                 big_sur:        "1d882966dfe5f2710325b20c9aaa3dc37e4fdc2698c8fb9f3d4252a62a3799be"
+    sha256 cellar: :any,                 catalina:       "b969e2ec3520ce18c9ab44e05e9fb4e406887c8d879d156c8eedc559ba9bfe30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69cd455ca76baafa15a74f4266c6dc5b3531c5146a7d420beeeae2e106ebdfc1"
   end
 
   head do
@@ -24,6 +24,7 @@ class Sdl2Ttf < Formula
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
+  depends_on "harfbuzz"
   depends_on "sdl2"
 
   def install
@@ -31,8 +32,12 @@ class Sdl2Ttf < Formula
 
     system "./autogen.sh" if build.head?
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    # `--enable-harfbuzz` is the default, but we pass it
+    # explicitly to generate an error when it isn't found.
+    system "./configure", "--disable-freetype-builtin",
+                          "--disable-harfbuzz-builtin",
+                          "--enable-harfbuzz",
+                          *std_configure_args
     system "make", "install"
   end
 

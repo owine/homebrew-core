@@ -1,8 +1,8 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://www.wildfly.org/"
-  url "https://github.com/wildfly/wildfly/releases/download/26.0.1.Final/wildfly-26.0.1.Final.tar.gz"
-  sha256 "bd40fcf0bc2ff1a910eb6c2e5f2cb1946053cb2d15c0323aefb40f0f3852c5e5"
+  url "https://github.com/wildfly/wildfly/releases/download/26.1.2.Final/wildfly-26.1.2.Final.tar.gz"
+  sha256 "dd2a97e7bf32a13adfc6782868afb5e48fb033b83480fc5bf94128807a83b17c"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,11 +11,13 @@ class WildflyAs < Formula
   end
 
   bottle do
-    sha256 cellar: :any, all: "b04e4e4beb6c592f3aeb1a0478a14b829a6f7d7bbc9a00c4c9fa70b6fb8e6cba"
+    sha256 cellar: :any, arm64_monterey: "b82e2694c5e900adcf712db3a6892557107b4f6e13b191ecaf6f97345babbc68"
+    sha256 cellar: :any, arm64_big_sur:  "b82e2694c5e900adcf712db3a6892557107b4f6e13b191ecaf6f97345babbc68"
+    sha256 cellar: :any, monterey:       "39845e499ea7f079f75fc1b31991672af90f35f28a7c6b69df69ed04ad2dfa5f"
+    sha256 cellar: :any, big_sur:        "39845e499ea7f079f75fc1b31991672af90f35f28a7c6b69df69ed04ad2dfa5f"
+    sha256 cellar: :any, catalina:       "39845e499ea7f079f75fc1b31991672af90f35f28a7c6b69df69ed04ad2dfa5f"
   end
 
-  # Installs a pre-built x86_64-only `libwfssl`
-  depends_on arch: :x86_64
   # Installs a pre-built `libartemis-native-64.so` file with linkage to libaio.so.1
   depends_on :macos
   depends_on "openjdk"
@@ -23,6 +25,16 @@ class WildflyAs < Formula
   def install
     buildpath.glob("bin/*.{bat,ps1}").map(&:unlink)
     buildpath.glob("**/win-x86_64").map(&:rmtree)
+    buildpath.glob("**/linux-i686").map(&:rmtree)
+    buildpath.glob("**/linux-s390x").map(&:rmtree)
+    buildpath.glob("**/linux-x86_64").map(&:rmtree)
+    buildpath.glob("**/netty-transport-native-epoll/**/native").map(&:rmtree)
+    if Hardware::CPU.intel?
+      buildpath.glob("**/*_aarch_64.jnilib").map(&:unlink)
+    else
+      buildpath.glob("**/macosx-x86_64").map(&:rmtree)
+      buildpath.glob("**/*_x86_64.jnilib").map(&:unlink)
+    end
 
     inreplace "bin/standalone.sh", /JAVA="[^"]*"/, "JAVA='#{Formula["openjdk"].opt_bin}/java'"
 
@@ -40,38 +52,10 @@ class WildflyAs < Formula
     EOS
   end
 
-  plist_options manual: "#{HOMEBREW_PREFIX}/opt/wildfly-as/libexec/bin/standalone.sh --server-config=standalone.xml"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>KeepAlive</key>
-        <dict>
-          <key>SuccessfulExit</key>
-          <false/>
-          <key>Crashed</key>
-          <true/>
-        </dict>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_libexec}/bin/standalone.sh</string>
-          <string>--server-config=standalone.xml</string>
-        </array>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>JBOSS_HOME</key>
-          <string>#{opt_libexec}</string>
-          <key>WILDFLY_HOME</key>
-          <string>#{opt_libexec}</string>
-        </dict>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_libexec/"bin/standalone.sh", "--server-config=standalone.xml"]
+    environment_variables JBOSS_HOME: opt_libexec, WILDFLY_HOME: opt_libexec
+    keep_alive successful_exit: false, crashed: true
   end
 
   test do

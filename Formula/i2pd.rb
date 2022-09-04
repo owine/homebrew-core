@@ -1,17 +1,17 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/2.40.0.tar.gz"
-  sha256 "4443f484ad40753e892170a26c8ee8126e8338bf416d04eab0c55c1c94a4e193"
+  url "https://github.com/PurpleI2P/i2pd/archive/2.43.0.tar.gz"
+  sha256 "db1679653491a411dd16fa329488d840296c8f680e0691f9fe0d0e796e5d7bca"
   license "BSD-3-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_monterey: "550dc26ffd266bbf7b913f132fe4aba1c04e94a43e3604f32e99a0205109726c"
-    sha256 cellar: :any, arm64_big_sur:  "df56a21abd4fd938d18861b89a3b3c2915de281d0d48691b252aa2a2995d8216"
-    sha256 cellar: :any, monterey:       "0eeb3cb89d507c2bc2c5e2efc3b723f1353fb957fd652e03053cbdd7042d049e"
-    sha256 cellar: :any, big_sur:        "518e30dd51f2bfa19f0a4919fa54cb1ce1b426ba9fb8c8af759ad193cba6e00d"
-    sha256 cellar: :any, catalina:       "57cbbd26efba51eba1391e59f1499e066971ae6842c8eb95c3079cedba37c2a1"
+    sha256 cellar: :any,                 arm64_monterey: "db52cf4513b14df53dee830dccc3f7c616414f18ab700245240a8f3589964d8e"
+    sha256 cellar: :any,                 arm64_big_sur:  "f394f532f667ac1c0517948d21296570ac1c02584e024649167f47e3a61117f8"
+    sha256 cellar: :any,                 monterey:       "e67a017206afb3adc32fbbae996cbbe34947921a256bd95c4cafc2a754cd08db"
+    sha256 cellar: :any,                 big_sur:        "5c864dc961eb45d906dd71a2489a66319f7d368556b790dd905bf8cf1a46700c"
+    sha256 cellar: :any,                 catalina:       "a94343a4472e833464044756d6b618f017455ffaa9c92ace525508018ce46bb4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a8e4c4b782b1b6dd3928ce1c7566310771421a6a08e95df4c581cd03919ac08"
   end
 
   depends_on "boost"

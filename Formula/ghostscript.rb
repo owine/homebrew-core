@@ -1,30 +1,31 @@
 class Ghostscript < Formula
   desc "Interpreter for PostScript and PDF"
   homepage "https://www.ghostscript.com/"
-  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9550/ghostpdl-9.55.0.tar.gz"
-  sha256 "b73cdfcb7b1c2a305748d23b00a765bcba48310564940b1eff1457f19f898172"
+  url "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9561/ghostpdl-9.56.1.tar.xz"
+  sha256 "05e64c19853e475290fd608a415289dc21892c4d08ee9086138284b6addcb299"
   license "AGPL-3.0-or-later"
+  revision 1
 
   # We check the tags from the `head` repository because the GitHub tags are
   # formatted ambiguously, like `gs9533` (corresponding to version 9.53.3).
   livecheck do
-    url :head
-    regex(/^ghostpdl[._-]v?(\d+(?:\.\d+)+)$/i)
+    url :stable
+    regex(/href=.*?ghostpdl[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 arm64_monterey: "3cc72369ec9dd8c737de7834b34bbdd92d075ddf9809a149c1cb1aaf10892778"
-    sha256 arm64_big_sur:  "617fe03b1a426807c84e2b0726ab4e15c2269d8874960d134fe9000efd54c456"
-    sha256 monterey:       "634c6ee7518283215456e9d1807a7f15bf9c36f49f92031c28f9d5eb13ee1fd1"
-    sha256 big_sur:        "8b3824307757256005d15c6415239e435ff37c51f3585e40168494c2bcb7388c"
-    sha256 catalina:       "d53bb1c34d32ee6acb0805882e11e6608f5ff198cf15def073383e6cbf609828"
-    sha256 mojave:         "80587b6291bf33ea170075e279baf6c5a900f58299eac84e87a16d076840841b"
-    sha256 x86_64_linux:   "89736d32c56188e51e63508ef204f1f6f6256b6778e28ed3391c90066e5b98e2"
+    sha256 arm64_monterey: "c84daf7a848fac53bf2968239151361290ccb277accae6f11b0b39a7acb5f914"
+    sha256 arm64_big_sur:  "a4f21885ac9b57f6e5511a1208b9d36ad0aa473180a2e080a9b4c23de2a5b6e9"
+    sha256 monterey:       "38729b0c92a70014d82ddd57d33190019822f999efdb69d3f95e2e4cbe38fb71"
+    sha256 big_sur:        "d1c4c864b2c954cf10c9023b5468652f60fb943d5ba91c190a85ef9d8224571f"
+    sha256 catalina:       "335d57520e942b8547d79f62b505cc87a8afee12ecc50baccebe9dad32a0f0d0"
+    sha256 x86_64_linux:   "478b2bb55a41d3afbfbdf55956180e6f653a981219dd137ba5728fbce8bed6ea"
   end
 
   head do
     # Can't use shallow clone. Doing so = fatal errors.
-    url "https://git.ghostscript.com/ghostpdl.git"
+    url "https://git.ghostscript.com/ghostpdl.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -35,7 +36,7 @@ class Ghostscript < Formula
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jbig2dec"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libidn"
   depends_on "libpng"
   depends_on "libtiff"
@@ -57,9 +58,14 @@ class Ghostscript < Formula
     sha256 "0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401"
   end
 
+  # fmemopen is only supported from 10.13 onwards (https://news.ycombinator.com/item?id=25968777).
+  # For earlier versions of MacOS, needs to be excluded.
+  # This should be removed once patch added to next release of leptonica (which is incorporated by ghostscript in
+  # tarballs).
   patch do
-    url "http://git.ghostscript.com/?p=ghostpdl.git;a=patch;h=830afae5454dea3bff903869d82022306890a96c"
-    sha256 "9c282e3f732b5c182ab761e187850d9f4c29d938a93e3785d9cb6ced13111d6c"
+    url "https://github.com/DanBloomberg/leptonica/commit/848df62ff7ad06965dd77ac556da1b2878e5e575.patch?full_index=1"
+    sha256 "7de1c4e596aad5c3d2628b309cea1e4fc1ff65e9c255fe64de1922b3fd2d60fc"
+    directory "leptonica"
   end
 
   def install

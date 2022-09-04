@@ -1,9 +1,9 @@
 class Algernon < Formula
   desc "Pure Go web server with Lua, Markdown, HTTP/2 and template support"
   homepage "https://github.com/xyproto/algernon"
-  url "https://github.com/xyproto/algernon/archive/1.12.14.tar.gz"
-  sha256 "cab5b01923142e0326ea2a01797814bb2e8ea9f7c6c41a3ea0ae7df3b667e86e"
-  license "MIT"
+  url "https://github.com/xyproto/algernon/archive/refs/tags/v1.14.0.tar.gz"
+  sha256 "2d30fe7a3f7c9b985f5fde7d6035888ad0c31ae4342fb38a96404de320ccd883"
+  license "BSD-3-Clause"
   version_scheme 1
   head "https://github.com/xyproto/algernon.git", branch: "main"
 
@@ -13,19 +13,18 @@ class Algernon < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1da0199a842951f84657d8bcba74637c80ea2266576f9ff83d58aa0482c1ea85"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0eaa6910677a3aa0a1be868af31c73e7390d420f41c7950e905d6d52556bde0b"
-    sha256 cellar: :any_skip_relocation, monterey:       "b2ad82e5156e897e0000273928084cb059ad30c73683b2f69cba53ce212fbcae"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ffe7eed6b3576166e41b66beecdccc47aabed4644119190a1534ec8210fb25cc"
-    sha256 cellar: :any_skip_relocation, catalina:       "57e11ff2b146da5e254189058ec5502bda66d7213996daf8846756cca5de38ec"
-    sha256 cellar: :any_skip_relocation, mojave:         "c06af8b3677a3d46e7be0160533e8da8b7512b848a24105d498c0a9b1d381125"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ccdca9ac607c215c4981e35dc13101c5acc0533edd1a5441bd3c874dea275b2a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "343a3153a0af6ad0fc1ad27939eb9a2dbc9f379bd5bf6b4e373b9fd2f87d3ed4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "401c99640d17d66677f419c8da8719618c499e02e2b6f70b74eefec104378912"
+    sha256 cellar: :any_skip_relocation, monterey:       "a0f090b5d513eedc54de13a6f954a33ac0a126ea2b1bd1dde009629bd0854707"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3f25029f7b5dcf462b1b6e3d3a69e246d881201a7f9ab35657cd11dd25916f6a"
+    sha256 cellar: :any_skip_relocation, catalina:       "fff5b9bfa21524d8f9bff2266978dc7dcb4a8a6a35a19eb20397d3993a0e3445"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1fb0615287ba76cf2372cc91154d458c881d175e877b4140eeab7487282a7269"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-mod=vendor"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "-mod=vendor"
 
     bin.install "desktop/mdview"
   end

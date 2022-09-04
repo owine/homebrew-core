@@ -1,18 +1,17 @@
 class Grpcurl < Formula
   desc "Like cURL, but for gRPC"
   homepage "https://github.com/fullstorydev/grpcurl"
-  url "https://github.com/fullstorydev/grpcurl/archive/v1.8.5.tar.gz"
-  sha256 "1a9612560b2da18d50f0a46e9f2f5a7e5a13c4bb1ccef15ba65cb0c37335342b"
+  url "https://github.com/fullstorydev/grpcurl/archive/v1.8.7.tar.gz"
+  sha256 "7f7a59f8a5ef8833d30a94e1c36ddb0d76bab1ae64cd5c8bcb87d42e877c3bca"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa1d9cb2fbe10d32cfd3c8054470a6fa9252398b8d0ee8173d6472969a8cc87a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7a8dd3ae573f6d2ccfa345ad82c65b6d619d499d83dc92737f18b4281fb3db24"
-    sha256 cellar: :any_skip_relocation, monterey:       "f34de76d162ca64e0ad367267115f9de56649727dcc59d15a6187476f0d59aef"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ebf419ea7d01fd13e6e6e274a7aed487d41a979f267630838228fe718b7fdc40"
-    sha256 cellar: :any_skip_relocation, catalina:       "e4ccd7f8496238cd23919166ca8721471732919af8b4f21abceb9feef8561003"
-    sha256 cellar: :any_skip_relocation, mojave:         "f2fe91c9954c1c5e2797c9eb10557a3ddea090c0b14cc1623f237a93038161e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46eb83d219deb562546cf83106693d6b10b695060e6bc557e18c41506ef60a9a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "37d01a36b9911c64b6a32ee44d1ed9eb148fb1844df0b81c1b19c235ed7fd907"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "81421aa8f13a8d6993aa60172b0252ac503daec9980441af6ee025af58eb8acb"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f7e652c6277205d1ae756475b283fa750eaf7aa3325be9ea08ba33f4939a040"
+    sha256 cellar: :any_skip_relocation, big_sur:        "12f6441cce946edee12c07729ab0e9b433dc44094b57dabd3e4e6e1864b4a811"
+    sha256 cellar: :any_skip_relocation, catalina:       "6bb6275586993be3b1b9f9db7ad86a91d12e733815d7cb89141dca02b0b1ba54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2ff19dc12a0e3df9384e6431a8f8f35e8ecd9527694a837f9a750121c58778b"
   end
 
   depends_on "go" => :build

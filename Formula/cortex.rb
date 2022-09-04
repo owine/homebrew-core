@@ -1,8 +1,8 @@
 class Cortex < Formula
   desc "Long term storage for Prometheus"
   homepage "https://cortexmetrics.io/"
-  url "https://github.com/cortexproject/cortex/archive/v1.11.0.tar.gz"
-  sha256 "6b8a399033980d79bbac076fb0f68ee4fc6abe3a03a8e63028ef1ba16c01393a"
+  url "https://github.com/cortexproject/cortex/archive/v1.13.0.tar.gz"
+  sha256 "dd955b58091b7b0596e4bdc716cb855b8b15fdafa878c35c86ebbf4eac922064"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Cortex < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "04425fe81f84b9b1446436a3178f68e109ec93bcf66d34c2f4bc200ac2163e82"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fd9bd6e9a71f685770a301499138566acec5635d6e4f3d79e605677846fe49c1"
-    sha256 cellar: :any_skip_relocation, monterey:       "fc620132236a3824c4a42976715ac05257f7442b42a3f0420a803ff2fe298576"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c28f76b6e28fa84d1d92c53be0ba2aa9183a956985c6e9b59d43fdb1a42051d3"
-    sha256 cellar: :any_skip_relocation, catalina:       "1e12a54c55921413b668e370e722a12f9dcd0b611b7129024e2b82eb7314d596"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "019b1294b8610afca8652596b9c11fc691e1e05956040a8fa39e6c693f663ccd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4dfca8da82187967a67b216a66e3dec108a49d960b1b196f84573e020ec891c2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3cc421fa507124025e0021b09bfa1dfa88ceb0c422616bba3f999b006ccd8bbf"
+    sha256 cellar: :any_skip_relocation, monterey:       "284161f629fd7630cb356600a924783129802f2e19c944f13bbc48628d626334"
+    sha256 cellar: :any_skip_relocation, big_sur:        "71243b44ec33c215147ea74df1069e45fd85904228b1536c751f7767211e7625"
+    sha256 cellar: :any_skip_relocation, catalina:       "3c497ef2de9d0854ec36b3e44171dee72c8d51eeb8008ce1f905480370ff7495"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3dfc6e434747b285dfdc903c1e8ac9d6dce94ab1055b28510997ce84caecb23"
   end
 
   depends_on "go" => :build

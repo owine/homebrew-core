@@ -1,18 +1,19 @@
 class Timg < Formula
   desc "Terminal image and video viewer"
   homepage "https://timg.sh/"
-  url "https://github.com/hzeller/timg/archive/refs/tags/v1.4.3.tar.gz"
-  sha256 "46eac8d5434b281afa6d64ced5f46c732c1c4d0699e16a22175b7df179221e2c"
+  url "https://github.com/hzeller/timg/archive/refs/tags/v1.4.4.tar.gz"
+  sha256 "66d2e00b50068fd6638bb8be1859c50ca4f24caef751f9dc95b303f37fb07b1e"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/hzeller/timg.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "531c30dd7c35e063b3275906ed52852787515e919aa0509061e8f6aa9d104b29"
-    sha256 cellar: :any,                 arm64_big_sur:  "da011715f8a4d17401ae07f6df5785793ce40b3427ab2614aefe37004fa785aa"
-    sha256 cellar: :any,                 monterey:       "a463826c4fefc87b00b263f20089bc19ea9ed9a03e06bc3a6cb54c656ce3da22"
-    sha256 cellar: :any,                 big_sur:        "4b3469d10b9bb86a593d712e336b668bfb7c4182d095394d17ebee6431673f32"
-    sha256 cellar: :any,                 catalina:       "a5e09b3923a28853aabc4538f84891ec9d7b4a80b9996873bfd0bd9cee2ae0a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f2282c858059757eecbb0546315b00966f67baf5d48b732be29683350c5bff2"
+    sha256 cellar: :any,                 arm64_monterey: "544ece49b78ce94cc86b051f79c7d482a422f703eb6a6ac9629cec6e407ab636"
+    sha256 cellar: :any,                 arm64_big_sur:  "0194db39ce6bdd677cbe6ab0fb0ae04f15079d59966714c8452e1a2e6fb0f552"
+    sha256 cellar: :any,                 monterey:       "32c07c228f70b47fa944f87c6c966a4eebac41cfc82df9670af9aeabae465e53"
+    sha256 cellar: :any,                 big_sur:        "072b04b7a2888e2d2b5e3b727cb915a757743d3b4eb7b7e28df4f78d7ee06c10"
+    sha256 cellar: :any,                 catalina:       "476d093d5d8b40f92b8aaa050a5dfa071b581e1cf87fa3c1820c71c8d7a8f620"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80bd1ea0746bbe5a216c29ebb345631329ec9cf2a5c3b1c2e90bad48bb7752e5"
   end
 
   depends_on "cmake" => :build
@@ -31,8 +32,9 @@ class Timg < Formula
   fails_with gcc: "5" # rubberband is built with GCC
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

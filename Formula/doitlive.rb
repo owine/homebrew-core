@@ -3,27 +3,26 @@ class Doitlive < Formula
 
   desc "Replay stored shell commands for live presentations"
   homepage "https://doitlive.readthedocs.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/e5/d9/4ce969d98f521c253ec3b15a0c759104a01061ac90fb9d8636b015bcb4ea/doitlive-4.3.0.tar.gz"
-  sha256 "4cb1030e082d8649f10a61d599d3ff3bcad7f775e08f0e68ee06882e06d0190f"
+  url "https://files.pythonhosted.org/packages/02/5a/ec8769dc1c6f81939c0f7839b885f27b62b79b67fe69fcc67f347c0dd3ff/doitlive-4.4.0.tar.gz"
+  sha256 "1b0031d6ce97778a292b247ccb762fda8212c1b935bc7da6a2be92f677a4ea60"
   license "MIT"
-  revision 10
   head "https://github.com/sloria/doitlive.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca1a1f1aea885860e82beada9dff81d971f89acbac90e872279a1b74d196c566"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c53819a626934205ac4b32eadb316fc4c3bf287fccc513ff313396bedd002dad"
-    sha256 cellar: :any_skip_relocation, monterey:       "18a0656dfd0262f370d21919bb0a2649edc63c3be6295edee3feb50aa6d493c9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2cbd6954dd362112f2a1a9eb1226ea506721eb64efe37af548359eef5f116410"
-    sha256 cellar: :any_skip_relocation, catalina:       "0099d450d5512214450d1eec180df1b1b18e114a2b7e9255e720c31dc5c42449"
-    sha256 cellar: :any_skip_relocation, mojave:         "5414c94f952d6394a59752a9e4f6e3a303e93eeb6722a64fd0eba975dcc2ee57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d33aec040b27e6d8786e005911c0ab20e2201cecb7694bcdafc46d4ef29e78e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "605e0c43da1f2889f39fd921c4d5ecaee5091eb8e1c8a15fcf1a5d010809d328"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "93142d964325ca6694d16510a515b2fcce25cd0badfe69c28a9cfc7951214a2c"
+    sha256 cellar: :any_skip_relocation, monterey:       "37af56c83002b262848b28842db98e2dc3dd6c54b39f7fca866ec03eb4aa95eb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c7c779c3c9071bceddb9cbed6b6fed3a22c1bc5882660440b19194cfec4a570c"
+    sha256 cellar: :any_skip_relocation, catalina:       "f2803c4ae051da368e524c0979d9ea0ec94e812c146092cb95c9c9778c30e5c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "48b1bff809153e13b1c9f9d1bb5f5d472893e02d6565422e6de933f0d9e093e9"
   end
 
   depends_on "python@3.10"
+  depends_on "six"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/4e/ab/5d6bc3b697154018ef196f5b17d958fac3854e2efbc39ea07a284d4a6a9b/click-7.1.1.tar.gz"
-    sha256 "8a18b4ea89d8820c5d0c7da8a64b2c324b4dabb695804dbfea19b9be9d88c0cc"
+    url "https://files.pythonhosted.org/packages/27/6f/be940c8b1f1d69daceeb0032fee6c34d7bd70e3e649ccac0951500b4720e/click-7.1.2.tar.gz"
+    sha256 "d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a"
   end
 
   resource "click-completion" do
@@ -32,38 +31,40 @@ class Doitlive < Formula
   end
 
   resource "click-didyoumean" do
-    url "https://files.pythonhosted.org/packages/9f/79/d265d783dd022541b744d002745d9e55d84c04a41930e35d8795934f6526/click-didyoumean-0.0.3.tar.gz"
-    sha256 "112229485c9704ff51362fe34b2d4f0b12fc71cc20f6d2b3afabed4b8bfa6aeb"
+    url "https://files.pythonhosted.org/packages/2f/a7/822fbc659be70dcb75a91fb91fec718b653326697d0e9907f4f90114b34f/click-didyoumean-0.3.0.tar.gz"
+    sha256 "f184f0d851d96b6d29297354ed981b7dd71df7ff500d82fa6d11f0856bee8035"
   end
 
   resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/d8/03/e491f423379ea14bb3a02a5238507f7d446de639b623187bccc111fbecdf/Jinja2-2.11.1.tar.gz"
-    sha256 "93187ffbc7808079673ef52771baa950426fd664d3aad1d0fa3e95644360e250"
+    url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
+    sha256 "31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"
   end
 
   resource "MarkupSafe" do
-    url "https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094/MarkupSafe-1.1.1.tar.gz"
-    sha256 "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"
+    url "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz"
+    sha256 "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
+  end
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/df/9e/d1a7217f69310c1db8fdf8ab396229f55a699ce34a203691794c5d1cad0c/packaging-21.3.tar.gz"
+    sha256 "dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"
+  end
+
+  resource "pyparsing" do
+    url "https://files.pythonhosted.org/packages/71/22/207523d16464c40a0310d2d4d8926daffa00ac1f5b1576170a32db749636/pyparsing-3.0.9.tar.gz"
+    sha256 "2b020ecf7d21b687f219b71ecad3631f644a47f01403fa1d1036b0c6416d70fb"
   end
 
   resource "shellingham" do
-    url "https://files.pythonhosted.org/packages/4b/f0/39516ebeaca978d6607609a283b15e7637622faffc5f01ecf78a49b24cd5/shellingham-1.3.2.tar.gz"
-    sha256 "576c1982bea0ba82fb46c36feb951319d7f42214a82634233f58b40d858a751e"
-  end
-
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/21/9f/b251f7f8a76dec1d6651be194dfba8fb8d7781d10ab3987190de8391d08e/six-1.14.0.tar.gz"
-    sha256 "236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"
+    url "https://files.pythonhosted.org/packages/bd/e6/fdf53ebbf08016dba98f2b047d4db95790157f0e2eed3b14bb5754271475/shellingham-1.5.0.tar.gz"
+    sha256 "72fb7f5c63103ca2cb91b23dee0c71fe8ad6fbfd46418ef17dbe40db51592dad"
   end
 
   def install
     virtualenv_install_with_resources
 
-    output = Utils.safe_popen_read({ "SHELL" => "bash" }, libexec/"bin/doitlive", "completion")
-    (bash_completion/"doitlive").write output
-
-    output = Utils.safe_popen_read({ "SHELL" => "zsh" }, libexec/"bin/doitlive", "completion")
-    (zsh_completion/"_doitlive").write output
+    generate_completions_from_executable(libexec/"bin/doitlive", "completion",
+                                         shells: [:bash, :zsh], shell_parameter_format: :none)
   end
 
   test do

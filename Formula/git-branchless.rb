@@ -1,22 +1,21 @@
 class GitBranchless < Formula
   desc "High-velocity, monorepo-scale workflow for Git"
   homepage "https://github.com/arxanas/git-branchless"
-  url "https://github.com/arxanas/git-branchless/archive/refs/tags/v0.3.8.tar.gz"
-  sha256 "9046d5b93c8bc959b7d8ab5238d3656c7e5463e2b68951300a1feb86aa533276"
+  url "https://github.com/arxanas/git-branchless/archive/refs/tags/v0.4.0.tar.gz"
+  sha256 "773eadf51fadf503b90f4a4dfb6ea38662294d9a98ec797d4b68592a731de4e0"
   license "GPL-2.0-only"
   head "https://github.com/arxanas/git-branchless.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ae4c5411e40a717d845bbc44fb21c4878cad26a366bf596b59940d10464cbc03"
-    sha256 cellar: :any,                 arm64_big_sur:  "c51f1f14c0af8a45b17a310bdfa6f7ea83aac123550bd78219275612ded69a38"
-    sha256 cellar: :any,                 monterey:       "cfe2387df1bc3690ccd528cab11163f4bfa93923fadb33fb60293ba656557232"
-    sha256 cellar: :any,                 big_sur:        "b6b3bd8eba0c7e4d245ed98ece5b42a0a600214486183c23cf7eaf324febe626"
-    sha256 cellar: :any,                 catalina:       "dc385af481b405f0bc9f07530d5a2131032a2f0735dc5ffc609d7388073343c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a82846c6858c32e810a1307ca647bb01525222b2d33fdf1791ce803266b58ac"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f4f649e311a98cd075ad03b44b5e73cbd5b5dcc8fcbad0b1078fbda82314833a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f49d2dcd8a4dc826d4e540b1808c79b2b9c55a75b8fb429f24fa4292931f5736"
+    sha256 cellar: :any_skip_relocation, monterey:       "d1cd42d896e207718eb25b506215f79599bee9d6821cc00f6ad36f39af036d69"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0d07fd7dc467642015b81bb5de1b014eee59720714f5a7f186c3e16b59396a2a"
+    sha256 cellar: :any_skip_relocation, catalina:       "b336c0c7a94a5b19060134978cb20f724c3b2f408e1365b3584bc74fa4a9aa80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c90a497b062a5e47126c63407182697241136b617bbd3a3f073720bf8d40dd73"
   end
 
   depends_on "rust" => :build
-  depends_on "openssl@1.1"
 
   uses_from_macos "zlib"
 
@@ -25,7 +24,7 @@ class GitBranchless < Formula
   end
 
   def install
-    system "cargo", "install", *std_cargo_args
+    system "cargo", "install", *std_cargo_args(path: "git-branchless")
   end
 
   test do

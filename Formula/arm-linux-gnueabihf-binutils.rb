@@ -1,9 +1,9 @@
 class ArmLinuxGnueabihfBinutils < Formula
   desc "FSF/GNU binutils for cross-compiling to arm-linux"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
-  sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.39.tar.xz"
+  sha256 "645c25f563b8adc0a81dbd6a41cffbf4d37083a382e02d5d3df4f65c09516d00"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,13 +11,12 @@ class ArmLinuxGnueabihfBinutils < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ce85c9e96511b8da8c5c3f06044b496bf1fe1b267c9e4a00eaa12c0c75e2cf55"
-    sha256 arm64_big_sur:  "f090259411ea17662b23b08700cc6bb63116624932ef17388e80cb88ec431fa5"
-    sha256 monterey:       "f536d989370b32b15fb0d55026dc4f6722fd30b4e89ec918a3ae18f772a2fda9"
-    sha256 big_sur:        "6fae8a0bdc7ef15c1f6dcfac0ae2a8bd533f0e5cbbdb44e857f48c5412b90a0c"
-    sha256 catalina:       "1ab534b59889553b9880a283d78800e5a334e3b883d896879f2f2a8d0f2e9531"
-    sha256 mojave:         "3d2a120a2968b69da655591646fe673023631e237e197c00e8e6301bcc1a6dad"
-    sha256 x86_64_linux:   "8d75311051fcd313c68ff04c1bdef32d740177f259dad09dc4fdea83584e706b"
+    sha256 arm64_monterey: "e7643d1794985d47e31b93873913a8ec7aa8fae723ddfc08e2ebdc0cee53dda7"
+    sha256 arm64_big_sur:  "26a7485076f8532059c77f977386b2d829cedf1577961dcf89dd10418cdbeff6"
+    sha256 monterey:       "a5a3177b6827560cb5f0c3a18d16162d162b79c0d9cd829d47d42bc9d406f2ca"
+    sha256 big_sur:        "88514862e122a26ca11dc9f2f21d53883f2150d89d583c6c046b29569d0e855c"
+    sha256 catalina:       "6f8cbd94bf5ba89b49b3547ab29b90e9bcf4b2d6ca2173a88b80751e44160491"
+    sha256 x86_64_linux:   "630a97002e764c3f2a9df69ee344e31ad9ea897da540d0dd5fef97b96ac269a1"
   end
 
   uses_from_macos "texinfo"

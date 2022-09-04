@@ -1,17 +1,17 @@
 class Driftctl < Formula
   desc "Detect, track and alert on infrastructure drift"
   homepage "https://driftctl.com"
-  url "https://github.com/snyk/driftctl/archive/v0.19.0.tar.gz"
-  sha256 "7e6b64ca62ebc6ca2780f3bc2e49803961f1ed8b6819a641b214460f1c8ebcb0"
+  url "https://github.com/snyk/driftctl/archive/v0.37.0.tar.gz"
+  sha256 "6eb05e26edd1d53182e58ae1ed7b5231bf2fb05f5b7b04ab4be39e38461b965f"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e70a59c3162e70071f7242d501d5aac8e1a0f71905c0b81ec0f5c8322d8f1139"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e70a59c3162e70071f7242d501d5aac8e1a0f71905c0b81ec0f5c8322d8f1139"
-    sha256 cellar: :any_skip_relocation, monterey:       "4a92b5a8dfdfef66a7386bb8c212cdb7eb8bb79879b59c600459af5f69de0d9b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4a92b5a8dfdfef66a7386bb8c212cdb7eb8bb79879b59c600459af5f69de0d9b"
-    sha256 cellar: :any_skip_relocation, catalina:       "4a92b5a8dfdfef66a7386bb8c212cdb7eb8bb79879b59c600459af5f69de0d9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f50b4bf996a805bd8a64d59bf0c9513b5a7ba10dda0606decee7ee24aa1ee7a2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2d60fcea535fcdcde789047ab4f29bb05effd38865fbaabd0b9641073d9d1dfe"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2d60fcea535fcdcde789047ab4f29bb05effd38865fbaabd0b9641073d9d1dfe"
+    sha256 cellar: :any_skip_relocation, monterey:       "9725833cb1dc6513ef37495f94e4d13eebbb40b120ed2883e9c617b60b700829"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9725833cb1dc6513ef37495f94e4d13eebbb40b120ed2883e9c617b60b700829"
+    sha256 cellar: :any_skip_relocation, catalina:       "9725833cb1dc6513ef37495f94e4d13eebbb40b120ed2883e9c617b60b700829"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d7cf0f3521517bd8e32a7e905e4cd2c0553ccb31949cf627f813c9b8e8ba6156"
   end
 
   depends_on "go" => :build
@@ -27,19 +27,12 @@ class Driftctl < Formula
 
     system "go", "build", *std_go_args(ldflags: ldflags)
 
-    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "bash")
-    (bash_completion/"driftctl").write output
-
-    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "zsh")
-    (zsh_completion/"_driftctl").write output
-
-    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "fish")
-    (fish_completion/"driftctl.fish").write output
+    generate_completions_from_executable(bin/"driftctl", "completion")
   end
 
   test do
     assert_match "v#{version}", shell_output("#{bin}/driftctl version")
-    assert_match "Downloading terraform provider: aws",
-      shell_output("#{bin}/driftctl --no-version-check scan 2>&1", 1)
+    assert_match "Could not find a way to authenticate on AWS!",
+      shell_output("#{bin}/driftctl --no-version-check scan 2>&1", 2)
   end
 end

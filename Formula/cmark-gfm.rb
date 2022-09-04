@@ -1,19 +1,18 @@
 class CmarkGfm < Formula
   desc "C implementation of GitHub Flavored Markdown"
   homepage "https://github.com/github/cmark-gfm"
-  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.2.tar.gz"
-  version "0.29.0.gfm.2"
-  sha256 "66d92c8bef533744674c5b64d8744227584b12704bcfebbe16dab69f81e62029"
+  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.5.tar.gz"
+  version "0.29.0.gfm.5"
+  sha256 "f665079062e05abc44ae933a74f1bdc5c89af1e1d2f4152042fc1ec5571093fe"
   license "BSD-2-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "884ea077983251b7212dcda36413dc028ab39dfd12427f955236f16a02f8e8c8"
-    sha256 cellar: :any,                 arm64_big_sur:  "cb732cbea0738d7488da9e5bb2694d87bf1a18db9c39eed7bae428e7b7d7c79a"
-    sha256 cellar: :any,                 monterey:       "20d3b7cdb732305873fb9a9fccee3c971383a4172e792bfc89c9b0457532ef81"
-    sha256 cellar: :any,                 big_sur:        "0d3a07d3aa0c2498ad2e095e0ee4879b2d56282f9a935e7720dce864b92b4eb1"
-    sha256 cellar: :any,                 catalina:       "e955d7646385f7b8fc87ca4b5b253ffee1b9f56036fcdc49d850d04bd7a0c1af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac57b71b5630072f81e9a76b22736ce112336681a8b2a2fd84ea87f942cb277f"
+    sha256 cellar: :any,                 arm64_monterey: "e319253d9762d75a1d72ba449cedd86a1a2362568b10dd91fdc0b7d60ba7435d"
+    sha256 cellar: :any,                 arm64_big_sur:  "30b8c1e28d62302b0b91d260315bd4208ece7edb582ba9cb1ee90ed32df44ea3"
+    sha256 cellar: :any,                 monterey:       "c6c52d9b82aacdcb35dd8e92ac20815c419c15a648bcc4ff9345c43346c8f93c"
+    sha256 cellar: :any,                 big_sur:        "27fa10766c92a82c2fc81485c21ebd2ba37da3730fd3032d4eb51b71eb005d64"
+    sha256 cellar: :any,                 catalina:       "caa4c5bf3a77a079799e330f17af0144dcb9b068f0f5a55978c1142591743ef0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a03572908861ae5eaf0c1e611d68e40c391097917ed8f87287b3adc46f6595a"
   end
 
   depends_on "cmake" => :build

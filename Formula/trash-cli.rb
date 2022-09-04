@@ -3,18 +3,18 @@ class TrashCli < Formula
 
   desc "Command-line interface to the freedesktop.org trashcan"
   homepage "https://github.com/andreafrancia/trash-cli"
-  url "https://files.pythonhosted.org/packages/21/56/e74b00e4ec56f159472a7366815504ae98c9e636bf1f124e71012540c734/trash-cli-0.21.10.24.tar.gz"
-  sha256 "d3169bcf7e9234967af861baab1a7ac6269c81bacfd7b82cb7bd49d2881715bc"
+  url "https://files.pythonhosted.org/packages/ce/93/62fa6fcf583c61f1ce21e1efaa0509729a72f9f1ebbf5f3664e16779ed00/trash-cli-0.22.8.27.tar.gz"
+  sha256 "b2799ed134c3fb2880fed12995ac9d9937466d86ff84936c16408f8d5778737b"
   license "GPL-2.0-or-later"
   head "https://github.com/andreafrancia/trash-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c0f22f52eb68318c67189088bb5d259f7e8eb8bf0ff97179016211dd3338e194"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "65f25a055716ff1a6d02af8ebbd1277bf7aa867041192f6c2e74b9706d4d0e68"
-    sha256 cellar: :any_skip_relocation, monterey:       "4f76efb6145fa8c9a2c23ce4060f8f07dc858c1b52a149a77a36ada9fcb92904"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bf648273dd62403fa33b8205dd060aa4ac46aa9c57954322b2a709441cf28186"
-    sha256 cellar: :any_skip_relocation, catalina:       "d210340ae88ff9efae48adc44b9413dd5b0f7671c72cba6bbd116860e9f887ed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8432914e1ba2d1392a8fabbc64861e5363d5725d0086b02b58096652db195c4a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b80c2a8f0ae5fc6988752c7412cd1c871bce83ca45ed9c503a4418ae81aa99e3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3c224c39d66d68481d17b38a335a5e691b71b1bac34f44e17a87f0d1ad23d3b7"
+    sha256 cellar: :any_skip_relocation, monterey:       "196511eee07b681da088e4f772535eb2160888c17ee691f5214f75eead774ea2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "de7f8249496d460760b21216f559d4b437b1e41b1d45efffd7e7ca1eb143392f"
+    sha256 cellar: :any_skip_relocation, catalina:       "8106839f9402b59c7c68c21b8e6ed0c7f779dbe1252cdc363474323e643ae792"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4d5e9a1bb0af0be9ab8bfcbda19444b071e1dff5f27c19c6c83e9ad1c372962"
   end
 
   depends_on "python@3.10"
@@ -23,8 +23,8 @@ class TrashCli < Formula
   conflicts_with "trash", because: "both install a `trash` binary"
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/e1/b0/7276de53321c12981717490516b7e612364f2cb372ee8901bd4a66a000d7/psutil-5.8.0.tar.gz"
-    sha256 "0c9ccb99ab76025f2f0bbecf341d4656e9c1351db8cc8a03ccd62e318ab4b5c6"
+    url "https://files.pythonhosted.org/packages/d6/de/0999ea2562b96d7165812606b18f7169307b60cd378bc29cf3673322c7e9/psutil-5.9.1.tar.gz"
+    sha256 "57f1819b5d9e95cdfb0c881a8a5b7d542ed0b7c522d575706a80bedc848c8954"
   end
 
   def install

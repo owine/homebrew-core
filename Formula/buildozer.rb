@@ -1,18 +1,18 @@
 class Buildozer < Formula
   desc "Rewrite bazel BUILD files using standard commands"
   homepage "https://github.com/bazelbuild/buildtools"
-  url "https://github.com/bazelbuild/buildtools/archive/4.2.5.tar.gz"
-  sha256 "d368c47bbfc055010f118efb2962987475418737e901f7782d2a966d1dc80296"
+  url "https://github.com/bazelbuild/buildtools/archive/5.1.0.tar.gz"
+  sha256 "e3bb0dc8b0274ea1aca75f1f8c0c835adbe589708ea89bf698069d0790701ea3"
   license "Apache-2.0"
   head "https://github.com/bazelbuild/buildtools.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf4268b5d38efa4af65b44f586d3906a29bb9ff9ba1321535c32843057cd3181"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bf4268b5d38efa4af65b44f586d3906a29bb9ff9ba1321535c32843057cd3181"
-    sha256 cellar: :any_skip_relocation, monterey:       "c607c6785286eef28c42c4e029c74a38fe6e80e54fb7c38e6f86cf6d1628c090"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c607c6785286eef28c42c4e029c74a38fe6e80e54fb7c38e6f86cf6d1628c090"
-    sha256 cellar: :any_skip_relocation, catalina:       "c607c6785286eef28c42c4e029c74a38fe6e80e54fb7c38e6f86cf6d1628c090"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb20066c61284e699bc01c29223e1d52d15dcca3819d94e2733d28f26e8dede7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c19fee167e41f0d485a14ea49548d4e75b56619fc8dac0e911f2fa0fb59928a6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c19fee167e41f0d485a14ea49548d4e75b56619fc8dac0e911f2fa0fb59928a6"
+    sha256 cellar: :any_skip_relocation, monterey:       "2df8fb4b87991360d76697945d91da54970364f14f7368ef0ac48899cdbac405"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2df8fb4b87991360d76697945d91da54970364f14f7368ef0ac48899cdbac405"
+    sha256 cellar: :any_skip_relocation, catalina:       "2df8fb4b87991360d76697945d91da54970364f14f7368ef0ac48899cdbac405"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a2a911836ef0839cda28fd8b21dc0ad223984fc98081e9f6063ea2096372a71"
   end
 
   depends_on "go" => :build

@@ -1,32 +1,31 @@
 class TomcatNative < Formula
   desc "Lets Tomcat use some native resources for performance"
   homepage "https://tomcat.apache.org/native-doc/"
-  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.31/source/tomcat-native-1.2.31-src.tar.gz"
-  sha256 "acc0e6e342fbdda54b029564405322823c93d83f9d64363737c1cbcc3af1c1fd"
+  url "https://www.apache.org/dyn/closer.lua?path=tomcat/tomcat-connectors/native/2.0.1/source/tomcat-native-2.0.1-src.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/2.0.1/source/tomcat-native-2.0.1-src.tar.gz"
+  sha256 "184679dc9e8d704003e720b87db10750982ddffb21b13eedc30b5e666748d775"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "94de42ed8da515cb63be2b5bab2322975f02810f214c575fb5a48f0f8df00900"
-    sha256 cellar: :any,                 arm64_big_sur:  "c6f4dd11e7fbf16ad6f7e11b7d4c81e1ee6159bc025e0464430d920588fd1f24"
-    sha256 cellar: :any,                 monterey:       "966d83820a8738edb2fea2fb2c4dbc4b18c786b70ddbed1c01126821a24e9241"
-    sha256 cellar: :any,                 big_sur:        "41a3d1bd142f9af9709a09ef08fa9c1d4afba8c1df9afcf206680abef9cdc561"
-    sha256 cellar: :any,                 catalina:       "49cb291540334f5a2b15ddbd2b597df9993cd958aa55d301b45b36389178c10e"
-    sha256 cellar: :any,                 mojave:         "24a026ac8fbbaf58b678c8cb8b8eaaf6d1ffca5774fd761943bc49b1e1179366"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "330a4f42782065c9160ff41e5c55d483f1d866b569854db3b91f45959f553f1b"
+    sha256 cellar: :any,                 arm64_monterey: "7c54a353a041d368ccad8d5f100e6447c49bb147f8faa5d3b2746490bd76133a"
+    sha256 cellar: :any,                 arm64_big_sur:  "8229fff2160636f13d15929eeadd36e5b95ad52cf2fdd9d46c9776e26f011671"
+    sha256 cellar: :any,                 monterey:       "7d031077ada537c10af2ee0f3f9ab1f91120719f357a05e671d1dc861df9b4c5"
+    sha256 cellar: :any,                 big_sur:        "ce38776754b389217ce2d83a3e103f1d236a76d6b421fb089ad781a323a31032"
+    sha256 cellar: :any,                 catalina:       "43ead589f500bc5e469edf94abf87be7d61d8670e319ea3bb6e6c4a50aad5433"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db7d2363b27cabeec3520fffddac6c4600218dc803380b2114a15e8b8e5a84da"
   end
 
   depends_on "libtool" => :build
   depends_on "apr"
   depends_on "openjdk"
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   def install
     cd "native" do
       system "./configure", "--prefix=#{prefix}",
                             "--with-apr=#{Formula["apr"].opt_prefix}",
                             "--with-java-home=#{Formula["openjdk"].opt_prefix}",
-                            "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}"
+                            "--with-ssl=#{Formula["openssl@3"].opt_prefix}"
 
       # fixes occasional compiling issue: glibtool: compile: specify a tag with `--tag'
       args = ["LIBTOOL=glibtool --tag=CC"]

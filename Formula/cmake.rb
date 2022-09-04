@@ -1,10 +1,10 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "https://www.cmake.org/"
-  url "https://github.com/Kitware/CMake/releases/download/v3.22.2/cmake-3.22.2.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/cmake-3.22.2.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/legacy/cmake-3.22.2.tar.gz"
-  sha256 "3c1c478b9650b107d452c5bd545c72e2fad4e37c09b89a1984b9a2f46df6aced"
+  url "https://github.com/Kitware/CMake/releases/download/v3.24.1/cmake-3.24.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/cmake-3.24.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/legacy/cmake-3.24.1.tar.gz"
+  sha256 "4931e277a4db1a805f13baa7013a7757a0cbfe5b7932882925c7061d9d1fa82b"
   license "BSD-3-Clause"
   head "https://gitlab.kitware.com/cmake/cmake.git", branch: "master"
 
@@ -16,12 +16,12 @@ class Cmake < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cf3679a38dad3ea9c304e10059696c64730379ddc80e859e5f0e4a75986a2677"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3c324895ba3796e7f5b24fcba6091fd7e204471a7ddc5874ca2737550702846a"
-    sha256 cellar: :any_skip_relocation, monterey:       "45b1e48b94fd1a676e925e8aa0db5de8f86b269f7a5844ea6b072116eea88092"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ac8576351fc40602055120bff8f9d99b35c76378c0253cf9c1d24e91fd6e9872"
-    sha256 cellar: :any_skip_relocation, catalina:       "601eade8d348a62618e88efe8428166ef5c12f41e90f3b8bbd6f35344c05a8e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c481ecf323f530e5adb66cc68ce5895694a50e91829ff87793e4494483156ad5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c9127632ab72ddb79e659fb87f194bc604342948bd332499326860e02a7cfa4e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "324b9abb0023ce29c80119d2b0d1361ae69bc573e2dcdbcd2f5bfcffe715a6e3"
+    sha256 cellar: :any_skip_relocation, monterey:       "d40d888e7ce0d4fa898bac4c8afb964c9a4fa3d7d9a4877fc7223a2ee3160e96"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e95e1f4a6c430affa61a458ee2ea3fdce1a76a6f4a5c358382187f28ec20535f"
+    sha256 cellar: :any_skip_relocation, catalina:       "ae58875a2d89c985e92348cbc2f848433b31f2dad2a94973bce7f135c777e0c0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e58aeb64631bf97d05c12d8efe72b45d6ec9662e891b7abfa0e25b2c7af1ac7f"
   end
 
   uses_from_macos "ncurses"
@@ -54,14 +54,11 @@ class Cmake < Formula
     end
 
     system "./bootstrap", *args, "--", *std_cmake_args,
+                                       "-DCMake_INSTALL_BASH_COMP_DIR=#{bash_completion}",
                                        "-DCMake_INSTALL_EMACS_DIR=#{elisp}",
                                        "-DCMake_BUILD_LTO=ON"
     system "make"
     system "make", "install"
-
-    # Remove deprecated and unusable binary
-    # https://gitlab.kitware.com/cmake/cmake/-/issues/20235
-    (pkgshare/"Modules/Internal/CPack/CPack.OSXScriptLauncher.in").unlink
   end
 
   def caveats

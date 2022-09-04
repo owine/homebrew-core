@@ -1,8 +1,8 @@
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc-1.28.1-src.tar.gz"
-  sha256 "654958bca5378cd97819f2ef61d3f220aa652a9d2b5ff41d6f2109302ae6eb94"
+  url "https://github.com/ldc-developers/ldc/releases/download/v1.30.0/ldc-1.30.0-src.tar.gz"
+  sha256 "fdbb376f08242d917922a6a22a773980217fafa310046fc5d6459490af23dacd"
   license "BSD-3-Clause"
   head "https://github.com/ldc-developers/ldc.git", branch: "master"
 
@@ -12,42 +12,33 @@ class Ldc < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "716c816c0e9599d2785c50ac887daca2a29184dce695eb8100184e9ad2277765"
-    sha256 arm64_big_sur:  "637e28ca77d0059fe71e27a17b59711506864e8f4dd25646399360591ce3dc03"
-    sha256 monterey:       "671129d1f9e69ccaf59a66a4eba24f512f9d1ff1c64cf487d954529387a4e3ab"
-    sha256 big_sur:        "c6adc7612c0430fbae0e9d225bf72117b9ebbb90756abcd532b78f9cca7eca10"
-    sha256 catalina:       "d6f48b47db93110623ef08a5d0d8605d1655b6c2740013af47f6968fe0288272"
-    sha256 x86_64_linux:   "fc18d517eff72ab724b4ce8e4a5d47a41cb4f5047592cd2a8fe1c25f9b4a9af4"
+    sha256 arm64_monterey: "703a1b7cc6dea61112183cbc21cd77faf686a7527b105bb61db7e3d92c0bd6a6"
+    sha256 arm64_big_sur:  "660bc67a5e12896a19427be2f39d58fad9f2c78d3f5948792706d20e80f351db"
+    sha256 monterey:       "c2b1c19deb39e815c8f1ddf0f8f1fdab63e849e6777c7e3e092399f3891110b1"
+    sha256 big_sur:        "c3fbdc34a89752a66e633ace1416e4f31eec1e4067f37d2cd12855323a068e15"
+    sha256 catalina:       "574931fec5e3746c83d7fb67a25af715d8c51efde11f70a48d037abecf2824ea"
+    sha256 x86_64_linux:   "7e532a02f6949cfc57355eb5c35b0f438e955db551dd5a98833d621be58a51fd"
   end
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
   depends_on "pkg-config" => :build
+  depends_on "llvm"
 
   uses_from_macos "libxml2" => :build
-  # CompilerSelectionError: ldc cannot be built with any available compilers.
-  uses_from_macos "llvm" => [:build, :test]
-
-  on_macos do
-    depends_on "llvm"
-  end
-
-  on_linux do
-    # When built with LLVM, errors with:
-    # undefined reference to `std::__throw_bad_array_new_length()'
-    depends_on "llvm@12"
-  end
 
   fails_with :gcc
 
   resource "ldc-bootstrap" do
     on_macos do
-      if Hardware::CPU.intel?
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.0/ldc2-1.28.0-osx-x86_64.tar.xz"
-        sha256 "02472507de988c8b5dd83b189c6df3b474741546589496c2ff3d673f26b8d09a"
-      else
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.0/ldc2-1.28.0-osx-arm64.tar.xz"
-        sha256 "f9786b8c28d8af1fdd331d8eb889add80285dbebfb97ea47d5dd9110a7df074b"
+      on_intel do
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-x86_64.tar.xz"
+        sha256 "9aa43e84d94378f3865f69b08041331c688e031dd2c5f340eb1f3e30bdea626c"
+      end
+
+      on_arm do
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-arm64.tar.xz"
+        sha256 "9bddeb1b2c277019cf116b2572b5ee1819d9f99fe63602c869ebe42ffb813aed"
       end
     end
 
@@ -69,17 +60,36 @@ class Ldc < Formula
     ENV.cxx11
     (buildpath/"ldc-bootstrap").install resource("ldc-bootstrap")
 
-    # Fix ldc-bootstrap/bin/ldmd2: error while loading shared libraries: libxml2.so.2
-    ENV.prepend_path "LD_LIBRARY_PATH", Formula["libxml2"].lib if OS.linux?
-
     args = %W[
       -DLLVM_ROOT_DIR=#{llvm.opt_prefix}
       -DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc
       -DD_COMPILER=#{buildpath}/ldc-bootstrap/bin/ldmd2
     ]
-    args << "-DCMAKE_INSTALL_RPATH=#{rpath};@loader_path/#{llvm.opt_lib.relative_path_from(lib)}" if OS.mac?
 
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    args += if OS.mac?
+      ["-DCMAKE_INSTALL_RPATH=#{rpath};#{rpath(source: lib, target: llvm.opt_lib)}"]
+    else
+      # Fix ldc-bootstrap/bin/ldmd2: error while loading shared libraries: libxml2.so.2
+      ENV.prepend_path "LD_LIBRARY_PATH", Formula["libxml2"].lib if OS.linux?
+
+      gcc = Formula["gcc"]
+      # Link to libstdc++ for brewed GCC rather than the host GCC which is too old.
+      libstdcxx_lib = gcc.opt_lib/"gcc"/gcc.version.major
+      linux_linker_flags = "-L#{libstdcxx_lib} -Wl,-rpath,#{libstdcxx_lib}"
+
+      # Use libstdc++ headers for brewed GCC rather than host GCC which is too old.
+      libstdcxx_include = gcc.opt_include/"c++"/gcc.version.major
+      linux_cxx_flags = "-nostdinc++ -isystem#{libstdcxx_include} -isystem#{libstdcxx_include}/x86_64-pc-linux-gnu"
+
+      %W[
+        -DCMAKE_EXE_LINKER_FLAGS=#{linux_linker_flags}
+        -DCMAKE_MODULE_LINKER_FLAGS=#{linux_linker_flags}
+        -DCMAKE_SHARED_LINKER_FLAGS=#{linux_linker_flags}
+        -DCMAKE_CXX_FLAGS=#{linux_cxx_flags}
+      ]
+    end
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

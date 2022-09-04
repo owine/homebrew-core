@@ -1,10 +1,9 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.5.tar.xz"
-  sha256 "f22c2c25093a05f4566f9cd7207cfbcd8405af67ed29a989bcf8905f80b7a299"
+  url "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.9.tar.xz"
+  sha256 "2becaba980402e8dc7972ccc3476e493b7ae2eeb720d31fa6712472ed48e9f2d"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/MusicPlayerDaemon/MPD.git", branch: "master"
 
   livecheck do
@@ -13,12 +12,12 @@ class Mpd < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "54c7e52bf6b8c63e1633524062ee8d824c744231bc37e1e9ab67379c5726d1b9"
-    sha256 cellar: :any, arm64_big_sur:  "38267e1c03e97cd53c3225326656ba5cab228e715f30ea4b4b6b2e1393149022"
-    sha256 cellar: :any, monterey:       "9d450b2e2a34f3b4fcd80854071c616551fdd11263dd45562532e50502a54168"
-    sha256 cellar: :any, big_sur:        "3f2fa75a60ea9c732356887fea96d87bcb1a102382051b72fd087c63277f7215"
-    sha256 cellar: :any, catalina:       "e8bf5e5b2dbbf0b4cd4a5e4444fc98408db3934e9038a6ea51567f37eeb981f7"
-    sha256               x86_64_linux:   "72507953e20773ca5df4ed5393bb0f68d1e7fce1c5fa0ed1d9fb5108a2a750d8"
+    sha256 cellar: :any, arm64_monterey: "ccc125d2227cee747886f8cd48237030c1786a5764a968920f3ac0019c709cd8"
+    sha256 cellar: :any, arm64_big_sur:  "c3cf0733c0cdad5de4776fb80a43344aee63b53a425d2fccabe353a1858e8881"
+    sha256 cellar: :any, monterey:       "e5354918e03ff42d265ac3932e2b5ea579e10bc18ec956c1a2debae7e2cb5a84"
+    sha256 cellar: :any, big_sur:        "336408524d2bab5a2ed5c1113baa580a90a970cd1c1e0146f4539fac76360f25"
+    sha256 cellar: :any, catalina:       "a7b127c371d55ab32e9e58123b7019a8c3b5cfc0aad4eaf83927b823429f7ae8"
+    sha256               x86_64_linux:   "b7b9a436bea570a3c0c4a3ff2c4684d9842282571f18cf8e136c40f1f74ed6e6"
   end
 
   depends_on "boost" => :build
@@ -61,7 +60,7 @@ class Mpd < Formula
     # The build is fine with G++.
     ENV.libcxx
 
-    args = std_meson_args + %W[
+    args = %W[
       --sysconfdir=#{etc}
       -Dmad=disabled
       -Dmpcdec=disabled
@@ -77,12 +76,12 @@ class Mpd < Formula
       -Dvorbisenc=enabled
     ]
 
-    system "meson", *args, "output/release", "."
-    system "ninja", "-C", "output/release"
+    system "meson", "setup", "output/release", *args, *std_meson_args
+    system "meson", "compile", "-C", "output/release"
     ENV.deparallelize # Directories are created in parallel, so let's not do that
-    system "ninja", "-C", "output/release", "install"
+    system "meson", "install", "-C", "output/release"
 
-    (etc/"mpd").install "doc/mpdconf.example" => "mpd.conf"
+    pkgetc.install "doc/mpdconf.example" => "mpd.conf"
   end
 
   def caveats
@@ -103,11 +102,9 @@ class Mpd < Formula
   end
 
   test do
-    on_linux do
-      # oss_output: Error opening OSS device "/dev/dsp": No such file or directory
-      # oss_output: Error opening OSS device "/dev/sound/dsp": No such file or directory
-      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    # oss_output: Error opening OSS device "/dev/dsp": No such file or directory
+    # oss_output: Error opening OSS device "/dev/sound/dsp": No such file or directory
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     require "expect"
 

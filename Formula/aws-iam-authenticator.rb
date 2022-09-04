@@ -2,19 +2,23 @@ class AwsIamAuthenticator < Formula
   desc "Use AWS IAM credentials to authenticate to Kubernetes"
   homepage "https://github.com/kubernetes-sigs/aws-iam-authenticator"
   url "https://github.com/kubernetes-sigs/aws-iam-authenticator.git",
-      tag:      "v0.5.3",
-      revision: "a0516fb9ace571024263424f1770e6d861e65d09"
+      tag:      "v0.5.9",
+      revision: "1209cfe28e95e32e719d0d69a323e6172a423333"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/aws-iam-authenticator.git", branch: "master"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e82311b2f11745925a8ce73a05c24e38c8122063b6ce070a4610c8d54f5fda76"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "30639bda3ecb72388aeabc0f3e6587f58bc9867dc6b3a9f3046e9d0ef659f122"
-    sha256 cellar: :any_skip_relocation, monterey:       "e3718d03e98702a4893b480a897779e7ae8ca52b39f879d02aa6fbf0a1220f8d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a161d4ea3ef00ab85c8f0cea198e0dafde39cd3a76359b75ea22521c35eac7d6"
-    sha256 cellar: :any_skip_relocation, catalina:       "192ace97a0c76ed0aceda060290db6abcde5af8ad7dfc30faaf5f4ed4ae92b6a"
-    sha256 cellar: :any_skip_relocation, mojave:         "c7f23ccd6bdd852a7c1928df437381204aa9da22a2f41eb3a5776864838f39db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6d0c278ef6d1d19a160035e5ff0039a16121be7107acce9bfa55ab59054c2f4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "12efc857905e148e434b541cc76801956f186ca92fb43ea88884303a1c36c175"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ba09e1a04810d7fc4fe0156a231d6a28c507a39cd7579d2f8705c204d1611cde"
+    sha256 cellar: :any_skip_relocation, monterey:       "091e33fd80229c5db17574795d5e44f9a54951e3fc2df24336c2cd449cd6e839"
+    sha256 cellar: :any_skip_relocation, big_sur:        "bd2327738f22d7c95ee22b15915cad3ab850cc439f8684680ffe14c07c221d7f"
+    sha256 cellar: :any_skip_relocation, catalina:       "0207f549dce4741625e3a93cad4ddcce8886a18eeb13ddbdf7d27530056877c0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0b736f1703281ec4d24052cc3758ea3db9304a2099f272bd6dba12668f771f3"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://www.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.26-16/source/tarball/percona-server-8.0.26-16.tar.gz"
-  sha256 "3db3939bd9b317dbcfc1a5638779ff87e755f62d7e6feeb3137876be8bb59d6a"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.29-21/source/tarball/percona-server-8.0.29-21.tar.gz"
+  sha256 "a54c45b23719d4f6ba1e409bb2916c59dc0c9aaae98e24299ff26f150ad4f735"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,16 +11,19 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "014a5ba2286003e56befbed0ba6d7189aa6ce6f13d86a640b55b6a727a9a3cd5"
-    sha256 big_sur:       "d5a07dec3cb81121637a91383ec55a921a0bfda07f402004c59687b3a038a3d2"
-    sha256 catalina:      "bc8d54fa6d65f7830dac2a7b9a8c1c975067500483b4bed034e89f89fa173d0b"
-    sha256 x86_64_linux:  "a5b2f1b1f061e39e3183b6cceba56bc99ab3cf1ab5b7914e628fc7b599a79515"
+    sha256 arm64_monterey: "c98ddb4d66cb8edbc1f6e72ea82fa74c3b9e53c437337fc803fe0ead0a8ab1da"
+    sha256 arm64_big_sur:  "db7b2941016ec6821f1f2177c34e8596363547e4873b7a17be47895dc1fd286d"
+    sha256 monterey:       "c9bed490b931dd4966b9c89b7af4f1a20dfaf7f00b627b607260d8520eb559f1"
+    sha256 big_sur:        "0b017bcbe082ceee94ae73c2c202e9086a3a17414318e0417014cc24cdb1212e"
+    sha256 catalina:       "1b1ea52887f1b51349e90e5f8975332c9460510558647a7b7ccbf7d57fde9ba3"
+    sha256 x86_64_linux:   "986d323ad8643214c5518b2486a2eb82b2465ba237add55bff5d6a36575fa8ee"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "icu4c"
   depends_on "libevent"
+  depends_on "libfido2"
   depends_on "lz4"
   depends_on "openssl@1.1"
   depends_on "protobuf"
@@ -34,14 +37,15 @@ class PerconaServer < Formula
 
   on_linux do
     depends_on "patchelf" => :build
+    depends_on "gcc"
     depends_on "readline"
 
     # Fix build with OpenLDAP 2.5+, which merged libldap_r into libldap
     patch :DATA
   end
 
-  conflicts_with "mariadb", "mysql",
-    because: "percona, mariadb, and mysql install the same binaries"
+  conflicts_with "mariadb", "mysql", because: "percona, mariadb, and mysql install the same binaries"
+  conflicts_with "percona-xtrabackup", because: "both install a `kmip.h`"
 
   # https://bugs.mysql.com/bug.php?id=86711
   # https://github.com/Homebrew/homebrew-core/pull/20538
@@ -50,20 +54,26 @@ class PerconaServer < Formula
     cause "Wrong inlining with Clang 8.0, see MySQL Bug #86711"
   end
 
-  # https://github.com/percona/percona-server/blob/Percona-Server-#{version}/cmake/boost.cmake
-  resource "boost" do
-    url "https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2"
-    sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  fails_with :gcc do
+    version "6"
+    cause "GCC 7.1 or newer is required"
   end
 
-  # Fix build on Monterey.
-  # Remove with the next version.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/fcbea58e245ea562fbb749bfe6e1ab178fd10025/mysql/monterey.diff"
-    sha256 "6709edb2393000bd89acf2d86ad0876bde3b84f46884d3cba7463cd346234f6f"
+  # https://github.com/percona/percona-server/blob/Percona-Server-#{version}/cmake/boost.cmake
+  resource "boost" do
+    url "https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.bz2"
+    sha256 "fc9f85fc030e233142908241af7a846e60630aa7388de9a5fafb1f3a26840854"
   end
 
   def install
+    # Fix mysqlrouter_passwd RPATH to link to metadata_cache.so
+    inreplace "router/src/http/src/CMakeLists.txt",
+              "ADD_INSTALL_RPATH(mysqlrouter_passwd \"${ROUTER_INSTALL_RPATH}\")",
+              "\\0\nADD_INSTALL_RPATH(mysqlrouter_passwd \"${RPATH_ORIGIN}/../${ROUTER_INSTALL_PLUGINDIR}\")"
+
+    # Disable ABI checking
+    inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0" if OS.linux?
+
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
     args = %W[
       -DFORCE_INSOURCE_BUILD=1
@@ -82,20 +92,18 @@ class PerconaServer < Formula
       -DWITH_EMBEDDED_SERVER=ON
       -DWITH_INNODB_MEMCACHED=ON
       -DWITH_UNIT_TESTS=OFF
+      -DWITH_SYSTEM_LIBS=ON
       -DWITH_EDITLINE=system
+      -DWITH_FIDO=system
       -DWITH_ICU=system
       -DWITH_LIBEVENT=system
       -DWITH_LZ4=system
       -DWITH_PROTOBUF=system
-      -DWITH_SSL=#{Formula["openssl@1.1"].opt_prefix}
+      -DWITH_SSL=system
+      -DOPENSSL_ROOT_DIR=#{Formula["openssl@1.1"].opt_prefix}
       -DWITH_ZLIB=system
       -DWITH_ZSTD=system
     ]
-
-    if OS.linux?
-      args << "-DWITH_LDAP=#{Formula["openldap"].opt_prefix}"
-      args << "-DWITH_SASL=#{Formula["cyrus-sasl"].opt_prefix}"
-    end
 
     # MySQL >5.7.x mandates Boost as a requirement to build & has a strict
     # version check in place to ensure it only builds against expected release.
@@ -121,14 +129,6 @@ class PerconaServer < Formula
       # Docker containers lack CAP_SYS_NICE capability by default.
       test_args << "--nowarnings" if OS.linux?
       system "./mysql-test-run.pl", "status", *test_args
-    end
-
-    if OS.mac?
-      # Remove libssl copies as the binaries use the keg anyway and they create problems for other applications
-      rm lib/"libssl.dylib"
-      rm lib/"libssl.1.1.dylib"
-      rm lib/"libcrypto.1.1.dylib"
-      rm lib/"libcrypto.dylib"
     end
 
     # Remove the tests directory

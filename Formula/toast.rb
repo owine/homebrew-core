@@ -1,18 +1,18 @@
 class Toast < Formula
   desc "Tool for running tasks in containers"
   homepage "https://github.com/stepchowfun/toast"
-  url "https://github.com/stepchowfun/toast/archive/v0.45.2.tar.gz"
-  sha256 "9d1a4c785f62f68effa362c39eab1e0802fd40402416e8938ea7a7d4088945d0"
+  url "https://github.com/stepchowfun/toast/archive/v0.45.5.tar.gz"
+  sha256 "3ed81317edfb312cf79f479f98f2d5a7d0351c349fd054c602b186376c269e01"
   license "MIT"
   head "https://github.com/stepchowfun/toast.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "97161beba2abc503bc51f59c411ed9f86bd84edca8cdc04d40e514cf58249dca"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "245c20fd184e13be021424cc410ff4e7e406811aced31708bd96043648a8b20e"
-    sha256 cellar: :any_skip_relocation, monterey:       "1a14c3fc0f142010dda00b10e87cb540195101cf7a87645787fafd41998852e2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "079c6bf9e5dca0b1c8e472f36852946c083f0a37a0bcb3694d83c0eed562c410"
-    sha256 cellar: :any_skip_relocation, catalina:       "300b34eb3f9a1aa01dc7264301a35a061575016b80b1d103b768e21eb86406fa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c588647d27171b86a3515943a9bd473f841057262d748f840c8b3c2f45889212"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7878118bced568010e51d7fc0d62fd4c6629ae8c6db4f3dfc963bad10472372a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "eb076ef03010b05f758342ebd8d37d704658aff876bef4ab818352a496f5fae8"
+    sha256 cellar: :any_skip_relocation, monterey:       "fdea9e586ef92aa212bc0d2614ca16de8f63f86a1209700112391d84a92a864d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "567c443c357368ca29fed892b08c1104076abc50875d95c48debe995c6a4c1b7"
+    sha256 cellar: :any_skip_relocation, catalina:       "77407ff16b86e663e913a71df295b2e5520ebf79c7d918f61ff8964104b04001"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cb998cc81c56d4212bee847c1cd990bb01d122042eb2fc762df22fad9223e96"
   end
 
   depends_on "rust" => :build

@@ -5,20 +5,19 @@ class Homeworlds < Formula
       revision: "917cd7e7e6d0a5cdfcc56cd69b41e3e80b671cde"
   version "20141022"
   license "BSD-2-Clause"
-  revision 2
+  revision 5
 
   livecheck do
     skip "No version information available to check"
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "41ae22b1d2498f7a00855e911ef7087ab62d8cd0834e16d8780e30c8d23b228a"
-    sha256 cellar: :any,                 arm64_big_sur:  "3abc2449ee3237a932c4250e0c36dbf76de53babb12a6cdfaac8b08e19552c20"
-    sha256 cellar: :any,                 monterey:       "689f42e85f625d840df24df8a43c21927c6e6d816ff290a9eddbb7f733c2508d"
-    sha256 cellar: :any,                 big_sur:        "81327f370fe9de62e68197c054d5929788aa4b32731769b053d4ab893f0aa631"
-    sha256 cellar: :any,                 catalina:       "b7bf80945586bd38e4f2a7a888d55ab46dd6210a069d327d536713fb20e985c3"
-    sha256 cellar: :any,                 mojave:         "34c292eab868e7e49b00653f1f8022e8636370ee2510e50e44720b37c6774bba"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3766f96986bd5604d0d4cefd0a07f3a6e527fdf6f70e70d3e22dac01198a2879"
+    sha256 cellar: :any,                 arm64_monterey: "c64318bee66cc6f65c77c7cb846b87a3a756f0fe92045824f32963341564669d"
+    sha256 cellar: :any,                 arm64_big_sur:  "cccfb68554076f1c70337b70ca450779546af81986e81973cb7b25acb9a0220f"
+    sha256 cellar: :any,                 monterey:       "4ee671d1292a1e9c8f63ea3e1a40625d20b4349e3a3d188077646936ae9f60c5"
+    sha256 cellar: :any,                 big_sur:        "311295581320a095f2754a7adc5c1c291d2ad9a9baa368daee04c0c73c78ceca"
+    sha256 cellar: :any,                 catalina:       "117c083e402e42c76765855805ecda628538eab7372fc80cceef84a100b9368f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "88f7a3976037aea175f742cb16c1e3e0e7e0f7945bf9f24b42eaedeabe16834c"
   end
 
   depends_on "wxwidgets"

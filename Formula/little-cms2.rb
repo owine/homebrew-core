@@ -3,9 +3,10 @@ class LittleCms2 < Formula
   homepage "https://www.littlecms.com/"
   # Ensure release is announced at https://www.littlecms.com/categories/releases/
   # (or https://www.littlecms.com/blog/)
-  url "https://downloads.sourceforge.net/project/lcms/lcms/2.12/lcms2-2.12.tar.gz"
-  sha256 "18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5"
+  url "https://downloads.sourceforge.net/project/lcms/lcms/2.13/lcms2-2.13.1.tar.gz"
+  sha256 "d473e796e7b27c5af01bd6d1552d42b45b43457e7182ce9903f38bb748203b88"
   license "MIT"
+  revision 1
   version_scheme 1
 
   # The Little CMS website has been redesigned and there's no longer a
@@ -14,26 +15,23 @@ class LittleCms2 < Formula
   # that the post URLs, headings, etc. maintain a consistent format.
   livecheck do
     url "https://www.littlecms.com/categories/releases/"
-    regex(%r{href=.*lcms2[._-]v?(\d+(?:\.\d+)+)/?["' >]}i)
+    regex(/Little\s*CMS\s+v?(\d+(?:\.\d+)+)\s+released/im)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ad365804b4bcc8ed8bee33d9604ae5509a450a6ae20a26b3ebbfd88d722c485f"
-    sha256 cellar: :any,                 arm64_big_sur:  "83c79aaa225d6363154151a6b1099bb23ee0c7c1ffed35cb4682b993e047f4a0"
-    sha256 cellar: :any,                 monterey:       "108695cdb406b516bec2a66db2f72e25b81b7398bdd288d49e421aeb2893e31f"
-    sha256 cellar: :any,                 big_sur:        "70eaa9b280425731f7dcf104e75d4ae1e6a90421e1a741e0fe82859361c8ae84"
-    sha256 cellar: :any,                 catalina:       "0f782fa69d2e12e9c1765df4ae1b7bd87143402aa1840d483092f3b74f89ae19"
-    sha256 cellar: :any,                 mojave:         "69af639323557bdd2c09fdaf354d9830441014f98609609146a8c836c752ac10"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e5b2bda05c916175417f4f7db8e22d43e116d696177b399496c1f168b7cf834"
+    sha256 cellar: :any,                 arm64_monterey: "fdad36e27253dd1615d5b9be2703b378336b908122b68fd4652d032e127caf76"
+    sha256 cellar: :any,                 arm64_big_sur:  "a27e31e124ebda72e24cb0cacff0cf74e5bbf96e31696288498d8e538deaff36"
+    sha256 cellar: :any,                 monterey:       "229315ae3a56e41cd107b5193d76aab56b5e69cdc04d0e5cbad38e05527314da"
+    sha256 cellar: :any,                 big_sur:        "c279aafb33937527f437354cf05e9d5028bc1d47de0991bb4ab0c0f87c5df0e4"
+    sha256 cellar: :any,                 catalina:       "a1cb1529b75523fd613c44c893ca283847b5e9fbed2f77ede3b7c17317bf46e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6055cc008296335ab999e1d0d48180bb8d539c266e890596ed13c1f21e850532"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-
-    system "./configure", *args
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

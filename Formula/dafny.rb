@@ -1,8 +1,8 @@
 class Dafny < Formula
   desc "Verification-aware programming language"
   homepage "https://github.com/dafny-lang/dafny/blob/master/README.md"
-  url "https://github.com/dafny-lang/dafny/archive/v3.3.0.tar.gz"
-  sha256 "0cdbffa90d2556e068cb6fb8601c9ecda649dc671734354cd6071d3b8b948b41"
+  url "https://github.com/dafny-lang/dafny/archive/refs/tags/v3.8.1.tar.gz"
+  sha256 "901b7e39dec8ac96159f32ac2fc8d795c3908d37788c80ce736754d4b6e142b4"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,16 @@ class Dafny < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "10862f4e7daaf0dd2a310686384984301f43ceeecfdad21398ab984c4c3cd485"
-    sha256 cellar: :any_skip_relocation, catalina: "2a46518f73e9ae9a7d1b6457d65176dfdeedbf1d5b2395a914badc73c35a964b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "28ae36d8b02dfbdf1278286c5573ef39c2cd87c62320e8b420f0f7b53fd3a82f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5126542ebdb6a739d510e3ef2428faa780f80bd344c434d504bcf8c3dea91eef"
+    sha256 cellar: :any_skip_relocation, monterey:       "277da0d24e564809ac47eb2dbc11cc8f38614300f70ce7bc32243a6fb16f3fa8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "551ef73b92c418ede02b4847ad544490cf3cbb2158ea3b0235325106500660ec"
+    sha256 cellar: :any_skip_relocation, catalina:       "0a1516c97d4d4d08b17b3a38415b51485fe953c666acd9b0adb1dbe96adf5fa9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1d64ba218701542afd0e306251df60f924ddb92e12d022328086e247fc3f6282"
   end
 
   depends_on "gradle" => :build
-  depends_on "nuget" => :build
-  depends_on arch: :x86_64 # dotnet does not support ARM
+  depends_on "python@3.10" => :build # for z3
   depends_on "dotnet"
   depends_on "openjdk@11"
 
@@ -37,6 +40,7 @@ class Dafny < Formula
     dst_z3_bin.mkpath
 
     resource("z3").stage do
+      ENV["PYTHON"] = which("python3")
       system "./configure"
       system "make", "-C", "build"
       mv("build/z3", dst_z3_bin/"z3")

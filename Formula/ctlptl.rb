@@ -1,17 +1,17 @@
 class Ctlptl < Formula
   desc "Making local Kubernetes clusters fun and easy to set up"
   homepage "https://github.com/tilt-dev/ctlptl"
-  url "https://github.com/tilt-dev/ctlptl/archive/v0.7.4.tar.gz"
-  sha256 "8919ca954534590b3d2119bad6fddf35aac981b080640bbb5de9a53536974779"
+  url "https://github.com/tilt-dev/ctlptl/archive/v0.8.6.tar.gz"
+  sha256 "19a3af55614da8594a56e954f0085700dd44f1c1c09f860f7dbee95d1f256306"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8995b3574f92335d381e7fb12feb9e758ce5fc7c58b49c97e8354e6b1dc6ac1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "34a39890d867618ee53878b7869ab92e8e638adeca8c6748128e5e487388d846"
-    sha256 cellar: :any_skip_relocation, monterey:       "23b36e99a1b1571243cf597a82b9640cb765b3149b5cdb8475a0614df97b8c0a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "acf4c813d510a8105ab3fa33cf6255e02576182da58dc81c63ddabefcc2990a7"
-    sha256 cellar: :any_skip_relocation, catalina:       "2cb26277edaf8578709df52b6655b8bce62d297028577f500734f0034a1f43e5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "292d8ab533dde011338c758f102bcaa4c2be2c7586030ff17ae2ff28b0f5f9a2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a3dbfaf165ff3bea24ae6338898b0c7c9cfd4f40159fae4baf3be85817078787"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5ba4f4354a82f549922148e52b5609d08b4626345c236524adfde5b03a58077b"
+    sha256 cellar: :any_skip_relocation, monterey:       "3538dd8c9221a2e5833666424260074fdd73e4b365347f6867fbd3fd02e70778"
+    sha256 cellar: :any_skip_relocation, big_sur:        "29465c4f9de04051b380e18fa690e7efe85e4b95251506c69107068d65ff5d3c"
+    sha256 cellar: :any_skip_relocation, catalina:       "fcfa6be8b058562250133dc9af637e4d2a89c4c66f195cb138bbeae4e3e42f6a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb22a7c53b4408c419276b608761a26526f5bf47a0add9b01498fb787fd05ff7"
   end
 
   depends_on "go" => :build
@@ -24,17 +24,7 @@ class Ctlptl < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/ctlptl"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "bash")
-    (bash_completion/"ctlptl").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "zsh")
-    (zsh_completion/"_ctlptl").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"ctlptl", "completion", "fish")
-    (fish_completion/"ctlptl.fish").write output
+    generate_completions_from_executable(bin/"ctlptl", "completion")
   end
 
   test do

@@ -1,18 +1,18 @@
 class Hlint < Formula
   desc "Haskell source code suggestions"
   homepage "https://github.com/ndmitchell/hlint"
-  url "https://hackage.haskell.org/package/hlint-3.3.6/hlint-3.3.6.tar.gz"
-  sha256 "ae2526f4ca5c4c7090a451b1e0dedddcad98b0ab7d07c05b20de72da41b78e3c"
+  url "https://hackage.haskell.org/package/hlint-3.4.1/hlint-3.4.1.tar.gz"
+  sha256 "9f91a135c72452d5e856b7f027ef79a0ac80327909cd364e739b2998d800732e"
   license "BSD-3-Clause"
   head "https://github.com/ndmitchell/hlint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6a5f92b276bbc06b17e1c8a412060d4796c2cead40462b9f1b048b253566e066"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "456280c4ea41c06459ce36aeacf70b8e573e669e1d540282faca278408a32636"
-    sha256 cellar: :any_skip_relocation, monterey:       "697145d67e8aad7d29051105359bced5ad8bafaccefb23ed0fffc51cfc745c56"
-    sha256 cellar: :any_skip_relocation, big_sur:        "30b808accedb87013ff9c79b9445a2be53ae506545199a27ae51a91cbdb36dff"
-    sha256 cellar: :any_skip_relocation, catalina:       "d1099973d717dc7aa58a0c1d75267db2aa7d84a9868949adf783b04ad32ff4df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2eed0fdf757d1265239b58a0b34a28803e3d53b1cae8f2529d14f37850993ee1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b773576b8d8b90b695c56cc790b4d5d0277e3c386ece4e80e6a6d928e5ce8343"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "491c77ec84e7d95128d51911cdc4eeeb83c5c9432b1d0e179949d50eca98a9be"
+    sha256 cellar: :any_skip_relocation, monterey:       "95ba606ac0274c30cb0a939dcf3328638bdcef24052bf936064712235aec958a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "56f4f58d3df7dbc7d9811a953bfa2deb202ff0322b2ed6c7e962483b6f68591d"
+    sha256 cellar: :any_skip_relocation, catalina:       "7aa24d8e75820b8510767112270b96774bff7a022efd228730ca56267197cbd2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "998213512ceb03b544463e840d55e067299218ed517ac1f7c898b669bb2969e2"
   end
 
   depends_on "cabal-install" => :build

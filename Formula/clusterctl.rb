@@ -2,10 +2,10 @@ class Clusterctl < Formula
   desc "Home for the Cluster Management API work, a subproject of sig-cluster-lifecycle"
   homepage "https://cluster-api.sigs.k8s.io"
   url "https://github.com/kubernetes-sigs/cluster-api.git",
-      tag:      "v1.0.2",
-      revision: "89db44e9a462028267ed49295359fe9db2a6a10a"
+      tag:      "v1.2.1",
+      revision: "8b4214d72762394144b83dd6d14986ff7e274095"
   license "Apache-2.0"
-  head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "master"
+  head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "main"
 
   # Upstream creates releases on GitHub for the two most recent major/minor
   # versions (e.g., 0.3.x, 0.4.x), so the "latest" release can be incorrect. We
@@ -19,12 +19,12 @@ class Clusterctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "96c367c28466aa43f1a577125746ca4deda9255424450169d5ce8fb2bf127b21"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a7e38de66ef3dd64901b3f6ddbd6b4c6765d0c6449e7da43d3101cad9cd0e69"
-    sha256 cellar: :any_skip_relocation, monterey:       "c160d942e3fb67a072070274fa84aecaef27f35a1bcaf11ce8a2d48779ddfdb5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d3d8e364efb5a6b159b21cd985584071d9d306e288cc006625c5d2db18879b35"
-    sha256 cellar: :any_skip_relocation, catalina:       "d3414a8a100bdfdcaf60e3680cd18af16266dcc4702aabefba41ad9d0a55e07a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3dca2997eae33562d0f94141942c50a37c0d30bba7a8121e711ec0cb6ecfea9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "015627feab7d1acbe8baff52b572ef3be06963efb4509a1fc5fb809a1f54004e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dcaf595b1b771d87adf48c0e2ab9e4d3939ad30551790775dbf00f65e869884b"
+    sha256 cellar: :any_skip_relocation, monterey:       "ecc719a57c557097e64510fb19d294dc7f9511e8cfe21100e12511f6f4ee1df6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fe734eb81c57839e02b067d3a1c8fad3ee63e62ca882b124ae7e286dc52de5ff"
+    sha256 cellar: :any_skip_relocation, catalina:       "b096ba26191b6f719a340b66a44e12f8ea49d0d2e7cf450a9ecff10938908e89"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "221329a5494e979f0fd6ac65e93651f25fddf62a4f47a5673347ace95ae599be"
   end
 
   depends_on "go" => :build
@@ -36,11 +36,7 @@ class Clusterctl < Formula
     system "make", "clusterctl"
     prefix.install "bin"
 
-    bash_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "bash")
-    (bash_completion/"clusterctl").write bash_output
-
-    zsh_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "zsh")
-    (zsh_completion/"_clusterctl").write zsh_output
+    generate_completions_from_executable(bin/"clusterctl", "completion", shells: [:bash, :zsh])
   end
 
   test do

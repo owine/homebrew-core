@@ -5,16 +5,31 @@ class Wownero < Formula
       tag:      "v0.10.1.0",
       revision: "8ab87421d9321d0b61992c924cfa6e3918118ad0"
   license "BSD-3-Clause"
-  revision 1
+  revision 3
+
+  # The `strategy` code below can be removed if/when this software exceeds
+  # version 10.0.0. Until then, it's used to omit a malformed tag that would
+  # always be treated as newest.
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :git do |tags, regex|
+      malformed_tags = ["10.0.0"].freeze
+      tags.map do |tag|
+        next if malformed_tags.include?(tag)
+
+        tag[regex, 1]
+      end
+    end
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7fa636de1095aa610a6b995263ed7ef1d55864bc72f9bbb58093b7cf849dccfd"
-    sha256 cellar: :any,                 arm64_big_sur:  "ef39a53fc330916136257fa2f8e2019063e544770789b09503b53e4505bea918"
-    sha256 cellar: :any,                 monterey:       "33a39bf46590eb74990762f5ad929d0925fecba366a42ef1571e513e164a9eed"
-    sha256 cellar: :any,                 big_sur:        "2a7dc81fcfa03e22dfc74d069ccc505a249823ab116ca2f6eabc3e14d25f28f2"
-    sha256 cellar: :any,                 catalina:       "2713015081577274b00955f18eca366944e1557cd89ec00d852470c40a543ded"
-    sha256 cellar: :any,                 mojave:         "549739d9edb69887b6661b5daa670ac310693c44ff8462ece01629277b6aa263"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b25b0804cff6eb8b88df6ecb0c72e836b22fd2bde9e78c7426c7c2cdba661abf"
+    sha256 cellar: :any,                 arm64_monterey: "0646ba9aeaef3204b5e26d0879f7e98026e61e43bd17cafa41103b41a4ce15e2"
+    sha256 cellar: :any,                 arm64_big_sur:  "c1ad435035722aecd7a6fe0638f0c9b0422dc3012e264e0e2f08384cdb5a689c"
+    sha256 cellar: :any,                 monterey:       "482dffad2aa48520403a157ea6ec528efb5b6717f3575873f21377fd470fac60"
+    sha256 cellar: :any,                 big_sur:        "58e407effcf1443a4c57e4f2c940aaf9435680cbcc8514601d2899002aa31f8f"
+    sha256 cellar: :any,                 catalina:       "615bd23d5418a2e1619fa33eb17f40736771b83a22e60f378d28a09047a09267"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb8eb6d58f4bb2824323831665bcf16a247a5b7b7c3bf855a80267e572966fdb"
   end
 
   depends_on "cmake" => :build

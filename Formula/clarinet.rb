@@ -3,8 +3,8 @@ class Clarinet < Formula
   homepage "https://github.com/hirosystems/clarinet"
   # pull from git tag to get submodules
   url "https://github.com/hirosystems/clarinet.git",
-      tag:      "v0.24.0",
-      revision: "066b4e9d6da55b6f4d262f432a8e1f92490568f3"
+      tag:      "v0.33.0",
+      revision: "9f410e34c80b86da776144a4cf7dab5d6eefd8d4"
   license "GPL-3.0-only"
   head "https://github.com/hirosystems/clarinet.git", branch: "main"
 
@@ -14,12 +14,12 @@ class Clarinet < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "48e423ca8cb5fad52e27164483b83adb28a82909c4d9611b33ab38f2d3146c58"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ea556c9ec0a6a6ffc92f99bee4191d6f702950b4efad1e7c980cc458f138d5e5"
-    sha256 cellar: :any_skip_relocation, monterey:       "2c7cef2b1b5f28193716cb20d4157d59e227aaacd8a5fd1dadba20a573138a2f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "09f32afdb734d153dc445858c4ba3b51297b6da8d0738372daa0647f688be9ed"
-    sha256 cellar: :any_skip_relocation, catalina:       "4c49d5c93457485c4855dd5365c369489d2b3d8d4816421e7031af80e13e78d4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c2118ef682450ccf7539c6c8ddef877377953a38ca362ed2b1932828d999017"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f22669ea9f94134ef52397722cdd8b37ff6f95515bdb1d5240f0d13a1d38424"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a40dc00d8e4db3685b05ebcc2a88350111a1ded8acda10ac64360ca0d538a872"
+    sha256 cellar: :any_skip_relocation, monterey:       "e0fd331d0f743196f8eb8dbe3c777dfa2ab8fadbc8bcc27587a9f100345b2b06"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d2f300032eb4f5b833e191df4c81b6fc75e888400a56ae2a6232c80ebdf01b84"
+    sha256 cellar: :any_skip_relocation, catalina:       "6217549ee84e5fcf8938daf56a01c7e9bb4623266943884585dca071598b9e76"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72d77c0b822dcc19e4e7f82bd41033a14f71a41d24389bfde3b840eb60cf5466"
   end
 
   depends_on "rust" => :build
@@ -30,7 +30,7 @@ class Clarinet < Formula
   end
 
   def install
-    system "cargo", "install", *std_cargo_args
+    system "cargo", "clarinet-install", "--root", prefix.to_s
   end
 
   test do

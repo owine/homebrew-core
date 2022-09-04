@@ -1,21 +1,21 @@
 class Sqlcipher < Formula
   desc "SQLite extension providing 256-bit AES encryption"
   homepage "https://www.zetetic.net/sqlcipher/"
-  url "https://github.com/sqlcipher/sqlcipher/archive/v4.5.0.tar.gz"
-  sha256 "20c46a855c47d5a0a159fdcaa8491ec7bdbaa706a734ee52bc76188b929afb14"
+  url "https://github.com/sqlcipher/sqlcipher/archive/v4.5.2.tar.gz"
+  sha256 "6925f012deb5582e39761a7d4816883cc15b41851a8e70b447c223b8ef406e2a"
   license "BSD-3-Clause"
   head "https://github.com/sqlcipher/sqlcipher.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d1ebc849953fce08b1f64fc5e7ccfafa89637c3427737fea0ffb105255c68939"
-    sha256 cellar: :any,                 arm64_big_sur:  "97ceef7f92c22f17d907f9e1aa530b920736c61eabc8355b04d423deac883ab6"
-    sha256 cellar: :any,                 monterey:       "e285802456eb8923bffdeb1bffd55fa244a6e0f1a059c4aef0e62dfe0ecfdac0"
-    sha256 cellar: :any,                 big_sur:        "1c013e2b27b25ad78a5246879d7ee328fce7375ee7ad67a2fe518ea064be3b2c"
-    sha256 cellar: :any,                 catalina:       "ac90cfc14325a2af557d9418d3cf52c74ebda41dab2611aaba3e3e28410252c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "73aef4b1856454a29f3bc8a50ee75a2b36f92548c113cd04031ca22a665bf1ac"
+    sha256 cellar: :any,                 arm64_monterey: "3485f63912e36d01ecbf4dea5ea11ba0595f5a0d758fe2e50a734da28749429c"
+    sha256 cellar: :any,                 arm64_big_sur:  "6a61b33f89fe6517ade5304062b75a4b7fc0e788feeab7e425a29aa437a1f70c"
+    sha256 cellar: :any,                 monterey:       "28953e908487a25f6e502c299398206639f4542b469b772f85df48d8a578fa44"
+    sha256 cellar: :any,                 big_sur:        "9341a568923722c7583fc717037d63aefe941f1d7060c632da4ff2e8fb95a5bd"
+    sha256 cellar: :any,                 catalina:       "af5bdb1de84f318ba76ce36f25cc2fe7efbd79798ab06bdc84861ca994a78611"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40c96980b21b40050833f9db489bf0ae8f4b8bf4b2a711a5f40237be9b727ecf"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
   # Build scripts require tclsh. `--disable-tcl` only skips building extension
   uses_from_macos "tcl-tk" => :build
@@ -25,7 +25,7 @@ class Sqlcipher < Formula
     args = %W[
       --prefix=#{prefix}
       --enable-tempstore=yes
-      --with-crypto-lib=#{Formula["openssl@1.1"].opt_prefix}
+      --with-crypto-lib=#{Formula["openssl@3"].opt_prefix}
       --enable-load-extension
       --disable-tcl
     ]

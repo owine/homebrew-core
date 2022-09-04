@@ -1,28 +1,27 @@
 class Croaring < Formula
   desc "Roaring bitmaps in C (and C++)"
   homepage "https://roaringbitmap.org"
-  url "https://github.com/RoaringBitmap/CRoaring/archive/v0.4.0.tar.gz"
-  sha256 "0faf6ac893694d5c283a729373af74f813989ef0257781636ac4c397b48c1219"
+  url "https://github.com/RoaringBitmap/CRoaring/archive/v0.7.0.tar.gz"
+  sha256 "a2a9033eb44fb958dd19887e69a5934e59ebc56370f5853d3a22f8c64a9da268"
   license "Apache-2.0"
   head "https://github.com/RoaringBitmap/CRoaring.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6148b7ee48a3a5723524e4f918d7da0205df5bfd4025bafe92ecb0a8e78f3e09"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7e7a0633d5789216b47ed5236431520ae37720cad3818cb96b0a050239e54656"
-    sha256 cellar: :any_skip_relocation, monterey:       "7276b52c9cc62874b1319bf0027205ff853c2884ed80956557877a3bbc2464e9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bc4cd03c1f0849065c0ff6e8a55a14fba01fafa1200338945f74f5273e8c05c2"
-    sha256 cellar: :any_skip_relocation, catalina:       "0f52b826c8c951829273c69a792007780363c9e0ff874f5e8693e0108786ea94"
-    sha256 cellar: :any_skip_relocation, mojave:         "9d81e20356089da75f20d83ff482999f48840a4899bb239de24142fb9e1e1f98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b93bab19f46526216e3b1d0cf27bde0b9f10811b1de22c17b4bf56df12456ccc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "42d6d258cfd85f03941345f8aee3505d4ee4c3075e10654de214b9ce7e5f12b4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "077a2559fca0809308cc06469a43ea21506ea0d032494ada07e2fa6bf2bdbb4a"
+    sha256 cellar: :any_skip_relocation, monterey:       "fc5f99d8cdaf4cffdf35405f42012adc6f8b36ced7001d11fadf2077a97f33a1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6536e2ec93e4ffdbf9af269a78daee4b463582aaf4f76a5594f253fa03e6f686"
+    sha256 cellar: :any_skip_relocation, catalina:       "829e9460a01ca37d16e2bad3dce1afcaebbaa487efd7ba56a1c06b2d28c3b904"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7bee0cd5b50a7e9562050c1d4a9f6aea9de4a2ef84046c43a81dee94ee8a8e09"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *std_cmake_args, "-DENABLE_ROARING_TESTS=OFF"
     system "make", "install"
     system "make", "clean"
-    system "cmake", ".", "-DROARING_BUILD_STATIC=ON", *std_cmake_args
+    system "cmake", ".", *std_cmake_args, "-DROARING_BUILD_STATIC=ON"
     system "make"
     lib.install "src/libroaring.a"
   end

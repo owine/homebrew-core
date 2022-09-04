@@ -1,19 +1,18 @@
 class Kubeconform < Formula
   desc "FAST Kubernetes manifests validator, with support for Custom Resources!"
   homepage "https://github.com/yannh/kubeconform"
-  url "https://github.com/yannh/kubeconform/archive/v0.4.12.tar.gz"
-  sha256 "3887c007061995a299bc58017e47a38dba27c561743da372e00dedec09a20875"
+  url "https://github.com/yannh/kubeconform/archive/v0.4.14.tar.gz"
+  sha256 "bdd26e68c329da4e713390eed93efd7953952bb816c9709fcd455513680017c5"
   license "Apache-2.0"
   head "https://github.com/yannh/kubeconform.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "22cdc56e1e472411eba3441dec3a07ef340601bb775a82fd96aad40c6e701dfb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aca71402ebdb7b383b9b2a0d1202681bcc816c23d0cdeaa8fe14253a15e1790f"
-    sha256 cellar: :any_skip_relocation, monterey:       "2fbee45972642dcb803874a2186c9d7e8352551870b3b840246b7d95bef34998"
-    sha256 cellar: :any_skip_relocation, big_sur:        "59896d6b0a79a9214e780493a7178e3a2fd376206d079d746c8601a1c39c7572"
-    sha256 cellar: :any_skip_relocation, catalina:       "057e364e1e8f55490f97960fbd4f9a155de3198730c91cb24f325fa554bce3bb"
-    sha256 cellar: :any_skip_relocation, mojave:         "5342902c7d6a76596cb9fa432dc545e79f8a6397c49313df5acf891c03e7602a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae4a06a6f2e2ae77140ba4a99a313ef8459e7441f94a7e7aa7ff78ab586fd763"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f1c3955cd514a49b752dd0d257f3d9b9ba8e56d264ca8984b020eda2970c6f51"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e79e32e43d8058963dc404ae5032a14fdb5116826604a8aa249777b7e5e242a"
+    sha256 cellar: :any_skip_relocation, monterey:       "6a266e51b3483b03a7074e6b950ceaabc052a7178cb4c9f482a9f8b70284d688"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f1170a54e0555beb4ecce541351c133e6685d5e03abcd2af304abea6bb97cfb2"
+    sha256 cellar: :any_skip_relocation, catalina:       "c128eedeeef0e40f02c17c063c108e6138dfee50f41d6469ea8db4af24734c80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eccc7d5135322bbbcf79cffad2174ef0ae69585515640c270b2811c626549455"
   end
 
   depends_on "go" => :build

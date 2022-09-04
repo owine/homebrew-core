@@ -1,8 +1,8 @@
 class Pyenv < Formula
   desc "Python version management"
   homepage "https://github.com/pyenv/pyenv"
-  url "https://github.com/pyenv/pyenv/archive/refs/tags/v2.2.4-1.tar.gz"
-  sha256 "6aa38fb7c7d7aa68e6a3c8b812b273e15e367f629f31dd9d24552403b48df459"
+  url "https://github.com/pyenv/pyenv/archive/refs/tags/v2.3.3.tar.gz"
+  sha256 "2a6093c922d2a420b5ae45143ab973b0a85ee486c408cb487188b64edadfab35"
   license "MIT"
   version_scheme 1
   head "https://github.com/pyenv/pyenv.git", branch: "master"
@@ -13,12 +13,12 @@ class Pyenv < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "8ad522eb229b702dbe82444a11d5358ffa07d429d23c3ce689a5639a39d7568e"
-    sha256 cellar: :any,                 arm64_big_sur:  "24b0dc8ff20aa550332108314ecbd544bd056851b94915ee51d53dff3324b7ee"
-    sha256 cellar: :any,                 monterey:       "f3961eb526561c9a75fd07946e689d5e9a005bd61c09b3f578ad56d58f6cc726"
-    sha256 cellar: :any,                 big_sur:        "71dce77542c76862cde0a4a12a93fbe7825fd5e5ea5c6019fdc7d07d72bedcfc"
-    sha256 cellar: :any,                 catalina:       "da9627aef795c2d7c90e50df2a742f62fd807c8c9bb5fccbaca4a2d427b4048f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef3d3c3003adb228e39edeb2122d9a63caba8c7d731962497763808ad0ee1a8f"
+    sha256 cellar: :any,                 arm64_monterey: "eaaae7b2d7e05c45825a674365ebcaf25264648138321df004b3b3772feeeed0"
+    sha256 cellar: :any,                 arm64_big_sur:  "5edf0c10f75203eefee6fdcd9010375f1e8325328b41a3b8985f0b87144b6dc3"
+    sha256 cellar: :any,                 monterey:       "2ec04c8c283d71d3892927f86ff08d79a264a81cddc461a312962f6ff364db61"
+    sha256 cellar: :any,                 big_sur:        "a182e85b781a8d806e508f1ce86fd31b8b3717a590aa621f350f0818ad92c1d1"
+    sha256 cellar: :any,                 catalina:       "9021cf4f690961f089ed41179c0fe6b0e0e7531726e112b020364376b6f7e4b4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e993941ee0c9ff55c4c713b8b035211acb351a7f6853dc9666849351a7db60ff"
   end
 
   depends_on "autoconf"
@@ -33,7 +33,7 @@ class Pyenv < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "python@3.10" => :test
+    depends_on "python@3.9" => :test
   end
 
   def install

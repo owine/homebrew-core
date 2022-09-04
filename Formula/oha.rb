@@ -1,18 +1,18 @@
 class Oha < Formula
   desc "HTTP load generator, inspired by rakyll/hey with tui animation"
   homepage "https://github.com/hatoo/oha/"
-  url "https://github.com/hatoo/oha/archive/v0.5.0.tar.gz"
-  sha256 "763f44ae37c27d98f0ef32eebdef94b7409f3d25208c152e50af48e4c073256c"
+  url "https://github.com/hatoo/oha/archive/refs/tags/v0.5.4.tar.gz"
+  sha256 "96b4101bbfd65453d2bd44dea10d99b2553508fff9f5552673bf76c08d8c15f8"
   license "MIT"
   head "https://github.com/hatoo/oha.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aca372ab0f9ac3193e6b38ef76c3ed21bbfb5bd787a2013414719e24b8933044"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6a0ec54f97f7cd90c4c3b350d9dceab616aeafccd1d6cb3049dab9da4e2f77f2"
-    sha256 cellar: :any_skip_relocation, monterey:       "8107cd641cf752fae921656ec4f82779c6de7346063b4107a25611603336ee42"
-    sha256 cellar: :any_skip_relocation, big_sur:        "593ffda8687757f843c3bcd3194a71d5b3a427cc9c54e37aa0fac05f60b9077a"
-    sha256 cellar: :any_skip_relocation, catalina:       "02db191b777cbdc5413938e2d57e483e42ddff1246be54c8389507b06d1ec7a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0091e6a2af176fd1bff10eded3fc6c40c11068314f12b48b9fcd1c328b598b33"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "05e05f83d3a1fe67503079a84ea0f8651f8debd1f2748f5a776b3d5b64d7a46e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "66447693cbdd2ff3aae06724ec22f1c07a2e3b84dac1d81445c4620fc41040db"
+    sha256 cellar: :any_skip_relocation, monterey:       "f6b4215af45315b369bae1a39e2918cd9fc1083c2c6d4d22acb0cad06e5e2a38"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5aad30bfec3ecd0b3db4d6f4d01f6c58632498388d52bc984e1c5e96cbc8ed94"
+    sha256 cellar: :any_skip_relocation, catalina:       "115ca7cc97fcb829e7cf841fd7a199545a2a500faa982305808593efb1cfb6cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b4529ca2e9734d0a2667b63c2a135de5034dfd9bd9a5b8dfa4d672b19125899b"
   end
 
   depends_on "rust" => :build

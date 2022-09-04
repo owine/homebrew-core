@@ -1,11 +1,10 @@
 class Doxygen < Formula
   desc "Generate documentation for several programming languages"
-  homepage "https://www.doxygen.org/"
-  url "https://doxygen.nl/files/doxygen-1.9.3.src.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.9.3/doxygen-1.9.3.src.tar.gz"
-  sha256 "f352dbc3221af7012b7b00935f2dfdc9fb67a97d43287d2f6c81c50449d254e0"
+  homepage "https://www.doxygen.nl/"
+  url "https://doxygen.nl/files/doxygen-1.9.5.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.9.5/doxygen-1.9.5.src.tar.gz"
+  sha256 "55b454b35d998229a96f3d5485d57a0a517ce2b78d025efb79d57b5a2e4b2eec"
   license "GPL-2.0-only"
-  revision 1
   head "https://github.com/doxygen/doxygen.git", branch: "master"
 
   livecheck do
@@ -14,18 +13,18 @@ class Doxygen < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4480d3fc744af8e694082acf0f49eb1177efa777b052772dfae462d3d721c0a6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "394d436a05fa82a549ceff74805491fdc789c27a5ae93cfbf42d4990e24e19a5"
-    sha256 cellar: :any_skip_relocation, monterey:       "861eb638fe0f4af8f43f53a0cb4c09ceb154695ff0896e9bab21531b99088a54"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0e08a4950256754440a961bbc22829fefeee4778c7b5249e59df0d145d247d47"
-    sha256 cellar: :any_skip_relocation, catalina:       "e725c473cf26d1f43e2b85bf5859c31f6ea87c9c367153cf85f63b29ce6c318f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14f8ff5de43df4782711ca36f9d667530f53c6c2c96e396f183e8cc29ab34c53"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "61e875587faa33f46794ca6136db98467b0370cf9f53b0b0e21750173406d04c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe575452298c3a909e67a1520bea557721c10f91e5afb4183ba013191f630449"
+    sha256 cellar: :any_skip_relocation, monterey:       "c9d03661181e155cecfefc57c8b8a64d9e9ce7b48405ed417767f278f01cfbdd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "88e4f8914454a343c5e7414069ed8a787192e2bb083f5b270d527611145d9a07"
+    sha256 cellar: :any_skip_relocation, catalina:       "b80ace4ec3442d0098392f3eb3b526c51009da991ecd33b9260e4a3d3ddf7603"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e7ea1dc2dcf918fd884959b915f22b34bf3d0e7082a603604542bdbac9d8dda"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
-
-  uses_from_macos "flex" => :build
+  depends_on "python@3.10" => :build # Fails to build with macOS Python3
+  uses_from_macos "flex" => :build, since: :big_sur
 
   on_linux do
     depends_on "gcc"
@@ -36,16 +35,16 @@ class Doxygen < Formula
   fails_with gcc: "6"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make"
-    end
-    bin.install Dir["build/bin/*"]
-    man1.install Dir["doc/*.1"]
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    system "cmake", "-S", ".", "-B", "build", "-Dbuild_doc=1", *std_cmake_args
+    man1.install buildpath.glob("build/man/*.1")
   end
 
   test do
-    system "#{bin}/doxygen", "-g"
-    system "#{bin}/doxygen", "Doxyfile"
+    system bin/"doxygen", "-g"
+    system bin/"doxygen", "Doxyfile"
   end
 end

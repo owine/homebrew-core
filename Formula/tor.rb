@@ -1,9 +1,9 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://www.torproject.org/dist/tor-0.4.6.9.tar.gz"
-  mirror "https://www.torservers.net/mirrors/torproject.org/dist/tor-0.4.6.9.tar.gz"
-  sha256 "c7e93380988ce20b82aa19c06cdb2f10302b72cfebec7c15b5b96bcfc94ca9a9"
+  url "https://www.torproject.org/dist/tor-0.4.7.10.tar.gz"
+  mirror "https://www.torservers.net/mirrors/torproject.org/dist/tor-0.4.7.10.tar.gz"
+  sha256 "647e56dfa59ea36dab052027fcfc7663905c826c03509363c456900ecd435a5b"
   # Complete list of licenses:
   # https://gitweb.torproject.org/tor.git/plain/LICENSE
   license all_of: [
@@ -19,12 +19,12 @@ class Tor < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "08bfc322ae48bb84db09a2144970798f5c3bc2272893dfdc5af76f4c58597d73"
-    sha256 arm64_big_sur:  "bd2ec2355cc218d2253f5a8db72d4fd7e1bed7e5c8cd0fdb44408585e9d72f86"
-    sha256 monterey:       "f516bab5247fdcf8182e7c8c8c7908d2c6c1149c2b2edfabf51e9317a7ef34db"
-    sha256 big_sur:        "97e0a400a62090bafb297fe765d4911d8ca6db9d619e63af2e80f9670741b65e"
-    sha256 catalina:       "1ae528203260d363d7ce4d0227122fa2cf4816eebdbccb3c7a15a0b226ece73c"
-    sha256 x86_64_linux:   "a4b4dd2721cf20bb87ad06bf92806c833019d51db30bcb5fd0ab5986ed9f4126"
+    sha256 arm64_monterey: "56e43aef0dbce13510fdc3bd3bf9a6b6a696ef6542f989dccad2715c1817a013"
+    sha256 arm64_big_sur:  "5b0525c180c8f32c48e82f3622f1042d57c58b287963a5a427d1cc04a61624a8"
+    sha256 monterey:       "995e3ba8da26341f87cdbb293399385c067efc0c6f69b99698166e022021cc82"
+    sha256 big_sur:        "96ad5969cec746a4f79a8505e6ee89e6a266ffc0da72da6384efb8ea53de3c09"
+    sha256 catalina:       "da25d5ea0e28cb3da05b89421c7822ccf6662b0448886f1b85470f0cdb786d13"
+    sha256 x86_64_linux:   "2b16a493a685776f1fa1ee9bc841053e0306502d1af9c43a038a01b9b727292b"
   end
 
   depends_on "pkg-config" => :build
@@ -57,10 +57,9 @@ class Tor < Formula
   end
 
   test do
-    on_macos do
+    if OS.mac?
       pipe_output("script -q /dev/null #{bin}/tor-gencert --create-identity-key", "passwd\npasswd\n")
-    end
-    on_linux do
+    else
       pipe_output("script -q /dev/null -e -c \"#{bin}/tor-gencert --create-identity-key\"", "passwd\npasswd\n")
     end
     assert_predicate testpath/"authority_certificate", :exist?

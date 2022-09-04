@@ -3,33 +3,28 @@ class Libgaiagraphics < Formula
   homepage "https://www.gaia-gis.it/fossil/libgaiagraphics/index"
   url "https://www.gaia-gis.it/gaia-sins/gaiagraphics-sources/libgaiagraphics-0.5.tar.gz"
   sha256 "ccab293319eef1e77d18c41ba75bc0b6328d0fc3c045bb1d1c4f9d403676ca1c"
-  revision 8
-
-  livecheck do
-    url "https://www.gaia-gis.it/gaia-sins/gaiagraphics-sources/"
-    regex(/href=.*?libgaiagraphics[._-]v?(\d+(?:\.\d+)+[a-z]?)\.t/i)
-  end
+  revision 9
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7c09f30c553254915cfa1652c7c653b6121a5c3ab58e6f326789eaa1d3a800f3"
-    sha256 cellar: :any,                 arm64_big_sur:  "6623ec87d81dc19a855c81549b00b07cd9a7f931ad40ba0cf2e8f9fcebb03b40"
-    sha256 cellar: :any,                 monterey:       "4659862840d0448395e80c6c20e44f33e385dac0731d98455c3e530bd408633b"
-    sha256 cellar: :any,                 big_sur:        "865d8050b42bc24609c47e17347c78b9cbdc0d9b585076931b58b94097076e16"
-    sha256 cellar: :any,                 catalina:       "7471281583cae58d19538fd2bb5bda8e251a6bee797c4c5191820b61537f4109"
-    sha256 cellar: :any,                 mojave:         "0c0a8eb90a920ef286d534f0ba81aea1e009c3abc6eaff86be25e906aa5795d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c7f5f80ad03372c1d69fe602c19a8d50080f797448a14d60ffe7db5a721e1dc"
+    sha256 cellar: :any,                 arm64_monterey: "42eff6244781ddd1d413987ca9f129c9f741e108d98a42dc23e3fe05cfe895a8"
+    sha256 cellar: :any,                 arm64_big_sur:  "f83975606bf2054bef66c6f8c131d395e2b6dd1dc8f6b7e19063393cf176bf95"
+    sha256 cellar: :any,                 monterey:       "b24aeea6a6fe6843982d28ac44ecc6219ff7432d6f88e74c0e28eac09b353055"
+    sha256 cellar: :any,                 big_sur:        "ee41f28f60ac786ed7fadd63a40cdd44c4b798b9376e3202967f3109dfe76626"
+    sha256 cellar: :any,                 catalina:       "52f249e8450b7d9c54db47c1002e0c72858b075e0ab393e8aa5f53ec90a2338e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b71c3137ca5d17cf2e9196d8d5d08dd3ff0b991efcde56426e81eef48cb954a"
   end
+
+  deprecate! date: "2022-03-05", because: :deprecated_upstream
 
   depends_on "pkg-config" => :build
   depends_on "cairo"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libgeotiff"
   depends_on "libpng"
   depends_on "proj@7"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

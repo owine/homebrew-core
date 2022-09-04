@@ -1,8 +1,8 @@
 class Findent < Formula
   desc "Indent and beautify Fortran sources and generate dependency information"
   homepage "https://www.ratrabbit.nl/ratrabbit/findent/index.html"
-  url "https://downloads.sourceforge.net/project/findent/findent-4.1.3.tar.gz"
-  sha256 "4ef85a4308f9fa74c11df512eff96f461dc01cbca1d4827673afa65b5dc6adf9"
+  url "https://downloads.sourceforge.net/project/findent/findent-4.2.1.tar.gz"
+  sha256 "c010ce4d020ec77c055e0dea1f29a2f52815cb4debe052fd559cf09049fac702"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,12 @@ class Findent < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e05313660b112c576fcdbd23171543a334e915590848d5b2c853c3e655de403"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4f54e465f61257514398c7b022fca74504fb839eb680769190a4704bbeee8c5d"
-    sha256 cellar: :any_skip_relocation, monterey:       "9aa5b1e4517d5697f9ec9ce981a03a49e568df8a05ee0a51b817c774d16902a5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f816b5e1e13a2f70c5771b86391200195c0f4589d2b7177b6b76bf058faf0456"
-    sha256 cellar: :any_skip_relocation, catalina:       "c5cf9be6cdac0f66237ffe6eaf7b8dbf9c8b2699ce0b2928fd8f901ed1880baf"
-    sha256 cellar: :any_skip_relocation, mojave:         "889ed0f2d7373de18390c317e7270aa57a394f7796aff07d8ca9d6b7422bc2c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "62243f247c4ec6581b1cc0bac09cee298e20cc541199f4c273cd6bb33d2b1e65"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c9c2b26be712bc1bb1ce379e61f00310b7e16c21b407a3bd324033b701503fc3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4a8b268dff924a4eef8ac6c1b8a9483eb507a75f0201b7dd6378d15fb58b1ae6"
+    sha256 cellar: :any_skip_relocation, monterey:       "0bd83c8652c99951f4b821fe365448c435d4b5f19c69d0bc23dbc1a7308e1411"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fe2bc46144328becdc142de53d172c2c41bb536a0519cf14dc6404b91dd1c41d"
+    sha256 cellar: :any_skip_relocation, catalina:       "b7f1fc9ce343ada496989a2a7d32498da3db143e034411906c1396a05a3d562a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "670cb312112c73b5a2bf72e1e6a7d1d9c37363d5816670fa1e4011c8fabc1803"
   end
 
   def install

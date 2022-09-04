@@ -19,15 +19,15 @@ on:
       upload:
         description: "Whether to upload built bottles or not (default: false)"
         required: false
-      wheezy:
-        description: Whether to build the bottle in Debian Wheezy container
-        required: false
 
 env:
   HOMEBREW_DEVELOPER: 1
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_CHANGE_ARCH_TO_ARM: 1
+
+permissions:
+  contents: read
 
 jobs:
   prepare:
@@ -37,12 +37,20 @@ jobs:
     steps:
       - name: Prepare runner matrix
         id: runner-matrix
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
+            const intelMacOSRegex = /^\d+(?:\.\d+)?$/;
             return context.payload.inputs.runner.split(",")
                                                 .map(s => s.trim())
-                                                .filter(Boolean);
+                                                .filter(Boolean)
+                                                .map(s => {
+              if (intelMacOSRegex.test(s)) // Ephemeral runners
+                return `${s}-${context.runId}-${process.env.GITHUB_RUN_ATTEMPT}`
+              else
+                return s
+            });
+
   bottle:
     needs: prepare
     strategy:
@@ -66,14 +74,11 @@ jobs:
           echo timeout=${{github.event.inputs.timeout}}
           echo issue=${{github.event.inputs.issue}}
           echo upload=${{github.event.inputs.upload}}
-          echo wheezy=${{github.event.inputs.wheezy}}
 
       - name: Set environment variables
         if: runner.os == 'macOS'
         run: |
           echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
-          # TODO: remove the line below once set in the runner .env file
-          echo 'GITHUB_ACTIONS_HOMEBREW_SELF_HOSTED=1' >> $GITHUB_ENV
 
       - name: Run Docker container
         if: runner.os == 'Linux'
@@ -87,7 +92,7 @@ jobs:
             --env-file <(env | egrep 'HOMEBREW|GITHUB') \
             --workdir /tmp/bottles \
             --pull always \
-            ${{github.event.inputs.wheezy && 'homebrew/debian7:latest' || 'ghcr.io/homebrew/ubuntu16.04:master'}} \
+            ghcr.io/homebrew/ubuntu16.04:master \
             sleep inf
           # Fix working directory permissions
           docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
@@ -129,19 +134,30 @@ jobs:
 
       - name: Failures summary for brew test-bot --only-formulae
         if: always()
-        run: |
-          touch bottles/steps_output.txt
-          cat bottles/steps_output.txt
-          rm bottles/steps_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/steps_output.txt
+          step_name: 'Build summary on ${{ matrix.runner }}'
+
+      - name: Output brew linkage result
+        if: always()
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/linkage_output.txt
+          step_name: '`brew linkage` output on ${{ matrix.runner }}'
 
       - name: Output brew bottle result
         if: always()
-        run: |
-          cat bottles/bottle_output.txt
-          rm bottles/bottle_output.txt
+        uses: Homebrew/actions/failures-summary-and-bottle-result@master
+        with:
+          workdir: ${{matrix.workdir || github.workspace}}
+          result_path: bottles/bottle_output.txt
+          step_name: '`brew bottle` output on ${{ matrix.runner }}'
 
       - name: Upload logs
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@main
         with:
           name: logs

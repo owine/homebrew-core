@@ -3,18 +3,15 @@ class Ufraw < Formula
   homepage "https://ufraw.sourceforge.io"
   url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.22/ufraw-0.22.tar.gz"
   sha256 "f7abd28ce587db2a74b4c54149bd8a2523a7ddc09bedf4f923246ff0ae09a25e"
-  revision 3
+  revision 5
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "186be16c15f82f926cc432d987a721a117fcc0a439a80e72ea6a62a0f5e150a4"
-    sha256 arm64_big_sur:  "f58b3545d468e343cff5fa82581c8888f60557e6c7badfbf1f6094f1444ac601"
-    sha256 monterey:       "4ba22e03d173510502bd5114eaa677b3502db452baf62ab285c01a40084db013"
-    sha256 big_sur:        "0abcda85255bcf73260764126f3e6213c439e68cb8be30e712319d83361a236c"
-    sha256 catalina:       "19a95667ecb2a9bab8a108e539ef229b945f727bca7e8651af80cca1d355a196"
-    sha256 mojave:         "d880967d58bbbefb118148da4c959e38a3409a67504f21ae9b53560884da192f"
-    sha256 high_sierra:    "e09fbf5a78f3b461637d21e13575330232de1c70dd3e63026ab0dcc5669905e3"
-    sha256 x86_64_linux:   "5cef1f639e2b20ca2519527a973ef28de26e28d7473315e2cb934529a2d66bc6"
+    sha256 arm64_monterey: "b83f6e4a6e1c65437da3f79385b87c4e34282bf116f69860be96866cc1f08652"
+    sha256 arm64_big_sur:  "738c930141c10646e2838eae83f5436346cb617aad1272e024cde80b1e288b03"
+    sha256 monterey:       "57daa4e9573a66030817ba412cf5989555cf569a6e156e4128598e6eabc2c419"
+    sha256 big_sur:        "8daab4a6aff60fba25cb522f217f4aee722b018825506de0b8a3b1127372109c"
+    sha256 catalina:       "c908174e4789deed5e024420d7b65dcaf53fd82293d52015a32d10ee1b3a0660"
+    sha256 x86_64_linux:   "fedbe59fcadb6931850380ffe98103295ca6a70d567f715c0f6333b953e89867"
   end
 
   depends_on "pkg-config" => :build
@@ -22,7 +19,7 @@ class Ufraw < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "little-cms2"
@@ -41,8 +38,7 @@ class Ufraw < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", *std_configure_args,
                           "--without-gtk",
                           "--without-gimp"
     system "make", "install"

@@ -1,8 +1,8 @@
 class StorjUplink < Formula
   desc "Uplink CLI for the Storj network"
   homepage "https://storj.io"
-  url "https://github.com/storj/storj/archive/v1.35.3.tar.gz"
-  sha256 "2cd45c68f75a301ed7a4efda5f69ed2fd5dbe97836a03f04acc72da79294e869"
+  url "https://github.com/storj/storj/archive/refs/tags/v1.57.2.tar.gz"
+  sha256 "ba0cd9d2433eaff571082ef52bbc26ea74ef3b90760919cb48176dac3936f326"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,21 +11,29 @@ class StorjUplink < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4c7f67cec50db1306d40ee26cea172bfa327a6ff3aeb307fe8d7f947d587a92d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "809a59aa457c64041c650cf030ebc68a44825e138569ff95637dca5c50c3f663"
-    sha256 cellar: :any_skip_relocation, monterey:       "586f85efc930b477c1e5e2ec9be988b36459771f04aef44ec353a24bf12b6aa2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b48ba1f7faeb181e9a9b1d677333f894f481a2737da16df0423001591ed3c2b0"
-    sha256 cellar: :any_skip_relocation, catalina:       "f0790ebf718fa66eb8cebfb89ddb5fbf0bcd877e8c1a77d5cbb9299216b6fb56"
-    sha256 cellar: :any_skip_relocation, mojave:         "139cc5540b4fb727a7ef275502b84ecf6682c71ba5549e481cedaa3f1e634a3b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5e4a35272a2f6218b98e5c4fba2349cc07073d8c3c47b07ff58784245b5fe7b2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c8bc33747c30d4639ddd5b0cfb93b49855c873a1b6c5584af10246647217d81b"
+    sha256 cellar: :any_skip_relocation, monterey:       "4be8dd2ef4571b058a828e724a8865f4632d0ad076c737a6f27f27571d3d5913"
+    sha256 cellar: :any_skip_relocation, big_sur:        "abd9bad232351df682d6f804a942aea6ea60c51efb009917b6eb00ae5a6d35de"
+    sha256 cellar: :any_skip_relocation, catalina:       "9c308e55477284ce407498a0f429944ee0137bdaf9d2ee684432247658429f77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d18eaa70c6be0158071626fc5ac3575ab27fde84d2d9cbd52641fc715d1ea336"
   end
 
-  depends_on "go" => :build
+  # Required lucas-clemente/quic-go >= 0.28
+  # Try to switch to the latest go on the next release
+  depends_on "go@1.18" => :build
 
   def install
     system "go", "build", *std_go_args, "-o", bin/"uplink", "./cmd/uplink"
   end
 
   test do
-    assert_match "invalid access grant format", shell_output("#{bin}/uplink ls 2>&1", 1)
+    (testpath/"config.ini").write <<~EOS
+      [metrics]
+      addr=
+    EOS
+    ENV["UPLINK_CONFIG_DIR"] = testpath.to_s
+    ENV["UPLINK_INTERACTIVE"] = "false"
+    assert_match "No accesses configured", shell_output("#{bin}/uplink ls 2>&1", 1)
   end
 end

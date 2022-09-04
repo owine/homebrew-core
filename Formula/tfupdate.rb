@@ -1,18 +1,18 @@
 class Tfupdate < Formula
   desc "Update version constraints in your Terraform configurations"
   homepage "https://github.com/minamijoyo/tfupdate"
-  url "https://github.com/minamijoyo/tfupdate/archive/v0.6.4.tar.gz"
-  sha256 "ee55baed73ccfe43fee8d7214e3f04e2179611c0b058a22f4be6d89797441fb9"
+  url "https://github.com/minamijoyo/tfupdate/archive/v0.6.7.tar.gz"
+  sha256 "f62a8748ffef97c1a7697d76bb2e76b79a9254d957f799b1e15413b946b4ee33"
   license "MIT"
   head "https://github.com/minamijoyo/tfupdate.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6405be952566e507669a68b346eabb2cdd3b35cecea297b5c75ead573598eb1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b926a4b5f0d845de160ab825901f82e4af73f50121dff4abe66393f50ebb4bfe"
-    sha256 cellar: :any_skip_relocation, monterey:       "9c7bbccb97ef8640b03b896db4c5fe90194a8166b6dbe37491340442563142c3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "71bb3ce39818e94fa18e4a100d3c246df4b514061ae4358d4e142f32a2fafbe5"
-    sha256 cellar: :any_skip_relocation, catalina:       "0b7cfdb3eacfee7c1fe43e5234678eb267ac9282f7b425fe23a56cd771f85f0a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cf3f0e6d15d1f0263ecd4484bb0a799762870ccc969506e1e651676239102fa"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "19156a71dec1f2d6c17fae3a9b6c45671070f855e71e53e75a74a6e376229a35"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41ec805691e10a283cfb578414ab135264633afa0cce319708d8501f9bc5f6b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "0acb42223d76867e3a64145bbe9b824b95bdefc09bf9703581d73b060d109d57"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d6715e6cdc7737354e444cfc1bdae78a5f54017979744ef7a18e79ed807e056f"
+    sha256 cellar: :any_skip_relocation, catalina:       "c6f9987eeb7eac917a496a02c10bbee9c087481b8a94d936cf18febe287165f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "16f7d129f24e6b4ed306b5e045678f090afddf61d12c13ccddfdd2c283ca25d7"
   end
 
   depends_on "go" => :build

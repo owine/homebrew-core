@@ -1,18 +1,18 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://wiki.gnome.org/Projects/Libpeas"
-  url "https://download.gnome.org/sources/libpeas/1.30/libpeas-1.30.0.tar.xz"
-  sha256 "0bf5562e9bfc0382a9dcb81f64340787542568762a3a367d9d90f6185898b9a3"
+  url "https://download.gnome.org/sources/libpeas/1.32/libpeas-1.32.0.tar.xz"
+  sha256 "d625520fa02e8977029b246ae439bc218968965f1e82d612208b713f1dcc3d0e"
   license "LGPL-2.1-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_monterey: "4555c023f4c109b99df899140d01a0cceedb4b27e735cc16d34c34bfb80e930c"
-    sha256 arm64_big_sur:  "826333c759333b483af3466322a0c7f21cb723674f4a71e118ca8ad78ade4a70"
-    sha256 monterey:       "81ec3bc432ee2b37567e7761019cf336ae35df10b8f7dd7088d981ea603e1648"
-    sha256 big_sur:        "204fd26d92f3a9585d6823fff5df8a8108a0ed904c80a845e0bfd5173152c934"
-    sha256 catalina:       "cddddc6a29c533bbff776cb2635a4494f3d7024f0c4aeb80e4e378427f790100"
-    sha256 mojave:         "1df3679b835916a8c135edbbfa246e27cfdeac82717250505363f117130f9832"
-    sha256 x86_64_linux:   "11d56ef35cd8c957bf3fde1cc63eeb5d3083cec638ae0520c63da1ed85c472df"
+    sha256 arm64_monterey: "3f00cc64bd20322cdcb213ef36a01bbfeee946e6529e562b47cdb6907cc4f83c"
+    sha256 arm64_big_sur:  "fd5a0bc995f0f819d7e191cc57880664d3b7352d75ea92b2f76ffdc1b0069209"
+    sha256 monterey:       "7b8a356081a65abb5c23fda43f2e4353cacb0182229cdcacbfbe4d4de59d80d6"
+    sha256 big_sur:        "38ae27203ce4ed3ea930414be2f1a10bc3488d3be721e34ac96f2477f0096c64"
+    sha256 catalina:       "9027603f11c76d48af9285bd6e9f46c6d898569bdd29c99c52a66c2f3c34879d"
+    sha256 x86_64_linux:   "06dca0f0281702151b8809b797f6b1931ff69b05f73ed266f0e0af725b563e4f"
   end
 
   depends_on "meson" => :build
@@ -23,17 +23,14 @@ class Libpeas < Formula
   depends_on "gobject-introspection"
   depends_on "gtk+3"
   depends_on "pygobject3"
-  depends_on "python@3.9"
-
-  # Fix parallel builds.
-  # https://gitlab.gnome.org/GNOME/libpeas/-/issues/42
-  patch do
-    url "https://gitlab.gnome.org/GNOME/libpeas/-/commit/2a976339f444d70f10949901a6ee2b1f8ccb24b6.diff"
-    sha256 "d095f5e21c365c2ea04f0df9a81e1f7d15386796a03a304e8e7d6fef2c961bd5"
-  end
+  depends_on "python@3.10"
 
   def install
-    args = std_meson_args + %w[
+    # This shouldn't be needed, but this fails to link with libpython3.10.so.
+    # TODO: Remove this when `python@3.10` is no longer keg-only.
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{Formula["python@3.10"].opt_lib}" if OS.linux?
+
+    args = %w[
       -Dpython3=true
       -Dintrospection=true
       -Dvapi=true
@@ -41,11 +38,9 @@ class Libpeas < Formula
       -Ddemos=false
     ]
 
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
@@ -80,9 +75,7 @@ class Libpeas < Formula
       -lgobject-2.0
       -lpeas-1.0
     ]
-    on_macos do
-      flags << "-lintl"
-    end
+    flags << "-lintl" if OS.mac?
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

@@ -1,18 +1,18 @@
 class Tfmigrate < Formula
   desc "Terraform state migration tool for GitOps"
   homepage "https://github.com/minamijoyo/tfmigrate"
-  url "https://github.com/minamijoyo/tfmigrate/archive/v0.3.1.tar.gz"
-  sha256 "0a4915f214729ad91df125df5ce735caab1d4f1b9a43375a0ed9bde7970a69f6"
+  url "https://github.com/minamijoyo/tfmigrate/archive/v0.3.7.tar.gz"
+  sha256 "96b893bea1bd8115ce122b750691cf1d2737e343c410ffdbd4b46b62785fb8c5"
   license "MIT"
   head "https://github.com/minamijoyo/tfmigrate.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab15b9e69a491b7ffb6da7bc3d6381e350ae09f484d4ac62d0ee0dbc6b587087"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ab15b9e69a491b7ffb6da7bc3d6381e350ae09f484d4ac62d0ee0dbc6b587087"
-    sha256 cellar: :any_skip_relocation, monterey:       "f9cae2116d1cd3eefa00a0a9c80a8b1f6ae35b66e45ba7192dc5291651e19c67"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f9cae2116d1cd3eefa00a0a9c80a8b1f6ae35b66e45ba7192dc5291651e19c67"
-    sha256 cellar: :any_skip_relocation, catalina:       "f9cae2116d1cd3eefa00a0a9c80a8b1f6ae35b66e45ba7192dc5291651e19c67"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4afb8c11e09179ba2a899cc31420dfcb5a62a80bae4dfeabeed7e6aa9c1c610c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e83c4dd2bf345bfc275a8a412ea5ef425d9b3ab5578563063522f133506f63a2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e83c4dd2bf345bfc275a8a412ea5ef425d9b3ab5578563063522f133506f63a2"
+    sha256 cellar: :any_skip_relocation, monterey:       "a11cee662fd9872c76184ab29d146d3117ad8810ef1cfd79dcec75f5117c3ac2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a11cee662fd9872c76184ab29d146d3117ad8810ef1cfd79dcec75f5117c3ac2"
+    sha256 cellar: :any_skip_relocation, catalina:       "a11cee662fd9872c76184ab29d146d3117ad8810ef1cfd79dcec75f5117c3ac2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c0198ca2a7368415e91c47868f4e0e9b7d02b31499af75c8d8d49589c0a3676"
   end
 
   depends_on "go" => :build

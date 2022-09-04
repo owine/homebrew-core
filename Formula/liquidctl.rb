@@ -3,18 +3,18 @@ class Liquidctl < Formula
 
   desc "Cross-platform tool and drivers for liquid coolers and other devices"
   homepage "https://github.com/liquidctl/liquidctl"
-  url "https://files.pythonhosted.org/packages/95/94/8c5a48699eaae4519e538f98ddae2d2c0810554c7b9efb2aac53817ef593/liquidctl-1.8.1.tar.gz"
-  sha256 "0859dfe673babe9af10e4f431e0baa974961f0b2c973a37e64eb6c6c2fddbe73"
+  url "https://files.pythonhosted.org/packages/af/ef/9b7f0296108ec0a778e867e996bb6014d9d12005c452b9cd1c97d1cc266a/liquidctl-1.10.0.tar.gz"
+  sha256 "f9dc1dacaf1d3a44b80000baac490b44c5fa7443159bd8d2ef4dbb1af49cc7ba"
   license "GPL-3.0-or-later"
   head "https://github.com/liquidctl/liquidctl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9ce7356ec6a382dbd114dedf91772569c0c332526f6ba86c704b1d34941a4166"
-    sha256 cellar: :any,                 arm64_big_sur:  "8695ab4af1bc8486ed693cdc5741ac95f4179e93d1cc61ac6eb64323683046b1"
-    sha256 cellar: :any,                 monterey:       "5adc905e76d808b6d66b08674d83b9208cadf5207a84e978a1fcfb5e1fc014bb"
-    sha256 cellar: :any,                 big_sur:        "bac635e8d1844f4f6ab7ac575dd8178801322128eec9083200153e7301715285"
-    sha256 cellar: :any,                 catalina:       "8271e9134cf6af394ba98427fa0fb315d704e24e7b3a257d28fabe6ec5f5d98c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "353ad933b9d69bc2702a59b796d18f90d60f5f8bcf8da96085bc6a83a2843265"
+    sha256 cellar: :any,                 arm64_monterey: "c727c41715ec483e496655ca96bcfb828fd2444ba96441944a7f6aa3129cb945"
+    sha256 cellar: :any,                 arm64_big_sur:  "e2341a6a27f04dc48904ec26d7d61c6a99501b9ec87569be407be32400aff5e0"
+    sha256 cellar: :any,                 monterey:       "940108bde2118a7945c3056c6fd0932f31cb8eac0501056f95440815461bbd14"
+    sha256 cellar: :any,                 big_sur:        "2666ebf8a4cce47f9cfa541c2142783f33cb82d168f6678cdafeb03091a919d0"
+    sha256 cellar: :any,                 catalina:       "c6a4c904ff3ca78ef90ea34e88eacc70d6827fa6c3068fa55fda9d49ba974742"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b1359753511c5d428b93658e30a3013ae7586d8fd5f608d9def5cfb1fb21516"
   end
 
   depends_on "hidapi"
@@ -36,8 +36,8 @@ class Liquidctl < Formula
   end
 
   resource "hidapi" do
-    url "https://files.pythonhosted.org/packages/dc/aa/38708a1d85d13dec22e756feb4e02f8b3adc5937bfe976f8f998717ff0a3/hidapi-0.11.0.post2.tar.gz"
-    sha256 "da815e0d1d4b2ef1ebbcc85034572105dca29627eb61881337aa39010f2ef8cb"
+    url "https://files.pythonhosted.org/packages/ef/72/54273f701c737ae5f42d9c0adf641912d20eb955c75433f1093fa509bcc7/hidapi-0.12.0.post2.tar.gz"
+    sha256 "8ebb2117be8b27af5c780936030148e1971b6b7fda06e0581ff0bfb15e94ed76"
   end
 
   resource "pyusb" do

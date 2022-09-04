@@ -1,9 +1,9 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0239.tar.gz"
-  version "0.239"
-  sha256 "120b4d679283ab2c7102b40fefc5165bfd9b8242fbbd5f9977d381cb65051d87"
+  url "https://github.com/mamedev/mame/archive/mame0247.tar.gz"
+  version "0.247"
+  sha256 "a2486d34b15f13c3d7028436f7da373d37c7fd47f34a2ea19ff48cf57daf29e1"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git", branch: "master"
 
@@ -18,12 +18,12 @@ class Mame < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "8d6306c58e922575adf09b7aec5220155e87634e0f9c296c07814ffa2507f85c"
-    sha256 cellar: :any,                 arm64_big_sur:  "be2ea15b34e32598b38e12c7a1607c3604dd7922e85a90ca618c1cd18a037d62"
-    sha256 cellar: :any,                 monterey:       "98c5a68dc91c104ea00a531eeb23d77e8baf3559556d83663c04bbc6b01f13fd"
-    sha256 cellar: :any,                 big_sur:        "48f6f0e25dcf8c8522533275e428ad9f90bc0648ab178b104a68b2b419e92985"
-    sha256 cellar: :any,                 catalina:       "63d9270ad6442024d1a73710e1c64ddc57ced526c67af5b90104e10afcf6e34a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cd3466f20608941a21c6a22de690ccc69e847ca0329b377be7a21c85d407867b"
+    sha256 cellar: :any,                 arm64_monterey: "dcceea446442b0d9cf0e1f51bf50a2fa4b841c9ca4d0da3cbf9a9ba7dfca544e"
+    sha256 cellar: :any,                 arm64_big_sur:  "c862eda45de322d46c18358238614395fa8d85e81083fe0f7aa6f070b7bc8166"
+    sha256 cellar: :any,                 monterey:       "5145501ea9384f35341c919ca7c06065d7a77a3deaf3c2fbfe7037266a4e7357"
+    sha256 cellar: :any,                 big_sur:        "946e83becacc2e9ac31adc145166b7cbdf9c0229a76ab0b555ae47290f593bc7"
+    sha256 cellar: :any,                 catalina:       "2fe3d3299cf3ef169a5b6d7f0f171846b7ad7e6d60c5bea8ace4a8349b08be29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "66a602af59d763aa00038c6de89832f767808332347112e269fd953ca01a602f"
   end
 
   depends_on "glm" => :build
@@ -32,7 +32,7 @@ class Mame < Formula
   depends_on "rapidjson" => :build
   depends_on "sphinx-doc" => :build
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   # Need C++ compiler and standard library support C++17.
   depends_on macos: :high_sierra
   depends_on "portaudio"

@@ -2,8 +2,8 @@ class K3sup < Formula
   desc "Utility to create k3s clusters on any local or remote VM"
   homepage "https://k3sup.dev"
   url "https://github.com/alexellis/k3sup.git",
-      tag:      "0.11.3",
-      revision: "e2bb18116d3686bf53cf40fe0998af7b6c9cf8a6"
+      tag:      "0.12.3",
+      revision: "c0a48331967e1c1e6b10dbd997b65c1496fbd32d"
   license "MIT"
   head "https://github.com/alexellis/k3sup.git", branch: "master"
 
@@ -13,12 +13,12 @@ class K3sup < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a3d66c72cdaadc1dc97b2d28763d1943b16f5d96124e19e703b9618d22a23d7c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5284958a0f20f78aa4fc879482d167276119ed3ade631839d31ea568fa65d774"
-    sha256 cellar: :any_skip_relocation, monterey:       "5da6c2673b94b2331820707e4d7fa075d4db08dcd5b57afb586e788ed31a6888"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bb8bd85925544da7369dd123383d22c60046e1a0861c56b584cdd9ab6e691ded"
-    sha256 cellar: :any_skip_relocation, catalina:       "fa6e400fc912c6bf18c95ca45d24b7307ba81895e8424c92ef27f9c29f6a4439"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e7d21a5c3b460560123484eb0d9fb10150f64b75410a7d455ff64282de3fd1f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5c6fe3e429eb80de77c2a3881ccf657030021d6e67613b2ff9e636a08d34e283"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "342ed4f72e9307b4d199048382b1255e509d5151f47ad51258429bd08322345a"
+    sha256 cellar: :any_skip_relocation, monterey:       "b51466716194e22e398e30812cccb273c1a05f2503e20c1935539899e63a9cb9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "005ca34165067c1c27ad12e20cd3981cfc62afb1b997a6b4534e5777a0c0bd09"
+    sha256 cellar: :any_skip_relocation, catalina:       "9f36a27b5eefab6d18aacfbc0046d3ad21645df53757760be17ebef9724b2e3e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2d05f33cad91bb047544404f2e4eba158140aeca7f6c874eeb9975eac909fae"
   end
 
   depends_on "go" => :build
@@ -30,6 +30,8 @@ class K3sup < Formula
       -X github.com/alexellis/k3sup/cmd.GitCommit=#{Utils.git_short_head}
     ]
     system "go", "build", *std_go_args(ldflags: ldflags)
+
+    generate_completions_from_executable(bin/"k3sup", "completion")
   end
 
   test do

@@ -1,8 +1,8 @@
 class Vttest < Formula
   desc "Test compatibility of VT100-compatible terminals"
   homepage "https://invisible-island.net/vttest/"
-  url "https://invisible-mirror.net/archives/vttest/vttest-20210210.tgz"
-  sha256 "0f98a2e305982915f1520984c3e8698e3acd508ee210711528c89f5a7ea7f046"
+  url "https://invisible-mirror.net/archives/vttest/vttest-20220827.tgz", using: :homebrew_curl
+  sha256 "5726aae58137773ce6ce01fe6a86fc0f83c47763e30488bff35b9bc4fc946ce2"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,12 @@ class Vttest < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a02544dcf6c8fc490aed7bb2b119cfe90f6b59825e31a6bbba8aca7fca742091"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5bd298d05ad47843648ba8f8b8825614d647b495e4c09c34e00e4947eff9a016"
-    sha256 cellar: :any_skip_relocation, monterey:       "75c92cbf81736c4108544e7432d1d5aec9052f6bcd5c20c6e57c3dc0ac94e370"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bcaa7bfde1caffa18b43a357d684b92e6cfc1db34e5f77a47fb4be22f9ed2051"
-    sha256 cellar: :any_skip_relocation, catalina:       "07691c12896f2adfd4cae9ddd7f04b3fcd67ccd6727fe59b7ba79200e7f4961c"
-    sha256 cellar: :any_skip_relocation, mojave:         "a73bba40a8459292c25b2999286c29278c9789cbaed70e5382fb1f2b116a0b21"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e10da7578e73cafdf87514ae43ef35a68dcc39c7ee58e218f188443db20aae4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "905038e27c10001f38e125fbb71ed34bc4cd5578a16e6e3976a135ba6edd5aa8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5fe35ac34ee9da6853f2d23252737d6e0d4bdbea42339568cb5e487a131dde60"
+    sha256 cellar: :any_skip_relocation, monterey:       "98566281a72b1cdaac11e1b65c9a4becb01a1ed755344e4491608495f2839fdd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "60edbb077a683fc7bc2815fad14352cc4b84f052d04f880225dcc941da6066a8"
+    sha256 cellar: :any_skip_relocation, catalina:       "0ea68343e0652a287bfb43cc3354814ed890b3f219defc6f66d4a72b70effb18"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb08c3370eb7c6d16bba6ef1142a54c275a3c84e5aece356b8d022740d526b8d"
   end
 
   def install

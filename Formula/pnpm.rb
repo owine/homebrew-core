@@ -3,8 +3,8 @@ class Pnpm < Formula
 
   desc "📦🚀 Fast, disk space efficient package manager"
   homepage "https://pnpm.io/"
-  url "https://registry.npmjs.org/pnpm/-/pnpm-6.28.0.tgz"
-  sha256 "3ac229d647ae6d0a343ed78de4583e4b6408534adc9f13e1d27a7781b2d4bb34"
+  url "https://registry.npmjs.org/pnpm/-/pnpm-7.9.5.tgz"
+  sha256 "f9e44c2f411fc763ce6dec9bd67aa14064da8a991b0c6d2a799246a13cbac278"
   license "MIT"
 
   livecheck do
@@ -13,25 +13,33 @@ class Pnpm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "565cc36a8ebbfa50270ca256f38c592bf41c8c6da099c2307118911e1cf57e2c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "565cc36a8ebbfa50270ca256f38c592bf41c8c6da099c2307118911e1cf57e2c"
-    sha256 cellar: :any_skip_relocation, monterey:       "4f20a9de10a17880e66c1c003aa0f24e87632cf9c96124a04b48c9f8a299987a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7162b5e06bb1a786ec59576d3206894c62d9ae8130c154119a226ca89a780858"
-    sha256 cellar: :any_skip_relocation, catalina:       "7162b5e06bb1a786ec59576d3206894c62d9ae8130c154119a226ca89a780858"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "565cc36a8ebbfa50270ca256f38c592bf41c8c6da099c2307118911e1cf57e2c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2cec8ef672f1751787fe68a598c3c94504c076c1dd9ef565082c43554bdb7a78"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2cec8ef672f1751787fe68a598c3c94504c076c1dd9ef565082c43554bdb7a78"
+    sha256 cellar: :any_skip_relocation, monterey:       "e665b08f01eb5a8808ca26844ac61f468c896308cd863a6a2220eba5887f262b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c52ffeb4bfbb848d97826212efe334950fa5b7899591cc74ca2bf29911593c5c"
+    sha256 cellar: :any_skip_relocation, catalina:       "c52ffeb4bfbb848d97826212efe334950fa5b7899591cc74ca2bf29911593c5c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cec8ef672f1751787fe68a598c3c94504c076c1dd9ef565082c43554bdb7a78"
   end
 
-  depends_on "node"
+  depends_on "node" => :test
 
   conflicts_with "corepack", because: "both installs `pnpm` and `pnpx` binaries"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    libexec.install buildpath.glob("*")
+    bin.install_symlink "#{libexec}/bin/pnpm.cjs" => "pnpm"
+    bin.install_symlink "#{libexec}/bin/pnpx.cjs" => "pnpx"
+  end
+
+  def caveats
+    <<~EOS
+      pnpm requires a Node installation to function. You can install one with:
+        brew install node
+    EOS
   end
 
   test do
-    system "#{bin}/pnpm", "init", "-y"
+    system "#{bin}/pnpm", "init"
     assert_predicate testpath/"package.json", :exist?, "package.json must exist"
   end
 end

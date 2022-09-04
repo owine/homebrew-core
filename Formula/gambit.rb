@@ -3,15 +3,16 @@ class Gambit < Formula
   homepage "http://www.gambit-project.org"
   url "https://github.com/gambitproject/gambit/archive/v16.0.2.tar.gz"
   sha256 "49837f2ccb9bb65dad2f3bba9c436c7a7df8711887e25f6bf54b074508a682d4"
-  license "Apache-2.0"
+  license all_of: ["GPL-2.0-or-later", "Zlib"]
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0779354b7180b2a9ef458329b0e9e7479ba124a1682f9f6068c2eef9837b96d6"
-    sha256 cellar: :any,                 arm64_big_sur:  "f528e0b09dd94b129e8e6a37b1ac7b881b5f94602b4c7dd73c3f9304fc3f461a"
-    sha256 cellar: :any,                 monterey:       "65e3c4196da9261bea2df1694700ed9dfca563f8390269c9e85d7e694d4e9679"
-    sha256 cellar: :any,                 big_sur:        "9a13115f4a60933306b00fef69aa5b020b6fbe60b19291c73515c908bfce4464"
-    sha256 cellar: :any,                 catalina:       "43e0f79f7009fae5cea81be024b0bab1a7f9dd444da8ac43cb78cac10d0c3ec1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "551f35c78edac8bc7a7e62511c7f9bb34b6143211b56ba00b3d9931b0ca96504"
+    sha256 cellar: :any,                 arm64_monterey: "9e8a6532979a76099a1aec227b3b581f72ace90d5d6df95ef92a9aee4695ea91"
+    sha256 cellar: :any,                 arm64_big_sur:  "8095ee116fc0670d6f2a162851c65bcfd975bafdb728c3a7748a09a59f09c72b"
+    sha256 cellar: :any,                 monterey:       "bcfcbfc39abea04e9a9f724ac800042003ce9d3dd56a9bab77615825032e0ef0"
+    sha256 cellar: :any,                 big_sur:        "57c1e208efcda541d09673f8852ef2903a5bae47ddfcaccfcfa5b42b9f46070a"
+    sha256 cellar: :any,                 catalina:       "a05c834248ab760aeffe219b232ef13c10e002350e91bde1bfa4259bbb879d7c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d1ebe528c6a77da1d27ad4460732d11bc0daddaf4a7afe2a4db0e0af96991f0f"
   end
 
   depends_on "autoconf" => :build

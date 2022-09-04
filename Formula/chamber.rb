@@ -1,8 +1,8 @@
 class Chamber < Formula
   desc "CLI for managing secrets through AWS SSM Parameter Store"
   homepage "https://github.com/segmentio/chamber"
-  url "https://github.com/segmentio/chamber/archive/v2.10.7.tar.gz"
-  sha256 "51af2fff232d8839ae772de7700c39f26f7a2428e02aaa185f06c18defa592f0"
+  url "https://github.com/segmentio/chamber/archive/v2.10.12.tar.gz"
+  sha256 "7766ef7f84b8fe09aaad13b5bbe2256b05fd1e44cac6279de5051ecfb9cc5c66"
   license "MIT"
   head "https://github.com/segmentio/chamber.git", branch: "master"
 
@@ -13,15 +13,16 @@ class Chamber < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "69b6be491b4e21f5402f3d12c5b0bb293ef294275dab83b2ff8c377174fc9b7d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "357f3da41c7a1ede875502401f41e7577598bd1997e7401375eb229915fc25b7"
-    sha256 cellar: :any_skip_relocation, monterey:       "1dc9300e75c3b3b6133eeb06e85477fd1d87976187630a046dbce49492b25602"
-    sha256 cellar: :any_skip_relocation, big_sur:        "89a69a5d0e587d2ec4c98e04646c790ee34364efa8c16fdee57ba901fe55c88c"
-    sha256 cellar: :any_skip_relocation, catalina:       "58a73003ee6317a20b1a7640117bc12b1203e2f15222722063a1f383167762f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3196c8dbea0cb52c1122ceb7ad314534151980da1055ee1f4bb7c127f6f9c52"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c9474f3c3f88813e4b7bb293039eef43468a31baefbcd84ef22e112b5b38577"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b1ef203eeb0029032c383d8ef18ee5847dde0260975004fdcb7e58f139b9e671"
+    sha256 cellar: :any_skip_relocation, monterey:       "63110436d09c64179e12ef7e4a441bb8aa09c688776a5fdcec216d8e878a1a84"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1f6801db19ecdc06231eecfcda28c8f36f4b94714f4d2ad8fb9510aeb1c93b21"
+    sha256 cellar: :any_skip_relocation, catalina:       "1909ef937908a3ce510de1a56336e95c47115989caa5ada6705b983b6b303a51"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "69baa13bd656719221bd2673882deb3035e274fa7c07c096a58f2b76aee6bd56"
   end
 
-  depends_on "go" => :build
+  # Bump to 1.18 on the next release, if possible.
+  depends_on "go@1.17" => :build
 
   def install
     system "go", "build", "-ldflags", "-s -w -X main.Version=v#{version}", "-trimpath", "-o", bin/"chamber"

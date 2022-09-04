@@ -1,37 +1,65 @@
 class Nco < Formula
   desc "Command-line operators for netCDF and HDF files"
   homepage "https://nco.sourceforge.io/"
-  url "https://github.com/nco/nco/archive/5.0.5.tar.gz"
-  sha256 "765af0e3194c364504251c19d3362038730752fc5e741078ecdd875de45dbc55"
+  url "https://github.com/nco/nco/archive/5.1.0.tar.gz"
+  sha256 "6f0ba812e0684881a85ebf3385117761cffbba36ba842889cc96f111157f89c2"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "1fbc9a0b68655d2fc332e71066ca282ca31a256b7cd3be834efcf8868596c26e"
-    sha256 cellar: :any, arm64_big_sur:  "14e2e2b9e439a2113464807f2834c9483fce6bf114f399a8e154686ffd3f5f00"
-    sha256 cellar: :any, monterey:       "3e38e7b44395e70b0f8460cdc1a1f45c7a471b1d1e2f2318abc1d0c5827ad56e"
-    sha256 cellar: :any, big_sur:        "9d4cc4efdf377e413d72f22fbf4d251062c9fb6201acdea9079e72c3e277a75d"
-    sha256 cellar: :any, catalina:       "6fb6d272f8eb39c58dba4cecf8816a3a9c30faff1d135cf202902748a3a9608a"
+    sha256 cellar: :any,                 arm64_monterey: "7b4b3ae88d8038b654f4d3ef816fa50840d19f52079a7f4074d05c8a43159de7"
+    sha256 cellar: :any,                 arm64_big_sur:  "3962aaee46b68259b793f0b4b6764ce04969e1a6c2e857f8e31918b321d48b0c"
+    sha256 cellar: :any,                 monterey:       "415c19c6d02e49c4b7186f2a8f863d045bb3c29eec4e004662b5fcf5a8bce98d"
+    sha256 cellar: :any,                 big_sur:        "8bad0fa1cb198f7d712eba8c5157af563cb5f485c40083a2cb2904f4ef2cf8b2"
+    sha256 cellar: :any,                 catalina:       "d6eab303d184739b9e0d92db0705da91d70615d2e45e56d45cd1a9254ec092a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "18eb21562e02dcafa2786d883db895a89999737cf6459e485bd4d583685577b6"
   end
 
   head do
-    url "https://github.com/nco/nco.git"
+    url "https://github.com/nco/nco.git", branch: "master"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
-  depends_on "antlr@2" # requires C++ interface in Antlr2
+  depends_on "openjdk" => :build # needed for antlr2
   depends_on "gsl"
   depends_on "netcdf"
   depends_on "texinfo"
   depends_on "udunits"
+
+  uses_from_macos "flex" => :build
 
   resource "homebrew-example_nc" do
     url "https://www.unidata.ucar.edu/software/netcdf/examples/WMI_Lear.nc"
     sha256 "e37527146376716ef335d01d68efc8d0142bdebf8d9d7f4e8cbe6f880807bdef"
   end
 
+  resource "antlr2" do
+    url "https://github.com/nco/antlr2/archive/refs/tags/antlr2-2.7.7-1.tar.gz"
+    sha256 "d06e0ae7a0380c806321045d045ccacac92071f0f843aeef7bdf5841d330a989"
+  end
+
   def install
+    resource("antlr2").stage do
+      system "./configure", "--prefix=#{buildpath}",
+                            "--disable-debug",
+                            "--disable-csharp"
+      system "make"
+
+      (buildpath/"libexec").install "antlr.jar"
+      (buildpath/"include").install "lib/cpp/antlr"
+      (buildpath/"lib").install "lib/cpp/src/libantlr.a"
+
+      (buildpath/"bin/antlr").write <<~EOS
+        #!/bin/sh
+        exec "#{Formula["openjdk"].opt_bin}/java" -classpath "#{buildpath}/libexec/antlr.jar" antlr.Tool "$@"
+      EOS
+
+      chmod 0755, buildpath/"bin/antlr"
+    end
+
+    ENV.append "CPPFLAGS", "-I#{buildpath}/include"
+    ENV.append "LDFLAGS", "-L#{buildpath}/lib"
+    ENV.prepend_path "PATH", buildpath/"bin"
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

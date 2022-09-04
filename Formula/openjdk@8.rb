@@ -1,25 +1,27 @@
 class OpenjdkAT8 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://openjdk-sources.osci.io/openjdk8/openjdk8u312-ga.tar.xz"
-  version "1.8.0+312"
-  sha256 "62173a8233397088101b97c4175831120550124b24ae03d79721498e0d5a355b"
+  url "https://openjdk-sources.osci.io/openjdk8/openjdk8u345-ga.tar.xz"
+  version "1.8.0+345"
+  sha256 "d3e8b554e519c53454a6c6ef1680b18d3f77ea90f3cd2c853598cb3970004ee2"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "d6904e2576f8876bae57288f6655686799506763ff49eb0939082c404f84dd02"
-    sha256 cellar: :any,                 big_sur:      "5bcb2cbf4502f83cb2bfa439c8b838cc6573a39bd1c230cd51b076ba40d3198d"
-    sha256 cellar: :any,                 catalina:     "3aef1fb4ca615ab2700103502213b4346f1867a95d34a2981689d8bba81faedc"
-    sha256 cellar: :any,                 mojave:       "8f036a79d42e0ea7719ba6cad997cf6aec791c163bef744a929375a2e9c69779"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "fe6095f8af1e870dc2bcc2888cf74a92985431bb4210df9214bcdc991161408a"
+    sha256 cellar: :any,                 monterey:     "31428d384001e26d2a3a981cb1f2df4cb19324aa0a27db2fe00481f5eb4e59cd"
+    sha256 cellar: :any,                 big_sur:      "a8fedd63b9a5b1f2a4a0c307fc2421e4e7114600fa1798ffd57bb0b607071e30"
+    sha256 cellar: :any,                 catalina:     "bfb061ab78dcf5841c573376706e827346d5838e9afda6f5bca2e2c9649f7c94"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "424adf253049f1628bf80cc536b4027f455300626d31b214ec8f6bcf65dc855d"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
-  depends_on "gawk" => :build if MacOS.version > :big_sur
   depends_on "pkg-config" => :build
   depends_on "freetype"
+
+  on_monterey :or_newer do
+    depends_on "gawk" => :build
+  end
 
   on_linux do
     depends_on "alsa-lib"
@@ -40,12 +42,12 @@ class OpenjdkAT8 < Formula
   # Oracle doesn't serve JDK 7 downloads anymore, so use Zulu JDK 7 for bootstrapping.
   resource "boot-jdk" do
     on_macos do
-      url "https://cdn.azul.com/zulu/bin/zulu7.50.0.11-ca-jdk7.0.322-macosx_x64.tar.gz"
-      sha256 "085af056bfa3cbba63992a388c4eadebb1e3ae6f88822bee17520488592d7726"
+      url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-macosx_x64.tar.gz"
+      sha256 "31909aa6233289f8f1d015586825587e95658ef59b632665e1e49fc33a2cdf06"
     end
     on_linux do
-      url "https://cdn.azul.com/zulu/bin/zulu7.50.0.11-ca-jdk7.0.322-linux_x64.tar.gz"
-      sha256 "68ac226429904f208a9b873898d2aa6fce3c900c4da8304d589d0b753634bb10"
+      url "https://cdn.azul.com/zulu/bin/zulu7.56.0.11-ca-jdk7.0.352-linux_x64.tar.gz"
+      sha256 "8a7387c1ed151474301b6553c6046f865dc6c1e1890bcf106acc2780c55727c8"
     end
   end
 

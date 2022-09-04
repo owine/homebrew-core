@@ -1,17 +1,17 @@
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://wiki.gnome.org/Projects/Vala"
-  url "https://download.gnome.org/sources/vala/0.54/vala-0.54.6.tar.xz"
-  sha256 "49d60d96a3fdf6c4287397442bc6d6d95bf40aa7df678ee49128c4b11ba6e469"
+  url "https://download.gnome.org/sources/vala/0.56/vala-0.56.3.tar.xz"
+  sha256 "e1066221bf7b89cb1fa7327a3888645cb33b604de3bf45aa81132fd040b699bf"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "38ba166e43db02c9d974b08d3206d6122b8979497cf6a6f250ea5d1fd71e68b1"
-    sha256 arm64_big_sur:  "ecc2603c29b855b1a2a096e2fadfe932992773f580ff68a47ca8707ac32cb7fe"
-    sha256 monterey:       "dd53beb4c72134ae0965c292e762d64e793f391655e6f547a805ae2d8fdf4c43"
-    sha256 big_sur:        "0a126eaa756b14302ad96dd2f65c74eab2a9fc31bca8107a0b3e3b0c05c1e0dd"
-    sha256 catalina:       "552cf9bd5758904e49bb68fd2843bf09b054ad4e40b652104ac20ef85ffbb2f9"
-    sha256 x86_64_linux:   "4ae96d3686511de7b69b52376c8a9ea8749a628349f236b1a0998fa657e24911"
+    sha256 arm64_monterey: "9710ea0dd1f5bbba23f41bf54982705a5c7fc6d4b35ae68fc8f6d65c876519ac"
+    sha256 arm64_big_sur:  "e5cf9e8f047f4ddf31b0f25c3076c6cc8b1ee9982de3d242b4796275af60a4e2"
+    sha256 monterey:       "f8239f01d9b18c4be6d83b97c42a93c4ab436d3d13bab3f95d609b422ea0c2e9"
+    sha256 big_sur:        "bc77fabfbd06743e37f1c9ee78f1c608d68b4bf1c34783b75d2d8f5ed00cbc3a"
+    sha256 catalina:       "56ac3f0303166a5d6c556e8a899fbc5f3a743f38b84915dc19457c4284523f46"
+    sha256 x86_64_linux:   "13bdb063f26cf187830b4b1b9c70f7a5f73947cde1e3adec62b0d295c16e2735"
   end
 
   depends_on "gettext"
@@ -23,9 +23,7 @@ class Vala < Formula
   uses_from_macos "flex" => :build
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make" # Fails to compile as a single step
     system "make", "install"
   end

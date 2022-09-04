@@ -1,18 +1,18 @@
 class Shfmt < Formula
   desc "Autoformat shell script source code"
   homepage "https://github.com/mvdan/sh"
-  url "https://github.com/mvdan/sh/archive/v3.4.2.tar.gz"
-  sha256 "2000656613bc4165fb1d419bedec08fcb23a625274f4505e303d18b204d8f5ee"
+  url "https://github.com/mvdan/sh/archive/v3.5.1.tar.gz"
+  sha256 "f15ca9952ef6dc4c1051550152768a99dde0d3f72269d0510f75522a492270cf"
   license "BSD-3-Clause"
   head "https://github.com/mvdan/sh.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3d16adb18028a2bf572104d383a081d513ec3c608e2ea9dfd44fccf20c1e7b0f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3eaff57d43b2b12b276a866e693fc76597091b6580b484cb27beb0f5b7a30f43"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4508d0a67b4a5802fa2cb9875687ec933c2369395521b23b89faf4e7eb53cad"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b6765390c7387bb16bfa4fb63bb75bedf346bd2f42e70b2042c88230e668bd70"
-    sha256 cellar: :any_skip_relocation, catalina:       "ab7bb4cf991a41eecda3fca4bef473dd711a62b89d906f3861515b8ec1386c98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8ed1ad0c691990dd7bc6bc1665f5c47f6815b73ad28e7d97bce07af69b28f962"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "633116b598a60ad576a79753208e13388f6a2460139c8aca44e5a25befdb017c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1b0653c0a44f7db5e78c5c6d67de534a52c4f588fb65e3acbb8211d06b871bd9"
+    sha256 cellar: :any_skip_relocation, monterey:       "e7168603f81cf1357c2460c5c476fa66bf5421183d4dedeafe9cf38550fe8855"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0e0683566d83cceecd4d02596e3c899a640918ff067b6e15e10f8aee424f1759"
+    sha256 cellar: :any_skip_relocation, catalina:       "4fabb118ba0da244f2b0ffe280b28e343712fac23e738ddf1db29fad68526d73"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "faa60f70812132e10f94477676499a1e2bacb0d06fbe437e8480a997695c2203"
   end
 
   depends_on "go" => :build

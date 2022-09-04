@@ -2,8 +2,8 @@ class Kustomize < Formula
   desc "Template-free customization of Kubernetes YAML manifests"
   homepage "https://github.com/kubernetes-sigs/kustomize"
   url "https://github.com/kubernetes-sigs/kustomize.git",
-      tag:      "kustomize/v4.4.1",
-      revision: "b2d65ddc98e09187a8e38adc27c30bab078c1dbf"
+      tag:      "kustomize/v4.5.7",
+      revision: "56d82a8378dfc8dc3b3b1085e5a6e67b82966bd7"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kustomize.git", branch: "master"
 
@@ -13,12 +13,12 @@ class Kustomize < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2635754c79a06127bdab258e39b0acf8daf22b84b2611fe8be11a6a72aaaed0d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d3f25b6124ec0bbeae608796fb1c31e23ae22bca528720333b9d5945e358a34"
-    sha256 cellar: :any_skip_relocation, monterey:       "192d3d4c81f8c487bbf99914ea80a667ef72aa2e39707a6bf634b0c53d4f000b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "72db885ba0bb7a5dcebab195f4ab3a9feae6a3caf048345c10454cd2d62393c4"
-    sha256 cellar: :any_skip_relocation, catalina:       "d312dd44c71f16a776da83cac77ece3b465b790163ea15cd191271a4baf21ef8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b657e3e1a442ee5b77af63fda69cdb8e0e0b4b0b46b19d417e952a129ec382aa"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "001f113a50c425d7c0cdbd42461be315b9696dbc89f4d775dce572a87d6cb4ea"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b573afb3aff29de518a7b60d13dceedf956521a233ee82722cdda4b7fa47e389"
+    sha256 cellar: :any_skip_relocation, monterey:       "7878dd7bad7bde751736bac6de721f0e20ba3b75bea81c017105218cf96df369"
+    sha256 cellar: :any_skip_relocation, big_sur:        "628577f3b6148a07e7f96b33f2e69d1f778170ed0814a6592b4d32da3ed61266"
+    sha256 cellar: :any_skip_relocation, catalina:       "e471ba925c2bb5544a31e1af7eb15cec88b94fc578c902585bf492f240f7bff1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "18cab0642b06d0f60ed61b4fbca2264e475c1564eeff9f83249cc24ffa1c48ba"
   end
 
   depends_on "go" => :build
@@ -37,14 +37,7 @@ class Kustomize < Formula
       system "go", "build", *std_go_args(ldflags: ldflags)
     end
 
-    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "bash")
-    (bash_completion/"kustomize").write output
-
-    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "zsh")
-    (zsh_completion/"_kustomize").write output
-
-    output = Utils.safe_popen_read("#{bin}/kustomize", "completion", "fish")
-    (fish_completion/"kustomize.fish").write output
+    generate_completions_from_executable(bin/"kustomize", "completion")
   end
 
   test do

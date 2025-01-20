@@ -1,10 +1,6 @@
 [
-  "emscripten",
   "hive",
-  "libgaiagraphics",
-  "librasterlite",
-  "predictionio",
-  "sqoop",
-  "swtpm",
-  "synergy-core"
+  "mariadb@10.4",
+  "mysql@5.7",
+  "sslyze"
 ]

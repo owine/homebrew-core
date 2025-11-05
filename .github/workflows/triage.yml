@@ -397,6 +397,7 @@ jobs:
                 curl|\
                 gettext|\
                 glib|\
+                harfbuzz|\
                 openssl@3|\
                 wayland-protocols|\
                 sqlite|\

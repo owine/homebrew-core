@@ -1,19 +1,17 @@
 class Manifold < Formula
   desc "Geometry library for topological robustness"
   homepage "https://github.com/elalish/manifold"
-  url "https://github.com/elalish/manifold/releases/download/v3.2.1/manifold-3.2.1.tar.gz"
-  sha256 "67c4e0cb836f9d6dfcb7169e9d19a7bb922c4d4bfa1a9de9ecbc5d414018d6ad"
+  url "https://github.com/elalish/manifold/releases/download/v3.3.0/manifold-3.3.0.tar.gz"
+  sha256 "af0ea17e5006c71b439371570ccc143cd5fbd77a18c4fa713a508ef1fc3e2845"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_tahoe:   "84b1af9336b1e9039270f85e53f289a8ecc927c88a19a070c6ea97a1793437c1"
-    sha256 cellar: :any,                 arm64_sequoia: "197871f8de11dc8f1311726c1df7fc4c739f88c5a9352a742ee54a64d4117cfc"
-    sha256 cellar: :any,                 arm64_sonoma:  "e53d28fcf341b55b1622c7c23b8e33d0e25d42b9803eb9730c53e07037a0cbef"
-    sha256 cellar: :any,                 arm64_ventura: "3cbdbd014289232556ffd784dd8f9440349e5598e925aa28134f05feb45a5767"
-    sha256 cellar: :any,                 sonoma:        "c43c199ecff386933bd3b069261aa6c0d08243e4f51008a475c89216f19b4578"
-    sha256 cellar: :any,                 ventura:       "9bbc38300371f5d38a3151e7e08bb57e8298081f5e7193176d2f0c4a7daf49c4"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "0b72d2bbc6b70fc96f92a37a45b80be6218b47c42c22d772a9790694ce033165"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fa851ba5615a5bfe0c555334e2b03d64d3201c471852064227852dea8c8f44a0"
+    sha256 cellar: :any,                 arm64_tahoe:   "5227a815585053204ee1b1abef077bf288f03a4cc893e4bf468b9044d6c11024"
+    sha256 cellar: :any,                 arm64_sequoia: "5b74e3ea9344c69db2f5176b1c9f08d9b978001dea42fd13cddf8c647e6ef82d"
+    sha256 cellar: :any,                 arm64_sonoma:  "82336a4cd514fd3a4db7a367a9c59f3b2145959348197093a0d52b8370386650"
+    sha256 cellar: :any,                 sonoma:        "ae5579a7cc4a5c318aa02e2355dea010e83d06ae33ccd0dc763b056d971e84a3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "05c5ba643c345e243930c62a694de1d733306bb356e83a368f0105f072aeb3d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3445c2c7a4f5a3064e304b534055a6729eb7376ae44b64a3f65841d1d74bcb7d"
   end
 
   depends_on "cmake" => :build

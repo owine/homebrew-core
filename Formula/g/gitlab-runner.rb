@@ -2,8 +2,8 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v18.6.3",
-      revision: "dbac4904553947d823cf632ac928023ec2c9a987"
+      tag:      "v18.6.4",
+      revision: "7a8cff11df3d765adb21165622a7254e72112df3"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git", branch: "main"
 
@@ -13,12 +13,12 @@ class GitlabRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "804bc2ca796d4f98c20980670bc9ba23ae047a9270573eda3209c3a6659bf0fe"
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "804bc2ca796d4f98c20980670bc9ba23ae047a9270573eda3209c3a6659bf0fe"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "804bc2ca796d4f98c20980670bc9ba23ae047a9270573eda3209c3a6659bf0fe"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e5f593e48aadbeab21a7b7a1179517e4c0cf8aaf8d3dd131650e6c08c505bc6b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "096e876158207f4bf4d0597ca8fe11eef53fb8a598223562ae71e5beb22e9487"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a26f9d0a44b4dce25b263ec8c3b1db33b46e3a6a9bebd82ac1e84877af26871e"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "fd4fe0891a182bf5227e29a4f7cf4fc60d81b9ee43649370b753d0adff549431"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fd4fe0891a182bf5227e29a4f7cf4fc60d81b9ee43649370b753d0adff549431"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fd4fe0891a182bf5227e29a4f7cf4fc60d81b9ee43649370b753d0adff549431"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e7c57065ec664ffca64e109f3a7a0983729a332ee8ba5daf617e46a1f6397a0c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ad668a7b0dd463e24856df1095b145a5710c40c257555fb910da1829d96ced01"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d247dcfda19e6551172519ac4b90ffdce262a31f95cb268284bbe16821084e31"
   end
 
   depends_on "go" => :build
